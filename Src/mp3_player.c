@@ -31,7 +31,7 @@ void mp3_player_init(FIL);
 void mp3_player_fsm(FIL);
 void mp3_player_play(FIL);
 int mp3_player_process_frame(FIL *);
-void fill_input_buffer(FIL *);
+int fill_input_buffer(FIL *);
 
 /* ------------------------------------------------------------------- */
 

@@ -1494,12 +1494,8 @@ static void MX_GPIO_Init(void)
 
 /* USER CODE BEGIN 4 */
 
-
 static FIL file;
 extern ApplicationTypeDef Appli_state;
-
-
-
 
 /* USER CODE END 4 */
 
@@ -1547,11 +1543,11 @@ void StartDefaultTask(void const * argument)
   
   if(res==FR_OK)
   {
-	  xprintf("wave file open OK\n");
+	  xprintf("mp3 file open OK\n");
   }
   else
   {
-	  xprintf("wave file open ERROR, res = %d\n",res);
+	  xprintf("mp3 file open ERROR, res = %d\n",res);
 	  while(1);
   }
   
