@@ -1,0 +1,1103 @@
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"netbuf.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.netbuf_new,"ax",%progbits
+  18              		.align	1
+  19              		.global	netbuf_new
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  23              		.fpu fpv5-sp-d16
+  25              	netbuf_new:
+  26              	.LFB152:
+  27              		.file 1 "Middlewares/Third_Party/LwIP/src/api/netbuf.c"
+   1:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** /**
+   2:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * @file
+   3:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * Network buffer management
+   4:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  *
+   5:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * @defgroup netbuf Network buffers
+   6:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * @ingroup netconn
+   7:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * Network buffer descriptor for @ref netconn. Based on @ref pbuf internally
+   8:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * to avoid copying data around.\n
+   9:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * Buffers must not be shared accross multiple threads, all functions except
+  10:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * netbuf_new() and netbuf_delete() are not thread-safe.
+  11:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  */
+  12:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** 
+  13:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** /*
+  14:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * Copyright (c) 2001-2004 Swedish Institute of Computer Science.
+  15:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * All rights reserved.
+  16:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  *
+  17:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * Redistribution and use in source and binary forms, with or without modification,
+  18:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * are permitted provided that the following conditions are met:
+  19:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  *
+  20:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * 1. Redistributions of source code must retain the above copyright notice,
+  21:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  *    this list of conditions and the following disclaimer.
+  22:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * 2. Redistributions in binary form must reproduce the above copyright notice,
+  23:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  *    this list of conditions and the following disclaimer in the documentation
+  24:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  *    and/or other materials provided with the distribution.
+  25:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * 3. The name of the author may not be used to endorse or promote products
+  26:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  *    derived from this software without specific prior written permission.
+  27:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  *
+  28:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+  29:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+  30:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
+  31:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s 			page 2
+
+
+  32:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+  33:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  34:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  35:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+  36:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
+  37:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * OF SUCH DAMAGE.
+  38:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  *
+  39:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * This file is part of the lwIP TCP/IP stack.
+  40:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  *
+  41:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * Author: Adam Dunkels <adam@sics.se>
+  42:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  *
+  43:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  */
+  44:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** 
+  45:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** #include "lwip/opt.h"
+  46:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** 
+  47:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** #if LWIP_NETCONN /* don't build if not configured for use in lwipopts.h */
+  48:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** 
+  49:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** #include "lwip/netbuf.h"
+  50:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** #include "lwip/memp.h"
+  51:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** 
+  52:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** #include <string.h>
+  53:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** 
+  54:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** /**
+  55:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * @ingroup netbuf
+  56:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * Create (allocate) and initialize a new netbuf.
+  57:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * The netbuf doesn't yet contain a packet buffer!
+  58:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  *
+  59:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * @return a pointer to a new netbuf
+  60:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  *         NULL on lack of memory
+  61:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  */
+  62:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** struct
+  63:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** netbuf *netbuf_new(void)
+  64:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** {
+  28              		.loc 1 64 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32 0000 08B5     		push	{r3, lr}
+  33              	.LCFI0:
+  34              		.cfi_def_cfa_offset 8
+  35              		.cfi_offset 3, -8
+  36              		.cfi_offset 14, -4
+  65:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   struct netbuf *buf;
+  66:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** 
+  67:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   buf = (struct netbuf *)memp_malloc(MEMP_NETBUF);
+  37              		.loc 1 67 0
+  38 0002 0620     		movs	r0, #6
+  39 0004 FFF7FEFF 		bl	memp_malloc
+  40              	.LVL0:
+  68:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   if (buf != NULL) {
+  41              		.loc 1 68 0
+  42 0008 0346     		mov	r3, r0
+  43 000a 20B1     		cbz	r0, .L1
+  69:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****     memset(buf, 0, sizeof(struct netbuf));
+  44              		.loc 1 69 0
+  45 000c 0022     		movs	r2, #0
+  46 000e 0260     		str	r2, [r0]	@ unaligned
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s 			page 3
+
+
+  47 0010 4260     		str	r2, [r0, #4]	@ unaligned
+  48 0012 8260     		str	r2, [r0, #8]	@ unaligned
+  49 0014 C260     		str	r2, [r0, #12]	@ unaligned
+  50              	.L1:
+  70:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   }
+  71:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   return buf;
+  72:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** }
+  51              		.loc 1 72 0
+  52 0016 1846     		mov	r0, r3
+  53              	.LVL1:
+  54 0018 08BD     		pop	{r3, pc}
+  55              		.cfi_endproc
+  56              	.LFE152:
+  58              		.section	.text.netbuf_delete,"ax",%progbits
+  59              		.align	1
+  60              		.global	netbuf_delete
+  61              		.syntax unified
+  62              		.thumb
+  63              		.thumb_func
+  64              		.fpu fpv5-sp-d16
+  66              	netbuf_delete:
+  67              	.LFB153:
+  73:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** 
+  74:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** /**
+  75:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * @ingroup netbuf
+  76:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * Deallocate a netbuf allocated by netbuf_new().
+  77:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  *
+  78:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * @param buf pointer to a netbuf allocated by netbuf_new()
+  79:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  */
+  80:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** void
+  81:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** netbuf_delete(struct netbuf *buf)
+  82:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** {
+  68              		.loc 1 82 0
+  69              		.cfi_startproc
+  70              		@ args = 0, pretend = 0, frame = 0
+  71              		@ frame_needed = 0, uses_anonymous_args = 0
+  72              	.LVL2:
+  83:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   if (buf != NULL) {
+  73              		.loc 1 83 0
+  74 0000 68B1     		cbz	r0, .L8
+  82:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   if (buf != NULL) {
+  75              		.loc 1 82 0
+  76 0002 10B5     		push	{r4, lr}
+  77              	.LCFI1:
+  78              		.cfi_def_cfa_offset 8
+  79              		.cfi_offset 4, -8
+  80              		.cfi_offset 14, -4
+  81 0004 0446     		mov	r4, r0
+  84:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****     if (buf->p != NULL) {
+  82              		.loc 1 84 0
+  83 0006 0068     		ldr	r0, [r0]
+  84              	.LVL3:
+  85 0008 20B1     		cbz	r0, .L6
+  85:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****       pbuf_free(buf->p);
+  86              		.loc 1 85 0
+  87 000a FFF7FEFF 		bl	pbuf_free
+  88              	.LVL4:
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s 			page 4
+
+
+  86:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****       buf->p = buf->ptr = NULL;
+  89              		.loc 1 86 0
+  90 000e 0023     		movs	r3, #0
+  91 0010 6360     		str	r3, [r4, #4]
+  92 0012 2360     		str	r3, [r4]
+  93              	.L6:
+  87:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****     }
+  88:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****     memp_free(MEMP_NETBUF, buf);
+  94              		.loc 1 88 0
+  95 0014 2146     		mov	r1, r4
+  96 0016 0620     		movs	r0, #6
+  97 0018 FFF7FEFF 		bl	memp_free
+  98              	.LVL5:
+  99 001c 10BD     		pop	{r4, pc}
+ 100              	.LVL6:
+ 101              	.L8:
+ 102              	.LCFI2:
+ 103              		.cfi_def_cfa_offset 0
+ 104              		.cfi_restore 4
+ 105              		.cfi_restore 14
+ 106 001e 7047     		bx	lr
+ 107              		.cfi_endproc
+ 108              	.LFE153:
+ 110              		.section	.text.netbuf_alloc,"ax",%progbits
+ 111              		.align	1
+ 112              		.global	netbuf_alloc
+ 113              		.syntax unified
+ 114              		.thumb
+ 115              		.thumb_func
+ 116              		.fpu fpv5-sp-d16
+ 118              	netbuf_alloc:
+ 119              	.LFB154:
+  89:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   }
+  90:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** }
+  91:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** 
+  92:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** /**
+  93:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * @ingroup netbuf
+  94:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * Allocate memory for a packet buffer for a given netbuf.
+  95:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  *
+  96:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * @param buf the netbuf for which to allocate a packet buffer
+  97:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * @param size the size of the packet buffer to allocate
+  98:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * @return pointer to the allocated memory
+  99:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  *         NULL if no memory could be allocated
+ 100:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  */
+ 101:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** void *
+ 102:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** netbuf_alloc(struct netbuf *buf, u16_t size)
+ 103:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** {
+ 120              		.loc 1 103 0
+ 121              		.cfi_startproc
+ 122              		@ args = 0, pretend = 0, frame = 0
+ 123              		@ frame_needed = 0, uses_anonymous_args = 0
+ 124              	.LVL7:
+ 125 0000 38B5     		push	{r3, r4, r5, lr}
+ 126              	.LCFI3:
+ 127              		.cfi_def_cfa_offset 16
+ 128              		.cfi_offset 3, -16
+ 129              		.cfi_offset 4, -12
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s 			page 5
+
+
+ 130              		.cfi_offset 5, -8
+ 131              		.cfi_offset 14, -4
+ 104:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   LWIP_ERROR("netbuf_alloc: invalid buf", (buf != NULL), return NULL;);
+ 132              		.loc 1 104 0
+ 133 0002 98B1     		cbz	r0, .L18
+ 134 0004 0D46     		mov	r5, r1
+ 135 0006 0446     		mov	r4, r0
+ 105:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** 
+ 106:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   /* Deallocate any previously allocated memory. */
+ 107:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   if (buf->p != NULL) {
+ 136              		.loc 1 107 0
+ 137 0008 0068     		ldr	r0, [r0]
+ 138              	.LVL8:
+ 139 000a 08B1     		cbz	r0, .L14
+ 108:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****     pbuf_free(buf->p);
+ 140              		.loc 1 108 0
+ 141 000c FFF7FEFF 		bl	pbuf_free
+ 142              	.LVL9:
+ 143              	.L14:
+ 109:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   }
+ 110:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   buf->p = pbuf_alloc(PBUF_TRANSPORT, size, PBUF_RAM);
+ 144              		.loc 1 110 0
+ 145 0010 0022     		movs	r2, #0
+ 146 0012 2946     		mov	r1, r5
+ 147 0014 1046     		mov	r0, r2
+ 148 0016 FFF7FEFF 		bl	pbuf_alloc
+ 149              	.LVL10:
+ 150 001a 2060     		str	r0, [r4]
+ 111:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   if (buf->p == NULL) {
+ 151              		.loc 1 111 0
+ 152 001c A8B1     		cbz	r0, .L16
+ 112:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****      return NULL;
+ 113:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   }
+ 114:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   LWIP_ASSERT("check that first pbuf can hold size",
+ 153              		.loc 1 114 0
+ 154 001e 4389     		ldrh	r3, [r0, #10]
+ 155 0020 9D42     		cmp	r5, r3
+ 156 0022 0BD8     		bhi	.L19
+ 157              	.L15:
+ 115:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****              (buf->p->len >= size));
+ 116:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   buf->ptr = buf->p;
+ 158              		.loc 1 116 0
+ 159 0024 2368     		ldr	r3, [r4]
+ 160 0026 6360     		str	r3, [r4, #4]
+ 117:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   return buf->p->payload;
+ 161              		.loc 1 117 0
+ 162 0028 5868     		ldr	r0, [r3, #4]
+ 163 002a 38BD     		pop	{r3, r4, r5, pc}
+ 164              	.LVL11:
+ 165              	.L18:
+ 104:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** 
+ 166              		.loc 1 104 0 discriminator 1
+ 167 002c 084B     		ldr	r3, .L20
+ 168 002e 6822     		movs	r2, #104
+ 169 0030 0849     		ldr	r1, .L20+4
+ 170              	.LVL12:
+ 171 0032 0948     		ldr	r0, .L20+8
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s 			page 6
+
+
+ 172              	.LVL13:
+ 173 0034 FFF7FEFF 		bl	printf
+ 174              	.LVL14:
+ 175 0038 0020     		movs	r0, #0
+ 176 003a 38BD     		pop	{r3, r4, r5, pc}
+ 177              	.LVL15:
+ 178              	.L19:
+ 114:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****              (buf->p->len >= size));
+ 179              		.loc 1 114 0 discriminator 1
+ 180 003c 044B     		ldr	r3, .L20
+ 181 003e 7322     		movs	r2, #115
+ 182 0040 0649     		ldr	r1, .L20+12
+ 183 0042 0548     		ldr	r0, .L20+8
+ 184 0044 FFF7FEFF 		bl	printf
+ 185              	.LVL16:
+ 186 0048 ECE7     		b	.L15
+ 187              	.L16:
+ 112:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   }
+ 188              		.loc 1 112 0
+ 189 004a 0020     		movs	r0, #0
+ 118:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** }
+ 190              		.loc 1 118 0
+ 191 004c 38BD     		pop	{r3, r4, r5, pc}
+ 192              	.LVL17:
+ 193              	.L21:
+ 194 004e 00BF     		.align	2
+ 195              	.L20:
+ 196 0050 00000000 		.word	.LC0
+ 197 0054 30000000 		.word	.LC1
+ 198 0058 4C000000 		.word	.LC2
+ 199 005c 74000000 		.word	.LC3
+ 200              		.cfi_endproc
+ 201              	.LFE154:
+ 203              		.section	.text.netbuf_free,"ax",%progbits
+ 204              		.align	1
+ 205              		.global	netbuf_free
+ 206              		.syntax unified
+ 207              		.thumb
+ 208              		.thumb_func
+ 209              		.fpu fpv5-sp-d16
+ 211              	netbuf_free:
+ 212              	.LFB155:
+ 119:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** 
+ 120:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** /**
+ 121:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * @ingroup netbuf
+ 122:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * Free the packet buffer included in a netbuf
+ 123:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  *
+ 124:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * @param buf pointer to the netbuf which contains the packet buffer to free
+ 125:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  */
+ 126:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** void
+ 127:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** netbuf_free(struct netbuf *buf)
+ 128:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** {
+ 213              		.loc 1 128 0
+ 214              		.cfi_startproc
+ 215              		@ args = 0, pretend = 0, frame = 0
+ 216              		@ frame_needed = 0, uses_anonymous_args = 0
+ 217              	.LVL18:
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s 			page 7
+
+
+ 218 0000 10B5     		push	{r4, lr}
+ 219              	.LCFI4:
+ 220              		.cfi_def_cfa_offset 8
+ 221              		.cfi_offset 4, -8
+ 222              		.cfi_offset 14, -4
+ 129:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   LWIP_ERROR("netbuf_free: invalid buf", (buf != NULL), return;);
+ 223              		.loc 1 129 0
+ 224 0002 40B1     		cbz	r0, .L27
+ 225 0004 0446     		mov	r4, r0
+ 130:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   if (buf->p != NULL) {
+ 226              		.loc 1 130 0
+ 227 0006 0068     		ldr	r0, [r0]
+ 228              	.LVL19:
+ 229 0008 08B1     		cbz	r0, .L25
+ 131:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****     pbuf_free(buf->p);
+ 230              		.loc 1 131 0
+ 231 000a FFF7FEFF 		bl	pbuf_free
+ 232              	.LVL20:
+ 233              	.L25:
+ 132:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   }
+ 133:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   buf->p = buf->ptr = NULL;
+ 234              		.loc 1 133 0
+ 235 000e 0023     		movs	r3, #0
+ 236 0010 6360     		str	r3, [r4, #4]
+ 237 0012 2360     		str	r3, [r4]
+ 238 0014 10BD     		pop	{r4, pc}
+ 239              	.LVL21:
+ 240              	.L27:
+ 129:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   if (buf->p != NULL) {
+ 241              		.loc 1 129 0 discriminator 1
+ 242 0016 034B     		ldr	r3, .L28
+ 243 0018 8122     		movs	r2, #129
+ 244 001a 0349     		ldr	r1, .L28+4
+ 245 001c 0348     		ldr	r0, .L28+8
+ 246              	.LVL22:
+ 247 001e FFF7FEFF 		bl	printf
+ 248              	.LVL23:
+ 249 0022 10BD     		pop	{r4, pc}
+ 250              	.L29:
+ 251              		.align	2
+ 252              	.L28:
+ 253 0024 00000000 		.word	.LC0
+ 254 0028 00000000 		.word	.LC4
+ 255 002c 4C000000 		.word	.LC2
+ 256              		.cfi_endproc
+ 257              	.LFE155:
+ 259              		.section	.text.netbuf_ref,"ax",%progbits
+ 260              		.align	1
+ 261              		.global	netbuf_ref
+ 262              		.syntax unified
+ 263              		.thumb
+ 264              		.thumb_func
+ 265              		.fpu fpv5-sp-d16
+ 267              	netbuf_ref:
+ 268              	.LFB156:
+ 134:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** }
+ 135:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** 
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s 			page 8
+
+
+ 136:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** /**
+ 137:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * @ingroup netbuf
+ 138:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * Let a netbuf reference existing (non-volatile) data.
+ 139:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  *
+ 140:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * @param buf netbuf which should reference the data
+ 141:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * @param dataptr pointer to the data to reference
+ 142:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * @param size size of the data
+ 143:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * @return ERR_OK if data is referenced
+ 144:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  *         ERR_MEM if data couldn't be referenced due to lack of memory
+ 145:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  */
+ 146:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** err_t
+ 147:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** netbuf_ref(struct netbuf *buf, const void *dataptr, u16_t size)
+ 148:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** {
+ 269              		.loc 1 148 0
+ 270              		.cfi_startproc
+ 271              		@ args = 0, pretend = 0, frame = 0
+ 272              		@ frame_needed = 0, uses_anonymous_args = 0
+ 273              	.LVL24:
+ 274 0000 70B5     		push	{r4, r5, r6, lr}
+ 275              	.LCFI5:
+ 276              		.cfi_def_cfa_offset 16
+ 277              		.cfi_offset 4, -16
+ 278              		.cfi_offset 5, -12
+ 279              		.cfi_offset 6, -8
+ 280              		.cfi_offset 14, -4
+ 149:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   LWIP_ERROR("netbuf_ref: invalid buf", (buf != NULL), return ERR_ARG;);
+ 281              		.loc 1 149 0
+ 282 0002 A8B1     		cbz	r0, .L36
+ 283 0004 0E46     		mov	r6, r1
+ 284 0006 1546     		mov	r5, r2
+ 285 0008 0446     		mov	r4, r0
+ 150:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   if (buf->p != NULL) {
+ 286              		.loc 1 150 0
+ 287 000a 0068     		ldr	r0, [r0]
+ 288              	.LVL25:
+ 289 000c 08B1     		cbz	r0, .L33
+ 151:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****     pbuf_free(buf->p);
+ 290              		.loc 1 151 0
+ 291 000e FFF7FEFF 		bl	pbuf_free
+ 292              	.LVL26:
+ 293              	.L33:
+ 152:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   }
+ 153:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   buf->p = pbuf_alloc(PBUF_TRANSPORT, 0, PBUF_REF);
+ 294              		.loc 1 153 0
+ 295 0012 0222     		movs	r2, #2
+ 296 0014 0021     		movs	r1, #0
+ 297 0016 0846     		mov	r0, r1
+ 298 0018 FFF7FEFF 		bl	pbuf_alloc
+ 299              	.LVL27:
+ 300 001c 2060     		str	r0, [r4]
+ 154:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   if (buf->p == NULL) {
+ 301              		.loc 1 154 0
+ 302 001e 80B1     		cbz	r0, .L37
+ 155:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****     buf->ptr = NULL;
+ 156:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****     return ERR_MEM;
+ 157:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   }
+ 158:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   ((struct pbuf_rom*)buf->p)->payload = dataptr;
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s 			page 9
+
+
+ 303              		.loc 1 158 0
+ 304 0020 4660     		str	r6, [r0, #4]
+ 159:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   buf->p->len = buf->p->tot_len = size;
+ 305              		.loc 1 159 0
+ 306 0022 2368     		ldr	r3, [r4]
+ 307 0024 1D81     		strh	r5, [r3, #8]	@ movhi
+ 308 0026 5D81     		strh	r5, [r3, #10]	@ movhi
+ 160:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   buf->ptr = buf->p;
+ 309              		.loc 1 160 0
+ 310 0028 2368     		ldr	r3, [r4]
+ 311 002a 6360     		str	r3, [r4, #4]
+ 161:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   return ERR_OK;
+ 312              		.loc 1 161 0
+ 313 002c 0020     		movs	r0, #0
+ 162:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** }
+ 314              		.loc 1 162 0
+ 315 002e 70BD     		pop	{r4, r5, r6, pc}
+ 316              	.LVL28:
+ 317              	.L36:
+ 149:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   if (buf->p != NULL) {
+ 318              		.loc 1 149 0 discriminator 1
+ 319 0030 064B     		ldr	r3, .L38
+ 320 0032 9522     		movs	r2, #149
+ 321              	.LVL29:
+ 322 0034 0649     		ldr	r1, .L38+4
+ 323              	.LVL30:
+ 324 0036 0748     		ldr	r0, .L38+8
+ 325              	.LVL31:
+ 326 0038 FFF7FEFF 		bl	printf
+ 327              	.LVL32:
+ 328 003c 6FF00F00 		mvn	r0, #15
+ 329 0040 70BD     		pop	{r4, r5, r6, pc}
+ 330              	.LVL33:
+ 331              	.L37:
+ 155:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****     return ERR_MEM;
+ 332              		.loc 1 155 0
+ 333 0042 0023     		movs	r3, #0
+ 334 0044 6360     		str	r3, [r4, #4]
+ 156:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   }
+ 335              		.loc 1 156 0
+ 336 0046 4FF0FF30 		mov	r0, #-1
+ 337 004a 70BD     		pop	{r4, r5, r6, pc}
+ 338              	.LVL34:
+ 339              	.L39:
+ 340              		.align	2
+ 341              	.L38:
+ 342 004c 00000000 		.word	.LC0
+ 343 0050 00000000 		.word	.LC5
+ 344 0054 4C000000 		.word	.LC2
+ 345              		.cfi_endproc
+ 346              	.LFE156:
+ 348              		.section	.text.netbuf_chain,"ax",%progbits
+ 349              		.align	1
+ 350              		.global	netbuf_chain
+ 351              		.syntax unified
+ 352              		.thumb
+ 353              		.thumb_func
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s 			page 10
+
+
+ 354              		.fpu fpv5-sp-d16
+ 356              	netbuf_chain:
+ 357              	.LFB157:
+ 163:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** 
+ 164:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** /**
+ 165:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * @ingroup netbuf
+ 166:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * Chain one netbuf to another (@see pbuf_chain)
+ 167:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  *
+ 168:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * @param head the first netbuf
+ 169:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * @param tail netbuf to chain after head, freed by this function, may not be reference after retur
+ 170:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  */
+ 171:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** void
+ 172:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** netbuf_chain(struct netbuf *head, struct netbuf *tail)
+ 173:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** {
+ 358              		.loc 1 173 0
+ 359              		.cfi_startproc
+ 360              		@ args = 0, pretend = 0, frame = 0
+ 361              		@ frame_needed = 0, uses_anonymous_args = 0
+ 362              	.LVL35:
+ 363 0000 38B5     		push	{r3, r4, r5, lr}
+ 364              	.LCFI6:
+ 365              		.cfi_def_cfa_offset 16
+ 366              		.cfi_offset 3, -16
+ 367              		.cfi_offset 4, -12
+ 368              		.cfi_offset 5, -8
+ 369              		.cfi_offset 14, -4
+ 174:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   LWIP_ERROR("netbuf_chain: invalid head", (head != NULL), return;);
+ 370              		.loc 1 174 0
+ 371 0002 68B1     		cbz	r0, .L45
+ 372 0004 0C46     		mov	r4, r1
+ 373 0006 0546     		mov	r5, r0
+ 175:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   LWIP_ERROR("netbuf_chain: invalid tail", (tail != NULL), return;);
+ 374              		.loc 1 175 0
+ 375 0008 89B1     		cbz	r1, .L46
+ 176:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   pbuf_cat(head->p, tail->p);
+ 376              		.loc 1 176 0
+ 377 000a 0968     		ldr	r1, [r1]
+ 378              	.LVL36:
+ 379 000c 0068     		ldr	r0, [r0]
+ 380              	.LVL37:
+ 381 000e FFF7FEFF 		bl	pbuf_cat
+ 382              	.LVL38:
+ 177:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   head->ptr = head->p;
+ 383              		.loc 1 177 0
+ 384 0012 2B68     		ldr	r3, [r5]
+ 385 0014 6B60     		str	r3, [r5, #4]
+ 178:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   memp_free(MEMP_NETBUF, tail);
+ 386              		.loc 1 178 0
+ 387 0016 2146     		mov	r1, r4
+ 388 0018 0620     		movs	r0, #6
+ 389 001a FFF7FEFF 		bl	memp_free
+ 390              	.LVL39:
+ 391 001e 38BD     		pop	{r3, r4, r5, pc}
+ 392              	.LVL40:
+ 393              	.L45:
+ 174:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   LWIP_ERROR("netbuf_chain: invalid tail", (tail != NULL), return;);
+ 394              		.loc 1 174 0 discriminator 1
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s 			page 11
+
+
+ 395 0020 064B     		ldr	r3, .L47
+ 396 0022 AE22     		movs	r2, #174
+ 397 0024 0649     		ldr	r1, .L47+4
+ 398              	.LVL41:
+ 399 0026 0748     		ldr	r0, .L47+8
+ 400              	.LVL42:
+ 401 0028 FFF7FEFF 		bl	printf
+ 402              	.LVL43:
+ 403 002c 38BD     		pop	{r3, r4, r5, pc}
+ 404              	.LVL44:
+ 405              	.L46:
+ 175:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   pbuf_cat(head->p, tail->p);
+ 406              		.loc 1 175 0 discriminator 1
+ 407 002e 034B     		ldr	r3, .L47
+ 408 0030 AF22     		movs	r2, #175
+ 409 0032 0549     		ldr	r1, .L47+12
+ 410              	.LVL45:
+ 411 0034 0348     		ldr	r0, .L47+8
+ 412              	.LVL46:
+ 413 0036 FFF7FEFF 		bl	printf
+ 414              	.LVL47:
+ 415 003a 38BD     		pop	{r3, r4, r5, pc}
+ 416              	.LVL48:
+ 417              	.L48:
+ 418              		.align	2
+ 419              	.L47:
+ 420 003c 00000000 		.word	.LC0
+ 421 0040 00000000 		.word	.LC6
+ 422 0044 4C000000 		.word	.LC2
+ 423 0048 1C000000 		.word	.LC7
+ 424              		.cfi_endproc
+ 425              	.LFE157:
+ 427              		.section	.text.netbuf_data,"ax",%progbits
+ 428              		.align	1
+ 429              		.global	netbuf_data
+ 430              		.syntax unified
+ 431              		.thumb
+ 432              		.thumb_func
+ 433              		.fpu fpv5-sp-d16
+ 435              	netbuf_data:
+ 436              	.LFB158:
+ 179:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** }
+ 180:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** 
+ 181:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** /**
+ 182:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * @ingroup netbuf
+ 183:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * Get the data pointer and length of the data inside a netbuf.
+ 184:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  *
+ 185:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * @param buf netbuf to get the data from
+ 186:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * @param dataptr pointer to a void pointer where to store the data pointer
+ 187:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * @param len pointer to an u16_t where the length of the data is stored
+ 188:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * @return ERR_OK if the information was retrieved,
+ 189:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  *         ERR_BUF on error.
+ 190:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  */
+ 191:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** err_t
+ 192:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** netbuf_data(struct netbuf *buf, void **dataptr, u16_t *len)
+ 193:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** {
+ 437              		.loc 1 193 0
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s 			page 12
+
+
+ 438              		.cfi_startproc
+ 439              		@ args = 0, pretend = 0, frame = 0
+ 440              		@ frame_needed = 0, uses_anonymous_args = 0
+ 441              	.LVL49:
+ 442 0000 08B5     		push	{r3, lr}
+ 443              	.LCFI7:
+ 444              		.cfi_def_cfa_offset 8
+ 445              		.cfi_offset 3, -8
+ 446              		.cfi_offset 14, -4
+ 194:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   LWIP_ERROR("netbuf_data: invalid buf", (buf != NULL), return ERR_ARG;);
+ 447              		.loc 1 194 0
+ 448 0002 58B1     		cbz	r0, .L56
+ 449 0004 0346     		mov	r3, r0
+ 195:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   LWIP_ERROR("netbuf_data: invalid dataptr", (dataptr != NULL), return ERR_ARG;);
+ 450              		.loc 1 195 0
+ 451 0006 91B1     		cbz	r1, .L57
+ 196:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   LWIP_ERROR("netbuf_data: invalid len", (len != NULL), return ERR_ARG;);
+ 452              		.loc 1 196 0
+ 453 0008 D2B1     		cbz	r2, .L58
+ 197:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** 
+ 198:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   if (buf->ptr == NULL) {
+ 454              		.loc 1 198 0
+ 455 000a 4068     		ldr	r0, [r0, #4]
+ 456              	.LVL50:
+ 457 000c 08B3     		cbz	r0, .L54
+ 199:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****     return ERR_BUF;
+ 200:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   }
+ 201:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   *dataptr = buf->ptr->payload;
+ 458              		.loc 1 201 0
+ 459 000e 4068     		ldr	r0, [r0, #4]
+ 460 0010 0860     		str	r0, [r1]
+ 202:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   *len = buf->ptr->len;
+ 461              		.loc 1 202 0
+ 462 0012 5B68     		ldr	r3, [r3, #4]
+ 463              	.LVL51:
+ 464 0014 5B89     		ldrh	r3, [r3, #10]
+ 465 0016 1380     		strh	r3, [r2]	@ movhi
+ 203:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   return ERR_OK;
+ 466              		.loc 1 203 0
+ 467 0018 0020     		movs	r0, #0
+ 468 001a 08BD     		pop	{r3, pc}
+ 469              	.LVL52:
+ 470              	.L56:
+ 194:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   LWIP_ERROR("netbuf_data: invalid dataptr", (dataptr != NULL), return ERR_ARG;);
+ 471              		.loc 1 194 0 discriminator 1
+ 472 001c 0E4B     		ldr	r3, .L59
+ 473 001e C222     		movs	r2, #194
+ 474              	.LVL53:
+ 475 0020 0E49     		ldr	r1, .L59+4
+ 476              	.LVL54:
+ 477 0022 0F48     		ldr	r0, .L59+8
+ 478              	.LVL55:
+ 479 0024 FFF7FEFF 		bl	printf
+ 480              	.LVL56:
+ 481 0028 6FF00F00 		mvn	r0, #15
+ 482 002c 08BD     		pop	{r3, pc}
+ 483              	.LVL57:
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s 			page 13
+
+
+ 484              	.L57:
+ 195:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   LWIP_ERROR("netbuf_data: invalid len", (len != NULL), return ERR_ARG;);
+ 485              		.loc 1 195 0 discriminator 1
+ 486 002e 0A4B     		ldr	r3, .L59
+ 487 0030 C322     		movs	r2, #195
+ 488              	.LVL58:
+ 489 0032 0C49     		ldr	r1, .L59+12
+ 490              	.LVL59:
+ 491 0034 0A48     		ldr	r0, .L59+8
+ 492              	.LVL60:
+ 493 0036 FFF7FEFF 		bl	printf
+ 494              	.LVL61:
+ 495 003a 6FF00F00 		mvn	r0, #15
+ 496 003e 08BD     		pop	{r3, pc}
+ 497              	.LVL62:
+ 498              	.L58:
+ 196:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** 
+ 499              		.loc 1 196 0 discriminator 1
+ 500 0040 054B     		ldr	r3, .L59
+ 501 0042 C422     		movs	r2, #196
+ 502              	.LVL63:
+ 503 0044 0849     		ldr	r1, .L59+16
+ 504              	.LVL64:
+ 505 0046 0648     		ldr	r0, .L59+8
+ 506              	.LVL65:
+ 507 0048 FFF7FEFF 		bl	printf
+ 508              	.LVL66:
+ 509 004c 6FF00F00 		mvn	r0, #15
+ 510 0050 08BD     		pop	{r3, pc}
+ 511              	.LVL67:
+ 512              	.L54:
+ 199:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   }
+ 513              		.loc 1 199 0
+ 514 0052 6FF00100 		mvn	r0, #1
+ 204:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** }
+ 515              		.loc 1 204 0
+ 516 0056 08BD     		pop	{r3, pc}
+ 517              	.LVL68:
+ 518              	.L60:
+ 519              		.align	2
+ 520              	.L59:
+ 521 0058 00000000 		.word	.LC0
+ 522 005c 00000000 		.word	.LC8
+ 523 0060 4C000000 		.word	.LC2
+ 524 0064 1C000000 		.word	.LC9
+ 525 0068 3C000000 		.word	.LC10
+ 526              		.cfi_endproc
+ 527              	.LFE158:
+ 529              		.section	.text.netbuf_next,"ax",%progbits
+ 530              		.align	1
+ 531              		.global	netbuf_next
+ 532              		.syntax unified
+ 533              		.thumb
+ 534              		.thumb_func
+ 535              		.fpu fpv5-sp-d16
+ 537              	netbuf_next:
+ 538              	.LFB159:
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s 			page 14
+
+
+ 205:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** 
+ 206:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** /**
+ 207:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * @ingroup netbuf
+ 208:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * Move the current data pointer of a packet buffer contained in a netbuf
+ 209:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * to the next part.
+ 210:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * The packet buffer itself is not modified.
+ 211:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  *
+ 212:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * @param buf the netbuf to modify
+ 213:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * @return -1 if there is no next part
+ 214:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  *         1  if moved to the next part but now there is no next part
+ 215:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  *         0  if moved to the next part and there are still more parts
+ 216:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  */
+ 217:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** s8_t
+ 218:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** netbuf_next(struct netbuf *buf)
+ 219:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** {
+ 539              		.loc 1 219 0
+ 540              		.cfi_startproc
+ 541              		@ args = 0, pretend = 0, frame = 0
+ 542              		@ frame_needed = 0, uses_anonymous_args = 0
+ 543              	.LVL69:
+ 544 0000 08B5     		push	{r3, lr}
+ 545              	.LCFI8:
+ 546              		.cfi_def_cfa_offset 8
+ 547              		.cfi_offset 3, -8
+ 548              		.cfi_offset 14, -4
+ 220:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   LWIP_ERROR("netbuf_next: invalid buf", (buf != NULL), return -1;);
+ 549              		.loc 1 220 0
+ 550 0002 38B1     		cbz	r0, .L67
+ 221:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   if (buf->ptr->next == NULL) {
+ 551              		.loc 1 221 0
+ 552 0004 4368     		ldr	r3, [r0, #4]
+ 553 0006 1B68     		ldr	r3, [r3]
+ 554 0008 7BB1     		cbz	r3, .L64
+ 222:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****     return -1;
+ 223:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   }
+ 224:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   buf->ptr = buf->ptr->next;
+ 555              		.loc 1 224 0
+ 556 000a 4360     		str	r3, [r0, #4]
+ 225:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   if (buf->ptr->next == NULL) {
+ 557              		.loc 1 225 0
+ 558 000c 1B68     		ldr	r3, [r3]
+ 559 000e 53B1     		cbz	r3, .L68
+ 226:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****     return 1;
+ 227:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   }
+ 228:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   return 0;
+ 560              		.loc 1 228 0
+ 561 0010 0020     		movs	r0, #0
+ 562              	.LVL70:
+ 229:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** }
+ 563              		.loc 1 229 0
+ 564 0012 08BD     		pop	{r3, pc}
+ 565              	.LVL71:
+ 566              	.L67:
+ 220:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   if (buf->ptr->next == NULL) {
+ 567              		.loc 1 220 0 discriminator 1
+ 568 0014 064B     		ldr	r3, .L69
+ 569 0016 DC22     		movs	r2, #220
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s 			page 15
+
+
+ 570 0018 0649     		ldr	r1, .L69+4
+ 571 001a 0748     		ldr	r0, .L69+8
+ 572              	.LVL72:
+ 573 001c FFF7FEFF 		bl	printf
+ 574              	.LVL73:
+ 575 0020 4FF0FF30 		mov	r0, #-1
+ 576 0024 08BD     		pop	{r3, pc}
+ 577              	.LVL74:
+ 578              	.L68:
+ 226:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****     return 1;
+ 579              		.loc 1 226 0
+ 580 0026 0120     		movs	r0, #1
+ 581              	.LVL75:
+ 582 0028 08BD     		pop	{r3, pc}
+ 583              	.LVL76:
+ 584              	.L64:
+ 222:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   }
+ 585              		.loc 1 222 0
+ 586 002a 4FF0FF30 		mov	r0, #-1
+ 587              	.LVL77:
+ 588 002e 08BD     		pop	{r3, pc}
+ 589              	.L70:
+ 590              		.align	2
+ 591              	.L69:
+ 592 0030 00000000 		.word	.LC0
+ 593 0034 00000000 		.word	.LC11
+ 594 0038 4C000000 		.word	.LC2
+ 595              		.cfi_endproc
+ 596              	.LFE159:
+ 598              		.section	.text.netbuf_first,"ax",%progbits
+ 599              		.align	1
+ 600              		.global	netbuf_first
+ 601              		.syntax unified
+ 602              		.thumb
+ 603              		.thumb_func
+ 604              		.fpu fpv5-sp-d16
+ 606              	netbuf_first:
+ 607              	.LFB160:
+ 230:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** 
+ 231:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** /**
+ 232:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * @ingroup netbuf
+ 233:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * Move the current data pointer of a packet buffer contained in a netbuf
+ 234:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * to the beginning of the packet.
+ 235:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * The packet buffer itself is not modified.
+ 236:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  *
+ 237:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * @param buf the netbuf to modify
+ 238:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  */
+ 239:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** void
+ 240:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** netbuf_first(struct netbuf *buf)
+ 241:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** {
+ 608              		.loc 1 241 0
+ 609              		.cfi_startproc
+ 610              		@ args = 0, pretend = 0, frame = 0
+ 611              		@ frame_needed = 0, uses_anonymous_args = 0
+ 612              	.LVL78:
+ 613 0000 08B5     		push	{r3, lr}
+ 614              	.LCFI9:
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s 			page 16
+
+
+ 615              		.cfi_def_cfa_offset 8
+ 616              		.cfi_offset 3, -8
+ 617              		.cfi_offset 14, -4
+ 242:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   LWIP_ERROR("netbuf_first: invalid buf", (buf != NULL), return;);
+ 618              		.loc 1 242 0
+ 619 0002 10B1     		cbz	r0, .L75
+ 243:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   buf->ptr = buf->p;
+ 620              		.loc 1 243 0
+ 621 0004 0268     		ldr	r2, [r0]
+ 622 0006 4260     		str	r2, [r0, #4]
+ 623 0008 08BD     		pop	{r3, pc}
+ 624              	.L75:
+ 242:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   LWIP_ERROR("netbuf_first: invalid buf", (buf != NULL), return;);
+ 625              		.loc 1 242 0 discriminator 1
+ 626 000a 034B     		ldr	r3, .L76
+ 627 000c F222     		movs	r2, #242
+ 628 000e 0349     		ldr	r1, .L76+4
+ 629 0010 0348     		ldr	r0, .L76+8
+ 630              	.LVL79:
+ 631 0012 FFF7FEFF 		bl	printf
+ 632              	.LVL80:
+ 633 0016 08BD     		pop	{r3, pc}
+ 634              	.L77:
+ 635              		.align	2
+ 636              	.L76:
+ 637 0018 00000000 		.word	.LC0
+ 638 001c 00000000 		.word	.LC12
+ 639 0020 4C000000 		.word	.LC2
+ 640              		.cfi_endproc
+ 641              	.LFE160:
+ 643              		.section	.rodata.netbuf_alloc.str1.4,"aMS",%progbits,1
+ 644              		.align	2
+ 645              	.LC0:
+ 646 0000 4D696464 		.ascii	"Middlewares/Third_Party/LwIP/src/api/netbuf.c\000"
+ 646      6C657761 
+ 646      7265732F 
+ 646      54686972 
+ 646      645F5061 
+ 647 002e 0000     		.space	2
+ 648              	.LC1:
+ 649 0030 6E657462 		.ascii	"netbuf_alloc: invalid buf\000"
+ 649      75665F61 
+ 649      6C6C6F63 
+ 649      3A20696E 
+ 649      76616C69 
+ 650 004a 0000     		.space	2
+ 651              	.LC2:
+ 652 004c 41737365 		.ascii	"Assertion \"%s\" failed at line %d in %s\012\000"
+ 652      7274696F 
+ 652      6E202225 
+ 652      73222066 
+ 652      61696C65 
+ 653              	.LC3:
+ 654 0074 63686563 		.ascii	"check that first pbuf can hold size\000"
+ 654      6B207468 
+ 654      61742066 
+ 654      69727374 
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s 			page 17
+
+
+ 654      20706275 
+ 655              		.section	.rodata.netbuf_chain.str1.4,"aMS",%progbits,1
+ 656              		.align	2
+ 657              	.LC6:
+ 658 0000 6E657462 		.ascii	"netbuf_chain: invalid head\000"
+ 658      75665F63 
+ 658      6861696E 
+ 658      3A20696E 
+ 658      76616C69 
+ 659 001b 00       		.space	1
+ 660              	.LC7:
+ 661 001c 6E657462 		.ascii	"netbuf_chain: invalid tail\000"
+ 661      75665F63 
+ 661      6861696E 
+ 661      3A20696E 
+ 661      76616C69 
+ 662              		.section	.rodata.netbuf_data.str1.4,"aMS",%progbits,1
+ 663              		.align	2
+ 664              	.LC8:
+ 665 0000 6E657462 		.ascii	"netbuf_data: invalid buf\000"
+ 665      75665F64 
+ 665      6174613A 
+ 665      20696E76 
+ 665      616C6964 
+ 666 0019 000000   		.space	3
+ 667              	.LC9:
+ 668 001c 6E657462 		.ascii	"netbuf_data: invalid dataptr\000"
+ 668      75665F64 
+ 668      6174613A 
+ 668      20696E76 
+ 668      616C6964 
+ 669 0039 000000   		.space	3
+ 670              	.LC10:
+ 671 003c 6E657462 		.ascii	"netbuf_data: invalid len\000"
+ 671      75665F64 
+ 671      6174613A 
+ 671      20696E76 
+ 671      616C6964 
+ 672              		.section	.rodata.netbuf_first.str1.4,"aMS",%progbits,1
+ 673              		.align	2
+ 674              	.LC12:
+ 675 0000 6E657462 		.ascii	"netbuf_first: invalid buf\000"
+ 675      75665F66 
+ 675      69727374 
+ 675      3A20696E 
+ 675      76616C69 
+ 676              		.section	.rodata.netbuf_free.str1.4,"aMS",%progbits,1
+ 677              		.align	2
+ 678              	.LC4:
+ 679 0000 6E657462 		.ascii	"netbuf_free: invalid buf\000"
+ 679      75665F66 
+ 679      7265653A 
+ 679      20696E76 
+ 679      616C6964 
+ 680              		.section	.rodata.netbuf_next.str1.4,"aMS",%progbits,1
+ 681              		.align	2
+ 682              	.LC11:
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s 			page 18
+
+
+ 683 0000 6E657462 		.ascii	"netbuf_next: invalid buf\000"
+ 683      75665F6E 
+ 683      6578743A 
+ 683      20696E76 
+ 683      616C6964 
+ 684              		.section	.rodata.netbuf_ref.str1.4,"aMS",%progbits,1
+ 685              		.align	2
+ 686              	.LC5:
+ 687 0000 6E657462 		.ascii	"netbuf_ref: invalid buf\000"
+ 687      75665F72 
+ 687      65663A20 
+ 687      696E7661 
+ 687      6C696420 
+ 688              		.text
+ 689              	.Letext0:
+ 690              		.file 2 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 691              		.file 3 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 692              		.file 4 "Drivers/CMSIS/Include/core_cm7.h"
+ 693              		.file 5 "Drivers/CMSIS/Device/ST/STM32F7xx/Include/system_stm32f7xx.h"
+ 694              		.file 6 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\lock.h"
+ 695              		.file 7 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\_types.h"
+ 696              		.file 8 "c:\\gcc_toolchain\\6_2017-q1-update\\lib\\gcc\\arm-none-eabi\\6.3.1\\include\\stddef.h"
+ 697              		.file 9 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\reent.h"
+ 698              		.file 10 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\stdlib.h"
+ 699              		.file 11 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\time.h"
+ 700              		.file 12 "Middlewares/Third_Party/LwIP/src/include/lwip/arch.h"
+ 701              		.file 13 "Middlewares/Third_Party/LwIP/src/include/lwip/err.h"
+ 702              		.file 14 "Middlewares/Third_Party/LwIP/src/include/lwip/pbuf.h"
+ 703              		.file 15 "Middlewares/Third_Party/LwIP/src/include/lwip/ip4_addr.h"
+ 704              		.file 16 "Middlewares/Third_Party/LwIP/src/include/lwip/ip_addr.h"
+ 705              		.file 17 "Middlewares/Third_Party/LwIP/src/include/lwip/netbuf.h"
+ 706              		.file 18 "Middlewares/Third_Party/LwIP/src/include/lwip/memp.h"
+ 707              		.file 19 "Middlewares/Third_Party/LwIP/src/include/lwip/priv/memp_priv.h"
+ 708              		.file 20 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\stdio.h"
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s 			page 19
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 netbuf.c
+C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:18     .text.netbuf_new:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:25     .text.netbuf_new:00000000 netbuf_new
+C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:59     .text.netbuf_delete:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:66     .text.netbuf_delete:00000000 netbuf_delete
+C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:111    .text.netbuf_alloc:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:118    .text.netbuf_alloc:00000000 netbuf_alloc
+C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:196    .text.netbuf_alloc:00000050 $d
+C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:204    .text.netbuf_free:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:211    .text.netbuf_free:00000000 netbuf_free
+C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:253    .text.netbuf_free:00000024 $d
+C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:260    .text.netbuf_ref:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:267    .text.netbuf_ref:00000000 netbuf_ref
+C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:342    .text.netbuf_ref:0000004c $d
+C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:349    .text.netbuf_chain:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:356    .text.netbuf_chain:00000000 netbuf_chain
+C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:420    .text.netbuf_chain:0000003c $d
+C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:428    .text.netbuf_data:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:435    .text.netbuf_data:00000000 netbuf_data
+C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:521    .text.netbuf_data:00000058 $d
+C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:530    .text.netbuf_next:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:537    .text.netbuf_next:00000000 netbuf_next
+C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:592    .text.netbuf_next:00000030 $d
+C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:599    .text.netbuf_first:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:606    .text.netbuf_first:00000000 netbuf_first
+C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:637    .text.netbuf_first:00000018 $d
+C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:644    .rodata.netbuf_alloc.str1.4:00000000 $d
+C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:656    .rodata.netbuf_chain.str1.4:00000000 $d
+C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:663    .rodata.netbuf_data.str1.4:00000000 $d
+C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:673    .rodata.netbuf_first.str1.4:00000000 $d
+C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:677    .rodata.netbuf_free.str1.4:00000000 $d
+C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:681    .rodata.netbuf_next.str1.4:00000000 $d
+C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:685    .rodata.netbuf_ref.str1.4:00000000 $d
+                     .debug_frame:00000010 $d
+
+UNDEFINED SYMBOLS
+memp_malloc
+pbuf_free
+memp_free
+pbuf_alloc
+printf
+pbuf_cat

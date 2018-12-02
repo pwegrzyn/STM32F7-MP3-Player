@@ -1,0 +1,2526 @@
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"stm32f7xx_hal_dcmi.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.DCMI_DMAXferCplt,"ax",%progbits
+  18              		.align	1
+  19              		.syntax unified
+  20              		.thumb
+  21              		.thumb_func
+  22              		.fpu fpv5-sp-d16
+  24              	DCMI_DMAXferCplt:
+  25              	.LFB154:
+  26              		.file 1 "Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c"
+   1:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** /**
+   2:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   ******************************************************************************
+   3:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @file    stm32f7xx_hal_dcmi.c
+   4:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @author  MCD Application Team
+   5:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @brief   DCMI HAL module driver
+   6:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   *          This file provides firmware functions to manage the following 
+   7:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   *          functionalities of the Digital Camera Interface (DCMI) peripheral:
+   8:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   *           + Initialization and de-initialization functions
+   9:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   *           + IO operation functions
+  10:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   *           + Peripheral Control functions 
+  11:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   *           + Peripheral State and Error functions  
+  12:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   *           
+  13:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   @verbatim
+  14:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   ==============================================================================
+  15:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****                         ##### How to use this driver #####
+  16:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   ==============================================================================
+  17:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   [..]
+  18:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****       The sequence below describes how to use this driver to capture image
+  19:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****       from a camera module connected to the DCMI Interface.
+  20:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****       This sequence does not take into account the configuration of the
+  21:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****       camera module, which should be made before to configure and enable
+  22:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****       the DCMI to capture images.
+  23:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+  24:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     (#) Program the required configuration through following parameters:
+  25:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****         horizontal and vertical polarity, pixel clock polarity, Capture Rate,
+  26:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****         Synchronization Mode, code of the frame delimiter and data width 
+  27:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****         using HAL_DCMI_Init() function.
+  28:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+  29:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     (#) Configure the DMA2_Stream1 channel1 to transfer Data from DCMI DR
+  30:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****         register to the destination memory buffer.
+  31:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+  32:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     (#) Program the required configuration through following parameters:
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s 			page 2
+
+
+  33:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****         DCMI mode, destination memory Buffer address and the data length 
+  34:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****         and enable capture using HAL_DCMI_Start_DMA() function.
+  35:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+  36:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     (#) Optionally, configure and Enable the CROP feature to select a rectangular
+  37:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****         window from the received image using HAL_DCMI_ConfigCrop() 
+  38:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****         and HAL_DCMI_EnableCROP() functions
+  39:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+  40:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     (#) The capture can be stopped using HAL_DCMI_Stop() function.
+  41:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+  42:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     (#) To control DCMI state you can use the function HAL_DCMI_GetState().
+  43:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+  44:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****      *** DCMI HAL driver macros list ***
+  45:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****      ============================================= 
+  46:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****      [..]
+  47:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****        Below the list of most used macros in DCMI HAL driver.
+  48:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****        
+  49:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****       (+) __HAL_DCMI_ENABLE: Enable the DCMI peripheral.
+  50:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****       (+) __HAL_DCMI_DISABLE: Disable the DCMI peripheral.
+  51:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****       (+) __HAL_DCMI_GET_FLAG: Get the DCMI pending flags.
+  52:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****       (+) __HAL_DCMI_CLEAR_FLAG: Clear the DCMI pending flags.
+  53:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****       (+) __HAL_DCMI_ENABLE_IT: Enable the specified DCMI interrupts.
+  54:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****       (+) __HAL_DCMI_DISABLE_IT: Disable the specified DCMI interrupts.
+  55:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****       (+) __HAL_DCMI_GET_IT_SOURCE: Check whether the specified DCMI interrupt has occurred or not.
+  56:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****  
+  57:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****      [..] 
+  58:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****        (@) You can refer to the DCMI HAL driver header file for more useful macros
+  59:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****       
+  60:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   @endverbatim
+  61:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   ******************************************************************************
+  62:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @attention
+  63:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   *
+  64:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * <h2><center>&copy; COPYRIGHT(c) 2017 STMicroelectronics</center></h2>
+  65:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   *
+  66:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * Redistribution and use in source and binary forms, with or without modification,
+  67:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * are permitted provided that the following conditions are met:
+  68:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   *   1. Redistributions of source code must retain the above copyright notice,
+  69:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   *      this list of conditions and the following disclaimer.
+  70:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   *   2. Redistributions in binary form must reproduce the above copyright notice,
+  71:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   *      this list of conditions and the following disclaimer in the documentation
+  72:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   *      and/or other materials provided with the distribution.
+  73:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   *   3. Neither the name of STMicroelectronics nor the names of its contributors
+  74:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   *      may be used to endorse or promote products derived from this software
+  75:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   *      without specific prior written permission.
+  76:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   *
+  77:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  78:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  79:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+  80:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+  81:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+  82:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+  83:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+  84:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+  85:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+  86:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  87:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   *
+  88:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   ******************************************************************************
+  89:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   */ 
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s 			page 3
+
+
+  90:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+  91:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** /* Includes ------------------------------------------------------------------*/
+  92:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** #include "stm32f7xx_hal.h"
+  93:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+  94:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** /** @addtogroup STM32F7xx_HAL_Driver
+  95:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @{
+  96:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   */
+  97:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** /** @defgroup DCMI DCMI
+  98:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @brief DCMI HAL module driver
+  99:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @{
+ 100:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   */
+ 101:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 102:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** #ifdef HAL_DCMI_MODULE_ENABLED
+ 103:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** #if defined (DCMI)
+ 104:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 105:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** /* Private typedef -----------------------------------------------------------*/
+ 106:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** /* Private define ------------------------------------------------------------*/
+ 107:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** #define HAL_TIMEOUT_DCMI_STOP    ((uint32_t)1000) /* Set timeout to 1s  */
+ 108:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 109:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** /* Private macro -------------------------------------------------------------*/
+ 110:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** /* Private variables ---------------------------------------------------------*/
+ 111:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** /* Private function prototypes -----------------------------------------------*/
+ 112:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** static void       DCMI_DMAXferCplt(DMA_HandleTypeDef *hdma);
+ 113:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** static void       DCMI_DMAError(DMA_HandleTypeDef *hdma);
+ 114:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 115:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** /* Exported functions --------------------------------------------------------*/
+ 116:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 117:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** /** @defgroup DCMI_Exported_Functions DCMI Exported Functions
+ 118:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @{
+ 119:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   */
+ 120:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 121:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** /** @defgroup DCMI_Exported_Functions_Group1 Initialization and Configuration functions
+ 122:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****  *  @brief   Initialization and Configuration functions
+ 123:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****  *
+ 124:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** @verbatim   
+ 125:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****  ===============================================================================
+ 126:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****                 ##### Initialization and Configuration functions #####
+ 127:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****  ===============================================================================  
+ 128:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     [..]  This section provides functions allowing to:
+ 129:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****       (+) Initialize and configure the DCMI
+ 130:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****       (+) De-initialize the DCMI 
+ 131:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 132:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** @endverbatim
+ 133:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @{
+ 134:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   */
+ 135:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   
+ 136:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** /**
+ 137:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @brief  Initializes the DCMI according to the specified
+ 138:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   *         parameters in the DCMI_InitTypeDef and create the associated handle.
+ 139:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @param  hdcmi pointer to a DCMI_HandleTypeDef structure that contains
+ 140:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   *                the configuration information for DCMI.
+ 141:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @retval HAL status
+ 142:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   */
+ 143:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** HAL_StatusTypeDef HAL_DCMI_Init(DCMI_HandleTypeDef *hdcmi)
+ 144:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** {     
+ 145:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Check the DCMI peripheral state */
+ 146:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   if(hdcmi == NULL)
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s 			page 4
+
+
+ 147:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   {
+ 148:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****      return HAL_ERROR;
+ 149:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   }
+ 150:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   
+ 151:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Check function parameters */
+ 152:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   assert_param(IS_DCMI_ALL_INSTANCE(hdcmi->Instance));
+ 153:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   assert_param(IS_DCMI_PCKPOLARITY(hdcmi->Init.PCKPolarity));
+ 154:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   assert_param(IS_DCMI_VSPOLARITY(hdcmi->Init.VSPolarity));
+ 155:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   assert_param(IS_DCMI_HSPOLARITY(hdcmi->Init.HSPolarity));
+ 156:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   assert_param(IS_DCMI_SYNCHRO(hdcmi->Init.SynchroMode));
+ 157:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   assert_param(IS_DCMI_CAPTURE_RATE(hdcmi->Init.CaptureRate));
+ 158:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   assert_param(IS_DCMI_EXTENDED_DATA(hdcmi->Init.ExtendedDataMode));
+ 159:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   assert_param(IS_DCMI_MODE_JPEG(hdcmi->Init.JPEGMode));
+ 160:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 161:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   assert_param(IS_DCMI_BYTE_SELECT_MODE(hdcmi->Init.ByteSelectMode));
+ 162:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   assert_param(IS_DCMI_BYTE_SELECT_START(hdcmi->Init.ByteSelectStart));
+ 163:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   assert_param(IS_DCMI_LINE_SELECT_MODE(hdcmi->Init.LineSelectMode));
+ 164:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   assert_param(IS_DCMI_LINE_SELECT_START(hdcmi->Init.LineSelectStart));
+ 165:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****                 
+ 166:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   if(hdcmi->State == HAL_DCMI_STATE_RESET)
+ 167:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   {
+ 168:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     /* Init the low level hardware */
+ 169:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     HAL_DCMI_MspInit(hdcmi);
+ 170:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   } 
+ 171:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   
+ 172:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Change the DCMI state */
+ 173:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   hdcmi->State = HAL_DCMI_STATE_BUSY; 
+ 174:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****                           /* Configures the HS, VS, DE and PC polarity */
+ 175:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   hdcmi->Instance->CR &= ~(DCMI_CR_PCKPOL | DCMI_CR_HSPOL  | DCMI_CR_VSPOL  | DCMI_CR_EDM_0 |\
+ 176:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****                            DCMI_CR_EDM_1  | DCMI_CR_FCRC_0 | DCMI_CR_FCRC_1 | DCMI_CR_JPEG  |\
+ 177:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****                            DCMI_CR_ESS | DCMI_CR_BSM_0 | DCMI_CR_BSM_1 | DCMI_CR_OEBS |\
+ 178:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****                            DCMI_CR_LSM | DCMI_CR_OELS);
+ 179:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 180:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   hdcmi->Instance->CR |=  (uint32_t)(hdcmi->Init.SynchroMode | hdcmi->Init.CaptureRate |\
+ 181:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****                                      hdcmi->Init.VSPolarity  | hdcmi->Init.HSPolarity  |\
+ 182:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****                                      hdcmi->Init.PCKPolarity | hdcmi->Init.ExtendedDataMode |\
+ 183:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****                                      hdcmi->Init.JPEGMode | hdcmi->Init.ByteSelectMode |\
+ 184:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****                                      hdcmi->Init.ByteSelectStart | hdcmi->Init.LineSelectMode |\
+ 185:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****                                      hdcmi->Init.LineSelectStart);
+ 186:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****                                      
+ 187:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   if(hdcmi->Init.SynchroMode == DCMI_SYNCHRO_EMBEDDED)
+ 188:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   {
+ 189:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     hdcmi->Instance->ESCR = (((uint32_t)hdcmi->Init.SyncroCode.FrameStartCode)    |\
+ 190:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****                              ((uint32_t)hdcmi->Init.SyncroCode.LineStartCode << DCMI_ESCR_LSC_Pos)|
+ 191:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****                              ((uint32_t)hdcmi->Init.SyncroCode.LineEndCode << DCMI_ESCR_LEC_Pos) |\
+ 192:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****                              ((uint32_t)hdcmi->Init.SyncroCode.FrameEndCode << DCMI_ESCR_FEC_Pos));
+ 193:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 194:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   }
+ 195:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 196:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Enable the Line, Vsync, Error and Overrun interrupts */
+ 197:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   __HAL_DCMI_ENABLE_IT(hdcmi, DCMI_IT_LINE | DCMI_IT_VSYNC | DCMI_IT_ERR | DCMI_IT_OVR);
+ 198:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 199:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Update error code */
+ 200:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   hdcmi->ErrorCode = HAL_DCMI_ERROR_NONE;
+ 201:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   
+ 202:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Initialize the DCMI state*/
+ 203:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   hdcmi->State  = HAL_DCMI_STATE_READY;
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s 			page 5
+
+
+ 204:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 205:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   return HAL_OK;
+ 206:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** }
+ 207:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 208:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** /**
+ 209:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @brief  Deinitializes the DCMI peripheral registers to their default reset
+ 210:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   *         values.
+ 211:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @param  hdcmi pointer to a DCMI_HandleTypeDef structure that contains
+ 212:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   *                the configuration information for DCMI.
+ 213:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @retval HAL status
+ 214:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   */
+ 215:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 216:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** HAL_StatusTypeDef HAL_DCMI_DeInit(DCMI_HandleTypeDef *hdcmi)
+ 217:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** {
+ 218:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* DeInit the low level hardware */
+ 219:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   HAL_DCMI_MspDeInit(hdcmi);
+ 220:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 221:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Update error code */
+ 222:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   hdcmi->ErrorCode = HAL_DCMI_ERROR_NONE;
+ 223:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 224:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Initialize the DCMI state*/
+ 225:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   hdcmi->State = HAL_DCMI_STATE_RESET;
+ 226:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 227:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Release Lock */
+ 228:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   __HAL_UNLOCK(hdcmi);
+ 229:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 230:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   return HAL_OK;
+ 231:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** }
+ 232:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 233:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** /**
+ 234:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @brief  Initializes the DCMI MSP.
+ 235:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @param  hdcmi pointer to a DCMI_HandleTypeDef structure that contains
+ 236:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   *                the configuration information for DCMI.
+ 237:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @retval None
+ 238:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   */
+ 239:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** __weak void HAL_DCMI_MspInit(DCMI_HandleTypeDef* hdcmi)
+ 240:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** {
+ 241:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Prevent unused argument(s) compilation warning */
+ 242:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   UNUSED(hdcmi);
+ 243:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****  
+ 244:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* NOTE : This function Should not be modified, when the callback is needed,
+ 245:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****             the HAL_DCMI_MspInit could be implemented in the user file
+ 246:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****    */ 
+ 247:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** }
+ 248:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 249:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** /**
+ 250:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @brief  DeInitializes the DCMI MSP.
+ 251:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @param  hdcmi pointer to a DCMI_HandleTypeDef structure that contains
+ 252:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   *                the configuration information for DCMI.
+ 253:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @retval None
+ 254:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   */
+ 255:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** __weak void HAL_DCMI_MspDeInit(DCMI_HandleTypeDef* hdcmi)
+ 256:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** {
+ 257:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Prevent unused argument(s) compilation warning */
+ 258:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   UNUSED(hdcmi);
+ 259:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****  
+ 260:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* NOTE : This function Should not be modified, when the callback is needed,
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s 			page 6
+
+
+ 261:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****             the HAL_DCMI_MspDeInit could be implemented in the user file
+ 262:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****    */
+ 263:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** }
+ 264:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 265:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** /**
+ 266:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @}
+ 267:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   */
+ 268:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** /** @defgroup DCMI_Exported_Functions_Group2 IO operation functions 
+ 269:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****  *  @brief   IO operation functions  
+ 270:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****  *
+ 271:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** @verbatim   
+ 272:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****  ===============================================================================
+ 273:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****                       #####  IO operation functions  #####
+ 274:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****  ===============================================================================  
+ 275:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     [..]  This section provides functions allowing to:
+ 276:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****       (+) Configure destination address and data length and 
+ 277:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****           Enables DCMI DMA request and enables DCMI capture
+ 278:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****       (+) Stop the DCMI capture.
+ 279:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****       (+) Handles DCMI interrupt request.
+ 280:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 281:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** @endverbatim
+ 282:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @{
+ 283:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   */
+ 284:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 285:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** /**
+ 286:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @brief  Enables DCMI DMA request and enables DCMI capture  
+ 287:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @param  hdcmi     pointer to a DCMI_HandleTypeDef structure that contains
+ 288:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   *                    the configuration information for DCMI.
+ 289:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @param  DCMI_Mode DCMI capture mode snapshot or continuous grab.
+ 290:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @param  pData     The destination memory Buffer address (LCD Frame buffer).
+ 291:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @param  Length    The length of capture to be transferred.
+ 292:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @retval HAL status
+ 293:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   */
+ 294:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** HAL_StatusTypeDef HAL_DCMI_Start_DMA(DCMI_HandleTypeDef* hdcmi, uint32_t DCMI_Mode, uint32_t pData,
+ 295:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** {  
+ 296:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Initialize the second memory address */
+ 297:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   uint32_t SecondMemAddress = 0;
+ 298:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 299:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Check function parameters */
+ 300:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   assert_param(IS_DCMI_CAPTURE_MODE(DCMI_Mode));
+ 301:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 302:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Process Locked */
+ 303:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   __HAL_LOCK(hdcmi);
+ 304:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   
+ 305:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Lock the DCMI peripheral state */
+ 306:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   hdcmi->State = HAL_DCMI_STATE_BUSY;
+ 307:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 308:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Enable DCMI by setting DCMIEN bit */
+ 309:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   __HAL_DCMI_ENABLE(hdcmi);
+ 310:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   
+ 311:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Configure the DCMI Mode */
+ 312:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   hdcmi->Instance->CR &= ~(DCMI_CR_CM);
+ 313:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   hdcmi->Instance->CR |=  (uint32_t)(DCMI_Mode);
+ 314:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 315:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Set the DMA memory0 conversion complete callback */
+ 316:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   hdcmi->DMA_Handle->XferCpltCallback = DCMI_DMAXferCplt;
+ 317:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s 			page 7
+
+
+ 318:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Set the DMA error callback */
+ 319:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   hdcmi->DMA_Handle->XferErrorCallback = DCMI_DMAError;
+ 320:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 321:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Set the dma abort callback */
+ 322:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   hdcmi->DMA_Handle->XferAbortCallback = NULL;
+ 323:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 324:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Reset transfer counters value */ 
+ 325:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   hdcmi->XferCount = 0;
+ 326:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   hdcmi->XferTransferNumber = 0;
+ 327:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   
+ 328:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   if(Length <= 0xFFFF)
+ 329:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   {
+ 330:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     /* Enable the DMA Stream */
+ 331:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     HAL_DMA_Start_IT(hdcmi->DMA_Handle, (uint32_t)&hdcmi->Instance->DR, (uint32_t)pData, Length);
+ 332:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   }
+ 333:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   else /* DCMI_DOUBLE_BUFFER Mode */
+ 334:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   {
+ 335:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     /* Set the DMA memory1 conversion complete callback */
+ 336:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     hdcmi->DMA_Handle->XferM1CpltCallback = DCMI_DMAXferCplt; 
+ 337:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 338:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     /* Initialize transfer parameters */
+ 339:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     hdcmi->XferCount = 1;
+ 340:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     hdcmi->XferSize = Length;
+ 341:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     hdcmi->pBuffPtr = pData;
+ 342:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****       
+ 343:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     /* Get the number of buffer */
+ 344:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     while(hdcmi->XferSize > 0xFFFF)
+ 345:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     {
+ 346:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****       hdcmi->XferSize = (hdcmi->XferSize/2);
+ 347:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****       hdcmi->XferCount = hdcmi->XferCount*2;
+ 348:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     }
+ 349:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 350:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     /* Update DCMI counter  and transfer number*/
+ 351:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     hdcmi->XferCount = (hdcmi->XferCount - 2);
+ 352:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     hdcmi->XferTransferNumber = hdcmi->XferCount;
+ 353:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 354:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     /* Update second memory address */
+ 355:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     SecondMemAddress = (uint32_t)(pData + (4*hdcmi->XferSize));
+ 356:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 357:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     /* Start DMA multi buffer transfer */
+ 358:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     HAL_DMAEx_MultiBufferStart_IT(hdcmi->DMA_Handle, (uint32_t)&hdcmi->Instance->DR, (uint32_t)pDat
+ 359:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   }
+ 360:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   
+ 361:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Enable Capture */
+ 362:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   hdcmi->Instance->CR |= DCMI_CR_CAPTURE;
+ 363:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 364:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Release Lock */
+ 365:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   __HAL_UNLOCK(hdcmi);
+ 366:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 367:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Return function status */
+ 368:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   return HAL_OK;
+ 369:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** }
+ 370:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 371:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** /**
+ 372:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @brief  Disable DCMI DMA request and Disable DCMI capture  
+ 373:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @param  hdcmi pointer to a DCMI_HandleTypeDef structure that contains
+ 374:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   *                the configuration information for DCMI. 
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s 			page 8
+
+
+ 375:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @retval HAL status     
+ 376:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   */
+ 377:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** HAL_StatusTypeDef HAL_DCMI_Stop(DCMI_HandleTypeDef* hdcmi)
+ 378:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** {
+ 379:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   register uint32_t count = HAL_TIMEOUT_DCMI_STOP * (SystemCoreClock /8/1000);
+ 380:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   HAL_StatusTypeDef status = HAL_OK;
+ 381:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 382:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Process locked */
+ 383:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   __HAL_LOCK(hdcmi);
+ 384:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   
+ 385:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Lock the DCMI peripheral state */
+ 386:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   hdcmi->State = HAL_DCMI_STATE_BUSY;
+ 387:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 388:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Disable Capture */
+ 389:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   hdcmi->Instance->CR &= ~(DCMI_CR_CAPTURE);
+ 390:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 391:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Check if the DCMI capture effectively disabled */
+ 392:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   do
+ 393:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   {
+ 394:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     if (count-- == 0)
+ 395:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     {
+ 396:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****       /* Update error code */
+ 397:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****       hdcmi->ErrorCode |= HAL_DCMI_ERROR_TIMEOUT;
+ 398:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****       
+ 399:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****       status = HAL_TIMEOUT;
+ 400:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****       break;
+ 401:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     } 
+ 402:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   }
+ 403:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   while((hdcmi->Instance->CR & DCMI_CR_CAPTURE) != 0);
+ 404:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 405:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Disable the DCMI */
+ 406:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   __HAL_DCMI_DISABLE(hdcmi);
+ 407:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 408:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Disable the DMA */
+ 409:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   HAL_DMA_Abort(hdcmi->DMA_Handle);
+ 410:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 411:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Update error code */
+ 412:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   hdcmi->ErrorCode |= HAL_DCMI_ERROR_NONE;
+ 413:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 414:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Change DCMI state */
+ 415:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   hdcmi->State = HAL_DCMI_STATE_READY;
+ 416:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 417:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Process Unlocked */
+ 418:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   __HAL_UNLOCK(hdcmi);
+ 419:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 420:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Return function status */
+ 421:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   return status;
+ 422:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** }
+ 423:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 424:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** /**
+ 425:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @brief  Suspend DCMI capture  
+ 426:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @param  hdcmi pointer to a DCMI_HandleTypeDef structure that contains
+ 427:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   *                the configuration information for DCMI. 
+ 428:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @retval HAL status     
+ 429:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   */
+ 430:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** HAL_StatusTypeDef HAL_DCMI_Suspend(DCMI_HandleTypeDef* hdcmi)
+ 431:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** {
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s 			page 9
+
+
+ 432:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   register uint32_t count = HAL_TIMEOUT_DCMI_STOP * (SystemCoreClock /8/1000);
+ 433:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   HAL_StatusTypeDef status = HAL_OK;
+ 434:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 435:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Process locked */
+ 436:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   __HAL_LOCK(hdcmi);
+ 437:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 438:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   if(hdcmi->State == HAL_DCMI_STATE_BUSY)
+ 439:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   {
+ 440:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     /* Change DCMI state */
+ 441:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     hdcmi->State = HAL_DCMI_STATE_SUSPENDED;
+ 442:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 443:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     /* Disable Capture */
+ 444:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     hdcmi->Instance->CR &= ~(DCMI_CR_CAPTURE);
+ 445:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 446:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     /* Check if the DCMI capture effectively disabled */
+ 447:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     do
+ 448:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     {
+ 449:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****       if (count-- == 0)
+ 450:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****       {        
+ 451:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****         /* Update error code */
+ 452:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****         hdcmi->ErrorCode |= HAL_DCMI_ERROR_TIMEOUT;
+ 453:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****         
+ 454:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****         /* Change DCMI state */
+ 455:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****         hdcmi->State = HAL_DCMI_STATE_READY;
+ 456:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****         
+ 457:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****         status = HAL_TIMEOUT;
+ 458:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****         break;
+ 459:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****       }
+ 460:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     }
+ 461:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     while((hdcmi->Instance->CR & DCMI_CR_CAPTURE) != 0);
+ 462:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   }    
+ 463:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Process Unlocked */
+ 464:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   __HAL_UNLOCK(hdcmi);
+ 465:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   
+ 466:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Return function status */
+ 467:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   return status;
+ 468:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** }
+ 469:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 470:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** /**
+ 471:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @brief  Resume DCMI capture  
+ 472:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @param  hdcmi pointer to a DCMI_HandleTypeDef structure that contains
+ 473:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   *                the configuration information for DCMI. 
+ 474:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @retval HAL status     
+ 475:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   */
+ 476:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** HAL_StatusTypeDef HAL_DCMI_Resume(DCMI_HandleTypeDef* hdcmi)
+ 477:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** {
+ 478:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Process locked */
+ 479:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   __HAL_LOCK(hdcmi);
+ 480:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   
+ 481:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   if(hdcmi->State == HAL_DCMI_STATE_SUSPENDED)
+ 482:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   {
+ 483:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     /* Change DCMI state */
+ 484:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     hdcmi->State = HAL_DCMI_STATE_BUSY;
+ 485:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     
+ 486:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     /* Disable Capture */
+ 487:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     hdcmi->Instance->CR |= DCMI_CR_CAPTURE;
+ 488:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   } 
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s 			page 10
+
+
+ 489:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Process Unlocked */
+ 490:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   __HAL_UNLOCK(hdcmi);
+ 491:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   
+ 492:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Return function status */
+ 493:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   return HAL_OK;
+ 494:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** }
+ 495:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 496:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** /**
+ 497:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @brief  Handles DCMI interrupt request.
+ 498:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @param  hdcmi pointer to a DCMI_HandleTypeDef structure that contains
+ 499:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   *                the configuration information for the DCMI.
+ 500:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @retval None
+ 501:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   */
+ 502:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** void HAL_DCMI_IRQHandler(DCMI_HandleTypeDef *hdcmi)
+ 503:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** {  
+ 504:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   uint32_t isr_value = READ_REG(hdcmi->Instance->MISR);
+ 505:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   
+ 506:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Synchronization error interrupt management *******************************/
+ 507:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   if((isr_value & DCMI_FLAG_ERRRI) == DCMI_FLAG_ERRRI)
+ 508:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   {
+ 509:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     /* Clear the Synchronization error flag */
+ 510:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     __HAL_DCMI_CLEAR_FLAG(hdcmi, DCMI_FLAG_ERRRI);
+ 511:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     
+ 512:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     /* Update error code */
+ 513:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     hdcmi->ErrorCode |= HAL_DCMI_ERROR_SYNC;
+ 514:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     
+ 515:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     /* Change DCMI state */
+ 516:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     hdcmi->State = HAL_DCMI_STATE_ERROR;
+ 517:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     
+ 518:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     /* Set the synchronization error callback */
+ 519:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     hdcmi->DMA_Handle->XferAbortCallback = DCMI_DMAError;
+ 520:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     
+ 521:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     /* Abort the DMA Transfer */
+ 522:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     HAL_DMA_Abort_IT(hdcmi->DMA_Handle); 
+ 523:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   }
+ 524:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Overflow interrupt management ********************************************/
+ 525:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   if((isr_value & DCMI_FLAG_OVRRI) == DCMI_FLAG_OVRRI)
+ 526:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   {
+ 527:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     /* Clear the Overflow flag */
+ 528:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     __HAL_DCMI_CLEAR_FLAG(hdcmi, DCMI_FLAG_OVRRI);
+ 529:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     
+ 530:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     /* Update error code */
+ 531:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     hdcmi->ErrorCode |= HAL_DCMI_ERROR_OVR;
+ 532:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     
+ 533:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     /* Change DCMI state */
+ 534:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     hdcmi->State = HAL_DCMI_STATE_ERROR;
+ 535:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     
+ 536:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     /* Set the overflow callback */
+ 537:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     hdcmi->DMA_Handle->XferAbortCallback = DCMI_DMAError;
+ 538:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     
+ 539:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     /* Abort the DMA Transfer */
+ 540:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     HAL_DMA_Abort_IT(hdcmi->DMA_Handle);
+ 541:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   }
+ 542:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Line Interrupt management ************************************************/
+ 543:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   if((isr_value & DCMI_FLAG_LINERI) == DCMI_FLAG_LINERI)
+ 544:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   {
+ 545:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     /* Clear the Line interrupt flag */  
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s 			page 11
+
+
+ 546:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     __HAL_DCMI_CLEAR_FLAG(hdcmi, DCMI_FLAG_LINERI);
+ 547:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     
+ 548:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     /* Line interrupt Callback */
+ 549:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     HAL_DCMI_LineEventCallback(hdcmi);
+ 550:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   }
+ 551:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* VSYNC interrupt management ***********************************************/
+ 552:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   if((isr_value & DCMI_FLAG_VSYNCRI) == DCMI_FLAG_VSYNCRI)
+ 553:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   {
+ 554:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     /* Clear the VSYNC flag */
+ 555:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     __HAL_DCMI_CLEAR_FLAG(hdcmi, DCMI_FLAG_VSYNCRI);
+ 556:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     
+ 557:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     /* VSYNC Callback */
+ 558:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     HAL_DCMI_VsyncEventCallback(hdcmi);
+ 559:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   }
+ 560:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* FRAME interrupt management ***********************************************/
+ 561:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   if((isr_value & DCMI_FLAG_FRAMERI) == DCMI_FLAG_FRAMERI)   
+ 562:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   {
+ 563:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     /* When snapshot mode, disable Vsync, Error and Overrun interrupts */
+ 564:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     if((hdcmi->Instance->CR & DCMI_CR_CM) == DCMI_MODE_SNAPSHOT)
+ 565:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     { 
+ 566:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****       /* Disable the Line, Vsync, Error and Overrun interrupts */
+ 567:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****       __HAL_DCMI_DISABLE_IT(hdcmi, DCMI_IT_LINE | DCMI_IT_VSYNC | DCMI_IT_ERR | DCMI_IT_OVR);
+ 568:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     }
+ 569:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     
+ 570:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     /* Disable the Frame interrupt */
+ 571:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     __HAL_DCMI_DISABLE_IT(hdcmi, DCMI_IT_FRAME);
+ 572:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     
+ 573:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     /* Clear the End of Frame flag */
+ 574:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     __HAL_DCMI_CLEAR_FLAG(hdcmi, DCMI_FLAG_FRAMERI);
+ 575:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     
+ 576:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     /* Frame Callback */
+ 577:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     HAL_DCMI_FrameEventCallback(hdcmi);
+ 578:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   }
+ 579:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** }
+ 580:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 581:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** /**
+ 582:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @brief  Error DCMI callback.
+ 583:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @param  hdcmi pointer to a DCMI_HandleTypeDef structure that contains
+ 584:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   *                the configuration information for DCMI.
+ 585:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @retval None
+ 586:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   */
+ 587:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** __weak void HAL_DCMI_ErrorCallback(DCMI_HandleTypeDef *hdcmi)
+ 588:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** {
+ 589:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Prevent unused argument(s) compilation warning */
+ 590:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   UNUSED(hdcmi);
+ 591:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****  
+ 592:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* NOTE : This function Should not be modified, when the callback is needed,
+ 593:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****             the HAL_DCMI_ErrorCallback could be implemented in the user file
+ 594:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****    */
+ 595:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** }
+ 596:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 597:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** /**
+ 598:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @brief  Line Event callback.
+ 599:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @param  hdcmi pointer to a DCMI_HandleTypeDef structure that contains
+ 600:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   *                the configuration information for DCMI.
+ 601:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @retval None
+ 602:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   */
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s 			page 12
+
+
+ 603:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** __weak void HAL_DCMI_LineEventCallback(DCMI_HandleTypeDef *hdcmi)
+ 604:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** {
+ 605:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* NOTE : This function Should not be modified, when the callback is needed,
+ 606:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****             the HAL_DCMI_LineEventCallback could be implemented in the user file
+ 607:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****    */
+ 608:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** }
+ 609:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 610:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** /**
+ 611:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @brief  VSYNC Event callback.
+ 612:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @param  hdcmi pointer to a DCMI_HandleTypeDef structure that contains
+ 613:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   *                the configuration information for DCMI.
+ 614:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @retval None
+ 615:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   */
+ 616:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** __weak void HAL_DCMI_VsyncEventCallback(DCMI_HandleTypeDef *hdcmi)
+ 617:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** {
+ 618:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Prevent unused argument(s) compilation warning */
+ 619:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   UNUSED(hdcmi);
+ 620:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****  
+ 621:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* NOTE : This function Should not be modified, when the callback is needed,
+ 622:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****             the HAL_DCMI_VsyncEventCallback could be implemented in the user file
+ 623:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****    */
+ 624:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** }
+ 625:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 626:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** /**
+ 627:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @brief  Frame Event callback.
+ 628:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @param  hdcmi pointer to a DCMI_HandleTypeDef structure that contains
+ 629:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   *                the configuration information for DCMI.
+ 630:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @retval None
+ 631:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   */
+ 632:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** __weak void HAL_DCMI_FrameEventCallback(DCMI_HandleTypeDef *hdcmi)
+ 633:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** {
+ 634:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Prevent unused argument(s) compilation warning */
+ 635:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   UNUSED(hdcmi);
+ 636:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****  
+ 637:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* NOTE : This function Should not be modified, when the callback is needed,
+ 638:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****             the HAL_DCMI_FrameEventCallback could be implemented in the user file
+ 639:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****    */
+ 640:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** }
+ 641:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 642:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** /**
+ 643:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @}
+ 644:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   */
+ 645:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 646:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** /** @defgroup DCMI_Exported_Functions_Group3 Peripheral Control functions
+ 647:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****  *  @brief    Peripheral Control functions 
+ 648:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****  *
+ 649:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** @verbatim   
+ 650:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****  ===============================================================================
+ 651:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****                     ##### Peripheral Control functions #####
+ 652:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****  ===============================================================================  
+ 653:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** [..]  This section provides functions allowing to:
+ 654:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****       (+) Configure the CROP feature.
+ 655:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****       (+) Enable/Disable the CROP feature.
+ 656:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****       (+) Set embedded synchronization delimiters unmasks.
+ 657:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 658:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** @endverbatim
+ 659:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @{
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s 			page 13
+
+
+ 660:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   */
+ 661:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 662:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** /**
+ 663:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @brief  Configure the DCMI CROP coordinate.
+ 664:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @param  hdcmi pointer to a DCMI_HandleTypeDef structure that contains
+ 665:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   *                the configuration information for DCMI.
+ 666:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @param  YSize DCMI Line number
+ 667:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @param  XSize DCMI Pixel per line
+ 668:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @param  X0    DCMI window X offset
+ 669:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @param  Y0    DCMI window Y offset
+ 670:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @retval HAL status
+ 671:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   */
+ 672:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** HAL_StatusTypeDef HAL_DCMI_ConfigCrop(DCMI_HandleTypeDef *hdcmi, uint32_t X0, uint32_t Y0, uint32_t
+ 673:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** {
+ 674:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Process Locked */
+ 675:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   __HAL_LOCK(hdcmi);
+ 676:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 677:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Lock the DCMI peripheral state */
+ 678:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   hdcmi->State = HAL_DCMI_STATE_BUSY;
+ 679:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 680:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Check the parameters */
+ 681:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   assert_param(IS_DCMI_WINDOW_COORDINATE(X0));
+ 682:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   assert_param(IS_DCMI_WINDOW_HEIGHT(Y0));
+ 683:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   assert_param(IS_DCMI_WINDOW_COORDINATE(XSize));
+ 684:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   assert_param(IS_DCMI_WINDOW_COORDINATE(YSize));
+ 685:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 	
+ 686:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Configure CROP */
+ 687:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   hdcmi->Instance->CWSIZER = (XSize | (YSize << DCMI_CWSIZE_VLINE_Pos));
+ 688:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   hdcmi->Instance->CWSTRTR = (X0 | (Y0 << DCMI_CWSTRT_VST_Pos));
+ 689:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 690:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Initialize the DCMI state*/
+ 691:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   hdcmi->State  = HAL_DCMI_STATE_READY;
+ 692:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 693:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Process Unlocked */
+ 694:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   __HAL_UNLOCK(hdcmi);
+ 695:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 696:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   return HAL_OK;
+ 697:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** }
+ 698:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 699:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** /**
+ 700:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @brief  Disable the Crop feature.
+ 701:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @param  hdcmi pointer to a DCMI_HandleTypeDef structure that contains
+ 702:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   *                the configuration information for DCMI.
+ 703:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @retval HAL status
+ 704:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   */
+ 705:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** HAL_StatusTypeDef HAL_DCMI_DisableCrop(DCMI_HandleTypeDef *hdcmi)
+ 706:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** {
+ 707:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Process Locked */
+ 708:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   __HAL_LOCK(hdcmi);
+ 709:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 710:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Lock the DCMI peripheral state */
+ 711:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   hdcmi->State = HAL_DCMI_STATE_BUSY;
+ 712:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 713:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Disable DCMI Crop feature */
+ 714:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   hdcmi->Instance->CR &= ~(uint32_t)DCMI_CR_CROP;  
+ 715:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 716:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Change the DCMI state*/
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s 			page 14
+
+
+ 717:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   hdcmi->State = HAL_DCMI_STATE_READY;   
+ 718:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 719:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Process Unlocked */
+ 720:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   __HAL_UNLOCK(hdcmi);
+ 721:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 722:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   return HAL_OK;  
+ 723:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** }
+ 724:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 725:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** /**
+ 726:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @brief  Enable the Crop feature.
+ 727:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @param  hdcmi pointer to a DCMI_HandleTypeDef structure that contains
+ 728:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   *                the configuration information for DCMI.
+ 729:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @retval HAL status
+ 730:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   */
+ 731:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** HAL_StatusTypeDef HAL_DCMI_EnableCrop(DCMI_HandleTypeDef *hdcmi)
+ 732:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** {
+ 733:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Process Locked */
+ 734:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   __HAL_LOCK(hdcmi);
+ 735:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 736:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Lock the DCMI peripheral state */
+ 737:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   hdcmi->State = HAL_DCMI_STATE_BUSY;
+ 738:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 739:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Enable DCMI Crop feature */
+ 740:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   hdcmi->Instance->CR |= (uint32_t)DCMI_CR_CROP;
+ 741:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 742:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Change the DCMI state*/
+ 743:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   hdcmi->State = HAL_DCMI_STATE_READY;
+ 744:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 745:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Process Unlocked */
+ 746:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   __HAL_UNLOCK(hdcmi);
+ 747:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 748:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   return HAL_OK;  
+ 749:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** }
+ 750:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 751:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** /**
+ 752:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @}
+ 753:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   */
+ 754:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 755:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** /** @defgroup DCMI_Exported_Functions_Group4 Peripheral State functions
+ 756:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****  *  @brief    Peripheral State functions 
+ 757:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****  *
+ 758:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** @verbatim   
+ 759:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****  ===============================================================================
+ 760:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****                ##### Peripheral State and Errors functions #####
+ 761:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****  ===============================================================================  
+ 762:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     [..]
+ 763:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     This subsection provides functions allowing to
+ 764:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****       (+) Check the DCMI state.
+ 765:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****       (+) Get the specific DCMI error flag.  
+ 766:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 767:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** @endverbatim
+ 768:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @{
+ 769:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   */ 
+ 770:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 771:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** /**
+ 772:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @brief  Return the DCMI state
+ 773:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @param  hdcmi pointer to a DCMI_HandleTypeDef structure that contains
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s 			page 15
+
+
+ 774:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   *                the configuration information for DCMI.
+ 775:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @retval HAL state
+ 776:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   */
+ 777:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** HAL_DCMI_StateTypeDef HAL_DCMI_GetState(DCMI_HandleTypeDef *hdcmi)  
+ 778:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** {
+ 779:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   return hdcmi->State;
+ 780:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** }
+ 781:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 782:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** /**
+ 783:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** * @brief  Return the DCMI error code
+ 784:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** * @param  hdcmi  pointer to a DCMI_HandleTypeDef structure that contains
+ 785:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   *               the configuration information for DCMI.
+ 786:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** * @retval DCMI Error Code
+ 787:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** */
+ 788:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** uint32_t HAL_DCMI_GetError(DCMI_HandleTypeDef *hdcmi)
+ 789:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** {
+ 790:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   return hdcmi->ErrorCode;
+ 791:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** }
+ 792:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 793:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** /**
+ 794:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @}
+ 795:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   */
+ 796:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** /* Private functions ---------------------------------------------------------*/
+ 797:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** /** @defgroup DCMI_Private_Functions DCMI Private Functions
+ 798:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @{
+ 799:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   */
+ 800:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /**
+ 801:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @brief  DMA conversion complete callback. 
+ 802:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @param  hdma pointer to a DMA_HandleTypeDef structure that contains
+ 803:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   *                the configuration information for the specified DMA module.
+ 804:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @retval None
+ 805:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   */
+ 806:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** static void DCMI_DMAXferCplt(DMA_HandleTypeDef *hdma)
+ 807:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** {
+  27              		.loc 1 807 0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 0
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31              	.LVL0:
+  32 0000 10B5     		push	{r4, lr}
+  33              	.LCFI0:
+  34              		.cfi_def_cfa_offset 8
+  35              		.cfi_offset 4, -8
+  36              		.cfi_offset 14, -4
+  37              	.LVL1:
+ 808:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   uint32_t tmp = 0;
+ 809:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 810:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   DCMI_HandleTypeDef* hdcmi = ( DCMI_HandleTypeDef* )((DMA_HandleTypeDef* )hdma)->Parent;
+  38              		.loc 1 810 0
+  39 0002 846B     		ldr	r4, [r0, #56]
+  40              	.LVL2:
+ 811:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 812:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   if(hdcmi->XferCount != 0)
+  41              		.loc 1 812 0
+  42 0004 A36B     		ldr	r3, [r4, #56]
+  43 0006 43B3     		cbz	r3, .L2
+ 813:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   {
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s 			page 16
+
+
+ 814:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     /* Update memory 0 address location */
+ 815:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     tmp = ((hdcmi->DMA_Handle->Instance->CR) & DMA_SxCR_CT);
+  44              		.loc 1 815 0
+  45 0008 A06C     		ldr	r0, [r4, #72]
+  46              	.LVL3:
+  47 000a 0268     		ldr	r2, [r0]
+  48 000c 1368     		ldr	r3, [r2]
+  49 000e 03F40023 		and	r3, r3, #524288
+  50              	.LVL4:
+ 816:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     if(((hdcmi->XferCount % 2) == 0) && (tmp != 0))
+  51              		.loc 1 816 0
+  52 0012 A16B     		ldr	r1, [r4, #56]
+  53 0014 11F0010F 		tst	r1, #1
+  54 0018 00D1     		bne	.L3
+  55              		.loc 1 816 0 is_stmt 0 discriminator 1
+  56 001a 43B9     		cbnz	r3, .L8
+  57              	.L3:
+ 817:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     {
+ 818:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****       tmp = hdcmi->DMA_Handle->Instance->M0AR;
+ 819:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****       HAL_DMAEx_ChangeMemory(hdcmi->DMA_Handle, (tmp + (8*hdcmi->XferSize)), MEMORY0);
+ 820:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****       hdcmi->XferCount--;
+ 821:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     }
+ 822:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     /* Update memory 1 address location */
+ 823:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     else if((hdcmi->DMA_Handle->Instance->CR & DMA_SxCR_CT) == 0)
+  58              		.loc 1 823 0 is_stmt 1
+  59 001c 1368     		ldr	r3, [r2]
+  60              	.LVL5:
+  61 001e 13F4002F 		tst	r3, #524288
+  62 0022 0FD0     		beq	.L9
+  63              	.L4:
+ 824:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     {
+ 825:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****       tmp = hdcmi->DMA_Handle->Instance->M1AR;
+ 826:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****       HAL_DMAEx_ChangeMemory(hdcmi->DMA_Handle, (tmp + (8*hdcmi->XferSize)), MEMORY1);
+ 827:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****       hdcmi->XferCount--;
+ 828:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     }
+ 829:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   }
+ 830:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Update memory 0 address location */
+ 831:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   else if((hdcmi->DMA_Handle->Instance->CR & DMA_SxCR_CT) != 0)
+ 832:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   {
+ 833:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     hdcmi->DMA_Handle->Instance->M0AR = hdcmi->pBuffPtr;
+ 834:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   }
+ 835:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Update memory 1 address location */
+ 836:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   else if((hdcmi->DMA_Handle->Instance->CR & DMA_SxCR_CT) == 0)
+ 837:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   {
+ 838:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     tmp = hdcmi->pBuffPtr;
+ 839:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     hdcmi->DMA_Handle->Instance->M1AR = (tmp + (4*hdcmi->XferSize));
+ 840:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     hdcmi->XferCount = hdcmi->XferTransferNumber;
+ 841:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   }
+ 842:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 843:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Check if the frame is transferred */
+ 844:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   if(hdcmi->XferCount == hdcmi->XferTransferNumber)
+  64              		.loc 1 844 0
+  65 0024 A26B     		ldr	r2, [r4, #56]
+  66 0026 236C     		ldr	r3, [r4, #64]
+  67 0028 9A42     		cmp	r2, r3
+  68 002a 2BD0     		beq	.L10
+  69              	.L1:
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s 			page 17
+
+
+  70 002c 10BD     		pop	{r4, pc}
+  71              	.LVL6:
+  72              	.L8:
+ 818:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****       HAL_DMAEx_ChangeMemory(hdcmi->DMA_Handle, (tmp + (8*hdcmi->XferSize)), MEMORY0);
+  73              		.loc 1 818 0
+  74 002e D368     		ldr	r3, [r2, #12]
+  75              	.LVL7:
+ 819:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****       hdcmi->XferCount--;
+  76              		.loc 1 819 0
+  77 0030 E16B     		ldr	r1, [r4, #60]
+  78 0032 0022     		movs	r2, #0
+  79 0034 03EBC101 		add	r1, r3, r1, lsl #3
+  80 0038 FFF7FEFF 		bl	HAL_DMAEx_ChangeMemory
+  81              	.LVL8:
+ 820:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     }
+  82              		.loc 1 820 0
+  83 003c A36B     		ldr	r3, [r4, #56]
+  84 003e 013B     		subs	r3, r3, #1
+  85 0040 A363     		str	r3, [r4, #56]
+  86 0042 EFE7     		b	.L4
+  87              	.L9:
+ 825:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****       HAL_DMAEx_ChangeMemory(hdcmi->DMA_Handle, (tmp + (8*hdcmi->XferSize)), MEMORY1);
+  88              		.loc 1 825 0
+  89 0044 1369     		ldr	r3, [r2, #16]
+  90              	.LVL9:
+ 826:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****       hdcmi->XferCount--;
+  91              		.loc 1 826 0
+  92 0046 E16B     		ldr	r1, [r4, #60]
+  93 0048 0122     		movs	r2, #1
+  94 004a 03EBC101 		add	r1, r3, r1, lsl #3
+  95 004e FFF7FEFF 		bl	HAL_DMAEx_ChangeMemory
+  96              	.LVL10:
+ 827:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     }
+  97              		.loc 1 827 0
+  98 0052 A36B     		ldr	r3, [r4, #56]
+  99 0054 013B     		subs	r3, r3, #1
+ 100 0056 A363     		str	r3, [r4, #56]
+ 101 0058 E4E7     		b	.L4
+ 102              	.LVL11:
+ 103              	.L2:
+ 831:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   {
+ 104              		.loc 1 831 0
+ 105 005a A36C     		ldr	r3, [r4, #72]
+ 106 005c 1B68     		ldr	r3, [r3]
+ 107 005e 1A68     		ldr	r2, [r3]
+ 108 0060 12F4002F 		tst	r2, #524288
+ 109 0064 02D0     		beq	.L5
+ 833:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   }
+ 110              		.loc 1 833 0
+ 111 0066 626C     		ldr	r2, [r4, #68]
+ 112 0068 DA60     		str	r2, [r3, #12]
+ 113 006a DBE7     		b	.L4
+ 114              	.L5:
+ 836:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   {
+ 115              		.loc 1 836 0
+ 116 006c 1A68     		ldr	r2, [r3]
+ 117 006e 12F4002F 		tst	r2, #524288
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s 			page 18
+
+
+ 118 0072 D7D1     		bne	.L4
+ 838:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     hdcmi->DMA_Handle->Instance->M1AR = (tmp + (4*hdcmi->XferSize));
+ 119              		.loc 1 838 0
+ 120 0074 626C     		ldr	r2, [r4, #68]
+ 121              	.LVL12:
+ 839:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     hdcmi->XferCount = hdcmi->XferTransferNumber;
+ 122              		.loc 1 839 0
+ 123 0076 E16B     		ldr	r1, [r4, #60]
+ 124 0078 02EB8102 		add	r2, r2, r1, lsl #2
+ 125              	.LVL13:
+ 126 007c 1A61     		str	r2, [r3, #16]
+ 127              	.LVL14:
+ 840:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   }
+ 128              		.loc 1 840 0
+ 129 007e 236C     		ldr	r3, [r4, #64]
+ 130 0080 A363     		str	r3, [r4, #56]
+ 131 0082 CFE7     		b	.L4
+ 132              	.LVL15:
+ 133              	.L10:
+ 845:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   {
+ 846:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     /* Enable the Frame interrupt */
+ 847:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     __HAL_DCMI_ENABLE_IT(hdcmi, DCMI_IT_FRAME);
+ 134              		.loc 1 847 0
+ 135 0084 2268     		ldr	r2, [r4]
+ 136 0086 D368     		ldr	r3, [r2, #12]
+ 137 0088 43F00103 		orr	r3, r3, #1
+ 138 008c D360     		str	r3, [r2, #12]
+ 848:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     
+ 849:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     /* When snapshot mode, set dcmi state to ready */
+ 850:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     if((hdcmi->Instance->CR & DCMI_CR_CM) == DCMI_MODE_SNAPSHOT)
+ 139              		.loc 1 850 0
+ 140 008e 2368     		ldr	r3, [r4]
+ 141 0090 1B68     		ldr	r3, [r3]
+ 142 0092 13F0020F 		tst	r3, #2
+ 143 0096 C9D0     		beq	.L1
+ 851:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     {  
+ 852:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****       hdcmi->State= HAL_DCMI_STATE_READY;
+ 144              		.loc 1 852 0
+ 145 0098 0123     		movs	r3, #1
+ 146 009a 84F83530 		strb	r3, [r4, #53]
+ 853:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     }
+ 854:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   }  
+ 855:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** }
+ 147              		.loc 1 855 0
+ 148 009e C5E7     		b	.L1
+ 149              		.cfi_endproc
+ 150              	.LFE154:
+ 152              		.section	.text.HAL_DCMI_MspInit,"ax",%progbits
+ 153              		.align	1
+ 154              		.weak	HAL_DCMI_MspInit
+ 155              		.syntax unified
+ 156              		.thumb
+ 157              		.thumb_func
+ 158              		.fpu fpv5-sp-d16
+ 160              	HAL_DCMI_MspInit:
+ 161              	.LFB138:
+ 240:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Prevent unused argument(s) compilation warning */
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s 			page 19
+
+
+ 162              		.loc 1 240 0
+ 163              		.cfi_startproc
+ 164              		@ args = 0, pretend = 0, frame = 0
+ 165              		@ frame_needed = 0, uses_anonymous_args = 0
+ 166              		@ link register save eliminated.
+ 167              	.LVL16:
+ 168 0000 7047     		bx	lr
+ 169              		.cfi_endproc
+ 170              	.LFE138:
+ 172              		.section	.text.HAL_DCMI_Init,"ax",%progbits
+ 173              		.align	1
+ 174              		.global	HAL_DCMI_Init
+ 175              		.syntax unified
+ 176              		.thumb
+ 177              		.thumb_func
+ 178              		.fpu fpv5-sp-d16
+ 180              	HAL_DCMI_Init:
+ 181              	.LFB136:
+ 144:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Check the DCMI peripheral state */
+ 182              		.loc 1 144 0
+ 183              		.cfi_startproc
+ 184              		@ args = 0, pretend = 0, frame = 0
+ 185              		@ frame_needed = 0, uses_anonymous_args = 0
+ 186              	.LVL17:
+ 146:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   {
+ 187              		.loc 1 146 0
+ 188 0000 0028     		cmp	r0, #0
+ 189 0002 44D0     		beq	.L16
+ 144:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Check the DCMI peripheral state */
+ 190              		.loc 1 144 0
+ 191 0004 10B5     		push	{r4, lr}
+ 192              	.LCFI1:
+ 193              		.cfi_def_cfa_offset 8
+ 194              		.cfi_offset 4, -8
+ 195              		.cfi_offset 14, -4
+ 196 0006 0446     		mov	r4, r0
+ 166:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   {
+ 197              		.loc 1 166 0
+ 198 0008 90F83530 		ldrb	r3, [r0, #53]	@ zero_extendqisi2
+ 199 000c 002B     		cmp	r3, #0
+ 200 000e 2ED0     		beq	.L21
+ 201              	.LVL18:
+ 202              	.L14:
+ 173:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****                           /* Configures the HS, VS, DE and PC polarity */
+ 203              		.loc 1 173 0
+ 204 0010 0223     		movs	r3, #2
+ 205 0012 84F83530 		strb	r3, [r4, #53]
+ 175:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****                            DCMI_CR_EDM_1  | DCMI_CR_FCRC_0 | DCMI_CR_FCRC_1 | DCMI_CR_JPEG  |\
+ 206              		.loc 1 175 0
+ 207 0016 2268     		ldr	r2, [r4]
+ 208 0018 1168     		ldr	r1, [r2]
+ 209 001a 1E4B     		ldr	r3, .L23
+ 210 001c 0B40     		ands	r3, r3, r1
+ 211 001e 1360     		str	r3, [r2]
+ 180:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****                                      hdcmi->Init.VSPolarity  | hdcmi->Init.HSPolarity  |\
+ 212              		.loc 1 180 0
+ 213 0020 2268     		ldr	r2, [r4]
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s 			page 20
+
+
+ 214 0022 1168     		ldr	r1, [r2]
+ 215 0024 6368     		ldr	r3, [r4, #4]
+ 216 0026 6069     		ldr	r0, [r4, #20]
+ 217 0028 0343     		orrs	r3, r3, r0
+ 181:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****                                      hdcmi->Init.PCKPolarity | hdcmi->Init.ExtendedDataMode |\
+ 218              		.loc 1 181 0
+ 219 002a E068     		ldr	r0, [r4, #12]
+ 180:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****                                      hdcmi->Init.VSPolarity  | hdcmi->Init.HSPolarity  |\
+ 220              		.loc 1 180 0
+ 221 002c 0343     		orrs	r3, r3, r0
+ 181:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****                                      hdcmi->Init.PCKPolarity | hdcmi->Init.ExtendedDataMode |\
+ 222              		.loc 1 181 0
+ 223 002e 2069     		ldr	r0, [r4, #16]
+ 224 0030 0343     		orrs	r3, r3, r0
+ 182:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****                                      hdcmi->Init.JPEGMode | hdcmi->Init.ByteSelectMode |\
+ 225              		.loc 1 182 0
+ 226 0032 A068     		ldr	r0, [r4, #8]
+ 181:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****                                      hdcmi->Init.PCKPolarity | hdcmi->Init.ExtendedDataMode |\
+ 227              		.loc 1 181 0
+ 228 0034 0343     		orrs	r3, r3, r0
+ 182:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****                                      hdcmi->Init.JPEGMode | hdcmi->Init.ByteSelectMode |\
+ 229              		.loc 1 182 0
+ 230 0036 A069     		ldr	r0, [r4, #24]
+ 231 0038 0343     		orrs	r3, r3, r0
+ 183:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****                                      hdcmi->Init.ByteSelectStart | hdcmi->Init.LineSelectMode |\
+ 232              		.loc 1 183 0
+ 233 003a 206A     		ldr	r0, [r4, #32]
+ 182:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****                                      hdcmi->Init.JPEGMode | hdcmi->Init.ByteSelectMode |\
+ 234              		.loc 1 182 0
+ 235 003c 0343     		orrs	r3, r3, r0
+ 183:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****                                      hdcmi->Init.ByteSelectStart | hdcmi->Init.LineSelectMode |\
+ 236              		.loc 1 183 0
+ 237 003e 606A     		ldr	r0, [r4, #36]
+ 238 0040 0343     		orrs	r3, r3, r0
+ 184:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****                                      hdcmi->Init.LineSelectStart);
+ 239              		.loc 1 184 0
+ 240 0042 A06A     		ldr	r0, [r4, #40]
+ 183:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****                                      hdcmi->Init.ByteSelectStart | hdcmi->Init.LineSelectMode |\
+ 241              		.loc 1 183 0
+ 242 0044 0343     		orrs	r3, r3, r0
+ 184:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****                                      hdcmi->Init.LineSelectStart);
+ 243              		.loc 1 184 0
+ 244 0046 E06A     		ldr	r0, [r4, #44]
+ 245 0048 0343     		orrs	r3, r3, r0
+ 185:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****                                      
+ 246              		.loc 1 185 0
+ 247 004a 206B     		ldr	r0, [r4, #48]
+ 184:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****                                      hdcmi->Init.LineSelectStart);
+ 248              		.loc 1 184 0
+ 249 004c 0343     		orrs	r3, r3, r0
+ 180:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****                                      hdcmi->Init.VSPolarity  | hdcmi->Init.HSPolarity  |\
+ 250              		.loc 1 180 0
+ 251 004e 0B43     		orrs	r3, r3, r1
+ 252 0050 1360     		str	r3, [r2]
+ 187:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   {
+ 253              		.loc 1 187 0
+ 254 0052 6368     		ldr	r3, [r4, #4]
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s 			page 21
+
+
+ 255 0054 102B     		cmp	r3, #16
+ 256 0056 0DD0     		beq	.L22
+ 257              	.L15:
+ 197:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 258              		.loc 1 197 0
+ 259 0058 2268     		ldr	r2, [r4]
+ 260 005a D368     		ldr	r3, [r2, #12]
+ 261 005c 43F01E03 		orr	r3, r3, #30
+ 262 0060 D360     		str	r3, [r2, #12]
+ 200:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   
+ 263              		.loc 1 200 0
+ 264 0062 0020     		movs	r0, #0
+ 265 0064 E064     		str	r0, [r4, #76]
+ 203:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 266              		.loc 1 203 0
+ 267 0066 0123     		movs	r3, #1
+ 268 0068 84F83530 		strb	r3, [r4, #53]
+ 205:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** }
+ 269              		.loc 1 205 0
+ 270 006c 10BD     		pop	{r4, pc}
+ 271              	.LVL19:
+ 272              	.L21:
+ 169:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   } 
+ 273              		.loc 1 169 0
+ 274 006e FFF7FEFF 		bl	HAL_DCMI_MspInit
+ 275              	.LVL20:
+ 276 0072 CDE7     		b	.L14
+ 277              	.L22:
+ 189:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****                              ((uint32_t)hdcmi->Init.SyncroCode.LineStartCode << DCMI_ESCR_LSC_Pos)|
+ 278              		.loc 1 189 0
+ 279 0074 2268     		ldr	r2, [r4]
+ 280 0076 237F     		ldrb	r3, [r4, #28]	@ zero_extendqisi2
+ 190:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****                              ((uint32_t)hdcmi->Init.SyncroCode.LineEndCode << DCMI_ESCR_LEC_Pos) |\
+ 281              		.loc 1 190 0
+ 282 0078 617F     		ldrb	r1, [r4, #29]	@ zero_extendqisi2
+ 189:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****                              ((uint32_t)hdcmi->Init.SyncroCode.LineStartCode << DCMI_ESCR_LSC_Pos)|
+ 283              		.loc 1 189 0
+ 284 007a 43EA0123 		orr	r3, r3, r1, lsl #8
+ 191:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****                              ((uint32_t)hdcmi->Init.SyncroCode.FrameEndCode << DCMI_ESCR_FEC_Pos));
+ 285              		.loc 1 191 0
+ 286 007e A17F     		ldrb	r1, [r4, #30]	@ zero_extendqisi2
+ 190:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****                              ((uint32_t)hdcmi->Init.SyncroCode.LineEndCode << DCMI_ESCR_LEC_Pos) |\
+ 287              		.loc 1 190 0
+ 288 0080 43EA0143 		orr	r3, r3, r1, lsl #16
+ 192:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 289              		.loc 1 192 0
+ 290 0084 E17F     		ldrb	r1, [r4, #31]	@ zero_extendqisi2
+ 191:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****                              ((uint32_t)hdcmi->Init.SyncroCode.FrameEndCode << DCMI_ESCR_FEC_Pos));
+ 291              		.loc 1 191 0
+ 292 0086 43EA0163 		orr	r3, r3, r1, lsl #24
+ 189:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****                              ((uint32_t)hdcmi->Init.SyncroCode.LineStartCode << DCMI_ESCR_LSC_Pos)|
+ 293              		.loc 1 189 0
+ 294 008a 9361     		str	r3, [r2, #24]
+ 295 008c E4E7     		b	.L15
+ 296              	.LVL21:
+ 297              	.L16:
+ 298              	.LCFI2:
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s 			page 22
+
+
+ 299              		.cfi_def_cfa_offset 0
+ 300              		.cfi_restore 4
+ 301              		.cfi_restore 14
+ 148:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   }
+ 302              		.loc 1 148 0
+ 303 008e 0120     		movs	r0, #1
+ 304              	.LVL22:
+ 305 0090 7047     		bx	lr
+ 306              	.L24:
+ 307 0092 00BF     		.align	2
+ 308              	.L23:
+ 309 0094 07F0E0FF 		.word	-2035705
+ 310              		.cfi_endproc
+ 311              	.LFE136:
+ 313              		.section	.text.HAL_DCMI_MspDeInit,"ax",%progbits
+ 314              		.align	1
+ 315              		.weak	HAL_DCMI_MspDeInit
+ 316              		.syntax unified
+ 317              		.thumb
+ 318              		.thumb_func
+ 319              		.fpu fpv5-sp-d16
+ 321              	HAL_DCMI_MspDeInit:
+ 322              	.LFB139:
+ 256:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Prevent unused argument(s) compilation warning */
+ 323              		.loc 1 256 0
+ 324              		.cfi_startproc
+ 325              		@ args = 0, pretend = 0, frame = 0
+ 326              		@ frame_needed = 0, uses_anonymous_args = 0
+ 327              		@ link register save eliminated.
+ 328              	.LVL23:
+ 329 0000 7047     		bx	lr
+ 330              		.cfi_endproc
+ 331              	.LFE139:
+ 333              		.section	.text.HAL_DCMI_DeInit,"ax",%progbits
+ 334              		.align	1
+ 335              		.global	HAL_DCMI_DeInit
+ 336              		.syntax unified
+ 337              		.thumb
+ 338              		.thumb_func
+ 339              		.fpu fpv5-sp-d16
+ 341              	HAL_DCMI_DeInit:
+ 342              	.LFB137:
+ 217:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* DeInit the low level hardware */
+ 343              		.loc 1 217 0
+ 344              		.cfi_startproc
+ 345              		@ args = 0, pretend = 0, frame = 0
+ 346              		@ frame_needed = 0, uses_anonymous_args = 0
+ 347              	.LVL24:
+ 217:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* DeInit the low level hardware */
+ 348              		.loc 1 217 0
+ 349 0000 10B5     		push	{r4, lr}
+ 350              	.LCFI3:
+ 351              		.cfi_def_cfa_offset 8
+ 352              		.cfi_offset 4, -8
+ 353              		.cfi_offset 14, -4
+ 354 0002 0446     		mov	r4, r0
+ 219:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s 			page 23
+
+
+ 355              		.loc 1 219 0
+ 356 0004 FFF7FEFF 		bl	HAL_DCMI_MspDeInit
+ 357              	.LVL25:
+ 222:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 358              		.loc 1 222 0
+ 359 0008 0020     		movs	r0, #0
+ 360 000a E064     		str	r0, [r4, #76]
+ 225:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 361              		.loc 1 225 0
+ 362 000c 84F83500 		strb	r0, [r4, #53]
+ 228:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 363              		.loc 1 228 0
+ 364 0010 84F83400 		strb	r0, [r4, #52]
+ 231:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 365              		.loc 1 231 0
+ 366 0014 10BD     		pop	{r4, pc}
+ 367              		.cfi_endproc
+ 368              	.LFE137:
+ 370              		.section	.text.HAL_DCMI_Start_DMA,"ax",%progbits
+ 371              		.align	1
+ 372              		.global	HAL_DCMI_Start_DMA
+ 373              		.syntax unified
+ 374              		.thumb
+ 375              		.thumb_func
+ 376              		.fpu fpv5-sp-d16
+ 378              	HAL_DCMI_Start_DMA:
+ 379              	.LFB140:
+ 295:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Initialize the second memory address */
+ 380              		.loc 1 295 0
+ 381              		.cfi_startproc
+ 382              		@ args = 0, pretend = 0, frame = 0
+ 383              		@ frame_needed = 0, uses_anonymous_args = 0
+ 384              	.LVL26:
+ 385 0000 30B5     		push	{r4, r5, lr}
+ 386              	.LCFI4:
+ 387              		.cfi_def_cfa_offset 12
+ 388              		.cfi_offset 4, -12
+ 389              		.cfi_offset 5, -8
+ 390              		.cfi_offset 14, -4
+ 391 0002 83B0     		sub	sp, sp, #12
+ 392              	.LCFI5:
+ 393              		.cfi_def_cfa_offset 24
+ 394              	.LVL27:
+ 303:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   
+ 395              		.loc 1 303 0
+ 396 0004 90F83440 		ldrb	r4, [r0, #52]	@ zero_extendqisi2
+ 397 0008 012C     		cmp	r4, #1
+ 398 000a 53D0     		beq	.L34
+ 399 000c 0446     		mov	r4, r0
+ 303:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   
+ 400              		.loc 1 303 0 is_stmt 0 discriminator 2
+ 401 000e 0120     		movs	r0, #1
+ 402              	.LVL28:
+ 403 0010 84F83400 		strb	r0, [r4, #52]
+ 306:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 404              		.loc 1 306 0 is_stmt 1 discriminator 2
+ 405 0014 0220     		movs	r0, #2
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s 			page 24
+
+
+ 406 0016 84F83500 		strb	r0, [r4, #53]
+ 309:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   
+ 407              		.loc 1 309 0 discriminator 2
+ 408 001a 2568     		ldr	r5, [r4]
+ 409 001c 2868     		ldr	r0, [r5]
+ 410 001e 40F48040 		orr	r0, r0, #16384
+ 411 0022 2860     		str	r0, [r5]
+ 312:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   hdcmi->Instance->CR |=  (uint32_t)(DCMI_Mode);
+ 412              		.loc 1 312 0 discriminator 2
+ 413 0024 2568     		ldr	r5, [r4]
+ 414 0026 2868     		ldr	r0, [r5]
+ 415 0028 20F00200 		bic	r0, r0, #2
+ 416 002c 2860     		str	r0, [r5]
+ 313:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 417              		.loc 1 313 0 discriminator 2
+ 418 002e 2568     		ldr	r5, [r4]
+ 419 0030 2868     		ldr	r0, [r5]
+ 420 0032 0143     		orrs	r1, r1, r0
+ 421              	.LVL29:
+ 422 0034 2960     		str	r1, [r5]
+ 316:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 423              		.loc 1 316 0 discriminator 2
+ 424 0036 A16C     		ldr	r1, [r4, #72]
+ 425 0038 1F48     		ldr	r0, .L37
+ 426 003a C863     		str	r0, [r1, #60]
+ 319:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 427              		.loc 1 319 0 discriminator 2
+ 428 003c A16C     		ldr	r1, [r4, #72]
+ 429 003e 1F48     		ldr	r0, .L37+4
+ 430 0040 C864     		str	r0, [r1, #76]
+ 322:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 431              		.loc 1 322 0 discriminator 2
+ 432 0042 A06C     		ldr	r0, [r4, #72]
+ 433 0044 0021     		movs	r1, #0
+ 434 0046 0165     		str	r1, [r0, #80]
+ 325:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   hdcmi->XferTransferNumber = 0;
+ 435              		.loc 1 325 0 discriminator 2
+ 436 0048 A163     		str	r1, [r4, #56]
+ 326:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   
+ 437              		.loc 1 326 0 discriminator 2
+ 438 004a 2164     		str	r1, [r4, #64]
+ 328:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   {
+ 439              		.loc 1 328 0 discriminator 2
+ 440 004c B3F5803F 		cmp	r3, #65536
+ 441 0050 07D3     		bcc	.L36
+ 336:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 442              		.loc 1 336 0
+ 443 0052 A16C     		ldr	r1, [r4, #72]
+ 444 0054 1848     		ldr	r0, .L37
+ 445 0056 4864     		str	r0, [r1, #68]
+ 339:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     hdcmi->XferSize = Length;
+ 446              		.loc 1 339 0
+ 447 0058 0121     		movs	r1, #1
+ 448 005a A163     		str	r1, [r4, #56]
+ 340:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     hdcmi->pBuffPtr = pData;
+ 449              		.loc 1 340 0
+ 450 005c E363     		str	r3, [r4, #60]
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s 			page 25
+
+
+ 341:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****       
+ 451              		.loc 1 341 0
+ 452 005e 6264     		str	r2, [r4, #68]
+ 344:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     {
+ 453              		.loc 1 344 0
+ 454 0060 0BE0     		b	.L32
+ 455              	.L36:
+ 331:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   }
+ 456              		.loc 1 331 0
+ 457 0062 2168     		ldr	r1, [r4]
+ 458 0064 2831     		adds	r1, r1, #40
+ 459 0066 A06C     		ldr	r0, [r4, #72]
+ 460 0068 FFF7FEFF 		bl	HAL_DMA_Start_IT
+ 461              	.LVL30:
+ 462 006c 18E0     		b	.L31
+ 463              	.LVL31:
+ 464              	.L33:
+ 346:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****       hdcmi->XferCount = hdcmi->XferCount*2;
+ 465              		.loc 1 346 0
+ 466 006e E36B     		ldr	r3, [r4, #60]
+ 467 0070 5B08     		lsrs	r3, r3, #1
+ 468 0072 E363     		str	r3, [r4, #60]
+ 347:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     }
+ 469              		.loc 1 347 0
+ 470 0074 A36B     		ldr	r3, [r4, #56]
+ 471 0076 5B00     		lsls	r3, r3, #1
+ 472 0078 A363     		str	r3, [r4, #56]
+ 473              	.L32:
+ 344:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     {
+ 474              		.loc 1 344 0
+ 475 007a E36B     		ldr	r3, [r4, #60]
+ 476 007c B3F5803F 		cmp	r3, #65536
+ 477 0080 F5D2     		bcs	.L33
+ 351:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     hdcmi->XferTransferNumber = hdcmi->XferCount;
+ 478              		.loc 1 351 0
+ 479 0082 A36B     		ldr	r3, [r4, #56]
+ 480 0084 023B     		subs	r3, r3, #2
+ 481 0086 A363     		str	r3, [r4, #56]
+ 352:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 482              		.loc 1 352 0
+ 483 0088 A36B     		ldr	r3, [r4, #56]
+ 484 008a 2364     		str	r3, [r4, #64]
+ 355:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 485              		.loc 1 355 0
+ 486 008c E36B     		ldr	r3, [r4, #60]
+ 487              	.LVL32:
+ 358:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   }
+ 488              		.loc 1 358 0
+ 489 008e 2168     		ldr	r1, [r4]
+ 490 0090 E06B     		ldr	r0, [r4, #60]
+ 491 0092 0090     		str	r0, [sp]
+ 492 0094 02EB8303 		add	r3, r2, r3, lsl #2
+ 493              	.LVL33:
+ 494 0098 2831     		adds	r1, r1, #40
+ 495 009a A06C     		ldr	r0, [r4, #72]
+ 496 009c FFF7FEFF 		bl	HAL_DMAEx_MultiBufferStart_IT
+ 497              	.LVL34:
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s 			page 26
+
+
+ 498              	.L31:
+ 362:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 499              		.loc 1 362 0
+ 500 00a0 2268     		ldr	r2, [r4]
+ 501 00a2 1368     		ldr	r3, [r2]
+ 502 00a4 43F00103 		orr	r3, r3, #1
+ 503 00a8 1360     		str	r3, [r2]
+ 365:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 504              		.loc 1 365 0
+ 505 00aa 0020     		movs	r0, #0
+ 506 00ac 84F83400 		strb	r0, [r4, #52]
+ 507              	.LVL35:
+ 508              	.L29:
+ 369:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 509              		.loc 1 369 0
+ 510 00b0 03B0     		add	sp, sp, #12
+ 511              	.LCFI6:
+ 512              		.cfi_remember_state
+ 513              		.cfi_def_cfa_offset 12
+ 514              		@ sp needed
+ 515 00b2 30BD     		pop	{r4, r5, pc}
+ 516              	.LVL36:
+ 517              	.L34:
+ 518              	.LCFI7:
+ 519              		.cfi_restore_state
+ 303:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   
+ 520              		.loc 1 303 0
+ 521 00b4 0220     		movs	r0, #2
+ 522              	.LVL37:
+ 523 00b6 FBE7     		b	.L29
+ 524              	.L38:
+ 525              		.align	2
+ 526              	.L37:
+ 527 00b8 00000000 		.word	DCMI_DMAXferCplt
+ 528 00bc 00000000 		.word	DCMI_DMAError
+ 529              		.cfi_endproc
+ 530              	.LFE140:
+ 532              		.section	.text.HAL_DCMI_Stop,"ax",%progbits
+ 533              		.align	1
+ 534              		.global	HAL_DCMI_Stop
+ 535              		.syntax unified
+ 536              		.thumb
+ 537              		.thumb_func
+ 538              		.fpu fpv5-sp-d16
+ 540              	HAL_DCMI_Stop:
+ 541              	.LFB141:
+ 378:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   register uint32_t count = HAL_TIMEOUT_DCMI_STOP * (SystemCoreClock /8/1000);
+ 542              		.loc 1 378 0
+ 543              		.cfi_startproc
+ 544              		@ args = 0, pretend = 0, frame = 0
+ 545              		@ frame_needed = 0, uses_anonymous_args = 0
+ 546              	.LVL38:
+ 547 0000 38B5     		push	{r3, r4, r5, lr}
+ 548              	.LCFI8:
+ 549              		.cfi_def_cfa_offset 16
+ 550              		.cfi_offset 3, -16
+ 551              		.cfi_offset 4, -12
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s 			page 27
+
+
+ 552              		.cfi_offset 5, -8
+ 553              		.cfi_offset 14, -4
+ 379:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   HAL_StatusTypeDef status = HAL_OK;
+ 554              		.loc 1 379 0
+ 555 0002 1E4B     		ldr	r3, .L47
+ 556 0004 1B68     		ldr	r3, [r3]
+ 557 0006 1E4A     		ldr	r2, .L47+4
+ 558 0008 A2FB0323 		umull	r2, r3, r2, r3
+ 559 000c 5A0A     		lsrs	r2, r3, #9
+ 560 000e 4FF47A73 		mov	r3, #1000
+ 561 0012 03FB02F3 		mul	r3, r3, r2
+ 562              	.LVL39:
+ 383:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   
+ 563              		.loc 1 383 0
+ 564 0016 90F83420 		ldrb	r2, [r0, #52]	@ zero_extendqisi2
+ 565 001a 012A     		cmp	r2, #1
+ 566 001c 2CD0     		beq	.L44
+ 383:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   
+ 567              		.loc 1 383 0 is_stmt 0 discriminator 2
+ 568 001e 0122     		movs	r2, #1
+ 569 0020 80F83420 		strb	r2, [r0, #52]
+ 386:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 570              		.loc 1 386 0 is_stmt 1 discriminator 2
+ 571 0024 0222     		movs	r2, #2
+ 572 0026 80F83520 		strb	r2, [r0, #53]
+ 389:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 573              		.loc 1 389 0 discriminator 2
+ 574 002a 0168     		ldr	r1, [r0]
+ 575 002c 0A68     		ldr	r2, [r1]
+ 576 002e 22F00102 		bic	r2, r2, #1
+ 577 0032 0A60     		str	r2, [r1]
+ 578              	.L43:
+ 394:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     {
+ 579              		.loc 1 394 0
+ 580 0034 5A1E     		subs	r2, r3, #1
+ 581              	.LVL40:
+ 582 0036 3BB1     		cbz	r3, .L46
+ 403:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 583              		.loc 1 403 0
+ 584 0038 0368     		ldr	r3, [r0]
+ 585 003a 1968     		ldr	r1, [r3]
+ 394:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     {
+ 586              		.loc 1 394 0
+ 587 003c 1346     		mov	r3, r2
+ 403:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 588              		.loc 1 403 0
+ 589 003e 11F0010F 		tst	r1, #1
+ 590 0042 F7D1     		bne	.L43
+ 380:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 591              		.loc 1 380 0
+ 592 0044 0025     		movs	r5, #0
+ 593 0046 04E0     		b	.L42
+ 594              	.L46:
+ 397:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****       
+ 595              		.loc 1 397 0
+ 596 0048 C36C     		ldr	r3, [r0, #76]
+ 597 004a 43F02003 		orr	r3, r3, #32
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s 			page 28
+
+
+ 598 004e C364     		str	r3, [r0, #76]
+ 599              	.LVL41:
+ 399:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****       break;
+ 600              		.loc 1 399 0
+ 601 0050 0325     		movs	r5, #3
+ 602              	.LVL42:
+ 603              	.L42:
+ 604 0052 0446     		mov	r4, r0
+ 605              	.LVL43:
+ 406:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 606              		.loc 1 406 0
+ 607 0054 0268     		ldr	r2, [r0]
+ 608              	.LVL44:
+ 609 0056 1368     		ldr	r3, [r2]
+ 610 0058 23F48043 		bic	r3, r3, #16384
+ 611 005c 1360     		str	r3, [r2]
+ 409:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 612              		.loc 1 409 0
+ 613 005e 806C     		ldr	r0, [r0, #72]
+ 614              	.LVL45:
+ 615 0060 FFF7FEFF 		bl	HAL_DMA_Abort
+ 616              	.LVL46:
+ 412:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 617              		.loc 1 412 0
+ 618 0064 E36C     		ldr	r3, [r4, #76]
+ 619 0066 E364     		str	r3, [r4, #76]
+ 415:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 620              		.loc 1 415 0
+ 621 0068 0123     		movs	r3, #1
+ 622 006a 84F83530 		strb	r3, [r4, #53]
+ 418:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 623              		.loc 1 418 0
+ 624 006e 0023     		movs	r3, #0
+ 625 0070 84F83430 		strb	r3, [r4, #52]
+ 626              	.LVL47:
+ 627              	.L40:
+ 422:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 628              		.loc 1 422 0
+ 629 0074 2846     		mov	r0, r5
+ 630 0076 38BD     		pop	{r3, r4, r5, pc}
+ 631              	.LVL48:
+ 632              	.L44:
+ 383:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   
+ 633              		.loc 1 383 0
+ 634 0078 0225     		movs	r5, #2
+ 635 007a FBE7     		b	.L40
+ 636              	.L48:
+ 637              		.align	2
+ 638              	.L47:
+ 639 007c 00000000 		.word	SystemCoreClock
+ 640 0080 D34D6210 		.word	274877907
+ 641              		.cfi_endproc
+ 642              	.LFE141:
+ 644              		.section	.text.HAL_DCMI_Suspend,"ax",%progbits
+ 645              		.align	1
+ 646              		.global	HAL_DCMI_Suspend
+ 647              		.syntax unified
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s 			page 29
+
+
+ 648              		.thumb
+ 649              		.thumb_func
+ 650              		.fpu fpv5-sp-d16
+ 652              	HAL_DCMI_Suspend:
+ 653              	.LFB142:
+ 431:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   register uint32_t count = HAL_TIMEOUT_DCMI_STOP * (SystemCoreClock /8/1000);
+ 654              		.loc 1 431 0
+ 655              		.cfi_startproc
+ 656              		@ args = 0, pretend = 0, frame = 0
+ 657              		@ frame_needed = 0, uses_anonymous_args = 0
+ 658              		@ link register save eliminated.
+ 659              	.LVL49:
+ 660 0000 0146     		mov	r1, r0
+ 432:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   HAL_StatusTypeDef status = HAL_OK;
+ 661              		.loc 1 432 0
+ 662 0002 1C4B     		ldr	r3, .L58
+ 663 0004 1B68     		ldr	r3, [r3]
+ 664 0006 1C4A     		ldr	r2, .L58+4
+ 665 0008 A2FB0323 		umull	r2, r3, r2, r3
+ 666 000c 5A0A     		lsrs	r2, r3, #9
+ 667 000e 4FF47A73 		mov	r3, #1000
+ 668 0012 03FB02F3 		mul	r3, r3, r2
+ 669              	.LVL50:
+ 436:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 670              		.loc 1 436 0
+ 671 0016 90F83420 		ldrb	r2, [r0, #52]	@ zero_extendqisi2
+ 672 001a 012A     		cmp	r2, #1
+ 673 001c 27D0     		beq	.L54
+ 436:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 674              		.loc 1 436 0 is_stmt 0 discriminator 2
+ 675 001e 0122     		movs	r2, #1
+ 676 0020 80F83420 		strb	r2, [r0, #52]
+ 438:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   {
+ 677              		.loc 1 438 0 is_stmt 1 discriminator 2
+ 678 0024 90F83520 		ldrb	r2, [r0, #53]	@ zero_extendqisi2
+ 679 0028 D2B2     		uxtb	r2, r2
+ 680 002a 022A     		cmp	r2, #2
+ 681 002c 04D0     		beq	.L56
+ 433:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 682              		.loc 1 433 0
+ 683 002e 0020     		movs	r0, #0
+ 684              	.LVL51:
+ 685              	.L51:
+ 464:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   
+ 686              		.loc 1 464 0
+ 687 0030 0023     		movs	r3, #0
+ 688 0032 81F83430 		strb	r3, [r1, #52]
+ 467:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** }
+ 689              		.loc 1 467 0
+ 690 0036 7047     		bx	lr
+ 691              	.LVL52:
+ 692              	.L56:
+ 441:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 693              		.loc 1 441 0
+ 694 0038 0522     		movs	r2, #5
+ 695 003a 80F83520 		strb	r2, [r0, #53]
+ 444:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s 			page 30
+
+
+ 696              		.loc 1 444 0
+ 697 003e 0068     		ldr	r0, [r0]
+ 698              	.LVL53:
+ 699 0040 0268     		ldr	r2, [r0]
+ 700 0042 22F00102 		bic	r2, r2, #1
+ 701 0046 0260     		str	r2, [r0]
+ 702              	.L53:
+ 449:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****       {        
+ 703              		.loc 1 449 0
+ 704 0048 5A1E     		subs	r2, r3, #1
+ 705              	.LVL54:
+ 706 004a 3BB1     		cbz	r3, .L57
+ 461:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   }    
+ 707              		.loc 1 461 0
+ 708 004c 0B68     		ldr	r3, [r1]
+ 709 004e 1868     		ldr	r0, [r3]
+ 449:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****       {        
+ 710              		.loc 1 449 0
+ 711 0050 1346     		mov	r3, r2
+ 461:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   }    
+ 712              		.loc 1 461 0
+ 713 0052 10F0010F 		tst	r0, #1
+ 714 0056 F7D1     		bne	.L53
+ 433:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 715              		.loc 1 433 0
+ 716 0058 0020     		movs	r0, #0
+ 717 005a E9E7     		b	.L51
+ 718              	.L57:
+ 452:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****         
+ 719              		.loc 1 452 0
+ 720 005c CB6C     		ldr	r3, [r1, #76]
+ 721 005e 43F02003 		orr	r3, r3, #32
+ 722 0062 CB64     		str	r3, [r1, #76]
+ 455:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****         
+ 723              		.loc 1 455 0
+ 724 0064 0123     		movs	r3, #1
+ 725 0066 81F83530 		strb	r3, [r1, #53]
+ 726              	.LVL55:
+ 457:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****         break;
+ 727              		.loc 1 457 0
+ 728 006a 0320     		movs	r0, #3
+ 458:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****       }
+ 729              		.loc 1 458 0
+ 730 006c E0E7     		b	.L51
+ 731              	.LVL56:
+ 732              	.L54:
+ 436:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 733              		.loc 1 436 0
+ 734 006e 0220     		movs	r0, #2
+ 735              	.LVL57:
+ 468:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 736              		.loc 1 468 0
+ 737 0070 7047     		bx	lr
+ 738              	.L59:
+ 739 0072 00BF     		.align	2
+ 740              	.L58:
+ 741 0074 00000000 		.word	SystemCoreClock
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s 			page 31
+
+
+ 742 0078 D34D6210 		.word	274877907
+ 743              		.cfi_endproc
+ 744              	.LFE142:
+ 746              		.section	.text.HAL_DCMI_Resume,"ax",%progbits
+ 747              		.align	1
+ 748              		.global	HAL_DCMI_Resume
+ 749              		.syntax unified
+ 750              		.thumb
+ 751              		.thumb_func
+ 752              		.fpu fpv5-sp-d16
+ 754              	HAL_DCMI_Resume:
+ 755              	.LFB143:
+ 477:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Process locked */
+ 756              		.loc 1 477 0
+ 757              		.cfi_startproc
+ 758              		@ args = 0, pretend = 0, frame = 0
+ 759              		@ frame_needed = 0, uses_anonymous_args = 0
+ 760              		@ link register save eliminated.
+ 761              	.LVL58:
+ 479:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   
+ 762              		.loc 1 479 0
+ 763 0000 90F83430 		ldrb	r3, [r0, #52]	@ zero_extendqisi2
+ 764 0004 012B     		cmp	r3, #1
+ 765 0006 15D0     		beq	.L63
+ 479:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   
+ 766              		.loc 1 479 0 is_stmt 0 discriminator 2
+ 767 0008 0123     		movs	r3, #1
+ 768 000a 80F83430 		strb	r3, [r0, #52]
+ 481:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   {
+ 769              		.loc 1 481 0 is_stmt 1 discriminator 2
+ 770 000e 90F83530 		ldrb	r3, [r0, #53]	@ zero_extendqisi2
+ 771 0012 DBB2     		uxtb	r3, r3
+ 772 0014 052B     		cmp	r3, #5
+ 773 0016 04D0     		beq	.L64
+ 774              	.L62:
+ 490:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   
+ 775              		.loc 1 490 0
+ 776 0018 0023     		movs	r3, #0
+ 777 001a 80F83430 		strb	r3, [r0, #52]
+ 493:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** }
+ 778              		.loc 1 493 0
+ 779 001e 1846     		mov	r0, r3
+ 780              	.LVL59:
+ 781 0020 7047     		bx	lr
+ 782              	.LVL60:
+ 783              	.L64:
+ 484:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     
+ 784              		.loc 1 484 0
+ 785 0022 0223     		movs	r3, #2
+ 786 0024 80F83530 		strb	r3, [r0, #53]
+ 487:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   } 
+ 787              		.loc 1 487 0
+ 788 0028 0268     		ldr	r2, [r0]
+ 789 002a 1368     		ldr	r3, [r2]
+ 790 002c 43F00103 		orr	r3, r3, #1
+ 791 0030 1360     		str	r3, [r2]
+ 792 0032 F1E7     		b	.L62
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s 			page 32
+
+
+ 793              	.L63:
+ 479:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   
+ 794              		.loc 1 479 0
+ 795 0034 0220     		movs	r0, #2
+ 796              	.LVL61:
+ 494:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 797              		.loc 1 494 0
+ 798 0036 7047     		bx	lr
+ 799              		.cfi_endproc
+ 800              	.LFE143:
+ 802              		.section	.text.HAL_DCMI_ErrorCallback,"ax",%progbits
+ 803              		.align	1
+ 804              		.weak	HAL_DCMI_ErrorCallback
+ 805              		.syntax unified
+ 806              		.thumb
+ 807              		.thumb_func
+ 808              		.fpu fpv5-sp-d16
+ 810              	HAL_DCMI_ErrorCallback:
+ 811              	.LFB145:
+ 588:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Prevent unused argument(s) compilation warning */
+ 812              		.loc 1 588 0
+ 813              		.cfi_startproc
+ 814              		@ args = 0, pretend = 0, frame = 0
+ 815              		@ frame_needed = 0, uses_anonymous_args = 0
+ 816              		@ link register save eliminated.
+ 817              	.LVL62:
+ 818 0000 7047     		bx	lr
+ 819              		.cfi_endproc
+ 820              	.LFE145:
+ 822              		.section	.text.DCMI_DMAError,"ax",%progbits
+ 823              		.align	1
+ 824              		.syntax unified
+ 825              		.thumb
+ 826              		.thumb_func
+ 827              		.fpu fpv5-sp-d16
+ 829              	DCMI_DMAError:
+ 830              	.LFB155:
+ 856:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 857:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** /**
+ 858:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @brief  DMA error callback 
+ 859:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @param  hdma pointer to a DMA_HandleTypeDef structure that contains
+ 860:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   *                the configuration information for the specified DMA module.
+ 861:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   * @retval None
+ 862:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   */
+ 863:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** static void DCMI_DMAError(DMA_HandleTypeDef *hdma)
+ 864:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** {
+ 831              		.loc 1 864 0
+ 832              		.cfi_startproc
+ 833              		@ args = 0, pretend = 0, frame = 0
+ 834              		@ frame_needed = 0, uses_anonymous_args = 0
+ 835              	.LVL63:
+ 836              		.loc 1 864 0
+ 837 0000 08B5     		push	{r3, lr}
+ 838              	.LCFI9:
+ 839              		.cfi_def_cfa_offset 8
+ 840              		.cfi_offset 3, -8
+ 841              		.cfi_offset 14, -4
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s 			page 33
+
+
+ 865:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   DCMI_HandleTypeDef* hdcmi = ( DCMI_HandleTypeDef* )((DMA_HandleTypeDef* )hdma)->Parent;
+ 842              		.loc 1 865 0
+ 843 0002 806B     		ldr	r0, [r0, #56]
+ 844              	.LVL64:
+ 866:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****  
+ 867:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   if(hdcmi->DMA_Handle->ErrorCode != HAL_DMA_ERROR_FE)
+ 845              		.loc 1 867 0
+ 846 0004 836C     		ldr	r3, [r0, #72]
+ 847 0006 5B6D     		ldr	r3, [r3, #84]
+ 848 0008 022B     		cmp	r3, #2
+ 849 000a 06D0     		beq	.L67
+ 868:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   {
+ 869:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     /* Initialize the DCMI state*/
+ 870:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     hdcmi->State = HAL_DCMI_STATE_READY;
+ 850              		.loc 1 870 0
+ 851 000c 0123     		movs	r3, #1
+ 852 000e 80F83530 		strb	r3, [r0, #53]
+ 871:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     
+ 872:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     /* Set DCMI Error Code */
+ 873:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     hdcmi->ErrorCode |= HAL_DCMI_ERROR_DMA;
+ 853              		.loc 1 873 0
+ 854 0012 C36C     		ldr	r3, [r0, #76]
+ 855 0014 43F04003 		orr	r3, r3, #64
+ 856 0018 C364     		str	r3, [r0, #76]
+ 857              	.L67:
+ 874:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   }
+ 875:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 876:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* DCMI error Callback */  
+ 877:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   HAL_DCMI_ErrorCallback(hdcmi);
+ 858              		.loc 1 877 0
+ 859 001a FFF7FEFF 		bl	HAL_DCMI_ErrorCallback
+ 860              	.LVL65:
+ 861 001e 08BD     		pop	{r3, pc}
+ 862              		.cfi_endproc
+ 863              	.LFE155:
+ 865              		.section	.text.HAL_DCMI_LineEventCallback,"ax",%progbits
+ 866              		.align	1
+ 867              		.weak	HAL_DCMI_LineEventCallback
+ 868              		.syntax unified
+ 869              		.thumb
+ 870              		.thumb_func
+ 871              		.fpu fpv5-sp-d16
+ 873              	HAL_DCMI_LineEventCallback:
+ 874              	.LFB146:
+ 604:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* NOTE : This function Should not be modified, when the callback is needed,
+ 875              		.loc 1 604 0
+ 876              		.cfi_startproc
+ 877              		@ args = 0, pretend = 0, frame = 0
+ 878              		@ frame_needed = 0, uses_anonymous_args = 0
+ 879              		@ link register save eliminated.
+ 880              	.LVL66:
+ 881 0000 7047     		bx	lr
+ 882              		.cfi_endproc
+ 883              	.LFE146:
+ 885              		.section	.text.HAL_DCMI_VsyncEventCallback,"ax",%progbits
+ 886              		.align	1
+ 887              		.weak	HAL_DCMI_VsyncEventCallback
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s 			page 34
+
+
+ 888              		.syntax unified
+ 889              		.thumb
+ 890              		.thumb_func
+ 891              		.fpu fpv5-sp-d16
+ 893              	HAL_DCMI_VsyncEventCallback:
+ 894              	.LFB147:
+ 617:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Prevent unused argument(s) compilation warning */
+ 895              		.loc 1 617 0
+ 896              		.cfi_startproc
+ 897              		@ args = 0, pretend = 0, frame = 0
+ 898              		@ frame_needed = 0, uses_anonymous_args = 0
+ 899              		@ link register save eliminated.
+ 900              	.LVL67:
+ 901 0000 7047     		bx	lr
+ 902              		.cfi_endproc
+ 903              	.LFE147:
+ 905              		.section	.text.HAL_DCMI_FrameEventCallback,"ax",%progbits
+ 906              		.align	1
+ 907              		.weak	HAL_DCMI_FrameEventCallback
+ 908              		.syntax unified
+ 909              		.thumb
+ 910              		.thumb_func
+ 911              		.fpu fpv5-sp-d16
+ 913              	HAL_DCMI_FrameEventCallback:
+ 914              	.LFB148:
+ 633:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Prevent unused argument(s) compilation warning */
+ 915              		.loc 1 633 0
+ 916              		.cfi_startproc
+ 917              		@ args = 0, pretend = 0, frame = 0
+ 918              		@ frame_needed = 0, uses_anonymous_args = 0
+ 919              		@ link register save eliminated.
+ 920              	.LVL68:
+ 921 0000 7047     		bx	lr
+ 922              		.cfi_endproc
+ 923              	.LFE148:
+ 925              		.section	.text.HAL_DCMI_IRQHandler,"ax",%progbits
+ 926              		.align	1
+ 927              		.global	HAL_DCMI_IRQHandler
+ 928              		.syntax unified
+ 929              		.thumb
+ 930              		.thumb_func
+ 931              		.fpu fpv5-sp-d16
+ 933              	HAL_DCMI_IRQHandler:
+ 934              	.LFB144:
+ 503:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   uint32_t isr_value = READ_REG(hdcmi->Instance->MISR);
+ 935              		.loc 1 503 0
+ 936              		.cfi_startproc
+ 937              		@ args = 0, pretend = 0, frame = 0
+ 938              		@ frame_needed = 0, uses_anonymous_args = 0
+ 939              	.LVL69:
+ 503:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   uint32_t isr_value = READ_REG(hdcmi->Instance->MISR);
+ 940              		.loc 1 503 0
+ 941 0000 38B5     		push	{r3, r4, r5, lr}
+ 942              	.LCFI10:
+ 943              		.cfi_def_cfa_offset 16
+ 944              		.cfi_offset 3, -16
+ 945              		.cfi_offset 4, -12
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s 			page 35
+
+
+ 946              		.cfi_offset 5, -8
+ 947              		.cfi_offset 14, -4
+ 948 0002 0446     		mov	r4, r0
+ 504:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   
+ 949              		.loc 1 504 0
+ 950 0004 0368     		ldr	r3, [r0]
+ 951 0006 1D69     		ldr	r5, [r3, #16]
+ 952              	.LVL70:
+ 507:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   {
+ 953              		.loc 1 507 0
+ 954 0008 15F0040F 		tst	r5, #4
+ 955 000c 20D1     		bne	.L80
+ 956              	.LVL71:
+ 957              	.L73:
+ 525:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   {
+ 958              		.loc 1 525 0
+ 959 000e 15F0020F 		tst	r5, #2
+ 960 0012 2CD1     		bne	.L81
+ 961              	.L74:
+ 543:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   {
+ 962              		.loc 1 543 0
+ 963 0014 15F0100F 		tst	r5, #16
+ 964 0018 3AD1     		bne	.L82
+ 965              	.L75:
+ 552:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   {
+ 966              		.loc 1 552 0
+ 967 001a 15F0080F 		tst	r5, #8
+ 968 001e 3ED1     		bne	.L83
+ 969              	.L76:
+ 561:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   {
+ 970              		.loc 1 561 0
+ 971 0020 15F0010F 		tst	r5, #1
+ 972 0024 13D0     		beq	.L72
+ 564:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     { 
+ 973              		.loc 1 564 0
+ 974 0026 2368     		ldr	r3, [r4]
+ 975 0028 1A68     		ldr	r2, [r3]
+ 976 002a 12F0020F 		tst	r2, #2
+ 977 002e 03D0     		beq	.L78
+ 567:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     }
+ 978              		.loc 1 567 0
+ 979 0030 DA68     		ldr	r2, [r3, #12]
+ 980 0032 22F01E02 		bic	r2, r2, #30
+ 981 0036 DA60     		str	r2, [r3, #12]
+ 982              	.L78:
+ 571:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     
+ 983              		.loc 1 571 0
+ 984 0038 2268     		ldr	r2, [r4]
+ 985 003a D368     		ldr	r3, [r2, #12]
+ 986 003c 23F00103 		bic	r3, r3, #1
+ 987 0040 D360     		str	r3, [r2, #12]
+ 574:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     
+ 988              		.loc 1 574 0
+ 989 0042 2368     		ldr	r3, [r4]
+ 990 0044 0122     		movs	r2, #1
+ 991 0046 5A61     		str	r2, [r3, #20]
+ 577:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   }
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s 			page 36
+
+
+ 992              		.loc 1 577 0
+ 993 0048 2046     		mov	r0, r4
+ 994 004a FFF7FEFF 		bl	HAL_DCMI_FrameEventCallback
+ 995              	.LVL72:
+ 996              	.L72:
+ 997 004e 38BD     		pop	{r3, r4, r5, pc}
+ 998              	.LVL73:
+ 999              	.L80:
+ 510:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     
+ 1000              		.loc 1 510 0
+ 1001 0050 0422     		movs	r2, #4
+ 1002 0052 5A61     		str	r2, [r3, #20]
+ 513:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     
+ 1003              		.loc 1 513 0
+ 1004 0054 C36C     		ldr	r3, [r0, #76]
+ 1005 0056 43F00203 		orr	r3, r3, #2
+ 1006 005a C364     		str	r3, [r0, #76]
+ 516:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     
+ 1007              		.loc 1 516 0
+ 1008 005c 80F83520 		strb	r2, [r0, #53]
+ 519:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     
+ 1009              		.loc 1 519 0
+ 1010 0060 836C     		ldr	r3, [r0, #72]
+ 1011 0062 124A     		ldr	r2, .L84
+ 1012 0064 1A65     		str	r2, [r3, #80]
+ 522:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   }
+ 1013              		.loc 1 522 0
+ 1014 0066 806C     		ldr	r0, [r0, #72]
+ 1015              	.LVL74:
+ 1016 0068 FFF7FEFF 		bl	HAL_DMA_Abort_IT
+ 1017              	.LVL75:
+ 1018 006c CFE7     		b	.L73
+ 1019              	.L81:
+ 528:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     
+ 1020              		.loc 1 528 0
+ 1021 006e 2368     		ldr	r3, [r4]
+ 1022 0070 0222     		movs	r2, #2
+ 1023 0072 5A61     		str	r2, [r3, #20]
+ 531:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     
+ 1024              		.loc 1 531 0
+ 1025 0074 E36C     		ldr	r3, [r4, #76]
+ 1026 0076 43F00103 		orr	r3, r3, #1
+ 1027 007a E364     		str	r3, [r4, #76]
+ 534:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     
+ 1028              		.loc 1 534 0
+ 1029 007c 0423     		movs	r3, #4
+ 1030 007e 84F83530 		strb	r3, [r4, #53]
+ 537:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     
+ 1031              		.loc 1 537 0
+ 1032 0082 A36C     		ldr	r3, [r4, #72]
+ 1033 0084 094A     		ldr	r2, .L84
+ 1034 0086 1A65     		str	r2, [r3, #80]
+ 540:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   }
+ 1035              		.loc 1 540 0
+ 1036 0088 A06C     		ldr	r0, [r4, #72]
+ 1037 008a FFF7FEFF 		bl	HAL_DMA_Abort_IT
+ 1038              	.LVL76:
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s 			page 37
+
+
+ 1039 008e C1E7     		b	.L74
+ 1040              	.L82:
+ 546:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     
+ 1041              		.loc 1 546 0
+ 1042 0090 2368     		ldr	r3, [r4]
+ 1043 0092 1022     		movs	r2, #16
+ 1044 0094 5A61     		str	r2, [r3, #20]
+ 549:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   }
+ 1045              		.loc 1 549 0
+ 1046 0096 2046     		mov	r0, r4
+ 1047 0098 FFF7FEFF 		bl	HAL_DCMI_LineEventCallback
+ 1048              	.LVL77:
+ 1049 009c BDE7     		b	.L75
+ 1050              	.L83:
+ 555:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****     
+ 1051              		.loc 1 555 0
+ 1052 009e 2368     		ldr	r3, [r4]
+ 1053 00a0 0822     		movs	r2, #8
+ 1054 00a2 5A61     		str	r2, [r3, #20]
+ 558:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   }
+ 1055              		.loc 1 558 0
+ 1056 00a4 2046     		mov	r0, r4
+ 1057 00a6 FFF7FEFF 		bl	HAL_DCMI_VsyncEventCallback
+ 1058              	.LVL78:
+ 1059 00aa B9E7     		b	.L76
+ 1060              	.L85:
+ 1061              		.align	2
+ 1062              	.L84:
+ 1063 00ac 00000000 		.word	DCMI_DMAError
+ 1064              		.cfi_endproc
+ 1065              	.LFE144:
+ 1067              		.section	.text.HAL_DCMI_ConfigCrop,"ax",%progbits
+ 1068              		.align	1
+ 1069              		.global	HAL_DCMI_ConfigCrop
+ 1070              		.syntax unified
+ 1071              		.thumb
+ 1072              		.thumb_func
+ 1073              		.fpu fpv5-sp-d16
+ 1075              	HAL_DCMI_ConfigCrop:
+ 1076              	.LFB149:
+ 673:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Process Locked */
+ 1077              		.loc 1 673 0
+ 1078              		.cfi_startproc
+ 1079              		@ args = 4, pretend = 0, frame = 0
+ 1080              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1081              		@ link register save eliminated.
+ 1082              	.LVL79:
+ 1083 0000 30B4     		push	{r4, r5}
+ 1084              	.LCFI11:
+ 1085              		.cfi_def_cfa_offset 8
+ 1086              		.cfi_offset 4, -8
+ 1087              		.cfi_offset 5, -4
+ 675:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 1088              		.loc 1 675 0
+ 1089 0002 90F83440 		ldrb	r4, [r0, #52]	@ zero_extendqisi2
+ 1090 0006 012C     		cmp	r4, #1
+ 1091 0008 14D0     		beq	.L88
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s 			page 38
+
+
+ 678:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 1092              		.loc 1 678 0 discriminator 2
+ 1093 000a 0224     		movs	r4, #2
+ 1094 000c 80F83540 		strb	r4, [r0, #53]
+ 687:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   hdcmi->Instance->CWSTRTR = (X0 | (Y0 << DCMI_CWSTRT_VST_Pos));
+ 1095              		.loc 1 687 0 discriminator 2
+ 1096 0010 0468     		ldr	r4, [r0]
+ 1097 0012 029D     		ldr	r5, [sp, #8]
+ 1098 0014 43EA0543 		orr	r3, r3, r5, lsl #16
+ 1099              	.LVL80:
+ 1100 0018 6362     		str	r3, [r4, #36]
+ 688:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 1101              		.loc 1 688 0 discriminator 2
+ 1102 001a 0368     		ldr	r3, [r0]
+ 1103 001c 41EA0241 		orr	r1, r1, r2, lsl #16
+ 1104              	.LVL81:
+ 1105 0020 1962     		str	r1, [r3, #32]
+ 691:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 1106              		.loc 1 691 0 discriminator 2
+ 1107 0022 0123     		movs	r3, #1
+ 1108 0024 80F83530 		strb	r3, [r0, #53]
+ 694:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 1109              		.loc 1 694 0 discriminator 2
+ 1110 0028 0023     		movs	r3, #0
+ 1111 002a 80F83430 		strb	r3, [r0, #52]
+ 696:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** }
+ 1112              		.loc 1 696 0 discriminator 2
+ 1113 002e 1846     		mov	r0, r3
+ 1114              	.LVL82:
+ 1115              	.L87:
+ 697:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 1116              		.loc 1 697 0
+ 1117 0030 30BC     		pop	{r4, r5}
+ 1118              	.LCFI12:
+ 1119              		.cfi_remember_state
+ 1120              		.cfi_restore 5
+ 1121              		.cfi_restore 4
+ 1122              		.cfi_def_cfa_offset 0
+ 1123              	.LVL83:
+ 1124 0032 7047     		bx	lr
+ 1125              	.LVL84:
+ 1126              	.L88:
+ 1127              	.LCFI13:
+ 1128              		.cfi_restore_state
+ 675:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 1129              		.loc 1 675 0
+ 1130 0034 0220     		movs	r0, #2
+ 1131              	.LVL85:
+ 1132 0036 FBE7     		b	.L87
+ 1133              		.cfi_endproc
+ 1134              	.LFE149:
+ 1136              		.section	.text.HAL_DCMI_DisableCrop,"ax",%progbits
+ 1137              		.align	1
+ 1138              		.global	HAL_DCMI_DisableCrop
+ 1139              		.syntax unified
+ 1140              		.thumb
+ 1141              		.thumb_func
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s 			page 39
+
+
+ 1142              		.fpu fpv5-sp-d16
+ 1144              	HAL_DCMI_DisableCrop:
+ 1145              	.LFB150:
+ 706:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Process Locked */
+ 1146              		.loc 1 706 0
+ 1147              		.cfi_startproc
+ 1148              		@ args = 0, pretend = 0, frame = 0
+ 1149              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1150              		@ link register save eliminated.
+ 1151              	.LVL86:
+ 708:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 1152              		.loc 1 708 0
+ 1153 0000 90F83430 		ldrb	r3, [r0, #52]	@ zero_extendqisi2
+ 1154 0004 012B     		cmp	r3, #1
+ 1155 0006 11D0     		beq	.L92
+ 708:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 1156              		.loc 1 708 0 is_stmt 0 discriminator 2
+ 1157 0008 0122     		movs	r2, #1
+ 1158 000a 80F83420 		strb	r2, [r0, #52]
+ 711:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 1159              		.loc 1 711 0 is_stmt 1 discriminator 2
+ 1160 000e 0223     		movs	r3, #2
+ 1161 0010 80F83530 		strb	r3, [r0, #53]
+ 714:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 1162              		.loc 1 714 0 discriminator 2
+ 1163 0014 0168     		ldr	r1, [r0]
+ 1164 0016 0B68     		ldr	r3, [r1]
+ 1165 0018 23F00403 		bic	r3, r3, #4
+ 1166 001c 0B60     		str	r3, [r1]
+ 717:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 1167              		.loc 1 717 0 discriminator 2
+ 1168 001e 80F83520 		strb	r2, [r0, #53]
+ 720:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 1169              		.loc 1 720 0 discriminator 2
+ 1170 0022 0023     		movs	r3, #0
+ 1171 0024 80F83430 		strb	r3, [r0, #52]
+ 722:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** }
+ 1172              		.loc 1 722 0 discriminator 2
+ 1173 0028 1846     		mov	r0, r3
+ 1174              	.LVL87:
+ 1175 002a 7047     		bx	lr
+ 1176              	.LVL88:
+ 1177              	.L92:
+ 708:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 1178              		.loc 1 708 0
+ 1179 002c 0220     		movs	r0, #2
+ 1180              	.LVL89:
+ 723:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 1181              		.loc 1 723 0
+ 1182 002e 7047     		bx	lr
+ 1183              		.cfi_endproc
+ 1184              	.LFE150:
+ 1186              		.section	.text.HAL_DCMI_EnableCrop,"ax",%progbits
+ 1187              		.align	1
+ 1188              		.global	HAL_DCMI_EnableCrop
+ 1189              		.syntax unified
+ 1190              		.thumb
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s 			page 40
+
+
+ 1191              		.thumb_func
+ 1192              		.fpu fpv5-sp-d16
+ 1194              	HAL_DCMI_EnableCrop:
+ 1195              	.LFB151:
+ 732:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   /* Process Locked */
+ 1196              		.loc 1 732 0
+ 1197              		.cfi_startproc
+ 1198              		@ args = 0, pretend = 0, frame = 0
+ 1199              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1200              		@ link register save eliminated.
+ 1201              	.LVL90:
+ 734:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 1202              		.loc 1 734 0
+ 1203 0000 90F83430 		ldrb	r3, [r0, #52]	@ zero_extendqisi2
+ 1204 0004 012B     		cmp	r3, #1
+ 1205 0006 11D0     		beq	.L95
+ 734:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 1206              		.loc 1 734 0 is_stmt 0 discriminator 2
+ 1207 0008 0122     		movs	r2, #1
+ 1208 000a 80F83420 		strb	r2, [r0, #52]
+ 737:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 1209              		.loc 1 737 0 is_stmt 1 discriminator 2
+ 1210 000e 0223     		movs	r3, #2
+ 1211 0010 80F83530 		strb	r3, [r0, #53]
+ 740:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 1212              		.loc 1 740 0 discriminator 2
+ 1213 0014 0168     		ldr	r1, [r0]
+ 1214 0016 0B68     		ldr	r3, [r1]
+ 1215 0018 43F00403 		orr	r3, r3, #4
+ 1216 001c 0B60     		str	r3, [r1]
+ 743:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 1217              		.loc 1 743 0 discriminator 2
+ 1218 001e 80F83520 		strb	r2, [r0, #53]
+ 746:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 1219              		.loc 1 746 0 discriminator 2
+ 1220 0022 0023     		movs	r3, #0
+ 1221 0024 80F83430 		strb	r3, [r0, #52]
+ 748:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** }
+ 1222              		.loc 1 748 0 discriminator 2
+ 1223 0028 1846     		mov	r0, r3
+ 1224              	.LVL91:
+ 1225 002a 7047     		bx	lr
+ 1226              	.LVL92:
+ 1227              	.L95:
+ 734:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 1228              		.loc 1 734 0
+ 1229 002c 0220     		movs	r0, #2
+ 1230              	.LVL93:
+ 749:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 1231              		.loc 1 749 0
+ 1232 002e 7047     		bx	lr
+ 1233              		.cfi_endproc
+ 1234              	.LFE151:
+ 1236              		.section	.text.HAL_DCMI_GetState,"ax",%progbits
+ 1237              		.align	1
+ 1238              		.global	HAL_DCMI_GetState
+ 1239              		.syntax unified
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s 			page 41
+
+
+ 1240              		.thumb
+ 1241              		.thumb_func
+ 1242              		.fpu fpv5-sp-d16
+ 1244              	HAL_DCMI_GetState:
+ 1245              	.LFB152:
+ 778:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   return hdcmi->State;
+ 1246              		.loc 1 778 0
+ 1247              		.cfi_startproc
+ 1248              		@ args = 0, pretend = 0, frame = 0
+ 1249              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1250              		@ link register save eliminated.
+ 1251              	.LVL94:
+ 779:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** }
+ 1252              		.loc 1 779 0
+ 1253 0000 90F83500 		ldrb	r0, [r0, #53]	@ zero_extendqisi2
+ 1254              	.LVL95:
+ 780:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 1255              		.loc 1 780 0
+ 1256 0004 7047     		bx	lr
+ 1257              		.cfi_endproc
+ 1258              	.LFE152:
+ 1260              		.section	.text.HAL_DCMI_GetError,"ax",%progbits
+ 1261              		.align	1
+ 1262              		.global	HAL_DCMI_GetError
+ 1263              		.syntax unified
+ 1264              		.thumb
+ 1265              		.thumb_func
+ 1266              		.fpu fpv5-sp-d16
+ 1268              	HAL_DCMI_GetError:
+ 1269              	.LFB153:
+ 789:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c ****   return hdcmi->ErrorCode;
+ 1270              		.loc 1 789 0
+ 1271              		.cfi_startproc
+ 1272              		@ args = 0, pretend = 0, frame = 0
+ 1273              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1274              		@ link register save eliminated.
+ 1275              	.LVL96:
+ 790:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** }
+ 1276              		.loc 1 790 0
+ 1277 0000 C06C     		ldr	r0, [r0, #76]
+ 1278              	.LVL97:
+ 791:Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dcmi.c **** 
+ 1279              		.loc 1 791 0
+ 1280 0002 7047     		bx	lr
+ 1281              		.cfi_endproc
+ 1282              	.LFE153:
+ 1284              		.text
+ 1285              	.Letext0:
+ 1286              		.file 2 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 1287              		.file 3 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 1288              		.file 4 "Drivers/CMSIS/Include/core_cm7.h"
+ 1289              		.file 5 "Drivers/CMSIS/Device/ST/STM32F7xx/Include/system_stm32f7xx.h"
+ 1290              		.file 6 "Drivers/CMSIS/Device/ST/STM32F7xx/Include/stm32f746xx.h"
+ 1291              		.file 7 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\lock.h"
+ 1292              		.file 8 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\_types.h"
+ 1293              		.file 9 "c:\\gcc_toolchain\\6_2017-q1-update\\lib\\gcc\\arm-none-eabi\\6.3.1\\include\\stddef.h"
+ 1294              		.file 10 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\reent.h"
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s 			page 42
+
+
+ 1295              		.file 11 "Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_def.h"
+ 1296              		.file 12 "Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_dma.h"
+ 1297              		.file 13 "Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_dma_ex.h"
+ 1298              		.file 14 "Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_dcmi.h"
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s 			page 43
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 stm32f7xx_hal_dcmi.c
+C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s:18     .text.DCMI_DMAXferCplt:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s:24     .text.DCMI_DMAXferCplt:00000000 DCMI_DMAXferCplt
+C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s:153    .text.HAL_DCMI_MspInit:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s:160    .text.HAL_DCMI_MspInit:00000000 HAL_DCMI_MspInit
+C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s:173    .text.HAL_DCMI_Init:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s:180    .text.HAL_DCMI_Init:00000000 HAL_DCMI_Init
+C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s:309    .text.HAL_DCMI_Init:00000094 $d
+C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s:314    .text.HAL_DCMI_MspDeInit:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s:321    .text.HAL_DCMI_MspDeInit:00000000 HAL_DCMI_MspDeInit
+C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s:334    .text.HAL_DCMI_DeInit:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s:341    .text.HAL_DCMI_DeInit:00000000 HAL_DCMI_DeInit
+C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s:371    .text.HAL_DCMI_Start_DMA:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s:378    .text.HAL_DCMI_Start_DMA:00000000 HAL_DCMI_Start_DMA
+C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s:527    .text.HAL_DCMI_Start_DMA:000000b8 $d
+C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s:829    .text.DCMI_DMAError:00000000 DCMI_DMAError
+C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s:533    .text.HAL_DCMI_Stop:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s:540    .text.HAL_DCMI_Stop:00000000 HAL_DCMI_Stop
+C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s:639    .text.HAL_DCMI_Stop:0000007c $d
+C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s:645    .text.HAL_DCMI_Suspend:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s:652    .text.HAL_DCMI_Suspend:00000000 HAL_DCMI_Suspend
+C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s:741    .text.HAL_DCMI_Suspend:00000074 $d
+C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s:747    .text.HAL_DCMI_Resume:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s:754    .text.HAL_DCMI_Resume:00000000 HAL_DCMI_Resume
+C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s:803    .text.HAL_DCMI_ErrorCallback:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s:810    .text.HAL_DCMI_ErrorCallback:00000000 HAL_DCMI_ErrorCallback
+C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s:823    .text.DCMI_DMAError:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s:866    .text.HAL_DCMI_LineEventCallback:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s:873    .text.HAL_DCMI_LineEventCallback:00000000 HAL_DCMI_LineEventCallback
+C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s:886    .text.HAL_DCMI_VsyncEventCallback:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s:893    .text.HAL_DCMI_VsyncEventCallback:00000000 HAL_DCMI_VsyncEventCallback
+C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s:906    .text.HAL_DCMI_FrameEventCallback:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s:913    .text.HAL_DCMI_FrameEventCallback:00000000 HAL_DCMI_FrameEventCallback
+C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s:926    .text.HAL_DCMI_IRQHandler:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s:933    .text.HAL_DCMI_IRQHandler:00000000 HAL_DCMI_IRQHandler
+C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s:1063   .text.HAL_DCMI_IRQHandler:000000ac $d
+C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s:1068   .text.HAL_DCMI_ConfigCrop:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s:1075   .text.HAL_DCMI_ConfigCrop:00000000 HAL_DCMI_ConfigCrop
+C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s:1137   .text.HAL_DCMI_DisableCrop:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s:1144   .text.HAL_DCMI_DisableCrop:00000000 HAL_DCMI_DisableCrop
+C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s:1187   .text.HAL_DCMI_EnableCrop:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s:1194   .text.HAL_DCMI_EnableCrop:00000000 HAL_DCMI_EnableCrop
+C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s:1237   .text.HAL_DCMI_GetState:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s:1244   .text.HAL_DCMI_GetState:00000000 HAL_DCMI_GetState
+C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s:1261   .text.HAL_DCMI_GetError:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccFaKa8u.s:1268   .text.HAL_DCMI_GetError:00000000 HAL_DCMI_GetError
+                     .debug_frame:00000010 $d
+
+UNDEFINED SYMBOLS
+HAL_DMAEx_ChangeMemory
+HAL_DMA_Start_IT
+HAL_DMAEx_MultiBufferStart_IT
+HAL_DMA_Abort
+SystemCoreClock
+HAL_DMA_Abort_IT

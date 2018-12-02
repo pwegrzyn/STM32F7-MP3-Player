@@ -1,0 +1,906 @@
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccMo0YBq.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"usbh_ioreq.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.USBH_CtlSendSetup,"ax",%progbits
+  18              		.align	1
+  19              		.global	USBH_CtlSendSetup
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  23              		.fpu fpv5-sp-d16
+  25              	USBH_CtlSendSetup:
+  26              	.LFB141:
+  27              		.file 1 "Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c"
+   1:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** /**
+   2:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   ******************************************************************************
+   3:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @file    usbh_ioreq.c
+   4:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @author  MCD Application Team
+   5:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @brief   This file handles the issuing of the USB transactions
+   6:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   ******************************************************************************
+   7:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @attention
+   8:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   *
+   9:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * <h2><center>&copy; Copyright (c) 2017 STMicroelectronics International N.V.
+  10:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * All rights reserved.</center></h2>
+  11:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   *
+  12:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * Redistribution and use in source and binary forms, with or without
+  13:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * modification, are permitted, provided that the following conditions are met:
+  14:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   *
+  15:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * 1. Redistribution of source code must retain the above copyright notice,
+  16:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   *    this list of conditions and the following disclaimer.
+  17:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * 2. Redistributions in binary form must reproduce the above copyright notice,
+  18:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   *    this list of conditions and the following disclaimer in the documentation
+  19:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   *    and/or other materials provided with the distribution.
+  20:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * 3. Neither the name of STMicroelectronics nor the names of other
+  21:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   *    contributors to this software may be used to endorse or promote products
+  22:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   *    derived from this software without specific written permission.
+  23:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * 4. This software, including modifications and/or derivative works of this
+  24:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   *    software, must execute solely and exclusively on microcontroller or
+  25:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   *    microprocessor devices manufactured by or for STMicroelectronics.
+  26:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * 5. Redistribution and use of this software other than as permitted under
+  27:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   *    this license is void and will automatically terminate your rights under
+  28:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   *    this license.
+  29:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   *
+  30:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * THIS SOFTWARE IS PROVIDED BY STMICROELECTRONICS AND CONTRIBUTORS "AS IS"
+  31:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * AND ANY EXPRESS, IMPLIED OR STATUTORY WARRANTIES, INCLUDING, BUT NOT
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccMo0YBq.s 			page 2
+
+
+  32:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+  33:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * PARTICULAR PURPOSE AND NON-INFRINGEMENT OF THIRD PARTY INTELLECTUAL PROPERTY
+  34:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * RIGHTS ARE DISCLAIMED TO THE FULLEST EXTENT PERMITTED BY LAW. IN NO EVENT
+  35:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * SHALL STMICROELECTRONICS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+  36:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+  37:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
+  38:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+  39:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+  40:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+  41:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  42:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   *
+  43:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   ******************************************************************************
+  44:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   */
+  45:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** /* Includes ------------------------------------------------------------------*/
+  46:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** 
+  47:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** #include "usbh_ioreq.h"
+  48:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** 
+  49:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** /** @addtogroup USBH_LIB
+  50:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @{
+  51:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   */
+  52:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** 
+  53:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** /** @addtogroup USBH_LIB_CORE
+  54:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** * @{
+  55:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** */
+  56:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** 
+  57:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** /** @defgroup USBH_IOREQ
+  58:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @brief This file handles the standard protocol processing (USB v2.0)
+  59:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @{
+  60:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   */
+  61:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** 
+  62:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** 
+  63:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** /** @defgroup USBH_IOREQ_Private_Defines
+  64:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @{
+  65:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   */
+  66:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** 
+  67:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** /**
+  68:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @}
+  69:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   */
+  70:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** 
+  71:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** 
+  72:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** /** @defgroup USBH_IOREQ_Private_TypesDefinitions
+  73:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @{
+  74:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   */
+  75:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** /**
+  76:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @}
+  77:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   */
+  78:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** 
+  79:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** 
+  80:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** 
+  81:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** /** @defgroup USBH_IOREQ_Private_Macros
+  82:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @{
+  83:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   */
+  84:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** /**
+  85:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @}
+  86:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   */
+  87:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** 
+  88:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** 
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccMo0YBq.s 			page 3
+
+
+  89:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** /** @defgroup USBH_IOREQ_Private_Variables
+  90:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @{
+  91:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   */
+  92:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** /**
+  93:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @}
+  94:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   */
+  95:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** /** @defgroup USBH_IOREQ_Private_FunctionPrototypes
+  96:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @{
+  97:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   */
+  98:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** 
+  99:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** /**
+ 100:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @}
+ 101:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   */
+ 102:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** 
+ 103:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** 
+ 104:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** /** @defgroup USBH_IOREQ_Private_Functions
+ 105:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @{
+ 106:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   */
+ 107:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** 
+ 108:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** 
+ 109:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** 
+ 110:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** /**
+ 111:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @brief  USBH_CtlSendSetup
+ 112:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   *         Sends the Setup Packet to the Device
+ 113:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @param  phost: Host Handle
+ 114:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @param  buff: Buffer pointer from which the Data will be send to Device
+ 115:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @param  pipe_num: Pipe Number
+ 116:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @retval USBH Status
+ 117:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   */
+ 118:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** USBH_StatusTypeDef USBH_CtlSendSetup (USBH_HandleTypeDef *phost,
+ 119:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                                 uint8_t *buff,
+ 120:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                                 uint8_t pipe_num)
+ 121:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** {
+  28              		.loc 1 121 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              	.LVL0:
+  33 0000 30B5     		push	{r4, r5, lr}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 12
+  36              		.cfi_offset 4, -12
+  37              		.cfi_offset 5, -8
+  38              		.cfi_offset 14, -4
+  39 0002 85B0     		sub	sp, sp, #20
+  40              	.LCFI1:
+  41              		.cfi_def_cfa_offset 32
+  42 0004 1546     		mov	r5, r2
+ 122:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** 
+ 123:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   USBH_LL_SubmitURB (phost,                     /* Driver handle    */
+  43              		.loc 1 123 0
+  44 0006 0024     		movs	r4, #0
+  45 0008 0394     		str	r4, [sp, #12]
+  46 000a 0823     		movs	r3, #8
+  47 000c 0293     		str	r3, [sp, #8]
+  48 000e 0191     		str	r1, [sp, #4]
+  49 0010 0094     		str	r4, [sp]
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccMo0YBq.s 			page 4
+
+
+  50 0012 2346     		mov	r3, r4
+  51 0014 2246     		mov	r2, r4
+  52              	.LVL1:
+  53 0016 2946     		mov	r1, r5
+  54              	.LVL2:
+  55 0018 FFF7FEFF 		bl	USBH_LL_SubmitURB
+  56              	.LVL3:
+ 124:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           pipe_num,             /* Pipe index       */
+ 125:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           0U,                    /* Direction : OUT  */
+ 126:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           USBH_EP_CONTROL,      /* EP type          */
+ 127:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           USBH_PID_SETUP,       /* Type setup       */
+ 128:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           buff,                 /* data buffer      */
+ 129:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           USBH_SETUP_PKT_SIZE,  /* data length      */
+ 130:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           0U);
+ 131:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   return USBH_OK;
+ 132:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** }
+  57              		.loc 1 132 0
+  58 001c 2046     		mov	r0, r4
+  59 001e 05B0     		add	sp, sp, #20
+  60              	.LCFI2:
+  61              		.cfi_def_cfa_offset 12
+  62              		@ sp needed
+  63 0020 30BD     		pop	{r4, r5, pc}
+  64              		.cfi_endproc
+  65              	.LFE141:
+  67              		.section	.text.USBH_CtlSendData,"ax",%progbits
+  68              		.align	1
+  69              		.global	USBH_CtlSendData
+  70              		.syntax unified
+  71              		.thumb
+  72              		.thumb_func
+  73              		.fpu fpv5-sp-d16
+  75              	USBH_CtlSendData:
+  76              	.LFB142:
+ 133:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** 
+ 134:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** 
+ 135:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** /**
+ 136:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @brief  USBH_CtlSendData
+ 137:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   *         Sends a data Packet to the Device
+ 138:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @param  phost: Host Handle
+ 139:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @param  buff: Buffer pointer from which the Data will be sent to Device
+ 140:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @param  length: Length of the data to be sent
+ 141:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @param  pipe_num: Pipe Number
+ 142:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @retval USBH Status
+ 143:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   */
+ 144:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** USBH_StatusTypeDef USBH_CtlSendData (USBH_HandleTypeDef *phost,
+ 145:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                                 uint8_t *buff,
+ 146:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                                 uint16_t length,
+ 147:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                                 uint8_t pipe_num,
+ 148:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                                 uint8_t do_ping )
+ 149:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** {
+  77              		.loc 1 149 0
+  78              		.cfi_startproc
+  79              		@ args = 4, pretend = 0, frame = 0
+  80              		@ frame_needed = 0, uses_anonymous_args = 0
+  81              	.LVL4:
+  82 0000 30B5     		push	{r4, r5, lr}
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccMo0YBq.s 			page 5
+
+
+  83              	.LCFI3:
+  84              		.cfi_def_cfa_offset 12
+  85              		.cfi_offset 4, -12
+  86              		.cfi_offset 5, -8
+  87              		.cfi_offset 14, -4
+  88 0002 85B0     		sub	sp, sp, #20
+  89              	.LCFI4:
+  90              		.cfi_def_cfa_offset 32
+  91 0004 0C46     		mov	r4, r1
+  92 0006 1946     		mov	r1, r3
+  93              	.LVL5:
+  94 0008 9DF82030 		ldrb	r3, [sp, #32]	@ zero_extendqisi2
+  95              	.LVL6:
+ 150:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   if(phost->device.speed != USBH_SPEED_HIGH)
+  96              		.loc 1 150 0
+  97 000c 90F81D53 		ldrb	r5, [r0, #797]	@ zero_extendqisi2
+  98 0010 05B1     		cbz	r5, .L4
+ 151:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   {
+ 152:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****     do_ping = 0U;
+  99              		.loc 1 152 0
+ 100 0012 0023     		movs	r3, #0
+ 101              	.L4:
+ 102              	.LVL7:
+ 153:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   }
+ 154:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** 
+ 155:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   USBH_LL_SubmitURB (phost,                     /* Driver handle    */
+ 103              		.loc 1 155 0
+ 104 0014 0393     		str	r3, [sp, #12]
+ 105 0016 0292     		str	r2, [sp, #8]
+ 106 0018 0194     		str	r4, [sp, #4]
+ 107 001a 0123     		movs	r3, #1
+ 108              	.LVL8:
+ 109 001c 0093     		str	r3, [sp]
+ 110 001e 0023     		movs	r3, #0
+ 111 0020 1A46     		mov	r2, r3
+ 112              	.LVL9:
+ 113 0022 FFF7FEFF 		bl	USBH_LL_SubmitURB
+ 114              	.LVL10:
+ 156:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           pipe_num,             /* Pipe index       */
+ 157:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           0U,                   /* Direction : OUT  */
+ 158:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           USBH_EP_CONTROL,      /* EP type          */
+ 159:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           USBH_PID_DATA,        /* Type Data        */
+ 160:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           buff,                 /* data buffer      */
+ 161:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           length,               /* data length      */
+ 162:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           do_ping);             /* do ping (HS Only)*/
+ 163:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** 
+ 164:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   return USBH_OK;
+ 165:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** }
+ 115              		.loc 1 165 0
+ 116 0026 0020     		movs	r0, #0
+ 117 0028 05B0     		add	sp, sp, #20
+ 118              	.LCFI5:
+ 119              		.cfi_def_cfa_offset 12
+ 120              		@ sp needed
+ 121 002a 30BD     		pop	{r4, r5, pc}
+ 122              		.cfi_endproc
+ 123              	.LFE142:
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccMo0YBq.s 			page 6
+
+
+ 125              		.section	.text.USBH_CtlReceiveData,"ax",%progbits
+ 126              		.align	1
+ 127              		.global	USBH_CtlReceiveData
+ 128              		.syntax unified
+ 129              		.thumb
+ 130              		.thumb_func
+ 131              		.fpu fpv5-sp-d16
+ 133              	USBH_CtlReceiveData:
+ 134              	.LFB143:
+ 166:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** 
+ 167:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** 
+ 168:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** /**
+ 169:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @brief  USBH_CtlReceiveData
+ 170:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   *         Receives the Device Response to the Setup Packet
+ 171:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @param  phost: Host Handle
+ 172:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @param  buff: Buffer pointer in which the response needs to be copied
+ 173:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @param  length: Length of the data to be received
+ 174:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @param  pipe_num: Pipe Number
+ 175:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @retval USBH Status.
+ 176:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   */
+ 177:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** USBH_StatusTypeDef USBH_CtlReceiveData(USBH_HandleTypeDef *phost,
+ 178:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                                 uint8_t* buff,
+ 179:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                                 uint16_t length,
+ 180:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                                 uint8_t pipe_num)
+ 181:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** {
+ 135              		.loc 1 181 0
+ 136              		.cfi_startproc
+ 137              		@ args = 0, pretend = 0, frame = 0
+ 138              		@ frame_needed = 0, uses_anonymous_args = 0
+ 139              	.LVL11:
+ 140 0000 30B5     		push	{r4, r5, lr}
+ 141              	.LCFI6:
+ 142              		.cfi_def_cfa_offset 12
+ 143              		.cfi_offset 4, -12
+ 144              		.cfi_offset 5, -8
+ 145              		.cfi_offset 14, -4
+ 146 0002 85B0     		sub	sp, sp, #20
+ 147              	.LCFI7:
+ 148              		.cfi_def_cfa_offset 32
+ 149 0004 1D46     		mov	r5, r3
+ 182:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   USBH_LL_SubmitURB (phost,                     /* Driver handle    */
+ 150              		.loc 1 182 0
+ 151 0006 0024     		movs	r4, #0
+ 152 0008 0394     		str	r4, [sp, #12]
+ 153 000a 0292     		str	r2, [sp, #8]
+ 154 000c 0191     		str	r1, [sp, #4]
+ 155 000e 0122     		movs	r2, #1
+ 156              	.LVL12:
+ 157 0010 0092     		str	r2, [sp]
+ 158 0012 2346     		mov	r3, r4
+ 159              	.LVL13:
+ 160 0014 2946     		mov	r1, r5
+ 161              	.LVL14:
+ 162 0016 FFF7FEFF 		bl	USBH_LL_SubmitURB
+ 163              	.LVL15:
+ 183:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           pipe_num,             /* Pipe index       */
+ 184:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           1U,                    /* Direction : IN   */
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccMo0YBq.s 			page 7
+
+
+ 185:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           USBH_EP_CONTROL,      /* EP type          */
+ 186:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           USBH_PID_DATA,        /* Type Data        */
+ 187:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           buff,                 /* data buffer      */
+ 188:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           length,               /* data length      */
+ 189:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           0U);
+ 190:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   return USBH_OK;
+ 191:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** 
+ 192:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** }
+ 164              		.loc 1 192 0
+ 165 001a 2046     		mov	r0, r4
+ 166 001c 05B0     		add	sp, sp, #20
+ 167              	.LCFI8:
+ 168              		.cfi_def_cfa_offset 12
+ 169              		@ sp needed
+ 170 001e 30BD     		pop	{r4, r5, pc}
+ 171              		.cfi_endproc
+ 172              	.LFE143:
+ 174              		.section	.text.USBH_BulkSendData,"ax",%progbits
+ 175              		.align	1
+ 176              		.global	USBH_BulkSendData
+ 177              		.syntax unified
+ 178              		.thumb
+ 179              		.thumb_func
+ 180              		.fpu fpv5-sp-d16
+ 182              	USBH_BulkSendData:
+ 183              	.LFB144:
+ 193:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** 
+ 194:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** 
+ 195:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** /**
+ 196:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @brief  USBH_BulkSendData
+ 197:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   *         Sends the Bulk Packet to the device
+ 198:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @param  phost: Host Handle
+ 199:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @param  buff: Buffer pointer from which the Data will be sent to Device
+ 200:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @param  length: Length of the data to be sent
+ 201:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @param  pipe_num: Pipe Number
+ 202:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @retval USBH Status
+ 203:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   */
+ 204:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** USBH_StatusTypeDef USBH_BulkSendData (USBH_HandleTypeDef *phost,
+ 205:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                                 uint8_t *buff,
+ 206:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                                 uint16_t length,
+ 207:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                                 uint8_t pipe_num,
+ 208:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                                 uint8_t do_ping)
+ 209:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** {
+ 184              		.loc 1 209 0
+ 185              		.cfi_startproc
+ 186              		@ args = 4, pretend = 0, frame = 0
+ 187              		@ frame_needed = 0, uses_anonymous_args = 0
+ 188              	.LVL16:
+ 189 0000 30B5     		push	{r4, r5, lr}
+ 190              	.LCFI9:
+ 191              		.cfi_def_cfa_offset 12
+ 192              		.cfi_offset 4, -12
+ 193              		.cfi_offset 5, -8
+ 194              		.cfi_offset 14, -4
+ 195 0002 85B0     		sub	sp, sp, #20
+ 196              	.LCFI10:
+ 197              		.cfi_def_cfa_offset 32
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccMo0YBq.s 			page 8
+
+
+ 198 0004 0C46     		mov	r4, r1
+ 199 0006 1946     		mov	r1, r3
+ 200              	.LVL17:
+ 201 0008 9DF82030 		ldrb	r3, [sp, #32]	@ zero_extendqisi2
+ 202              	.LVL18:
+ 210:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   if(phost->device.speed != USBH_SPEED_HIGH)
+ 203              		.loc 1 210 0
+ 204 000c 90F81D53 		ldrb	r5, [r0, #797]	@ zero_extendqisi2
+ 205 0010 05B1     		cbz	r5, .L10
+ 211:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   {
+ 212:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****     do_ping = 0U;
+ 206              		.loc 1 212 0
+ 207 0012 0023     		movs	r3, #0
+ 208              	.L10:
+ 209              	.LVL19:
+ 213:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   }
+ 214:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** 
+ 215:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   USBH_LL_SubmitURB (phost,                     /* Driver handle    */
+ 210              		.loc 1 215 0
+ 211 0014 0393     		str	r3, [sp, #12]
+ 212 0016 0292     		str	r2, [sp, #8]
+ 213 0018 0194     		str	r4, [sp, #4]
+ 214 001a 0123     		movs	r3, #1
+ 215              	.LVL20:
+ 216 001c 0093     		str	r3, [sp]
+ 217 001e 0223     		movs	r3, #2
+ 218 0020 0022     		movs	r2, #0
+ 219              	.LVL21:
+ 220 0022 FFF7FEFF 		bl	USBH_LL_SubmitURB
+ 221              	.LVL22:
+ 216:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           pipe_num,             /* Pipe index       */
+ 217:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           0U,                    /* Direction : IN   */
+ 218:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           USBH_EP_BULK,         /* EP type          */
+ 219:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           USBH_PID_DATA,        /* Type Data        */
+ 220:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           buff,                 /* data buffer      */
+ 221:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           length,               /* data length      */
+ 222:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           do_ping);             /* do ping (HS Only)*/
+ 223:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   return USBH_OK;
+ 224:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** }
+ 222              		.loc 1 224 0
+ 223 0026 0020     		movs	r0, #0
+ 224 0028 05B0     		add	sp, sp, #20
+ 225              	.LCFI11:
+ 226              		.cfi_def_cfa_offset 12
+ 227              		@ sp needed
+ 228 002a 30BD     		pop	{r4, r5, pc}
+ 229              		.cfi_endproc
+ 230              	.LFE144:
+ 232              		.section	.text.USBH_BulkReceiveData,"ax",%progbits
+ 233              		.align	1
+ 234              		.global	USBH_BulkReceiveData
+ 235              		.syntax unified
+ 236              		.thumb
+ 237              		.thumb_func
+ 238              		.fpu fpv5-sp-d16
+ 240              	USBH_BulkReceiveData:
+ 241              	.LFB145:
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccMo0YBq.s 			page 9
+
+
+ 225:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** 
+ 226:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** 
+ 227:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** /**
+ 228:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @brief  USBH_BulkReceiveData
+ 229:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   *         Receives IN bulk packet from device
+ 230:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @param  phost: Host Handle
+ 231:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @param  buff: Buffer pointer in which the received data packet to be copied
+ 232:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @param  length: Length of the data to be received
+ 233:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @param  pipe_num: Pipe Number
+ 234:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @retval USBH Status.
+ 235:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   */
+ 236:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** USBH_StatusTypeDef USBH_BulkReceiveData(USBH_HandleTypeDef *phost,
+ 237:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                                 uint8_t *buff,
+ 238:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                                 uint16_t length,
+ 239:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                                 uint8_t pipe_num)
+ 240:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** {
+ 242              		.loc 1 240 0
+ 243              		.cfi_startproc
+ 244              		@ args = 0, pretend = 0, frame = 0
+ 245              		@ frame_needed = 0, uses_anonymous_args = 0
+ 246              	.LVL23:
+ 247 0000 30B5     		push	{r4, r5, lr}
+ 248              	.LCFI12:
+ 249              		.cfi_def_cfa_offset 12
+ 250              		.cfi_offset 4, -12
+ 251              		.cfi_offset 5, -8
+ 252              		.cfi_offset 14, -4
+ 253 0002 85B0     		sub	sp, sp, #20
+ 254              	.LCFI13:
+ 255              		.cfi_def_cfa_offset 32
+ 256 0004 1D46     		mov	r5, r3
+ 241:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   USBH_LL_SubmitURB (phost,                     /* Driver handle    */
+ 257              		.loc 1 241 0
+ 258 0006 0024     		movs	r4, #0
+ 259 0008 0394     		str	r4, [sp, #12]
+ 260 000a 0292     		str	r2, [sp, #8]
+ 261 000c 0191     		str	r1, [sp, #4]
+ 262 000e 0122     		movs	r2, #1
+ 263              	.LVL24:
+ 264 0010 0092     		str	r2, [sp]
+ 265 0012 0223     		movs	r3, #2
+ 266              	.LVL25:
+ 267 0014 2946     		mov	r1, r5
+ 268              	.LVL26:
+ 269 0016 FFF7FEFF 		bl	USBH_LL_SubmitURB
+ 270              	.LVL27:
+ 242:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           pipe_num,             /* Pipe index       */
+ 243:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           1U,                    /* Direction : IN   */
+ 244:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           USBH_EP_BULK,         /* EP type          */
+ 245:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           USBH_PID_DATA,        /* Type Data        */
+ 246:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           buff,                 /* data buffer      */
+ 247:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           length,               /* data length      */
+ 248:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           0U);
+ 249:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   return USBH_OK;
+ 250:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** }
+ 271              		.loc 1 250 0
+ 272 001a 2046     		mov	r0, r4
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccMo0YBq.s 			page 10
+
+
+ 273 001c 05B0     		add	sp, sp, #20
+ 274              	.LCFI14:
+ 275              		.cfi_def_cfa_offset 12
+ 276              		@ sp needed
+ 277 001e 30BD     		pop	{r4, r5, pc}
+ 278              		.cfi_endproc
+ 279              	.LFE145:
+ 281              		.section	.text.USBH_InterruptReceiveData,"ax",%progbits
+ 282              		.align	1
+ 283              		.global	USBH_InterruptReceiveData
+ 284              		.syntax unified
+ 285              		.thumb
+ 286              		.thumb_func
+ 287              		.fpu fpv5-sp-d16
+ 289              	USBH_InterruptReceiveData:
+ 290              	.LFB146:
+ 251:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** 
+ 252:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** 
+ 253:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** /**
+ 254:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @brief  USBH_InterruptReceiveData
+ 255:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   *         Receives the Device Response to the Interrupt IN token
+ 256:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @param  phost: Host Handle
+ 257:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @param  buff: Buffer pointer in which the response needs to be copied
+ 258:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @param  length: Length of the data to be received
+ 259:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @param  pipe_num: Pipe Number
+ 260:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @retval USBH Status.
+ 261:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   */
+ 262:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** USBH_StatusTypeDef USBH_InterruptReceiveData(USBH_HandleTypeDef *phost,
+ 263:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                                 uint8_t *buff,
+ 264:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                                 uint8_t length,
+ 265:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                                 uint8_t pipe_num)
+ 266:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** {
+ 291              		.loc 1 266 0
+ 292              		.cfi_startproc
+ 293              		@ args = 0, pretend = 0, frame = 0
+ 294              		@ frame_needed = 0, uses_anonymous_args = 0
+ 295              	.LVL28:
+ 296 0000 30B5     		push	{r4, r5, lr}
+ 297              	.LCFI15:
+ 298              		.cfi_def_cfa_offset 12
+ 299              		.cfi_offset 4, -12
+ 300              		.cfi_offset 5, -8
+ 301              		.cfi_offset 14, -4
+ 302 0002 85B0     		sub	sp, sp, #20
+ 303              	.LCFI16:
+ 304              		.cfi_def_cfa_offset 32
+ 305 0004 1D46     		mov	r5, r3
+ 267:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   USBH_LL_SubmitURB (phost,                     /* Driver handle    */
+ 306              		.loc 1 267 0
+ 307 0006 0024     		movs	r4, #0
+ 308 0008 0394     		str	r4, [sp, #12]
+ 309 000a 0292     		str	r2, [sp, #8]
+ 310 000c 0191     		str	r1, [sp, #4]
+ 311 000e 0122     		movs	r2, #1
+ 312              	.LVL29:
+ 313 0010 0092     		str	r2, [sp]
+ 314 0012 0323     		movs	r3, #3
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccMo0YBq.s 			page 11
+
+
+ 315              	.LVL30:
+ 316 0014 2946     		mov	r1, r5
+ 317              	.LVL31:
+ 318 0016 FFF7FEFF 		bl	USBH_LL_SubmitURB
+ 319              	.LVL32:
+ 268:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           pipe_num,             /* Pipe index       */
+ 269:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           1U,                   /* Direction : IN   */
+ 270:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           USBH_EP_INTERRUPT,    /* EP type          */
+ 271:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           USBH_PID_DATA,        /* Type Data        */
+ 272:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           buff,                 /* data buffer      */
+ 273:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           (uint16_t)length,     /* data length      */
+ 274:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           0U);
+ 275:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** 
+ 276:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   return USBH_OK;
+ 277:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** }
+ 320              		.loc 1 277 0
+ 321 001a 2046     		mov	r0, r4
+ 322 001c 05B0     		add	sp, sp, #20
+ 323              	.LCFI17:
+ 324              		.cfi_def_cfa_offset 12
+ 325              		@ sp needed
+ 326 001e 30BD     		pop	{r4, r5, pc}
+ 327              		.cfi_endproc
+ 328              	.LFE146:
+ 330              		.section	.text.USBH_InterruptSendData,"ax",%progbits
+ 331              		.align	1
+ 332              		.global	USBH_InterruptSendData
+ 333              		.syntax unified
+ 334              		.thumb
+ 335              		.thumb_func
+ 336              		.fpu fpv5-sp-d16
+ 338              	USBH_InterruptSendData:
+ 339              	.LFB147:
+ 278:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** 
+ 279:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** /**
+ 280:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @brief  USBH_InterruptSendData
+ 281:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   *         Sends the data on Interrupt OUT Endpoint
+ 282:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @param  phost: Host Handle
+ 283:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @param  buff: Buffer pointer from where the data needs to be copied
+ 284:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @param  length: Length of the data to be sent
+ 285:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @param  pipe_num: Pipe Number
+ 286:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @retval USBH Status.
+ 287:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   */
+ 288:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** USBH_StatusTypeDef USBH_InterruptSendData(USBH_HandleTypeDef *phost,
+ 289:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                                 uint8_t *buff,
+ 290:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                                 uint8_t length,
+ 291:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                                 uint8_t pipe_num)
+ 292:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** {
+ 340              		.loc 1 292 0
+ 341              		.cfi_startproc
+ 342              		@ args = 0, pretend = 0, frame = 0
+ 343              		@ frame_needed = 0, uses_anonymous_args = 0
+ 344              	.LVL33:
+ 345 0000 30B5     		push	{r4, r5, lr}
+ 346              	.LCFI18:
+ 347              		.cfi_def_cfa_offset 12
+ 348              		.cfi_offset 4, -12
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccMo0YBq.s 			page 12
+
+
+ 349              		.cfi_offset 5, -8
+ 350              		.cfi_offset 14, -4
+ 351 0002 85B0     		sub	sp, sp, #20
+ 352              	.LCFI19:
+ 353              		.cfi_def_cfa_offset 32
+ 354 0004 1D46     		mov	r5, r3
+ 293:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   USBH_LL_SubmitURB (phost,                     /* Driver handle    */
+ 355              		.loc 1 293 0
+ 356 0006 0024     		movs	r4, #0
+ 357 0008 0394     		str	r4, [sp, #12]
+ 358 000a 0292     		str	r2, [sp, #8]
+ 359 000c 0191     		str	r1, [sp, #4]
+ 360 000e 0123     		movs	r3, #1
+ 361              	.LVL34:
+ 362 0010 0093     		str	r3, [sp]
+ 363 0012 0323     		movs	r3, #3
+ 364 0014 2246     		mov	r2, r4
+ 365              	.LVL35:
+ 366 0016 2946     		mov	r1, r5
+ 367              	.LVL36:
+ 368 0018 FFF7FEFF 		bl	USBH_LL_SubmitURB
+ 369              	.LVL37:
+ 294:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           pipe_num,             /* Pipe index       */
+ 295:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           0U,                   /* Direction : OUT   */
+ 296:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           USBH_EP_INTERRUPT,    /* EP type          */
+ 297:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           USBH_PID_DATA,        /* Type Data        */
+ 298:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           buff,                 /* data buffer      */
+ 299:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           (uint16_t)length,     /* data length      */
+ 300:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           0U);
+ 301:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** 
+ 302:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   return USBH_OK;
+ 303:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** }
+ 370              		.loc 1 303 0
+ 371 001c 2046     		mov	r0, r4
+ 372 001e 05B0     		add	sp, sp, #20
+ 373              	.LCFI20:
+ 374              		.cfi_def_cfa_offset 12
+ 375              		@ sp needed
+ 376 0020 30BD     		pop	{r4, r5, pc}
+ 377              		.cfi_endproc
+ 378              	.LFE147:
+ 380              		.section	.text.USBH_IsocReceiveData,"ax",%progbits
+ 381              		.align	1
+ 382              		.global	USBH_IsocReceiveData
+ 383              		.syntax unified
+ 384              		.thumb
+ 385              		.thumb_func
+ 386              		.fpu fpv5-sp-d16
+ 388              	USBH_IsocReceiveData:
+ 389              	.LFB148:
+ 304:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** 
+ 305:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** /**
+ 306:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @brief  USBH_IsocReceiveData
+ 307:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   *         Receives the Device Response to the Isochronous IN token
+ 308:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @param  phost: Host Handle
+ 309:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @param  buff: Buffer pointer in which the response needs to be copied
+ 310:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @param  length: Length of the data to be received
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccMo0YBq.s 			page 13
+
+
+ 311:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @param  pipe_num: Pipe Number
+ 312:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @retval USBH Status.
+ 313:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   */
+ 314:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** USBH_StatusTypeDef USBH_IsocReceiveData(USBH_HandleTypeDef *phost,
+ 315:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                                 uint8_t *buff,
+ 316:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                                 uint32_t length,
+ 317:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                                 uint8_t pipe_num)
+ 318:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** {
+ 390              		.loc 1 318 0
+ 391              		.cfi_startproc
+ 392              		@ args = 0, pretend = 0, frame = 0
+ 393              		@ frame_needed = 0, uses_anonymous_args = 0
+ 394              	.LVL38:
+ 395 0000 30B5     		push	{r4, r5, lr}
+ 396              	.LCFI21:
+ 397              		.cfi_def_cfa_offset 12
+ 398              		.cfi_offset 4, -12
+ 399              		.cfi_offset 5, -8
+ 400              		.cfi_offset 14, -4
+ 401 0002 85B0     		sub	sp, sp, #20
+ 402              	.LCFI22:
+ 403              		.cfi_def_cfa_offset 32
+ 404 0004 1D46     		mov	r5, r3
+ 319:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   USBH_LL_SubmitURB (phost,                     /* Driver handle    */
+ 405              		.loc 1 319 0
+ 406 0006 0024     		movs	r4, #0
+ 407 0008 0394     		str	r4, [sp, #12]
+ 408 000a 92B2     		uxth	r2, r2
+ 409              	.LVL39:
+ 410 000c 0292     		str	r2, [sp, #8]
+ 411 000e 0191     		str	r1, [sp, #4]
+ 412 0010 0122     		movs	r2, #1
+ 413 0012 0092     		str	r2, [sp]
+ 414 0014 1346     		mov	r3, r2
+ 415              	.LVL40:
+ 416 0016 2946     		mov	r1, r5
+ 417              	.LVL41:
+ 418 0018 FFF7FEFF 		bl	USBH_LL_SubmitURB
+ 419              	.LVL42:
+ 320:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           pipe_num,             /* Pipe index       */
+ 321:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           1U,                   /* Direction : IN   */
+ 322:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           USBH_EP_ISO,          /* EP type          */
+ 323:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           USBH_PID_DATA,        /* Type Data        */
+ 324:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           buff,                 /* data buffer      */
+ 325:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           (uint16_t)length,     /* data length      */
+ 326:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           0U);
+ 327:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** 
+ 328:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** 
+ 329:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   return USBH_OK;
+ 330:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** }
+ 420              		.loc 1 330 0
+ 421 001c 2046     		mov	r0, r4
+ 422 001e 05B0     		add	sp, sp, #20
+ 423              	.LCFI23:
+ 424              		.cfi_def_cfa_offset 12
+ 425              		@ sp needed
+ 426 0020 30BD     		pop	{r4, r5, pc}
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccMo0YBq.s 			page 14
+
+
+ 427              		.cfi_endproc
+ 428              	.LFE148:
+ 430              		.section	.text.USBH_IsocSendData,"ax",%progbits
+ 431              		.align	1
+ 432              		.global	USBH_IsocSendData
+ 433              		.syntax unified
+ 434              		.thumb
+ 435              		.thumb_func
+ 436              		.fpu fpv5-sp-d16
+ 438              	USBH_IsocSendData:
+ 439              	.LFB149:
+ 331:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** 
+ 332:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** /**
+ 333:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @brief  USBH_IsocSendData
+ 334:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   *         Sends the data on Isochronous OUT Endpoint
+ 335:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @param  phost: Host Handle
+ 336:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @param  buff: Buffer pointer from where the data needs to be copied
+ 337:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @param  length: Length of the data to be sent
+ 338:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @param  pipe_num: Pipe Number
+ 339:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   * @retval USBH Status.
+ 340:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   */
+ 341:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** USBH_StatusTypeDef USBH_IsocSendData(USBH_HandleTypeDef *phost,
+ 342:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                                 uint8_t *buff,
+ 343:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                                 uint32_t length,
+ 344:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                                 uint8_t pipe_num)
+ 345:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** {
+ 440              		.loc 1 345 0
+ 441              		.cfi_startproc
+ 442              		@ args = 0, pretend = 0, frame = 0
+ 443              		@ frame_needed = 0, uses_anonymous_args = 0
+ 444              	.LVL43:
+ 445 0000 30B5     		push	{r4, r5, lr}
+ 446              	.LCFI24:
+ 447              		.cfi_def_cfa_offset 12
+ 448              		.cfi_offset 4, -12
+ 449              		.cfi_offset 5, -8
+ 450              		.cfi_offset 14, -4
+ 451 0002 85B0     		sub	sp, sp, #20
+ 452              	.LCFI25:
+ 453              		.cfi_def_cfa_offset 32
+ 454 0004 1D46     		mov	r5, r3
+ 346:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   USBH_LL_SubmitURB (phost,                     /* Driver handle    */
+ 455              		.loc 1 346 0
+ 456 0006 0024     		movs	r4, #0
+ 457 0008 0394     		str	r4, [sp, #12]
+ 458 000a 92B2     		uxth	r2, r2
+ 459              	.LVL44:
+ 460 000c 0292     		str	r2, [sp, #8]
+ 461 000e 0191     		str	r1, [sp, #4]
+ 462 0010 0123     		movs	r3, #1
+ 463              	.LVL45:
+ 464 0012 0093     		str	r3, [sp]
+ 465 0014 2246     		mov	r2, r4
+ 466 0016 2946     		mov	r1, r5
+ 467              	.LVL46:
+ 468 0018 FFF7FEFF 		bl	USBH_LL_SubmitURB
+ 469              	.LVL47:
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccMo0YBq.s 			page 15
+
+
+ 347:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           pipe_num,             /* Pipe index       */
+ 348:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           0U,                   /* Direction : OUT   */
+ 349:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           USBH_EP_ISO,          /* EP type          */
+ 350:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           USBH_PID_DATA,        /* Type Data        */
+ 351:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           buff,                 /* data buffer      */
+ 352:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           (uint16_t)length,     /* data length      */
+ 353:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****                           0U);
+ 354:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** 
+ 355:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c ****   return USBH_OK;
+ 356:Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c **** }
+ 470              		.loc 1 356 0
+ 471 001c 2046     		mov	r0, r4
+ 472 001e 05B0     		add	sp, sp, #20
+ 473              	.LCFI26:
+ 474              		.cfi_def_cfa_offset 12
+ 475              		@ sp needed
+ 476 0020 30BD     		pop	{r4, r5, pc}
+ 477              		.cfi_endproc
+ 478              	.LFE149:
+ 480              		.text
+ 481              	.Letext0:
+ 482              		.file 2 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 483              		.file 3 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\lock.h"
+ 484              		.file 4 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\_types.h"
+ 485              		.file 5 "c:\\gcc_toolchain\\6_2017-q1-update\\lib\\gcc\\arm-none-eabi\\6.3.1\\include\\stddef.h"
+ 486              		.file 6 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\reent.h"
+ 487              		.file 7 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 488              		.file 8 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\stdlib.h"
+ 489              		.file 9 "Drivers/CMSIS/Include/core_cm7.h"
+ 490              		.file 10 "Drivers/CMSIS/Device/ST/STM32F7xx/Include/system_stm32f7xx.h"
+ 491              		.file 11 "Middlewares/Third_Party/FreeRTOS/Source/include/task.h"
+ 492              		.file 12 "Middlewares/Third_Party/FreeRTOS/Source/include/queue.h"
+ 493              		.file 13 "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h"
+ 494              		.file 14 "Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_def.h"
+ 495              		.file 15 "Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_ctlreq.h"
+ 496              		.file 16 "Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_core.h"
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccMo0YBq.s 			page 16
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 usbh_ioreq.c
+C:\Users\Student\AppData\Local\Temp\ccMo0YBq.s:18     .text.USBH_CtlSendSetup:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccMo0YBq.s:25     .text.USBH_CtlSendSetup:00000000 USBH_CtlSendSetup
+C:\Users\Student\AppData\Local\Temp\ccMo0YBq.s:68     .text.USBH_CtlSendData:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccMo0YBq.s:75     .text.USBH_CtlSendData:00000000 USBH_CtlSendData
+C:\Users\Student\AppData\Local\Temp\ccMo0YBq.s:126    .text.USBH_CtlReceiveData:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccMo0YBq.s:133    .text.USBH_CtlReceiveData:00000000 USBH_CtlReceiveData
+C:\Users\Student\AppData\Local\Temp\ccMo0YBq.s:175    .text.USBH_BulkSendData:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccMo0YBq.s:182    .text.USBH_BulkSendData:00000000 USBH_BulkSendData
+C:\Users\Student\AppData\Local\Temp\ccMo0YBq.s:233    .text.USBH_BulkReceiveData:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccMo0YBq.s:240    .text.USBH_BulkReceiveData:00000000 USBH_BulkReceiveData
+C:\Users\Student\AppData\Local\Temp\ccMo0YBq.s:282    .text.USBH_InterruptReceiveData:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccMo0YBq.s:289    .text.USBH_InterruptReceiveData:00000000 USBH_InterruptReceiveData
+C:\Users\Student\AppData\Local\Temp\ccMo0YBq.s:331    .text.USBH_InterruptSendData:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccMo0YBq.s:338    .text.USBH_InterruptSendData:00000000 USBH_InterruptSendData
+C:\Users\Student\AppData\Local\Temp\ccMo0YBq.s:381    .text.USBH_IsocReceiveData:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccMo0YBq.s:388    .text.USBH_IsocReceiveData:00000000 USBH_IsocReceiveData
+C:\Users\Student\AppData\Local\Temp\ccMo0YBq.s:431    .text.USBH_IsocSendData:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccMo0YBq.s:438    .text.USBH_IsocSendData:00000000 USBH_IsocSendData
+                     .debug_frame:00000010 $d
+
+UNDEFINED SYMBOLS
+USBH_LL_SubmitURB

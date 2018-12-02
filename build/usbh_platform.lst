@@ -1,0 +1,174 @@
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccCA4TuI.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"usbh_platform.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.MX_DriverVbusFS,"ax",%progbits
+  18              		.align	1
+  19              		.global	MX_DriverVbusFS
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  23              		.fpu fpv5-sp-d16
+  25              	MX_DriverVbusFS:
+  26              	.LFB136:
+  27              		.file 1 "Src/usbh_platform.c"
+   1:Src/usbh_platform.c **** /**
+   2:Src/usbh_platform.c ****   ******************************************************************************
+   3:Src/usbh_platform.c ****   * @file           : usbh_platform.c
+   4:Src/usbh_platform.c **** 
+   5:Src/usbh_platform.c ****   * @brief          : This file implements the USB platform
+   6:Src/usbh_platform.c ****   ******************************************************************************
+   7:Src/usbh_platform.c ****   * This notice applies to any and all portions of this file
+   8:Src/usbh_platform.c ****   * that are not between comment pairs USER CODE BEGIN and
+   9:Src/usbh_platform.c ****   * USER CODE END. Other portions of this file, whether 
+  10:Src/usbh_platform.c ****   * inserted by the user or by software development tools
+  11:Src/usbh_platform.c ****   * are owned by their respective copyright owners.
+  12:Src/usbh_platform.c ****   *
+  13:Src/usbh_platform.c ****   * Copyright (c) 2018 STMicroelectronics International N.V. 
+  14:Src/usbh_platform.c ****   * All rights reserved.
+  15:Src/usbh_platform.c ****   *
+  16:Src/usbh_platform.c ****   * Redistribution and use in source and binary forms, with or without 
+  17:Src/usbh_platform.c ****   * modification, are permitted, provided that the following conditions are met:
+  18:Src/usbh_platform.c ****   *
+  19:Src/usbh_platform.c ****   * 1. Redistribution of source code must retain the above copyright notice, 
+  20:Src/usbh_platform.c ****   *    this list of conditions and the following disclaimer.
+  21:Src/usbh_platform.c ****   * 2. Redistributions in binary form must reproduce the above copyright notice,
+  22:Src/usbh_platform.c ****   *    this list of conditions and the following disclaimer in the documentation
+  23:Src/usbh_platform.c ****   *    and/or other materials provided with the distribution.
+  24:Src/usbh_platform.c ****   * 3. Neither the name of STMicroelectronics nor the names of other 
+  25:Src/usbh_platform.c ****   *    contributors to this software may be used to endorse or promote products 
+  26:Src/usbh_platform.c ****   *    derived from this software without specific written permission.
+  27:Src/usbh_platform.c ****   * 4. This software, including modifications and/or derivative works of this 
+  28:Src/usbh_platform.c ****   *    software, must execute solely and exclusively on microcontroller or
+  29:Src/usbh_platform.c ****   *    microprocessor devices manufactured by or for STMicroelectronics.
+  30:Src/usbh_platform.c ****   * 5. Redistribution and use of this software other than as permitted under 
+  31:Src/usbh_platform.c ****   *    this license is void and will automatically terminate your rights under 
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccCA4TuI.s 			page 2
+
+
+  32:Src/usbh_platform.c ****   *    this license. 
+  33:Src/usbh_platform.c ****   *
+  34:Src/usbh_platform.c ****   * THIS SOFTWARE IS PROVIDED BY STMICROELECTRONICS AND CONTRIBUTORS "AS IS" 
+  35:Src/usbh_platform.c ****   * AND ANY EXPRESS, IMPLIED OR STATUTORY WARRANTIES, INCLUDING, BUT NOT 
+  36:Src/usbh_platform.c ****   * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A 
+  37:Src/usbh_platform.c ****   * PARTICULAR PURPOSE AND NON-INFRINGEMENT OF THIRD PARTY INTELLECTUAL PROPERTY
+  38:Src/usbh_platform.c ****   * RIGHTS ARE DISCLAIMED TO THE FULLEST EXTENT PERMITTED BY LAW. IN NO EVENT 
+  39:Src/usbh_platform.c ****   * SHALL STMICROELECTRONICS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+  40:Src/usbh_platform.c ****   * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+  41:Src/usbh_platform.c ****   * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, 
+  42:Src/usbh_platform.c ****   * OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF 
+  43:Src/usbh_platform.c ****   * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING 
+  44:Src/usbh_platform.c ****   * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+  45:Src/usbh_platform.c ****   * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  46:Src/usbh_platform.c ****   *
+  47:Src/usbh_platform.c ****   ******************************************************************************
+  48:Src/usbh_platform.c ****   */
+  49:Src/usbh_platform.c **** 
+  50:Src/usbh_platform.c **** /* Includes ------------------------------------------------------------------*/
+  51:Src/usbh_platform.c **** #include "usbh_platform.h"
+  52:Src/usbh_platform.c **** 
+  53:Src/usbh_platform.c **** /* USER CODE BEGIN INCLUDE */
+  54:Src/usbh_platform.c **** 
+  55:Src/usbh_platform.c **** /* USER CODE END INCLUDE */
+  56:Src/usbh_platform.c **** 
+  57:Src/usbh_platform.c **** /**
+  58:Src/usbh_platform.c ****   * @brief  Drive VBUS.
+  59:Src/usbh_platform.c ****   * @param  state : VBUS state
+  60:Src/usbh_platform.c ****   *          This parameter can be one of the these values:
+  61:Src/usbh_platform.c ****   *           - 0 : VBUS Active
+  62:Src/usbh_platform.c ****   *           - 1 : VBUS Inactive
+  63:Src/usbh_platform.c ****   */
+  64:Src/usbh_platform.c **** void MX_DriverVbusFS(uint8_t state)
+  65:Src/usbh_platform.c **** { 
+  28              		.loc 1 65 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              	.LVL0:
+  33 0000 08B5     		push	{r3, lr}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 8
+  36              		.cfi_offset 3, -8
+  37              		.cfi_offset 14, -4
+  38              	.LVL1:
+  66:Src/usbh_platform.c ****   uint8_t data = state; 
+  67:Src/usbh_platform.c ****   /* USER CODE BEGIN PREPARE_GPIO_DATA_VBUS_FS */
+  68:Src/usbh_platform.c ****   if(state == 0)
+  39              		.loc 1 68 0
+  40 0002 28B1     		cbz	r0, .L5
+  69:Src/usbh_platform.c ****   {
+  70:Src/usbh_platform.c ****     /* Drive high Charge pump */ 	     
+  71:Src/usbh_platform.c ****     data = GPIO_PIN_SET;
+  72:Src/usbh_platform.c ****   }
+  73:Src/usbh_platform.c ****   else
+  74:Src/usbh_platform.c ****   {
+  75:Src/usbh_platform.c ****     /* Drive low Charge pump */
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccCA4TuI.s 			page 3
+
+
+  76:Src/usbh_platform.c ****     data = GPIO_PIN_RESET;
+  41              		.loc 1 76 0
+  42 0004 0022     		movs	r2, #0
+  43              	.L2:
+  44              	.LVL2:
+  77:Src/usbh_platform.c ****   }
+  78:Src/usbh_platform.c ****   /* USER CODE END PREPARE_GPIO_DATA_VBUS_FS */
+  79:Src/usbh_platform.c ****   HAL_GPIO_WritePin(GPIOD,GPIO_PIN_5,(GPIO_PinState)data);
+  45              		.loc 1 79 0
+  46 0006 2021     		movs	r1, #32
+  47 0008 0248     		ldr	r0, .L6
+  48              	.LVL3:
+  49 000a FFF7FEFF 		bl	HAL_GPIO_WritePin
+  50              	.LVL4:
+  51 000e 08BD     		pop	{r3, pc}
+  52              	.LVL5:
+  53              	.L5:
+  71:Src/usbh_platform.c ****   }
+  54              		.loc 1 71 0
+  55 0010 0122     		movs	r2, #1
+  56 0012 F8E7     		b	.L2
+  57              	.L7:
+  58              		.align	2
+  59              	.L6:
+  60 0014 000C0240 		.word	1073875968
+  61              		.cfi_endproc
+  62              	.LFE136:
+  64              		.text
+  65              	.Letext0:
+  66              		.file 2 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\machine\\_default_types.h"
+  67              		.file 3 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\_stdint.h"
+  68              		.file 4 "Drivers/CMSIS/Include/core_cm7.h"
+  69              		.file 5 "Drivers/CMSIS/Device/ST/STM32F7xx/Include/system_stm32f7xx.h"
+  70              		.file 6 "Drivers/CMSIS/Device/ST/STM32F7xx/Include/stm32f746xx.h"
+  71              		.file 7 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\lock.h"
+  72              		.file 8 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\_types.h"
+  73              		.file 9 "c:\\gcc_toolchain\\6_2017-q1-update\\lib\\gcc\\arm-none-eabi\\6.3.1\\include\\stddef.h"
+  74              		.file 10 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\reent.h"
+  75              		.file 11 "Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_gpio.h"
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccCA4TuI.s 			page 4
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 usbh_platform.c
+C:\Users\Student\AppData\Local\Temp\ccCA4TuI.s:18     .text.MX_DriverVbusFS:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccCA4TuI.s:25     .text.MX_DriverVbusFS:00000000 MX_DriverVbusFS
+C:\Users\Student\AppData\Local\Temp\ccCA4TuI.s:60     .text.MX_DriverVbusFS:00000014 $d
+                     .debug_frame:00000010 $d
+
+UNDEFINED SYMBOLS
+HAL_GPIO_WritePin

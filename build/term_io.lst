@@ -1,0 +1,1490 @@
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cckfYh1u.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"term_io.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.xatoi,"ax",%progbits
+  18              		.align	1
+  19              		.global	xatoi
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  23              		.fpu fpv5-sp-d16
+  25              	xatoi:
+  26              	.LFB136:
+  27              		.file 1 "Src/term_io.c"
+   1:Src/term_io.c **** // Basic code from ChaN, minor modifications by Martin Thomas
+   2:Src/term_io.c **** // 2011, 2017 minor tuning by RABW
+   3:Src/term_io.c **** 
+   4:Src/term_io.c **** #include <stdarg.h>
+   5:Src/term_io.c **** #include "term_io.h"
+   6:Src/term_io.c **** #include "dbgu.h"
+   7:Src/term_io.c **** #include "stm32f7xx_hal.h"
+   8:Src/term_io.c **** 
+   9:Src/term_io.c **** 
+  10:Src/term_io.c **** int xatoi (char **str, long *res)
+  11:Src/term_io.c **** {
+  28              		.loc 1 11 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+  33              	.LVL0:
+  34 0000 70B4     		push	{r4, r5, r6}
+  35              	.LCFI0:
+  36              		.cfi_def_cfa_offset 12
+  37              		.cfi_offset 4, -12
+  38              		.cfi_offset 5, -8
+  39              		.cfi_offset 6, -4
+  40              	.LVL1:
+  12:Src/term_io.c **** 	uint32_t val;
+  13:Src/term_io.c **** 	uint8_t c, radix, s = 0;
+  14:Src/term_io.c **** 
+  15:Src/term_io.c **** 
+  16:Src/term_io.c **** 	while ((c = **str) == ' ') (*str)++;
+  41              		.loc 1 16 0
+  42 0002 01E0     		b	.L2
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cckfYh1u.s 			page 2
+
+
+  43              	.LVL2:
+  44              	.L3:
+  45              		.loc 1 16 0 is_stmt 0 discriminator 2
+  46 0004 0132     		adds	r2, r2, #1
+  47 0006 0260     		str	r2, [r0]
+  48              	.LVL3:
+  49              	.L2:
+  50              		.loc 1 16 0 discriminator 1
+  51 0008 0268     		ldr	r2, [r0]
+  52 000a 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
+  53              	.LVL4:
+  54 000c 202B     		cmp	r3, #32
+  55 000e F9D0     		beq	.L3
+  17:Src/term_io.c **** 	if (c == '-') {
+  56              		.loc 1 17 0 is_stmt 1
+  57 0010 2D2B     		cmp	r3, #45
+  58 0012 0AD0     		beq	.L22
+  13:Src/term_io.c **** 
+  59              		.loc 1 13 0
+  60 0014 0026     		movs	r6, #0
+  61              	.LVL5:
+  62              	.L4:
+  18:Src/term_io.c **** 		s = 1;
+  19:Src/term_io.c **** 		c = *(++(*str));
+  20:Src/term_io.c **** 	}
+  21:Src/term_io.c **** 	if (c == '0') {
+  63              		.loc 1 21 0
+  64 0016 302B     		cmp	r3, #48
+  65 0018 0CD0     		beq	.L23
+  22:Src/term_io.c **** 		c = *(++(*str));
+  23:Src/term_io.c **** 		if (c <= ' ') {
+  24:Src/term_io.c **** 			*res = 0; return 1;
+  25:Src/term_io.c **** 		}
+  26:Src/term_io.c **** 		if (c == 'x') {
+  27:Src/term_io.c **** 			radix = 16;
+  28:Src/term_io.c **** 			c = *(++(*str));
+  29:Src/term_io.c **** 		} else {
+  30:Src/term_io.c **** 			if (c == 'b') {
+  31:Src/term_io.c **** 				radix = 2;
+  32:Src/term_io.c **** 				c = *(++(*str));
+  33:Src/term_io.c **** 			} else {
+  34:Src/term_io.c **** 				if ((c >= '0')&&(c <= '9'))
+  35:Src/term_io.c **** 					radix = 8;
+  36:Src/term_io.c **** 				else
+  37:Src/term_io.c **** 					return 0;
+  38:Src/term_io.c **** 			}
+  39:Src/term_io.c **** 		}
+  40:Src/term_io.c **** 	} else {
+  41:Src/term_io.c **** 		if ((c < '1')||(c > '9'))
+  66              		.loc 1 41 0
+  67 001a A3F13102 		sub	r2, r3, #49
+  68 001e D2B2     		uxtb	r2, r2
+  69 0020 082A     		cmp	r2, #8
+  70 0022 46D8     		bhi	.L18
+  42:Src/term_io.c **** 			return 0;
+  43:Src/term_io.c **** 		radix = 10;
+  71              		.loc 1 43 0
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cckfYh1u.s 			page 3
+
+
+  72 0024 0A25     		movs	r5, #10
+  73              	.L9:
+  74              	.LVL6:
+  44:Src/term_io.c **** 	}
+  45:Src/term_io.c **** 	val = 0;
+  75              		.loc 1 45 0
+  76 0026 0024     		movs	r4, #0
+  46:Src/term_io.c **** 	while (c > ' ') {
+  77              		.loc 1 46 0
+  78 0028 2DE0     		b	.L11
+  79              	.LVL7:
+  80              	.L22:
+  19:Src/term_io.c **** 	}
+  81              		.loc 1 19 0
+  82 002a 531C     		adds	r3, r2, #1
+  83              	.LVL8:
+  84 002c 0360     		str	r3, [r0]
+  85              	.LVL9:
+  86 002e 5378     		ldrb	r3, [r2, #1]	@ zero_extendqisi2
+  87              	.LVL10:
+  18:Src/term_io.c **** 		c = *(++(*str));
+  88              		.loc 1 18 0
+  89 0030 0126     		movs	r6, #1
+  90 0032 F0E7     		b	.L4
+  91              	.LVL11:
+  92              	.L23:
+  22:Src/term_io.c **** 		if (c <= ' ') {
+  93              		.loc 1 22 0
+  94 0034 0368     		ldr	r3, [r0]
+  95              	.LVL12:
+  96 0036 5A1C     		adds	r2, r3, #1
+  97 0038 0260     		str	r2, [r0]
+  98 003a 5B78     		ldrb	r3, [r3, #1]	@ zero_extendqisi2
+  99              	.LVL13:
+  23:Src/term_io.c **** 			*res = 0; return 1;
+ 100              		.loc 1 23 0
+ 101 003c 202B     		cmp	r3, #32
+ 102 003e 0AD9     		bls	.L24
+  26:Src/term_io.c **** 			radix = 16;
+ 103              		.loc 1 26 0
+ 104 0040 782B     		cmp	r3, #120
+ 105 0042 0CD0     		beq	.L25
+  30:Src/term_io.c **** 				radix = 2;
+ 106              		.loc 1 30 0
+ 107 0044 622B     		cmp	r3, #98
+ 108 0046 0FD0     		beq	.L26
+  34:Src/term_io.c **** 					radix = 8;
+ 109              		.loc 1 34 0
+ 110 0048 A3F13002 		sub	r2, r3, #48
+ 111 004c D2B2     		uxtb	r2, r2
+ 112 004e 092A     		cmp	r2, #9
+ 113 0050 0FD8     		bhi	.L27
+  35:Src/term_io.c **** 				else
+ 114              		.loc 1 35 0
+ 115 0052 0825     		movs	r5, #8
+ 116 0054 E7E7     		b	.L9
+ 117              	.L24:
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cckfYh1u.s 			page 4
+
+
+  24:Src/term_io.c **** 		}
+ 118              		.loc 1 24 0
+ 119 0056 0023     		movs	r3, #0
+ 120              	.LVL14:
+ 121 0058 0B60     		str	r3, [r1]
+ 122              	.LVL15:
+ 123 005a 0120     		movs	r0, #1
+ 124              	.LVL16:
+ 125 005c 2AE0     		b	.L1
+ 126              	.LVL17:
+ 127              	.L25:
+  28:Src/term_io.c **** 		} else {
+ 128              		.loc 1 28 0
+ 129 005e 531C     		adds	r3, r2, #1
+ 130              	.LVL18:
+ 131 0060 0360     		str	r3, [r0]
+ 132              	.LVL19:
+ 133 0062 5378     		ldrb	r3, [r2, #1]	@ zero_extendqisi2
+ 134              	.LVL20:
+  27:Src/term_io.c **** 			c = *(++(*str));
+ 135              		.loc 1 27 0
+ 136 0064 1025     		movs	r5, #16
+ 137 0066 DEE7     		b	.L9
+ 138              	.LVL21:
+ 139              	.L26:
+  32:Src/term_io.c **** 			} else {
+ 140              		.loc 1 32 0
+ 141 0068 531C     		adds	r3, r2, #1
+ 142              	.LVL22:
+ 143 006a 0360     		str	r3, [r0]
+ 144              	.LVL23:
+ 145 006c 5378     		ldrb	r3, [r2, #1]	@ zero_extendqisi2
+ 146              	.LVL24:
+  31:Src/term_io.c **** 				c = *(++(*str));
+ 147              		.loc 1 31 0
+ 148 006e 0225     		movs	r5, #2
+ 149 0070 D9E7     		b	.L9
+ 150              	.LVL25:
+ 151              	.L27:
+  37:Src/term_io.c **** 			}
+ 152              		.loc 1 37 0
+ 153 0072 0020     		movs	r0, #0
+ 154              	.LVL26:
+ 155 0074 1EE0     		b	.L1
+ 156              	.LVL27:
+ 157              	.L13:
+  47:Src/term_io.c **** 		if (c >= 'a') c -= 0x20;
+  48:Src/term_io.c **** 		c -= '0';
+  49:Src/term_io.c **** 		if (c >= 17) {
+  50:Src/term_io.c **** 			c -= 7;
+  51:Src/term_io.c **** 			if (c <= 9) return 0;
+  52:Src/term_io.c **** 		}
+  53:Src/term_io.c **** 		if (c >= radix) return 0;
+ 158              		.loc 1 53 0
+ 159 0076 AA42     		cmp	r2, r5
+ 160 0078 1ED2     		bcs	.L20
+  54:Src/term_io.c **** 		val = val * radix + c;
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cckfYh1u.s 			page 5
+
+
+ 161              		.loc 1 54 0
+ 162 007a 04FB0524 		mla	r4, r4, r5, r2
+ 163              	.LVL28:
+  55:Src/term_io.c **** 		c = *(++(*str));
+ 164              		.loc 1 55 0
+ 165 007e 0368     		ldr	r3, [r0]
+ 166 0080 5A1C     		adds	r2, r3, #1
+ 167              	.LVL29:
+ 168 0082 0260     		str	r2, [r0]
+ 169 0084 5B78     		ldrb	r3, [r3, #1]	@ zero_extendqisi2
+ 170              	.LVL30:
+ 171              	.L11:
+  46:Src/term_io.c **** 		if (c >= 'a') c -= 0x20;
+ 172              		.loc 1 46 0
+ 173 0086 202B     		cmp	r3, #32
+ 174 0088 0ED9     		bls	.L28
+  47:Src/term_io.c **** 		c -= '0';
+ 175              		.loc 1 47 0
+ 176 008a 602B     		cmp	r3, #96
+ 177 008c 01D9     		bls	.L12
+  47:Src/term_io.c **** 		c -= '0';
+ 178              		.loc 1 47 0 is_stmt 0 discriminator 1
+ 179 008e 203B     		subs	r3, r3, #32
+ 180              	.LVL31:
+ 181 0090 DBB2     		uxtb	r3, r3
+ 182              	.LVL32:
+ 183              	.L12:
+  48:Src/term_io.c **** 		if (c >= 17) {
+ 184              		.loc 1 48 0 is_stmt 1
+ 185 0092 A3F13002 		sub	r2, r3, #48
+ 186 0096 D2B2     		uxtb	r2, r2
+ 187              	.LVL33:
+  49:Src/term_io.c **** 			c -= 7;
+ 188              		.loc 1 49 0
+ 189 0098 102A     		cmp	r2, #16
+ 190 009a ECD9     		bls	.L13
+  50:Src/term_io.c **** 			if (c <= 9) return 0;
+ 191              		.loc 1 50 0
+ 192 009c 373B     		subs	r3, r3, #55
+ 193 009e DAB2     		uxtb	r2, r3
+ 194              	.LVL34:
+  51:Src/term_io.c **** 		}
+ 195              		.loc 1 51 0
+ 196 00a0 092A     		cmp	r2, #9
+ 197 00a2 E8D8     		bhi	.L13
+ 198 00a4 0020     		movs	r0, #0
+ 199              	.LVL35:
+ 200 00a6 05E0     		b	.L1
+ 201              	.LVL36:
+ 202              	.L28:
+  56:Src/term_io.c **** 	}
+  57:Src/term_io.c **** 	if (s) val = -val;
+ 203              		.loc 1 57 0
+ 204 00a8 06B1     		cbz	r6, .L15
+ 205              		.loc 1 57 0 is_stmt 0 discriminator 1
+ 206 00aa 6442     		negs	r4, r4
+ 207              	.LVL37:
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cckfYh1u.s 			page 6
+
+
+ 208              	.L15:
+  58:Src/term_io.c **** 	*res = val;
+ 209              		.loc 1 58 0 is_stmt 1
+ 210 00ac 0C60     		str	r4, [r1]
+  59:Src/term_io.c **** 	return 1;
+ 211              		.loc 1 59 0
+ 212 00ae 0120     		movs	r0, #1
+ 213              	.LVL38:
+ 214 00b0 00E0     		b	.L1
+ 215              	.LVL39:
+ 216              	.L18:
+  42:Src/term_io.c **** 		radix = 10;
+ 217              		.loc 1 42 0
+ 218 00b2 0020     		movs	r0, #0
+ 219              	.LVL40:
+ 220              	.L1:
+  60:Src/term_io.c **** }
+ 221              		.loc 1 60 0
+ 222 00b4 70BC     		pop	{r4, r5, r6}
+ 223              	.LCFI1:
+ 224              		.cfi_remember_state
+ 225              		.cfi_restore 6
+ 226              		.cfi_restore 5
+ 227              		.cfi_restore 4
+ 228              		.cfi_def_cfa_offset 0
+ 229              	.LVL41:
+ 230 00b6 7047     		bx	lr
+ 231              	.LVL42:
+ 232              	.L20:
+ 233              	.LCFI2:
+ 234              		.cfi_restore_state
+  53:Src/term_io.c **** 		val = val * radix + c;
+ 235              		.loc 1 53 0
+ 236 00b8 0020     		movs	r0, #0
+ 237              	.LVL43:
+ 238 00ba FBE7     		b	.L1
+ 239              		.cfi_endproc
+ 240              	.LFE136:
+ 242              		.section	.text.xputc,"ax",%progbits
+ 243              		.align	1
+ 244              		.global	xputc
+ 245              		.syntax unified
+ 246              		.thumb
+ 247              		.thumb_func
+ 248              		.fpu fpv5-sp-d16
+ 250              	xputc:
+ 251              	.LFB137:
+  61:Src/term_io.c **** 
+  62:Src/term_io.c **** 
+  63:Src/term_io.c **** 
+  64:Src/term_io.c **** 
+  65:Src/term_io.c **** void xputc (char c)
+  66:Src/term_io.c **** {
+ 252              		.loc 1 66 0
+ 253              		.cfi_startproc
+ 254              		@ args = 0, pretend = 0, frame = 0
+ 255              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cckfYh1u.s 			page 7
+
+
+ 256              	.LVL44:
+ 257 0000 08B5     		push	{r3, lr}
+ 258              	.LCFI3:
+ 259              		.cfi_def_cfa_offset 8
+ 260              		.cfi_offset 3, -8
+ 261              		.cfi_offset 14, -4
+  67:Src/term_io.c **** 	debug_chr(c);
+ 262              		.loc 1 67 0
+ 263 0002 FFF7FEFF 		bl	debug_chr
+ 264              	.LVL45:
+ 265 0006 08BD     		pop	{r3, pc}
+ 266              		.cfi_endproc
+ 267              	.LFE137:
+ 269              		.section	.text.xputs,"ax",%progbits
+ 270              		.align	1
+ 271              		.global	xputs
+ 272              		.syntax unified
+ 273              		.thumb
+ 274              		.thumb_func
+ 275              		.fpu fpv5-sp-d16
+ 277              	xputs:
+ 278              	.LFB138:
+  68:Src/term_io.c **** }
+  69:Src/term_io.c **** 
+  70:Src/term_io.c **** 
+  71:Src/term_io.c **** 
+  72:Src/term_io.c **** 
+  73:Src/term_io.c **** void xputs (const char* str)
+  74:Src/term_io.c **** {
+ 279              		.loc 1 74 0
+ 280              		.cfi_startproc
+ 281              		@ args = 0, pretend = 0, frame = 0
+ 282              		@ frame_needed = 0, uses_anonymous_args = 0
+ 283              	.LVL46:
+ 284 0000 10B5     		push	{r4, lr}
+ 285              	.LCFI4:
+ 286              		.cfi_def_cfa_offset 8
+ 287              		.cfi_offset 4, -8
+ 288              		.cfi_offset 14, -4
+ 289 0002 0446     		mov	r4, r0
+  75:Src/term_io.c **** 	while (*str)
+ 290              		.loc 1 75 0
+ 291 0004 02E0     		b	.L32
+ 292              	.LVL47:
+ 293              	.L33:
+  76:Src/term_io.c **** 		xputc(*str++);
+ 294              		.loc 1 76 0
+ 295 0006 0134     		adds	r4, r4, #1
+ 296              	.LVL48:
+ 297 0008 FFF7FEFF 		bl	xputc
+ 298              	.LVL49:
+ 299              	.L32:
+  75:Src/term_io.c **** 	while (*str)
+ 300              		.loc 1 75 0
+ 301 000c 2078     		ldrb	r0, [r4]	@ zero_extendqisi2
+ 302 000e 0028     		cmp	r0, #0
+ 303 0010 F9D1     		bne	.L33
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cckfYh1u.s 			page 8
+
+
+  77:Src/term_io.c **** }
+ 304              		.loc 1 77 0
+ 305 0012 10BD     		pop	{r4, pc}
+ 306              		.cfi_endproc
+ 307              	.LFE138:
+ 309              		.section	.text.xitoa,"ax",%progbits
+ 310              		.align	1
+ 311              		.global	xitoa
+ 312              		.syntax unified
+ 313              		.thumb
+ 314              		.thumb_func
+ 315              		.fpu fpv5-sp-d16
+ 317              	xitoa:
+ 318              	.LFB139:
+  78:Src/term_io.c **** 
+  79:Src/term_io.c **** 
+  80:Src/term_io.c **** 
+  81:Src/term_io.c **** 
+  82:Src/term_io.c **** void xitoa (long val, int radix, int len)
+  83:Src/term_io.c **** {
+ 319              		.loc 1 83 0
+ 320              		.cfi_startproc
+ 321              		@ args = 0, pretend = 0, frame = 24
+ 322              		@ frame_needed = 0, uses_anonymous_args = 0
+ 323              	.LVL50:
+ 324 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 325              	.LCFI5:
+ 326              		.cfi_def_cfa_offset 20
+ 327              		.cfi_offset 4, -20
+ 328              		.cfi_offset 5, -16
+ 329              		.cfi_offset 6, -12
+ 330              		.cfi_offset 7, -8
+ 331              		.cfi_offset 14, -4
+ 332 0002 87B0     		sub	sp, sp, #28
+ 333              	.LCFI6:
+ 334              		.cfi_def_cfa_offset 48
+ 335              	.LVL51:
+  84:Src/term_io.c **** 	uint8_t c, r, sgn = 0, pad = ' ';
+  85:Src/term_io.c **** 	uint8_t s[20], i = 0;
+  86:Src/term_io.c **** 	uint32_t v;
+  87:Src/term_io.c **** 
+  88:Src/term_io.c **** 
+  89:Src/term_io.c **** 	if (radix < 0) {
+ 336              		.loc 1 89 0
+ 337 0004 B1F1000C 		subs	ip, r1, #0
+ 338 0008 07DB     		blt	.L51
+  84:Src/term_io.c **** 	uint8_t c, r, sgn = 0, pad = ' ';
+ 339              		.loc 1 84 0
+ 340 000a 0021     		movs	r1, #0
+ 341              	.LVL52:
+ 342              	.L36:
+  90:Src/term_io.c **** 		radix = -radix;
+  91:Src/term_io.c **** 		if (val < 0) {
+  92:Src/term_io.c **** 			val = -val;
+  93:Src/term_io.c **** 			sgn = '-';
+  94:Src/term_io.c **** 		}
+  95:Src/term_io.c **** 	}
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cckfYh1u.s 			page 9
+
+
+  96:Src/term_io.c **** 	v = val;
+  97:Src/term_io.c **** 	r = radix;
+  98:Src/term_io.c **** 	if (len < 0) {
+ 343              		.loc 1 98 0
+ 344 000c 002A     		cmp	r2, #0
+ 345 000e 0DDB     		blt	.L52
+  84:Src/term_io.c **** 	uint8_t c, r, sgn = 0, pad = ' ';
+ 346              		.loc 1 84 0
+ 347 0010 2027     		movs	r7, #32
+ 348              	.LVL53:
+ 349              	.L37:
+  99:Src/term_io.c **** 		len = -len;
+ 100:Src/term_io.c **** 		pad = '0';
+ 101:Src/term_io.c **** 	}
+ 102:Src/term_io.c **** 	if (len > 20) return;
+ 350              		.loc 1 102 0
+ 351 0012 142A     		cmp	r2, #20
+ 352 0014 40DC     		bgt	.L35
+ 353 0016 0026     		movs	r6, #0
+ 354 0018 17E0     		b	.L40
+ 355              	.LVL54:
+ 356              	.L51:
+  90:Src/term_io.c **** 		radix = -radix;
+ 357              		.loc 1 90 0
+ 358 001a CCF1000C 		rsb	ip, ip, #0
+ 359              	.LVL55:
+  91:Src/term_io.c **** 			val = -val;
+ 360              		.loc 1 91 0
+ 361 001e 0028     		cmp	r0, #0
+ 362 0020 01DB     		blt	.L53
+  84:Src/term_io.c **** 	uint8_t s[20], i = 0;
+ 363              		.loc 1 84 0
+ 364 0022 0021     		movs	r1, #0
+ 365 0024 F2E7     		b	.L36
+ 366              	.L53:
+  92:Src/term_io.c **** 			sgn = '-';
+ 367              		.loc 1 92 0
+ 368 0026 4042     		negs	r0, r0
+ 369              	.LVL56:
+  93:Src/term_io.c **** 		}
+ 370              		.loc 1 93 0
+ 371 0028 2D21     		movs	r1, #45
+ 372 002a EFE7     		b	.L36
+ 373              	.LVL57:
+ 374              	.L52:
+  99:Src/term_io.c **** 		pad = '0';
+ 375              		.loc 1 99 0
+ 376 002c 5242     		negs	r2, r2
+ 377              	.LVL58:
+ 100:Src/term_io.c **** 	}
+ 378              		.loc 1 100 0
+ 379 002e 3027     		movs	r7, #48
+ 380 0030 EFE7     		b	.L37
+ 381              	.LVL59:
+ 382              	.L39:
+ 103:Src/term_io.c **** 	do {
+ 104:Src/term_io.c **** 		c = (uint8_t)(v % r);
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cckfYh1u.s 			page 10
+
+
+ 105:Src/term_io.c **** 		if (c >= 10) c += 7;
+ 106:Src/term_io.c **** 		c += '0';
+ 383              		.loc 1 106 0
+ 384 0032 3033     		adds	r3, r3, #48
+ 385              	.LVL60:
+ 107:Src/term_io.c **** 		s[i++] = c;
+ 386              		.loc 1 107 0
+ 387 0034 741C     		adds	r4, r6, #1
+ 388 0036 E4B2     		uxtb	r4, r4
+ 389              	.LVL61:
+ 390 0038 0DF1180E 		add	lr, sp, #24
+ 391 003c B644     		add	lr, lr, r6
+ 392 003e 0EF8143C 		strb	r3, [lr, #-20]
+ 108:Src/term_io.c **** 		v /= r;
+ 393              		.loc 1 108 0
+ 394 0042 B0FBF5F0 		udiv	r0, r0, r5
+ 395              	.LVL62:
+ 109:Src/term_io.c **** 	} while (v);
+ 396              		.loc 1 109 0
+ 397 0046 60B1     		cbz	r0, .L54
+ 107:Src/term_io.c **** 		s[i++] = c;
+ 398              		.loc 1 107 0
+ 399 0048 2646     		mov	r6, r4
+ 400              	.LVL63:
+ 401              	.L40:
+ 104:Src/term_io.c **** 		if (c >= 10) c += 7;
+ 402              		.loc 1 104 0
+ 403 004a 5FFA8CF5 		uxtb	r5, ip
+ 404 004e B0FBF5F3 		udiv	r3, r0, r5
+ 405 0052 05FB1303 		mls	r3, r5, r3, r0
+ 406 0056 DBB2     		uxtb	r3, r3
+ 407              	.LVL64:
+ 105:Src/term_io.c **** 		c += '0';
+ 408              		.loc 1 105 0
+ 409 0058 092B     		cmp	r3, #9
+ 410 005a EAD9     		bls	.L39
+ 105:Src/term_io.c **** 		c += '0';
+ 411              		.loc 1 105 0 is_stmt 0 discriminator 1
+ 412 005c 0733     		adds	r3, r3, #7
+ 413              	.LVL65:
+ 414 005e DBB2     		uxtb	r3, r3
+ 415              	.LVL66:
+ 416 0060 E7E7     		b	.L39
+ 417              	.LVL67:
+ 418              	.L54:
+ 110:Src/term_io.c **** 	if (sgn) s[i++] = sgn;
+ 419              		.loc 1 110 0 is_stmt 1
+ 420 0062 61B1     		cbz	r1, .L42
+ 421              		.loc 1 110 0 is_stmt 0 discriminator 1
+ 422 0064 0236     		adds	r6, r6, #2
+ 423              	.LVL68:
+ 424 0066 06AB     		add	r3, sp, #24
+ 425              	.LVL69:
+ 426 0068 1C44     		add	r4, r4, r3
+ 427 006a 04F8141C 		strb	r1, [r4, #-20]
+ 428              	.LVL70:
+ 429 006e F4B2     		uxtb	r4, r6
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cckfYh1u.s 			page 11
+
+
+ 430 0070 05E0     		b	.L42
+ 431              	.LVL71:
+ 432              	.L43:
+ 111:Src/term_io.c **** 	while (i < len)
+ 112:Src/term_io.c **** 		s[i++] = pad;
+ 433              		.loc 1 112 0 is_stmt 1
+ 434 0072 0134     		adds	r4, r4, #1
+ 435              	.LVL72:
+ 436 0074 E4B2     		uxtb	r4, r4
+ 437              	.LVL73:
+ 438 0076 06A9     		add	r1, sp, #24
+ 439 0078 0B44     		add	r3, r3, r1
+ 440 007a 03F8147C 		strb	r7, [r3, #-20]
+ 441              	.LVL74:
+ 442              	.L42:
+ 111:Src/term_io.c **** 	while (i < len)
+ 443              		.loc 1 111 0
+ 444 007e 2346     		mov	r3, r4
+ 445 0080 A242     		cmp	r2, r4
+ 446 0082 F6DC     		bgt	.L43
+ 447              	.LVL75:
+ 448              	.L44:
+ 113:Src/term_io.c **** 	do
+ 114:Src/term_io.c **** 		xputc(s[--i]);
+ 449              		.loc 1 114 0 discriminator 1
+ 450 0084 013C     		subs	r4, r4, #1
+ 451              	.LVL76:
+ 452 0086 E4B2     		uxtb	r4, r4
+ 453              	.LVL77:
+ 454 0088 06AB     		add	r3, sp, #24
+ 455 008a 2344     		add	r3, r3, r4
+ 456 008c 13F8140C 		ldrb	r0, [r3, #-20]	@ zero_extendqisi2
+ 457 0090 FFF7FEFF 		bl	xputc
+ 458              	.LVL78:
+ 115:Src/term_io.c **** 	while (i);
+ 459              		.loc 1 115 0 discriminator 1
+ 460 0094 002C     		cmp	r4, #0
+ 461 0096 F5D1     		bne	.L44
+ 462              	.LVL79:
+ 463              	.L35:
+ 116:Src/term_io.c **** }
+ 464              		.loc 1 116 0
+ 465 0098 07B0     		add	sp, sp, #28
+ 466              	.LCFI7:
+ 467              		.cfi_def_cfa_offset 20
+ 468              		@ sp needed
+ 469 009a F0BD     		pop	{r4, r5, r6, r7, pc}
+ 470              		.cfi_endproc
+ 471              	.LFE139:
+ 473              		.section	.text.xprintf,"ax",%progbits
+ 474              		.align	1
+ 475              		.global	xprintf
+ 476              		.syntax unified
+ 477              		.thumb
+ 478              		.thumb_func
+ 479              		.fpu fpv5-sp-d16
+ 481              	xprintf:
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cckfYh1u.s 			page 12
+
+
+ 482              	.LFB140:
+ 117:Src/term_io.c **** 
+ 118:Src/term_io.c **** void xprintf (const char* str, ...)
+ 119:Src/term_io.c **** {
+ 483              		.loc 1 119 0
+ 484              		.cfi_startproc
+ 485              		@ args = 4, pretend = 16, frame = 8
+ 486              		@ frame_needed = 0, uses_anonymous_args = 1
+ 487              	.LVL80:
+ 488 0000 0FB4     		push	{r0, r1, r2, r3}
+ 489              	.LCFI8:
+ 490              		.cfi_def_cfa_offset 16
+ 491              		.cfi_offset 0, -16
+ 492              		.cfi_offset 1, -12
+ 493              		.cfi_offset 2, -8
+ 494              		.cfi_offset 3, -4
+ 495 0002 30B5     		push	{r4, r5, lr}
+ 496              	.LCFI9:
+ 497              		.cfi_def_cfa_offset 28
+ 498              		.cfi_offset 4, -28
+ 499              		.cfi_offset 5, -24
+ 500              		.cfi_offset 14, -20
+ 501 0004 83B0     		sub	sp, sp, #12
+ 502              	.LCFI10:
+ 503              		.cfi_def_cfa_offset 40
+ 504 0006 06AB     		add	r3, sp, #24
+ 505 0008 53F8044B 		ldr	r4, [r3], #4
+ 120:Src/term_io.c **** 	va_list arp;
+ 121:Src/term_io.c **** 	int d, r, w, s, l;
+ 122:Src/term_io.c **** 
+ 123:Src/term_io.c **** 
+ 124:Src/term_io.c **** 	va_start(arp, str);
+ 506              		.loc 1 124 0
+ 507 000c 0193     		str	r3, [sp, #4]
+ 125:Src/term_io.c **** 
+ 126:Src/term_io.c **** 	while ((d = *str++) != 0) {
+ 508              		.loc 1 126 0
+ 509 000e 38E0     		b	.L56
+ 510              	.LVL81:
+ 511              	.L57:
+ 127:Src/term_io.c **** 		if (d != '%') {
+ 128:Src/term_io.c **** 			xputc(d); continue;
+ 129:Src/term_io.c **** 		}
+ 130:Src/term_io.c **** 		d = *str++; w = r = s = l = 0;
+ 512              		.loc 1 130 0
+ 513 0010 0234     		adds	r4, r4, #2
+ 514              	.LVL82:
+ 515 0012 2B78     		ldrb	r3, [r5]	@ zero_extendqisi2
+ 516              	.LVL83:
+ 131:Src/term_io.c **** 		if (d == '0') {
+ 517              		.loc 1 131 0
+ 518 0014 302B     		cmp	r3, #48
+ 519 0016 02D0     		beq	.L81
+ 130:Src/term_io.c **** 		if (d == '0') {
+ 520              		.loc 1 130 0
+ 521 0018 0025     		movs	r5, #0
+ 522              	.LVL84:
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cckfYh1u.s 			page 13
+
+
+ 523              	.L59:
+ 524 001a 0022     		movs	r2, #0
+ 525 001c 0BE0     		b	.L60
+ 526              	.LVL85:
+ 527              	.L81:
+ 132:Src/term_io.c **** 			d = *str++; s = 1;
+ 528              		.loc 1 132 0
+ 529 001e AC1C     		adds	r4, r5, #2
+ 530              	.LVL86:
+ 531 0020 6B78     		ldrb	r3, [r5, #1]	@ zero_extendqisi2
+ 532              	.LVL87:
+ 533 0022 0125     		movs	r5, #1
+ 534 0024 F9E7     		b	.L59
+ 535              	.LVL88:
+ 536              	.L61:
+ 133:Src/term_io.c **** 		}
+ 134:Src/term_io.c **** 		while ((d >= '0')&&(d <= '9')) {
+ 135:Src/term_io.c **** 			w += w * 10 + (d - '0');
+ 537              		.loc 1 135 0
+ 538 0026 02EB8200 		add	r0, r2, r2, lsl #2
+ 539 002a 4100     		lsls	r1, r0, #1
+ 540 002c 303B     		subs	r3, r3, #48
+ 541              	.LVL89:
+ 542 002e 0B44     		add	r3, r3, r1
+ 543              	.LVL90:
+ 544 0030 1A44     		add	r2, r2, r3
+ 545              	.LVL91:
+ 136:Src/term_io.c **** 			d = *str++;
+ 546              		.loc 1 136 0
+ 547 0032 2378     		ldrb	r3, [r4]	@ zero_extendqisi2
+ 548              	.LVL92:
+ 549 0034 0134     		adds	r4, r4, #1
+ 550              	.LVL93:
+ 551              	.L60:
+ 134:Src/term_io.c **** 			w += w * 10 + (d - '0');
+ 552              		.loc 1 134 0
+ 553 0036 A3F13001 		sub	r1, r3, #48
+ 554 003a 0929     		cmp	r1, #9
+ 555 003c F3D9     		bls	.L61
+ 137:Src/term_io.c **** 		}
+ 138:Src/term_io.c **** 		if (s) w = -w;
+ 556              		.loc 1 138 0
+ 557 003e 05B1     		cbz	r5, .L62
+ 558              		.loc 1 138 0 is_stmt 0 discriminator 1
+ 559 0040 5242     		negs	r2, r2
+ 560              	.LVL94:
+ 561              	.L62:
+ 139:Src/term_io.c **** 		if (d == 'l') {
+ 562              		.loc 1 139 0 is_stmt 1
+ 563 0042 6C2B     		cmp	r3, #108
+ 564 0044 26D0     		beq	.L82
+ 130:Src/term_io.c **** 		if (d == '0') {
+ 565              		.loc 1 130 0
+ 566 0046 0020     		movs	r0, #0
+ 567              	.LVL95:
+ 568              	.L63:
+ 140:Src/term_io.c **** 			l = 1;
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cckfYh1u.s 			page 14
+
+
+ 141:Src/term_io.c **** 			d = *str++;
+ 142:Src/term_io.c **** 		}
+ 143:Src/term_io.c **** 		if (!d) break;
+ 569              		.loc 1 143 0
+ 570 0048 002B     		cmp	r3, #0
+ 571 004a 4AD0     		beq	.L55
+ 144:Src/term_io.c **** 		if (d == 's') {
+ 572              		.loc 1 144 0
+ 573 004c 732B     		cmp	r3, #115
+ 574 004e 25D0     		beq	.L83
+ 145:Src/term_io.c **** 			xputs(va_arg(arp, char*));
+ 146:Src/term_io.c **** 			continue;
+ 147:Src/term_io.c **** 		}
+ 148:Src/term_io.c **** 		if (d == 'c') {
+ 575              		.loc 1 148 0
+ 576 0050 632B     		cmp	r3, #99
+ 577 0052 2AD0     		beq	.L84
+ 149:Src/term_io.c **** 			xputc((char)va_arg(arp, int));
+ 150:Src/term_io.c **** 			continue;
+ 151:Src/term_io.c **** 		}
+ 152:Src/term_io.c **** 		if (d == 'u') r = 10;
+ 578              		.loc 1 152 0
+ 579 0054 752B     		cmp	r3, #117
+ 580 0056 2FD0     		beq	.L76
+ 130:Src/term_io.c **** 		if (d == '0') {
+ 581              		.loc 1 130 0
+ 582 0058 0021     		movs	r1, #0
+ 583              	.L67:
+ 584              	.LVL96:
+ 153:Src/term_io.c **** 		if (d == 'd') r = -10;
+ 585              		.loc 1 153 0
+ 586 005a 642B     		cmp	r3, #100
+ 587 005c 2ED0     		beq	.L85
+ 588              	.LVL97:
+ 589              	.L68:
+ 154:Src/term_io.c **** 		if (d == 'X' || d == 'x') r = 16; // 'x' added by mthomas in increase compatibility
+ 590              		.loc 1 154 0
+ 591 005e 782B     		cmp	r3, #120
+ 592 0060 18BF     		it	ne
+ 593 0062 582B     		cmpne	r3, #88
+ 594 0064 00D1     		bne	.L69
+ 595 0066 1021     		movs	r1, #16
+ 596              	.LVL98:
+ 597              	.L69:
+ 155:Src/term_io.c **** 		if (d == 'b') r = 2;
+ 598              		.loc 1 155 0
+ 599 0068 622B     		cmp	r3, #98
+ 600 006a 2AD0     		beq	.L86
+ 601              	.LVL99:
+ 602              	.L70:
+ 156:Src/term_io.c **** 		if (!r) break;
+ 603              		.loc 1 156 0
+ 604 006c 0029     		cmp	r1, #0
+ 605 006e 38D0     		beq	.L55
+ 157:Src/term_io.c **** 		if (l) {
+ 606              		.loc 1 157 0
+ 607 0070 48BB     		cbnz	r0, .L87
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cckfYh1u.s 			page 15
+
+
+ 158:Src/term_io.c **** 			xitoa((long)va_arg(arp, long), r, w);
+ 159:Src/term_io.c **** 		} else {
+ 160:Src/term_io.c **** 			if (r > 0)
+ 608              		.loc 1 160 0
+ 609 0072 0029     		cmp	r1, #0
+ 610 0074 2EDD     		ble	.L72
+ 161:Src/term_io.c **** 				xitoa((unsigned long)va_arg(arp, int), r, w);
+ 611              		.loc 1 161 0
+ 612 0076 019B     		ldr	r3, [sp, #4]
+ 613              	.LVL100:
+ 614 0078 181D     		adds	r0, r3, #4
+ 615              	.LVL101:
+ 616 007a 0190     		str	r0, [sp, #4]
+ 617 007c 1868     		ldr	r0, [r3]
+ 618 007e FFF7FEFF 		bl	xitoa
+ 619              	.LVL102:
+ 620              	.L56:
+ 126:Src/term_io.c **** 		if (d != '%') {
+ 621              		.loc 1 126 0
+ 622 0082 651C     		adds	r5, r4, #1
+ 623              	.LVL103:
+ 624 0084 2078     		ldrb	r0, [r4]	@ zero_extendqisi2
+ 625              	.LVL104:
+ 626 0086 60B3     		cbz	r0, .L55
+ 127:Src/term_io.c **** 			xputc(d); continue;
+ 627              		.loc 1 127 0
+ 628 0088 2528     		cmp	r0, #37
+ 629 008a C1D0     		beq	.L57
+ 128:Src/term_io.c **** 		}
+ 630              		.loc 1 128 0
+ 631 008c FFF7FEFF 		bl	xputc
+ 632              	.LVL105:
+ 126:Src/term_io.c **** 		if (d != '%') {
+ 633              		.loc 1 126 0
+ 634 0090 2C46     		mov	r4, r5
+ 128:Src/term_io.c **** 		}
+ 635              		.loc 1 128 0
+ 636 0092 F6E7     		b	.L56
+ 637              	.LVL106:
+ 638              	.L82:
+ 141:Src/term_io.c **** 		}
+ 639              		.loc 1 141 0
+ 640 0094 2378     		ldrb	r3, [r4]	@ zero_extendqisi2
+ 641              	.LVL107:
+ 642 0096 0134     		adds	r4, r4, #1
+ 643              	.LVL108:
+ 140:Src/term_io.c **** 			d = *str++;
+ 644              		.loc 1 140 0
+ 645 0098 0120     		movs	r0, #1
+ 646 009a D5E7     		b	.L63
+ 647              	.LVL109:
+ 648              	.L83:
+ 145:Src/term_io.c **** 			continue;
+ 649              		.loc 1 145 0
+ 650 009c 019B     		ldr	r3, [sp, #4]
+ 651              	.LVL110:
+ 652 009e 1A1D     		adds	r2, r3, #4
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cckfYh1u.s 			page 16
+
+
+ 653              	.LVL111:
+ 654 00a0 0192     		str	r2, [sp, #4]
+ 655 00a2 1868     		ldr	r0, [r3]
+ 656              	.LVL112:
+ 657 00a4 FFF7FEFF 		bl	xputs
+ 658              	.LVL113:
+ 146:Src/term_io.c **** 		}
+ 659              		.loc 1 146 0
+ 660 00a8 EBE7     		b	.L56
+ 661              	.LVL114:
+ 662              	.L84:
+ 149:Src/term_io.c **** 			continue;
+ 663              		.loc 1 149 0
+ 664 00aa 019B     		ldr	r3, [sp, #4]
+ 665              	.LVL115:
+ 666 00ac 1A1D     		adds	r2, r3, #4
+ 667              	.LVL116:
+ 668 00ae 0192     		str	r2, [sp, #4]
+ 669 00b0 1878     		ldrb	r0, [r3]	@ zero_extendqisi2
+ 670              	.LVL117:
+ 671 00b2 FFF7FEFF 		bl	xputc
+ 672              	.LVL118:
+ 150:Src/term_io.c **** 		}
+ 673              		.loc 1 150 0
+ 674 00b6 E4E7     		b	.L56
+ 675              	.LVL119:
+ 676              	.L76:
+ 152:Src/term_io.c **** 		if (d == 'd') r = -10;
+ 677              		.loc 1 152 0
+ 678 00b8 0A21     		movs	r1, #10
+ 679 00ba CEE7     		b	.L67
+ 680              	.LVL120:
+ 681              	.L85:
+ 153:Src/term_io.c **** 		if (d == 'X' || d == 'x') r = 16; // 'x' added by mthomas in increase compatibility
+ 682              		.loc 1 153 0
+ 683 00bc 6FF00901 		mvn	r1, #9
+ 684              	.LVL121:
+ 685 00c0 CDE7     		b	.L68
+ 686              	.LVL122:
+ 687              	.L86:
+ 155:Src/term_io.c **** 		if (!r) break;
+ 688              		.loc 1 155 0
+ 689 00c2 0221     		movs	r1, #2
+ 690              	.LVL123:
+ 691 00c4 D2E7     		b	.L70
+ 692              	.LVL124:
+ 693              	.L87:
+ 158:Src/term_io.c **** 		} else {
+ 694              		.loc 1 158 0
+ 695 00c6 019B     		ldr	r3, [sp, #4]
+ 696              	.LVL125:
+ 697 00c8 181D     		adds	r0, r3, #4
+ 698              	.LVL126:
+ 699 00ca 0190     		str	r0, [sp, #4]
+ 700 00cc 1868     		ldr	r0, [r3]
+ 701 00ce FFF7FEFF 		bl	xitoa
+ 702              	.LVL127:
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cckfYh1u.s 			page 17
+
+
+ 703 00d2 D6E7     		b	.L56
+ 704              	.LVL128:
+ 705              	.L72:
+ 162:Src/term_io.c **** 			else
+ 163:Src/term_io.c **** 				xitoa((long)va_arg(arp, int), r, w);
+ 706              		.loc 1 163 0
+ 707 00d4 019B     		ldr	r3, [sp, #4]
+ 708              	.LVL129:
+ 709 00d6 181D     		adds	r0, r3, #4
+ 710              	.LVL130:
+ 711 00d8 0190     		str	r0, [sp, #4]
+ 712 00da 1868     		ldr	r0, [r3]
+ 713 00dc FFF7FEFF 		bl	xitoa
+ 714              	.LVL131:
+ 715 00e0 CFE7     		b	.L56
+ 716              	.LVL132:
+ 717              	.L55:
+ 164:Src/term_io.c **** 		}
+ 165:Src/term_io.c **** 	}
+ 166:Src/term_io.c **** 
+ 167:Src/term_io.c **** 	va_end(arp);
+ 168:Src/term_io.c **** }
+ 718              		.loc 1 168 0
+ 719 00e2 03B0     		add	sp, sp, #12
+ 720              	.LCFI11:
+ 721              		.cfi_def_cfa_offset 28
+ 722              		@ sp needed
+ 723 00e4 BDE83040 		pop	{r4, r5, lr}
+ 724              	.LCFI12:
+ 725              		.cfi_restore 14
+ 726              		.cfi_restore 5
+ 727              		.cfi_restore 4
+ 728              		.cfi_def_cfa_offset 16
+ 729 00e8 04B0     		add	sp, sp, #16
+ 730              	.LCFI13:
+ 731              		.cfi_restore 3
+ 732              		.cfi_restore 2
+ 733              		.cfi_restore 1
+ 734              		.cfi_restore 0
+ 735              		.cfi_def_cfa_offset 0
+ 736 00ea 7047     		bx	lr
+ 737              		.cfi_endproc
+ 738              	.LFE140:
+ 740              		.section	.text.put_dump,"ax",%progbits
+ 741              		.align	1
+ 742              		.global	put_dump
+ 743              		.syntax unified
+ 744              		.thumb
+ 745              		.thumb_func
+ 746              		.fpu fpv5-sp-d16
+ 748              	put_dump:
+ 749              	.LFB141:
+ 169:Src/term_io.c **** 
+ 170:Src/term_io.c **** 
+ 171:Src/term_io.c **** 
+ 172:Src/term_io.c **** 
+ 173:Src/term_io.c **** void put_dump (const uint8_t *buff, uint32_t ofs, int cnt)
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cckfYh1u.s 			page 18
+
+
+ 174:Src/term_io.c **** {
+ 750              		.loc 1 174 0
+ 751              		.cfi_startproc
+ 752              		@ args = 0, pretend = 0, frame = 0
+ 753              		@ frame_needed = 0, uses_anonymous_args = 0
+ 754              	.LVL133:
+ 755 0000 70B5     		push	{r4, r5, r6, lr}
+ 756              	.LCFI14:
+ 757              		.cfi_def_cfa_offset 16
+ 758              		.cfi_offset 4, -16
+ 759              		.cfi_offset 5, -12
+ 760              		.cfi_offset 6, -8
+ 761              		.cfi_offset 14, -4
+ 762 0002 0646     		mov	r6, r0
+ 763 0004 1546     		mov	r5, r2
+ 175:Src/term_io.c **** 	uint8_t n;
+ 176:Src/term_io.c **** 
+ 177:Src/term_io.c **** 
+ 178:Src/term_io.c **** 	xprintf("%08lX ", ofs);
+ 764              		.loc 1 178 0
+ 765 0006 1348     		ldr	r0, .L97
+ 766              	.LVL134:
+ 767 0008 FFF7FEFF 		bl	xprintf
+ 768              	.LVL135:
+ 179:Src/term_io.c **** 	for(n = 0; n < cnt; n++)
+ 769              		.loc 1 179 0
+ 770 000c 0024     		movs	r4, #0
+ 771 000e 05E0     		b	.L89
+ 772              	.LVL136:
+ 773              	.L90:
+ 180:Src/term_io.c **** 		xprintf(" %02X", buff[n]);
+ 774              		.loc 1 180 0 discriminator 3
+ 775 0010 315D     		ldrb	r1, [r6, r4]	@ zero_extendqisi2
+ 776 0012 1148     		ldr	r0, .L97+4
+ 777 0014 FFF7FEFF 		bl	xprintf
+ 778              	.LVL137:
+ 179:Src/term_io.c **** 	for(n = 0; n < cnt; n++)
+ 779              		.loc 1 179 0 discriminator 3
+ 780 0018 0134     		adds	r4, r4, #1
+ 781              	.LVL138:
+ 782 001a E4B2     		uxtb	r4, r4
+ 783              	.LVL139:
+ 784              	.L89:
+ 179:Src/term_io.c **** 	for(n = 0; n < cnt; n++)
+ 785              		.loc 1 179 0 is_stmt 0 discriminator 1
+ 786 001c AC42     		cmp	r4, r5
+ 787 001e F7DB     		blt	.L90
+ 181:Src/term_io.c **** 	xputc(' ');
+ 788              		.loc 1 181 0 is_stmt 1
+ 789 0020 2020     		movs	r0, #32
+ 790 0022 FFF7FEFF 		bl	xputc
+ 791              	.LVL140:
+ 182:Src/term_io.c **** 	for(n = 0; n < cnt; n++) {
+ 792              		.loc 1 182 0
+ 793 0026 0024     		movs	r4, #0
+ 794 0028 03E0     		b	.L91
+ 795              	.LVL141:
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cckfYh1u.s 			page 19
+
+
+ 796              	.L92:
+ 183:Src/term_io.c **** 		if ((buff[n] < 0x20)||(buff[n] >= 0x7F))
+ 184:Src/term_io.c **** 			xputc('.');
+ 185:Src/term_io.c **** 		else
+ 186:Src/term_io.c **** 			xputc(buff[n]);
+ 797              		.loc 1 186 0
+ 798 002a FFF7FEFF 		bl	xputc
+ 799              	.LVL142:
+ 800              	.L93:
+ 182:Src/term_io.c **** 	for(n = 0; n < cnt; n++) {
+ 801              		.loc 1 182 0 discriminator 2
+ 802 002e 0134     		adds	r4, r4, #1
+ 803              	.LVL143:
+ 804 0030 E4B2     		uxtb	r4, r4
+ 805              	.LVL144:
+ 806              	.L91:
+ 182:Src/term_io.c **** 	for(n = 0; n < cnt; n++) {
+ 807              		.loc 1 182 0 is_stmt 0 discriminator 1
+ 808 0032 A542     		cmp	r5, r4
+ 809 0034 09DD     		ble	.L96
+ 183:Src/term_io.c **** 		if ((buff[n] < 0x20)||(buff[n] >= 0x7F))
+ 810              		.loc 1 183 0 is_stmt 1
+ 811 0036 305D     		ldrb	r0, [r6, r4]	@ zero_extendqisi2
+ 812 0038 A0F12003 		sub	r3, r0, #32
+ 813 003c DBB2     		uxtb	r3, r3
+ 814 003e 5E2B     		cmp	r3, #94
+ 815 0040 F3D9     		bls	.L92
+ 184:Src/term_io.c **** 		else
+ 816              		.loc 1 184 0
+ 817 0042 2E20     		movs	r0, #46
+ 818 0044 FFF7FEFF 		bl	xputc
+ 819              	.LVL145:
+ 820 0048 F1E7     		b	.L93
+ 821              	.L96:
+ 187:Src/term_io.c **** 	}
+ 188:Src/term_io.c **** 	xputc('\n');
+ 822              		.loc 1 188 0
+ 823 004a 0A20     		movs	r0, #10
+ 824 004c FFF7FEFF 		bl	xputc
+ 825              	.LVL146:
+ 826 0050 70BD     		pop	{r4, r5, r6, pc}
+ 827              	.LVL147:
+ 828              	.L98:
+ 829 0052 00BF     		.align	2
+ 830              	.L97:
+ 831 0054 00000000 		.word	.LC0
+ 832 0058 08000000 		.word	.LC1
+ 833              		.cfi_endproc
+ 834              	.LFE141:
+ 836              		.section	.text.get_line,"ax",%progbits
+ 837              		.align	1
+ 838              		.global	get_line
+ 839              		.syntax unified
+ 840              		.thumb
+ 841              		.thumb_func
+ 842              		.fpu fpv5-sp-d16
+ 844              	get_line:
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cckfYh1u.s 			page 20
+
+
+ 845              	.LFB142:
+ 189:Src/term_io.c **** }
+ 190:Src/term_io.c **** 
+ 191:Src/term_io.c **** 
+ 192:Src/term_io.c **** 
+ 193:Src/term_io.c **** 
+ 194:Src/term_io.c **** void get_line (char *buff, int len)
+ 195:Src/term_io.c **** {
+ 846              		.loc 1 195 0
+ 847              		.cfi_startproc
+ 848              		@ args = 0, pretend = 0, frame = 0
+ 849              		@ frame_needed = 0, uses_anonymous_args = 0
+ 850              	.LVL148:
+ 851 0000 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+ 852              	.LCFI15:
+ 853              		.cfi_def_cfa_offset 24
+ 854              		.cfi_offset 4, -24
+ 855              		.cfi_offset 5, -20
+ 856              		.cfi_offset 6, -16
+ 857              		.cfi_offset 7, -12
+ 858              		.cfi_offset 8, -8
+ 859              		.cfi_offset 14, -4
+ 860 0004 0746     		mov	r7, r0
+ 861 0006 0E46     		mov	r6, r1
+ 862              	.LVL149:
+ 196:Src/term_io.c **** 	char c;
+ 197:Src/term_io.c **** 	int idx = 0;
+ 863              		.loc 1 197 0
+ 864 0008 0025     		movs	r5, #0
+ 865              	.LVL150:
+ 866              	.L100:
+ 198:Src/term_io.c **** 
+ 199:Src/term_io.c **** 	for (;;) {
+ 200:Src/term_io.c **** 		c = xgetc();
+ 867              		.loc 1 200 0
+ 868 000a FFF7FEFF 		bl	debug_waitkey
+ 869              	.LVL151:
+ 870 000e 0446     		mov	r4, r0
+ 871              	.LVL152:
+ 201:Src/term_io.c **** 		if (c == '\r') break;
+ 872              		.loc 1 201 0
+ 873 0010 0D28     		cmp	r0, #13
+ 874 0012 1ED0     		beq	.L101
+ 202:Src/term_io.c **** 		if ((c == '\b') && idx) {
+ 875              		.loc 1 202 0
+ 876 0014 0828     		cmp	r0, #8
+ 877 0016 14BF     		ite	ne
+ 878 0018 0023     		movne	r3, #0
+ 879 001a 0123     		moveq	r3, #1
+ 880 001c 002D     		cmp	r5, #0
+ 881 001e 08BF     		it	eq
+ 882 0020 0023     		moveq	r3, #0
+ 883 0022 63B9     		cbnz	r3, .L105
+ 884              	.LVL153:
+ 885              	.L102:
+ 203:Src/term_io.c **** 			idx--; xputc(c);
+ 204:Src/term_io.c **** 			xputc(' '); xputc(c); // added by mthomas for Eclipse Terminal plug-in
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cckfYh1u.s 			page 21
+
+
+ 205:Src/term_io.c **** 		}
+ 206:Src/term_io.c **** 		if (((uint8_t)c >= ' ') && (idx < len - 1)) {
+ 886              		.loc 1 206 0
+ 887 0024 1F2C     		cmp	r4, #31
+ 888 0026 F0D9     		bls	.L100
+ 889              		.loc 1 206 0 is_stmt 0 discriminator 1
+ 890 0028 731E     		subs	r3, r6, #1
+ 891 002a 9D42     		cmp	r5, r3
+ 892 002c EDDA     		bge	.L100
+ 207:Src/term_io.c **** 				buff[idx++] = c; xputc(c);
+ 893              		.loc 1 207 0 is_stmt 1
+ 894 002e 05F10108 		add	r8, r5, #1
+ 895              	.LVL154:
+ 896 0032 7C55     		strb	r4, [r7, r5]
+ 897 0034 2046     		mov	r0, r4
+ 898 0036 FFF7FEFF 		bl	xputc
+ 899              	.LVL155:
+ 900 003a 4546     		mov	r5, r8
+ 901 003c E5E7     		b	.L100
+ 902              	.LVL156:
+ 903              	.L105:
+ 203:Src/term_io.c **** 			idx--; xputc(c);
+ 904              		.loc 1 203 0
+ 905 003e 013D     		subs	r5, r5, #1
+ 906              	.LVL157:
+ 907 0040 FFF7FEFF 		bl	xputc
+ 908              	.LVL158:
+ 204:Src/term_io.c **** 		}
+ 909              		.loc 1 204 0
+ 910 0044 2020     		movs	r0, #32
+ 911 0046 FFF7FEFF 		bl	xputc
+ 912              	.LVL159:
+ 913 004a 2046     		mov	r0, r4
+ 914 004c FFF7FEFF 		bl	xputc
+ 915              	.LVL160:
+ 916 0050 E8E7     		b	.L102
+ 917              	.LVL161:
+ 918              	.L101:
+ 208:Src/term_io.c **** 		}
+ 209:Src/term_io.c **** 	}
+ 210:Src/term_io.c **** 	buff[idx] = 0;
+ 919              		.loc 1 210 0
+ 920 0052 0023     		movs	r3, #0
+ 921 0054 7B55     		strb	r3, [r7, r5]
+ 211:Src/term_io.c **** 	xputc('\n');
+ 922              		.loc 1 211 0
+ 923 0056 0A20     		movs	r0, #10
+ 924              	.LVL162:
+ 925 0058 FFF7FEFF 		bl	xputc
+ 926              	.LVL163:
+ 927 005c BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 928              		.cfi_endproc
+ 929              	.LFE142:
+ 931              		.section	.text.get_line_r,"ax",%progbits
+ 932              		.align	1
+ 933              		.global	get_line_r
+ 934              		.syntax unified
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cckfYh1u.s 			page 22
+
+
+ 935              		.thumb
+ 936              		.thumb_func
+ 937              		.fpu fpv5-sp-d16
+ 939              	get_line_r:
+ 940              	.LFB143:
+ 212:Src/term_io.c **** }
+ 213:Src/term_io.c **** 
+ 214:Src/term_io.c **** 
+ 215:Src/term_io.c **** // function added by mthomas:
+ 216:Src/term_io.c **** int get_line_r (char *buff, int len, int* idx)
+ 217:Src/term_io.c **** {
+ 941              		.loc 1 217 0
+ 942              		.cfi_startproc
+ 943              		@ args = 0, pretend = 0, frame = 0
+ 944              		@ frame_needed = 0, uses_anonymous_args = 0
+ 945              	.LVL164:
+ 946 0000 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+ 947              	.LCFI16:
+ 948              		.cfi_def_cfa_offset 24
+ 949              		.cfi_offset 4, -24
+ 950              		.cfi_offset 5, -20
+ 951              		.cfi_offset 6, -16
+ 952              		.cfi_offset 7, -12
+ 953              		.cfi_offset 8, -8
+ 954              		.cfi_offset 14, -4
+ 955 0004 8046     		mov	r8, r0
+ 956 0006 0F46     		mov	r7, r1
+ 957 0008 1446     		mov	r4, r2
+ 958              	.LVL165:
+ 218:Src/term_io.c **** 	char c;
+ 219:Src/term_io.c **** 	int retval = 0;
+ 220:Src/term_io.c **** 	int myidx;
+ 221:Src/term_io.c **** 
+ 222:Src/term_io.c **** 	if ( xavail() ) {
+ 959              		.loc 1 222 0
+ 960 000a FFF7FEFF 		bl	debug_test
+ 961              	.LVL166:
+ 962 000e 0346     		mov	r3, r0
+ 963 0010 10B9     		cbnz	r0, .L114
+ 964              	.LVL167:
+ 965              	.L106:
+ 223:Src/term_io.c **** 		myidx = *idx;
+ 224:Src/term_io.c **** 		c = xgetc();
+ 225:Src/term_io.c **** 		if (c == '\r') {
+ 226:Src/term_io.c **** 			buff[myidx] = 0;
+ 227:Src/term_io.c **** 			xputc('\n');
+ 228:Src/term_io.c **** 			retval = 1;
+ 229:Src/term_io.c **** 		} else {
+ 230:Src/term_io.c **** 			if ((c == '\b') && myidx) {
+ 231:Src/term_io.c **** 				myidx--; xputc(c);
+ 232:Src/term_io.c **** 				xputc(' '); xputc(c); // added by mthomas for Eclipse Terminal plug-in
+ 233:Src/term_io.c **** 			}
+ 234:Src/term_io.c **** 			if (((uint8_t)c >= ' ') && (myidx < len - 1)) {
+ 235:Src/term_io.c **** 					buff[myidx++] = c; xputc(c);
+ 236:Src/term_io.c **** 			}
+ 237:Src/term_io.c **** 		}
+ 238:Src/term_io.c **** 		*idx = myidx;
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cckfYh1u.s 			page 23
+
+
+ 239:Src/term_io.c **** 	}
+ 240:Src/term_io.c **** 
+ 241:Src/term_io.c **** 	return retval;
+ 242:Src/term_io.c **** }
+ 966              		.loc 1 242 0
+ 967 0012 1846     		mov	r0, r3
+ 968 0014 BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 969              	.LVL168:
+ 970              	.L114:
+ 223:Src/term_io.c **** 		myidx = *idx;
+ 971              		.loc 1 223 0
+ 972 0018 2668     		ldr	r6, [r4]
+ 973              	.LVL169:
+ 224:Src/term_io.c **** 		if (c == '\r') {
+ 974              		.loc 1 224 0
+ 975 001a FFF7FEFF 		bl	debug_waitkey
+ 976              	.LVL170:
+ 977 001e 0546     		mov	r5, r0
+ 978              	.LVL171:
+ 225:Src/term_io.c **** 			buff[myidx] = 0;
+ 979              		.loc 1 225 0
+ 980 0020 0D28     		cmp	r0, #13
+ 981 0022 0ED0     		beq	.L115
+ 230:Src/term_io.c **** 				myidx--; xputc(c);
+ 982              		.loc 1 230 0
+ 983 0024 0828     		cmp	r0, #8
+ 984 0026 14BF     		ite	ne
+ 985 0028 0023     		movne	r3, #0
+ 986 002a 0123     		moveq	r3, #1
+ 987 002c 002E     		cmp	r6, #0
+ 988 002e 08BF     		it	eq
+ 989 0030 0023     		moveq	r3, #0
+ 990 0032 73B9     		cbnz	r3, .L116
+ 991              	.LVL172:
+ 992              	.L110:
+ 234:Src/term_io.c **** 					buff[myidx++] = c; xputc(c);
+ 993              		.loc 1 234 0
+ 994 0034 1F2D     		cmp	r5, #31
+ 995 0036 1FD9     		bls	.L111
+ 234:Src/term_io.c **** 					buff[myidx++] = c; xputc(c);
+ 996              		.loc 1 234 0 is_stmt 0 discriminator 1
+ 997 0038 013F     		subs	r7, r7, #1
+ 998              	.LVL173:
+ 999 003a BE42     		cmp	r6, r7
+ 1000 003c 13DB     		blt	.L117
+ 219:Src/term_io.c **** 	int myidx;
+ 1001              		.loc 1 219 0 is_stmt 1
+ 1002 003e 0023     		movs	r3, #0
+ 1003 0040 1BE0     		b	.L109
+ 1004              	.LVL174:
+ 1005              	.L115:
+ 226:Src/term_io.c **** 			xputc('\n');
+ 1006              		.loc 1 226 0
+ 1007 0042 0023     		movs	r3, #0
+ 1008 0044 08F80630 		strb	r3, [r8, r6]
+ 227:Src/term_io.c **** 			retval = 1;
+ 1009              		.loc 1 227 0
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cckfYh1u.s 			page 24
+
+
+ 1010 0048 0A20     		movs	r0, #10
+ 1011              	.LVL175:
+ 1012 004a FFF7FEFF 		bl	xputc
+ 1013              	.LVL176:
+ 228:Src/term_io.c **** 		} else {
+ 1014              		.loc 1 228 0
+ 1015 004e 0123     		movs	r3, #1
+ 1016 0050 13E0     		b	.L109
+ 1017              	.LVL177:
+ 1018              	.L116:
+ 231:Src/term_io.c **** 				xputc(' '); xputc(c); // added by mthomas for Eclipse Terminal plug-in
+ 1019              		.loc 1 231 0
+ 1020 0052 013E     		subs	r6, r6, #1
+ 1021              	.LVL178:
+ 1022 0054 FFF7FEFF 		bl	xputc
+ 1023              	.LVL179:
+ 232:Src/term_io.c **** 			}
+ 1024              		.loc 1 232 0
+ 1025 0058 2020     		movs	r0, #32
+ 1026 005a FFF7FEFF 		bl	xputc
+ 1027              	.LVL180:
+ 1028 005e 2846     		mov	r0, r5
+ 1029 0060 FFF7FEFF 		bl	xputc
+ 1030              	.LVL181:
+ 1031 0064 E6E7     		b	.L110
+ 1032              	.LVL182:
+ 1033              	.L117:
+ 235:Src/term_io.c **** 			}
+ 1034              		.loc 1 235 0
+ 1035 0066 771C     		adds	r7, r6, #1
+ 1036              	.LVL183:
+ 1037 0068 08F80650 		strb	r5, [r8, r6]
+ 1038 006c 2846     		mov	r0, r5
+ 1039 006e FFF7FEFF 		bl	xputc
+ 1040              	.LVL184:
+ 1041 0072 3E46     		mov	r6, r7
+ 219:Src/term_io.c **** 	int myidx;
+ 1042              		.loc 1 219 0
+ 1043 0074 0023     		movs	r3, #0
+ 1044 0076 00E0     		b	.L109
+ 1045              	.LVL185:
+ 1046              	.L111:
+ 1047 0078 0023     		movs	r3, #0
+ 1048              	.LVL186:
+ 1049              	.L109:
+ 238:Src/term_io.c **** 	}
+ 1050              		.loc 1 238 0
+ 1051 007a 2660     		str	r6, [r4]
+ 241:Src/term_io.c **** }
+ 1052              		.loc 1 241 0
+ 1053 007c C9E7     		b	.L106
+ 1054              		.cfi_endproc
+ 1055              	.LFE143:
+ 1057              		.section	.rodata.put_dump.str1.4,"aMS",%progbits,1
+ 1058              		.align	2
+ 1059              	.LC0:
+ 1060 0000 2530386C 		.ascii	"%08lX \000"
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cckfYh1u.s 			page 25
+
+
+ 1060      582000
+ 1061 0007 00       		.space	1
+ 1062              	.LC1:
+ 1063 0008 20253032 		.ascii	" %02X\000"
+ 1063      5800
+ 1064              		.text
+ 1065              	.Letext0:
+ 1066              		.file 2 "c:\\gcc_toolchain\\6_2017-q1-update\\lib\\gcc\\arm-none-eabi\\6.3.1\\include\\stdarg.h"
+ 1067              		.file 3 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 1068              		.file 4 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 1069              		.file 5 "Drivers/CMSIS/Include/core_cm7.h"
+ 1070              		.file 6 "Drivers/CMSIS/Device/ST/STM32F7xx/Include/system_stm32f7xx.h"
+ 1071              		.file 7 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\lock.h"
+ 1072              		.file 8 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\_types.h"
+ 1073              		.file 9 "c:\\gcc_toolchain\\6_2017-q1-update\\lib\\gcc\\arm-none-eabi\\6.3.1\\include\\stddef.h"
+ 1074              		.file 10 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\reent.h"
+ 1075              		.file 11 "<built-in>"
+ 1076              		.file 12 "Inc/dbgu.h"
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cckfYh1u.s 			page 26
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 term_io.c
+C:\Users\Student\AppData\Local\Temp\cckfYh1u.s:18     .text.xatoi:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cckfYh1u.s:25     .text.xatoi:00000000 xatoi
+C:\Users\Student\AppData\Local\Temp\cckfYh1u.s:243    .text.xputc:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cckfYh1u.s:250    .text.xputc:00000000 xputc
+C:\Users\Student\AppData\Local\Temp\cckfYh1u.s:270    .text.xputs:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cckfYh1u.s:277    .text.xputs:00000000 xputs
+C:\Users\Student\AppData\Local\Temp\cckfYh1u.s:310    .text.xitoa:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cckfYh1u.s:317    .text.xitoa:00000000 xitoa
+C:\Users\Student\AppData\Local\Temp\cckfYh1u.s:474    .text.xprintf:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cckfYh1u.s:481    .text.xprintf:00000000 xprintf
+C:\Users\Student\AppData\Local\Temp\cckfYh1u.s:741    .text.put_dump:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cckfYh1u.s:748    .text.put_dump:00000000 put_dump
+C:\Users\Student\AppData\Local\Temp\cckfYh1u.s:831    .text.put_dump:00000054 $d
+C:\Users\Student\AppData\Local\Temp\cckfYh1u.s:837    .text.get_line:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cckfYh1u.s:844    .text.get_line:00000000 get_line
+C:\Users\Student\AppData\Local\Temp\cckfYh1u.s:932    .text.get_line_r:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cckfYh1u.s:939    .text.get_line_r:00000000 get_line_r
+C:\Users\Student\AppData\Local\Temp\cckfYh1u.s:1058   .rodata.put_dump.str1.4:00000000 $d
+                     .debug_frame:00000010 $d
+
+UNDEFINED SYMBOLS
+debug_chr
+debug_waitkey
+debug_test

@@ -1,0 +1,1518 @@
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cciPwsQF.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"stm32746g_discovery_sdram.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.BSP_SDRAM_Initialization_sequence,"ax",%progbits
+  18              		.align	1
+  19              		.global	BSP_SDRAM_Initialization_sequence
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  23              		.fpu fpv5-sp-d16
+  25              	BSP_SDRAM_Initialization_sequence:
+  26              	.LFB138:
+  27              		.file 1 "Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c"
+   1:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** /**
+   2:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   ******************************************************************************
+   3:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * @file    stm32746g_discovery_sdram.c
+   4:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * @author  MCD Application Team
+   5:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * @brief   This file includes the SDRAM driver for the MT48LC4M32B2B5-7 memory 
+   6:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   *          device mounted on STM32746G-Discovery board.
+   7:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   @verbatim
+   8:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****    1. How To use this driver:
+   9:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****    --------------------------
+  10:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****       - This driver is used to drive the MT48LC4M32B2B5-7 SDRAM external memory mounted
+  11:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****         on STM32746G-Discovery board.
+  12:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****       - This driver does not need a specific component driver for the SDRAM device
+  13:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****         to be included with.
+  14:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****    
+  15:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****    2. Driver description:
+  16:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****    ---------------------
+  17:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****      + Initialization steps:
+  18:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****         o Initialize the SDRAM external memory using the BSP_SDRAM_Init() function. This 
+  19:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****           function includes the MSP layer hardware resources initialization and the
+  20:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****           FMC controller configuration to interface with the external SDRAM memory.
+  21:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****         o It contains the SDRAM initialization sequence to program the SDRAM external 
+  22:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****           device using the function BSP_SDRAM_Initialization_sequence(). Note that this 
+  23:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****           sequence is standard for all SDRAM devices, but can include some differences
+  24:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****           from a device to another. If it is the case, the right sequence should be 
+  25:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****           implemented separately.
+  26:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****      
+  27:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****      + SDRAM read/write operations
+  28:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****         o SDRAM external memory can be accessed with read/write operations once it is
+  29:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****           initialized.
+  30:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****           Read/write operation can be performed with AHB access using the functions
+  31:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****           BSP_SDRAM_ReadData()/BSP_SDRAM_WriteData(), or by DMA transfer using the functions
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cciPwsQF.s 			page 2
+
+
+  32:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****           BSP_SDRAM_ReadData_DMA()/BSP_SDRAM_WriteData_DMA().
+  33:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****         o The AHB access is performed with 32-bit width transaction, the DMA transfer
+  34:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****           configuration is fixed at single (no burst) word transfer (see the 
+  35:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****           SDRAM_MspInit() static function).
+  36:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****         o User can implement his own functions for read/write access with his desired 
+  37:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****           configurations.
+  38:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****         o If interrupt mode is used for DMA transfer, the function BSP_SDRAM_DMA_IRQHandler()
+  39:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****           is called in IRQ handler file, to serve the generated interrupt once the DMA 
+  40:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****           transfer is complete.
+  41:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****         o You can send a command to the SDRAM device in runtime using the function 
+  42:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****           BSP_SDRAM_Sendcmd(), and giving the desired command as parameter chosen between 
+  43:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****           the predefined commands of the "FMC_SDRAM_CommandTypeDef" structure. 
+  44:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****  
+  45:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   @endverbatim
+  46:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   ******************************************************************************
+  47:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * @attention
+  48:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   *
+  49:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * <h2><center>&copy; COPYRIGHT(c) 2016 STMicroelectronics</center></h2>
+  50:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   *
+  51:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * Redistribution and use in source and binary forms, with or without modification,
+  52:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * are permitted provided that the following conditions are met:
+  53:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   *   1. Redistributions of source code must retain the above copyright notice,
+  54:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   *      this list of conditions and the following disclaimer.
+  55:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   *   2. Redistributions in binary form must reproduce the above copyright notice,
+  56:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   *      this list of conditions and the following disclaimer in the documentation
+  57:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   *      and/or other materials provided with the distribution.
+  58:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   *   3. Neither the name of STMicroelectronics nor the names of its contributors
+  59:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   *      may be used to endorse or promote products derived from this software
+  60:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   *      without specific prior written permission.
+  61:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   *
+  62:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  63:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  64:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+  65:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+  66:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+  67:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+  68:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+  69:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+  70:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+  71:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  72:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   *
+  73:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   ******************************************************************************
+  74:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   */
+  75:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** 
+  76:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** /* Dependencies
+  77:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** - stm32f7xx_hal_sdram.c
+  78:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** - stm32f7xx_ll_fmc.c
+  79:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** - stm32f7xx_hal_dma.c  
+  80:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** - stm32f7xx_hal_gpio.c
+  81:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** - stm32f7xx_hal_cortex.c
+  82:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** - stm32f7xx_hal_rcc_ex.h
+  83:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** EndDependencies */
+  84:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** 
+  85:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** /* Includes ------------------------------------------------------------------*/
+  86:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** #include "stm32746g_discovery_sdram.h"
+  87:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** 
+  88:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** /** @addtogroup BSP
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cciPwsQF.s 			page 3
+
+
+  89:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * @{
+  90:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   */
+  91:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** 
+  92:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** /** @addtogroup STM32746G_DISCOVERY
+  93:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * @{
+  94:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   */ 
+  95:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   
+  96:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** /** @defgroup STM32746G_DISCOVERY_SDRAM STM32746G_DISCOVERY_SDRAM
+  97:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * @{
+  98:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   */ 
+  99:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** 
+ 100:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** /** @defgroup STM32746G_DISCOVERY_SDRAM_Private_Types_Definitions STM32746G_DISCOVERY_SDRAM Private
+ 101:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * @{
+ 102:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   */ 
+ 103:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** /**
+ 104:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * @}
+ 105:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   */
+ 106:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** 
+ 107:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** /** @defgroup STM32746G_DISCOVERY_SDRAM_Private_Defines STM32746G_DISCOVERY_SDRAM Private Defines
+ 108:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * @{
+ 109:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   */
+ 110:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** /**
+ 111:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * @}
+ 112:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   */
+ 113:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** 
+ 114:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** /** @defgroup STM32746G_DISCOVERY_SDRAM_Private_Macros STM32746G_DISCOVERY_SDRAM Private Macros
+ 115:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * @{
+ 116:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   */  
+ 117:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** /**
+ 118:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * @}
+ 119:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   */
+ 120:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** 
+ 121:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** /** @defgroup STM32746G_DISCOVERY_SDRAM_Private_Variables STM32746G_DISCOVERY_SDRAM Private Variabl
+ 122:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * @{
+ 123:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   */       
+ 124:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** SDRAM_HandleTypeDef sdramHandle;
+ 125:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** static FMC_SDRAM_TimingTypeDef Timing;
+ 126:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** static FMC_SDRAM_CommandTypeDef Command;
+ 127:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** /**
+ 128:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * @}
+ 129:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   */ 
+ 130:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** 
+ 131:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** /** @defgroup STM32746G_DISCOVERY_SDRAM_Private_Function_Prototypes STM32746G_DISCOVERY_SDRAM Priva
+ 132:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * @{
+ 133:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   */ 
+ 134:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** /**
+ 135:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * @}
+ 136:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   */
+ 137:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****     
+ 138:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** /** @defgroup STM32746G_DISCOVERY_SDRAM_Exported_Functions STM32746G_DISCOVERY_SDRAM Exported Funct
+ 139:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * @{
+ 140:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   */ 
+ 141:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** 
+ 142:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** /**
+ 143:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * @brief  Initializes the SDRAM device.
+ 144:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * @retval SDRAM status
+ 145:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   */
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cciPwsQF.s 			page 4
+
+
+ 146:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** uint8_t BSP_SDRAM_Init(void)
+ 147:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** { 
+ 148:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   static uint8_t sdramstatus = SDRAM_ERROR;
+ 149:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   /* SDRAM device configuration */
+ 150:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   sdramHandle.Instance = FMC_SDRAM_DEVICE;
+ 151:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****     
+ 152:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   /* Timing configuration for 100Mhz as SD clock frequency (System clock is up to 200Mhz) */
+ 153:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   Timing.LoadToActiveDelay    = 2;
+ 154:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   Timing.ExitSelfRefreshDelay = 7;
+ 155:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   Timing.SelfRefreshTime      = 4;
+ 156:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   Timing.RowCycleDelay        = 7;
+ 157:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   Timing.WriteRecoveryTime    = 2;
+ 158:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   Timing.RPDelay              = 2;
+ 159:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   Timing.RCDDelay             = 2;
+ 160:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   
+ 161:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   sdramHandle.Init.SDBank             = FMC_SDRAM_BANK1;
+ 162:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   sdramHandle.Init.ColumnBitsNumber   = FMC_SDRAM_COLUMN_BITS_NUM_8;
+ 163:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   sdramHandle.Init.RowBitsNumber      = FMC_SDRAM_ROW_BITS_NUM_12;
+ 164:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   sdramHandle.Init.MemoryDataWidth    = SDRAM_MEMORY_WIDTH;
+ 165:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   sdramHandle.Init.InternalBankNumber = FMC_SDRAM_INTERN_BANKS_NUM_4;
+ 166:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   sdramHandle.Init.CASLatency         = FMC_SDRAM_CAS_LATENCY_2;
+ 167:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   sdramHandle.Init.WriteProtection    = FMC_SDRAM_WRITE_PROTECTION_DISABLE;
+ 168:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   sdramHandle.Init.SDClockPeriod      = SDCLOCK_PERIOD;
+ 169:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   sdramHandle.Init.ReadBurst          = FMC_SDRAM_RBURST_ENABLE;
+ 170:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   sdramHandle.Init.ReadPipeDelay      = FMC_SDRAM_RPIPE_DELAY_0;
+ 171:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   
+ 172:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   /* SDRAM controller initialization */
+ 173:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** 
+ 174:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   BSP_SDRAM_MspInit(&sdramHandle, NULL); /* __weak function can be rewritten by the application */
+ 175:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** 
+ 176:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   if(HAL_SDRAM_Init(&sdramHandle, &Timing) != HAL_OK)
+ 177:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   {
+ 178:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****     sdramstatus = SDRAM_ERROR;
+ 179:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   }
+ 180:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   else
+ 181:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   {
+ 182:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****     sdramstatus = SDRAM_OK;
+ 183:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   }
+ 184:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   
+ 185:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   /* SDRAM initialization sequence */
+ 186:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   BSP_SDRAM_Initialization_sequence(REFRESH_COUNT);
+ 187:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   
+ 188:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   return sdramstatus;
+ 189:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** }
+ 190:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** 
+ 191:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** /**
+ 192:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * @brief  DeInitializes the SDRAM device.
+ 193:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * @retval SDRAM status
+ 194:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   */
+ 195:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** uint8_t BSP_SDRAM_DeInit(void)
+ 196:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** { 
+ 197:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   static uint8_t sdramstatus = SDRAM_ERROR;
+ 198:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   /* SDRAM device de-initialization */
+ 199:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   sdramHandle.Instance = FMC_SDRAM_DEVICE;
+ 200:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** 
+ 201:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   if(HAL_SDRAM_DeInit(&sdramHandle) != HAL_OK)
+ 202:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   {
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cciPwsQF.s 			page 5
+
+
+ 203:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****     sdramstatus = SDRAM_ERROR;
+ 204:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   }
+ 205:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   else
+ 206:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   {
+ 207:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****     sdramstatus = SDRAM_OK;
+ 208:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   }
+ 209:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   
+ 210:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   /* SDRAM controller de-initialization */
+ 211:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   BSP_SDRAM_MspDeInit(&sdramHandle, NULL);
+ 212:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   
+ 213:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   return sdramstatus;
+ 214:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** }
+ 215:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** 
+ 216:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** /**
+ 217:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * @brief  Programs the SDRAM device.
+ 218:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * @param  RefreshCount: SDRAM refresh counter value 
+ 219:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * @retval None
+ 220:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   */
+ 221:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** void BSP_SDRAM_Initialization_sequence(uint32_t RefreshCount)
+ 222:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** {
+  28              		.loc 1 222 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 8
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              	.LVL0:
+  33 0000 2DE9F043 		push	{r4, r5, r6, r7, r8, r9, lr}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 28
+  36              		.cfi_offset 4, -28
+  37              		.cfi_offset 5, -24
+  38              		.cfi_offset 6, -20
+  39              		.cfi_offset 7, -16
+  40              		.cfi_offset 8, -12
+  41              		.cfi_offset 9, -8
+  42              		.cfi_offset 14, -4
+  43 0004 83B0     		sub	sp, sp, #12
+  44              	.LCFI1:
+  45              		.cfi_def_cfa_offset 40
+  46 0006 8146     		mov	r9, r0
+ 223:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   __IO uint32_t tmpmrd = 0;
+  47              		.loc 1 223 0
+  48 0008 4FF00008 		mov	r8, #0
+  49 000c CDF80480 		str	r8, [sp, #4]
+ 224:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   
+ 225:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   /* Step 1: Configure a clock configuration enable command */
+ 226:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   Command.CommandMode            = FMC_SDRAM_CMD_CLK_ENABLE;
+  50              		.loc 1 226 0
+  51 0010 204C     		ldr	r4, .L3
+  52 0012 0126     		movs	r6, #1
+  53 0014 2660     		str	r6, [r4]
+ 227:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   Command.CommandTarget          = FMC_SDRAM_CMD_TARGET_BANK1;
+  54              		.loc 1 227 0
+  55 0016 1027     		movs	r7, #16
+  56 0018 6760     		str	r7, [r4, #4]
+ 228:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   Command.AutoRefreshNumber      = 1;
+  57              		.loc 1 228 0
+  58 001a A660     		str	r6, [r4, #8]
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cciPwsQF.s 			page 6
+
+
+ 229:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   Command.ModeRegisterDefinition = 0;
+  59              		.loc 1 229 0
+  60 001c C4F80C80 		str	r8, [r4, #12]
+ 230:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** 
+ 231:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   /* Send the command */
+ 232:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   HAL_SDRAM_SendCommand(&sdramHandle, &Command, SDRAM_TIMEOUT);
+  61              		.loc 1 232 0
+  62 0020 1D4D     		ldr	r5, .L3+4
+  63 0022 4FF6FF72 		movw	r2, #65535
+  64 0026 2146     		mov	r1, r4
+  65 0028 2846     		mov	r0, r5
+  66              	.LVL1:
+  67 002a FFF7FEFF 		bl	HAL_SDRAM_SendCommand
+  68              	.LVL2:
+ 233:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** 
+ 234:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   /* Step 2: Insert 100 us minimum delay */ 
+ 235:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   /* Inserted delay is equal to 1 ms due to systick time base unit (ms) */
+ 236:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   HAL_Delay(1);
+  69              		.loc 1 236 0
+  70 002e 3046     		mov	r0, r6
+  71 0030 FFF7FEFF 		bl	HAL_Delay
+  72              	.LVL3:
+ 237:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****     
+ 238:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   /* Step 3: Configure a PALL (precharge all) command */ 
+ 239:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   Command.CommandMode            = FMC_SDRAM_CMD_PALL;
+  73              		.loc 1 239 0
+  74 0034 0223     		movs	r3, #2
+  75 0036 2360     		str	r3, [r4]
+ 240:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   Command.CommandTarget          = FMC_SDRAM_CMD_TARGET_BANK1;
+  76              		.loc 1 240 0
+  77 0038 6760     		str	r7, [r4, #4]
+ 241:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   Command.AutoRefreshNumber      = 1;
+  78              		.loc 1 241 0
+  79 003a A660     		str	r6, [r4, #8]
+ 242:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   Command.ModeRegisterDefinition = 0;
+  80              		.loc 1 242 0
+  81 003c C4F80C80 		str	r8, [r4, #12]
+ 243:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** 
+ 244:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   /* Send the command */
+ 245:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   HAL_SDRAM_SendCommand(&sdramHandle, &Command, SDRAM_TIMEOUT);  
+  82              		.loc 1 245 0
+  83 0040 4FF6FF72 		movw	r2, #65535
+  84 0044 2146     		mov	r1, r4
+  85 0046 2846     		mov	r0, r5
+  86 0048 FFF7FEFF 		bl	HAL_SDRAM_SendCommand
+  87              	.LVL4:
+ 246:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   
+ 247:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   /* Step 4: Configure an Auto Refresh command */ 
+ 248:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   Command.CommandMode            = FMC_SDRAM_CMD_AUTOREFRESH_MODE;
+  88              		.loc 1 248 0
+  89 004c 0323     		movs	r3, #3
+  90 004e 2360     		str	r3, [r4]
+ 249:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   Command.CommandTarget          = FMC_SDRAM_CMD_TARGET_BANK1;
+  91              		.loc 1 249 0
+  92 0050 6760     		str	r7, [r4, #4]
+ 250:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   Command.AutoRefreshNumber      = 8;
+  93              		.loc 1 250 0
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cciPwsQF.s 			page 7
+
+
+  94 0052 0823     		movs	r3, #8
+  95 0054 A360     		str	r3, [r4, #8]
+ 251:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   Command.ModeRegisterDefinition = 0;
+  96              		.loc 1 251 0
+  97 0056 C4F80C80 		str	r8, [r4, #12]
+ 252:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** 
+ 253:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   /* Send the command */
+ 254:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   HAL_SDRAM_SendCommand(&sdramHandle, &Command, SDRAM_TIMEOUT);
+  98              		.loc 1 254 0
+  99 005a 4FF6FF72 		movw	r2, #65535
+ 100 005e 2146     		mov	r1, r4
+ 101 0060 2846     		mov	r0, r5
+ 102 0062 FFF7FEFF 		bl	HAL_SDRAM_SendCommand
+ 103              	.LVL5:
+ 255:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   
+ 256:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   /* Step 5: Program the external memory mode register */
+ 257:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   tmpmrd = (uint32_t)SDRAM_MODEREG_BURST_LENGTH_1          |\
+ 104              		.loc 1 257 0
+ 105 0066 4FF40873 		mov	r3, #544
+ 106 006a 0193     		str	r3, [sp, #4]
+ 258:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****                      SDRAM_MODEREG_BURST_TYPE_SEQUENTIAL   |\
+ 259:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****                      SDRAM_MODEREG_CAS_LATENCY_2           |\
+ 260:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****                      SDRAM_MODEREG_OPERATING_MODE_STANDARD |\
+ 261:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****                      SDRAM_MODEREG_WRITEBURST_MODE_SINGLE;
+ 262:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   
+ 263:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   Command.CommandMode            = FMC_SDRAM_CMD_LOAD_MODE;
+ 107              		.loc 1 263 0
+ 108 006c 0423     		movs	r3, #4
+ 109 006e 2360     		str	r3, [r4]
+ 264:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   Command.CommandTarget          = FMC_SDRAM_CMD_TARGET_BANK1;
+ 110              		.loc 1 264 0
+ 111 0070 6760     		str	r7, [r4, #4]
+ 265:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   Command.AutoRefreshNumber      = 1;
+ 112              		.loc 1 265 0
+ 113 0072 A660     		str	r6, [r4, #8]
+ 266:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   Command.ModeRegisterDefinition = tmpmrd;
+ 114              		.loc 1 266 0
+ 115 0074 019B     		ldr	r3, [sp, #4]
+ 116 0076 E360     		str	r3, [r4, #12]
+ 267:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** 
+ 268:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   /* Send the command */
+ 269:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   HAL_SDRAM_SendCommand(&sdramHandle, &Command, SDRAM_TIMEOUT);
+ 117              		.loc 1 269 0
+ 118 0078 4FF6FF72 		movw	r2, #65535
+ 119 007c 2146     		mov	r1, r4
+ 120 007e 2846     		mov	r0, r5
+ 121 0080 FFF7FEFF 		bl	HAL_SDRAM_SendCommand
+ 122              	.LVL6:
+ 270:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   
+ 271:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   /* Step 6: Set the refresh rate counter */
+ 272:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   /* Set the device refresh rate */
+ 273:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   HAL_SDRAM_ProgramRefreshRate(&sdramHandle, RefreshCount); 
+ 123              		.loc 1 273 0
+ 124 0084 4946     		mov	r1, r9
+ 125 0086 2846     		mov	r0, r5
+ 126 0088 FFF7FEFF 		bl	HAL_SDRAM_ProgramRefreshRate
+ 127              	.LVL7:
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cciPwsQF.s 			page 8
+
+
+ 274:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** }
+ 128              		.loc 1 274 0
+ 129 008c 03B0     		add	sp, sp, #12
+ 130              	.LCFI2:
+ 131              		.cfi_def_cfa_offset 28
+ 132              		@ sp needed
+ 133 008e BDE8F083 		pop	{r4, r5, r6, r7, r8, r9, pc}
+ 134              	.LVL8:
+ 135              	.L4:
+ 136 0092 00BF     		.align	2
+ 137              	.L3:
+ 138 0094 00000000 		.word	.LANCHOR0
+ 139 0098 00000000 		.word	sdramHandle
+ 140              		.cfi_endproc
+ 141              	.LFE138:
+ 143              		.section	.text.BSP_SDRAM_ReadData,"ax",%progbits
+ 144              		.align	1
+ 145              		.global	BSP_SDRAM_ReadData
+ 146              		.syntax unified
+ 147              		.thumb
+ 148              		.thumb_func
+ 149              		.fpu fpv5-sp-d16
+ 151              	BSP_SDRAM_ReadData:
+ 152              	.LFB139:
+ 275:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** 
+ 276:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** /**
+ 277:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * @brief  Reads an amount of data from the SDRAM memory in polling mode.
+ 278:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * @param  uwStartAddress: Read start address
+ 279:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * @param  pData: Pointer to data to be read  
+ 280:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * @param  uwDataSize: Size of read data from the memory
+ 281:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * @retval SDRAM status
+ 282:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   */
+ 283:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** uint8_t BSP_SDRAM_ReadData(uint32_t uwStartAddress, uint32_t *pData, uint32_t uwDataSize)
+ 284:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** {
+ 153              		.loc 1 284 0
+ 154              		.cfi_startproc
+ 155              		@ args = 0, pretend = 0, frame = 0
+ 156              		@ frame_needed = 0, uses_anonymous_args = 0
+ 157              	.LVL9:
+ 158 0000 08B5     		push	{r3, lr}
+ 159              	.LCFI3:
+ 160              		.cfi_def_cfa_offset 8
+ 161              		.cfi_offset 3, -8
+ 162              		.cfi_offset 14, -4
+ 285:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   if(HAL_SDRAM_Read_32b(&sdramHandle, (uint32_t *)uwStartAddress, pData, uwDataSize) != HAL_OK)
+ 163              		.loc 1 285 0
+ 164 0002 1346     		mov	r3, r2
+ 165 0004 0A46     		mov	r2, r1
+ 166              	.LVL10:
+ 167 0006 0146     		mov	r1, r0
+ 168              	.LVL11:
+ 169 0008 0348     		ldr	r0, .L10
+ 170              	.LVL12:
+ 171 000a FFF7FEFF 		bl	HAL_SDRAM_Read_32b
+ 172              	.LVL13:
+ 173 000e 08B9     		cbnz	r0, .L9
+ 286:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   {
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cciPwsQF.s 			page 9
+
+
+ 287:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****     return SDRAM_ERROR;
+ 288:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   }
+ 289:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   else
+ 290:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   {
+ 291:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****     return SDRAM_OK;
+ 174              		.loc 1 291 0
+ 175 0010 0020     		movs	r0, #0
+ 292:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   } 
+ 293:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** }
+ 176              		.loc 1 293 0
+ 177 0012 08BD     		pop	{r3, pc}
+ 178              	.L9:
+ 287:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   }
+ 179              		.loc 1 287 0
+ 180 0014 0120     		movs	r0, #1
+ 181 0016 08BD     		pop	{r3, pc}
+ 182              	.L11:
+ 183              		.align	2
+ 184              	.L10:
+ 185 0018 00000000 		.word	sdramHandle
+ 186              		.cfi_endproc
+ 187              	.LFE139:
+ 189              		.section	.text.BSP_SDRAM_ReadData_DMA,"ax",%progbits
+ 190              		.align	1
+ 191              		.global	BSP_SDRAM_ReadData_DMA
+ 192              		.syntax unified
+ 193              		.thumb
+ 194              		.thumb_func
+ 195              		.fpu fpv5-sp-d16
+ 197              	BSP_SDRAM_ReadData_DMA:
+ 198              	.LFB140:
+ 294:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** 
+ 295:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** /**
+ 296:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * @brief  Reads an amount of data from the SDRAM memory in DMA mode.
+ 297:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * @param  uwStartAddress: Read start address
+ 298:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * @param  pData: Pointer to data to be read  
+ 299:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * @param  uwDataSize: Size of read data from the memory
+ 300:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * @retval SDRAM status
+ 301:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   */
+ 302:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** uint8_t BSP_SDRAM_ReadData_DMA(uint32_t uwStartAddress, uint32_t *pData, uint32_t uwDataSize)
+ 303:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** {
+ 199              		.loc 1 303 0
+ 200              		.cfi_startproc
+ 201              		@ args = 0, pretend = 0, frame = 0
+ 202              		@ frame_needed = 0, uses_anonymous_args = 0
+ 203              	.LVL14:
+ 204 0000 08B5     		push	{r3, lr}
+ 205              	.LCFI4:
+ 206              		.cfi_def_cfa_offset 8
+ 207              		.cfi_offset 3, -8
+ 208              		.cfi_offset 14, -4
+ 304:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   if(HAL_SDRAM_Read_DMA(&sdramHandle, (uint32_t *)uwStartAddress, pData, uwDataSize) != HAL_OK)
+ 209              		.loc 1 304 0
+ 210 0002 1346     		mov	r3, r2
+ 211 0004 0A46     		mov	r2, r1
+ 212              	.LVL15:
+ 213 0006 0146     		mov	r1, r0
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cciPwsQF.s 			page 10
+
+
+ 214              	.LVL16:
+ 215 0008 0348     		ldr	r0, .L17
+ 216              	.LVL17:
+ 217 000a FFF7FEFF 		bl	HAL_SDRAM_Read_DMA
+ 218              	.LVL18:
+ 219 000e 08B9     		cbnz	r0, .L16
+ 305:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   {
+ 306:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****     return SDRAM_ERROR;
+ 307:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   }
+ 308:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   else
+ 309:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   {
+ 310:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****     return SDRAM_OK;
+ 220              		.loc 1 310 0
+ 221 0010 0020     		movs	r0, #0
+ 311:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   }     
+ 312:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** }
+ 222              		.loc 1 312 0
+ 223 0012 08BD     		pop	{r3, pc}
+ 224              	.L16:
+ 306:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   }
+ 225              		.loc 1 306 0
+ 226 0014 0120     		movs	r0, #1
+ 227 0016 08BD     		pop	{r3, pc}
+ 228              	.L18:
+ 229              		.align	2
+ 230              	.L17:
+ 231 0018 00000000 		.word	sdramHandle
+ 232              		.cfi_endproc
+ 233              	.LFE140:
+ 235              		.section	.text.BSP_SDRAM_WriteData,"ax",%progbits
+ 236              		.align	1
+ 237              		.global	BSP_SDRAM_WriteData
+ 238              		.syntax unified
+ 239              		.thumb
+ 240              		.thumb_func
+ 241              		.fpu fpv5-sp-d16
+ 243              	BSP_SDRAM_WriteData:
+ 244              	.LFB141:
+ 313:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** 
+ 314:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** /**
+ 315:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * @brief  Writes an amount of data to the SDRAM memory in polling mode.
+ 316:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * @param  uwStartAddress: Write start address
+ 317:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * @param  pData: Pointer to data to be written  
+ 318:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * @param  uwDataSize: Size of written data from the memory
+ 319:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * @retval SDRAM status
+ 320:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   */
+ 321:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** uint8_t BSP_SDRAM_WriteData(uint32_t uwStartAddress, uint32_t *pData, uint32_t uwDataSize) 
+ 322:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** {
+ 245              		.loc 1 322 0
+ 246              		.cfi_startproc
+ 247              		@ args = 0, pretend = 0, frame = 0
+ 248              		@ frame_needed = 0, uses_anonymous_args = 0
+ 249              	.LVL19:
+ 250 0000 08B5     		push	{r3, lr}
+ 251              	.LCFI5:
+ 252              		.cfi_def_cfa_offset 8
+ 253              		.cfi_offset 3, -8
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cciPwsQF.s 			page 11
+
+
+ 254              		.cfi_offset 14, -4
+ 323:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   if(HAL_SDRAM_Write_32b(&sdramHandle, (uint32_t *)uwStartAddress, pData, uwDataSize) != HAL_OK)
+ 255              		.loc 1 323 0
+ 256 0002 1346     		mov	r3, r2
+ 257 0004 0A46     		mov	r2, r1
+ 258              	.LVL20:
+ 259 0006 0146     		mov	r1, r0
+ 260              	.LVL21:
+ 261 0008 0348     		ldr	r0, .L24
+ 262              	.LVL22:
+ 263 000a FFF7FEFF 		bl	HAL_SDRAM_Write_32b
+ 264              	.LVL23:
+ 265 000e 08B9     		cbnz	r0, .L23
+ 324:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   {
+ 325:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****     return SDRAM_ERROR;
+ 326:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   }
+ 327:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   else
+ 328:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   {
+ 329:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****     return SDRAM_OK;
+ 266              		.loc 1 329 0
+ 267 0010 0020     		movs	r0, #0
+ 330:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   }
+ 331:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** }
+ 268              		.loc 1 331 0
+ 269 0012 08BD     		pop	{r3, pc}
+ 270              	.L23:
+ 325:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   }
+ 271              		.loc 1 325 0
+ 272 0014 0120     		movs	r0, #1
+ 273 0016 08BD     		pop	{r3, pc}
+ 274              	.L25:
+ 275              		.align	2
+ 276              	.L24:
+ 277 0018 00000000 		.word	sdramHandle
+ 278              		.cfi_endproc
+ 279              	.LFE141:
+ 281              		.section	.text.BSP_SDRAM_WriteData_DMA,"ax",%progbits
+ 282              		.align	1
+ 283              		.global	BSP_SDRAM_WriteData_DMA
+ 284              		.syntax unified
+ 285              		.thumb
+ 286              		.thumb_func
+ 287              		.fpu fpv5-sp-d16
+ 289              	BSP_SDRAM_WriteData_DMA:
+ 290              	.LFB142:
+ 332:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** 
+ 333:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** /**
+ 334:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * @brief  Writes an amount of data to the SDRAM memory in DMA mode.
+ 335:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * @param  uwStartAddress: Write start address
+ 336:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * @param  pData: Pointer to data to be written  
+ 337:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * @param  uwDataSize: Size of written data from the memory
+ 338:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * @retval SDRAM status
+ 339:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   */
+ 340:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** uint8_t BSP_SDRAM_WriteData_DMA(uint32_t uwStartAddress, uint32_t *pData, uint32_t uwDataSize) 
+ 341:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** {
+ 291              		.loc 1 341 0
+ 292              		.cfi_startproc
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cciPwsQF.s 			page 12
+
+
+ 293              		@ args = 0, pretend = 0, frame = 0
+ 294              		@ frame_needed = 0, uses_anonymous_args = 0
+ 295              	.LVL24:
+ 296 0000 08B5     		push	{r3, lr}
+ 297              	.LCFI6:
+ 298              		.cfi_def_cfa_offset 8
+ 299              		.cfi_offset 3, -8
+ 300              		.cfi_offset 14, -4
+ 342:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   if(HAL_SDRAM_Write_DMA(&sdramHandle, (uint32_t *)uwStartAddress, pData, uwDataSize) != HAL_OK)
+ 301              		.loc 1 342 0
+ 302 0002 1346     		mov	r3, r2
+ 303 0004 0A46     		mov	r2, r1
+ 304              	.LVL25:
+ 305 0006 0146     		mov	r1, r0
+ 306              	.LVL26:
+ 307 0008 0348     		ldr	r0, .L31
+ 308              	.LVL27:
+ 309 000a FFF7FEFF 		bl	HAL_SDRAM_Write_DMA
+ 310              	.LVL28:
+ 311 000e 08B9     		cbnz	r0, .L30
+ 343:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   {
+ 344:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****     return SDRAM_ERROR;
+ 345:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   }
+ 346:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   else
+ 347:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   {
+ 348:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****     return SDRAM_OK;
+ 312              		.loc 1 348 0
+ 313 0010 0020     		movs	r0, #0
+ 349:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   } 
+ 350:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** }
+ 314              		.loc 1 350 0
+ 315 0012 08BD     		pop	{r3, pc}
+ 316              	.L30:
+ 344:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   }
+ 317              		.loc 1 344 0
+ 318 0014 0120     		movs	r0, #1
+ 319 0016 08BD     		pop	{r3, pc}
+ 320              	.L32:
+ 321              		.align	2
+ 322              	.L31:
+ 323 0018 00000000 		.word	sdramHandle
+ 324              		.cfi_endproc
+ 325              	.LFE142:
+ 327              		.section	.text.BSP_SDRAM_Sendcmd,"ax",%progbits
+ 328              		.align	1
+ 329              		.global	BSP_SDRAM_Sendcmd
+ 330              		.syntax unified
+ 331              		.thumb
+ 332              		.thumb_func
+ 333              		.fpu fpv5-sp-d16
+ 335              	BSP_SDRAM_Sendcmd:
+ 336              	.LFB143:
+ 351:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** 
+ 352:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** /**
+ 353:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * @brief  Sends command to the SDRAM bank.
+ 354:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * @param  SdramCmd: Pointer to SDRAM command structure 
+ 355:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * @retval SDRAM status
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cciPwsQF.s 			page 13
+
+
+ 356:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   */  
+ 357:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** uint8_t BSP_SDRAM_Sendcmd(FMC_SDRAM_CommandTypeDef *SdramCmd)
+ 358:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** {
+ 337              		.loc 1 358 0
+ 338              		.cfi_startproc
+ 339              		@ args = 0, pretend = 0, frame = 0
+ 340              		@ frame_needed = 0, uses_anonymous_args = 0
+ 341              	.LVL29:
+ 342 0000 08B5     		push	{r3, lr}
+ 343              	.LCFI7:
+ 344              		.cfi_def_cfa_offset 8
+ 345              		.cfi_offset 3, -8
+ 346              		.cfi_offset 14, -4
+ 359:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   if(HAL_SDRAM_SendCommand(&sdramHandle, SdramCmd, SDRAM_TIMEOUT) != HAL_OK)
+ 347              		.loc 1 359 0
+ 348 0002 4FF6FF72 		movw	r2, #65535
+ 349 0006 0146     		mov	r1, r0
+ 350 0008 0348     		ldr	r0, .L38
+ 351              	.LVL30:
+ 352 000a FFF7FEFF 		bl	HAL_SDRAM_SendCommand
+ 353              	.LVL31:
+ 354 000e 08B9     		cbnz	r0, .L37
+ 360:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   {
+ 361:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****     return SDRAM_ERROR;
+ 362:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   }
+ 363:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   else
+ 364:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   {
+ 365:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****     return SDRAM_OK;
+ 355              		.loc 1 365 0
+ 356 0010 0020     		movs	r0, #0
+ 366:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   }
+ 367:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** }
+ 357              		.loc 1 367 0
+ 358 0012 08BD     		pop	{r3, pc}
+ 359              	.L37:
+ 361:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   }
+ 360              		.loc 1 361 0
+ 361 0014 0120     		movs	r0, #1
+ 362 0016 08BD     		pop	{r3, pc}
+ 363              	.L39:
+ 364              		.align	2
+ 365              	.L38:
+ 366 0018 00000000 		.word	sdramHandle
+ 367              		.cfi_endproc
+ 368              	.LFE143:
+ 370              		.section	.text.BSP_SDRAM_MspInit,"ax",%progbits
+ 371              		.align	1
+ 372              		.weak	BSP_SDRAM_MspInit
+ 373              		.syntax unified
+ 374              		.thumb
+ 375              		.thumb_func
+ 376              		.fpu fpv5-sp-d16
+ 378              	BSP_SDRAM_MspInit:
+ 379              	.LFB144:
+ 368:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** 
+ 369:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** /**
+ 370:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * @brief  Initializes SDRAM MSP.
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cciPwsQF.s 			page 14
+
+
+ 371:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * @param  hsdram: SDRAM handle
+ 372:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * @param  Params
+ 373:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * @retval None
+ 374:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   */
+ 375:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** __weak void BSP_SDRAM_MspInit(SDRAM_HandleTypeDef  *hsdram, void *Params)
+ 376:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** {  
+ 380              		.loc 1 376 0
+ 381              		.cfi_startproc
+ 382              		@ args = 0, pretend = 0, frame = 56
+ 383              		@ frame_needed = 0, uses_anonymous_args = 0
+ 384              	.LVL32:
+ 385 0000 70B5     		push	{r4, r5, r6, lr}
+ 386              	.LCFI8:
+ 387              		.cfi_def_cfa_offset 16
+ 388              		.cfi_offset 4, -16
+ 389              		.cfi_offset 5, -12
+ 390              		.cfi_offset 6, -8
+ 391              		.cfi_offset 14, -4
+ 392 0002 8EB0     		sub	sp, sp, #56
+ 393              	.LCFI9:
+ 394              		.cfi_def_cfa_offset 72
+ 395 0004 0646     		mov	r6, r0
+ 396              	.LBB2:
+ 377:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   static DMA_HandleTypeDef dma_handle;
+ 378:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   GPIO_InitTypeDef gpio_init_structure;
+ 379:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   
+ 380:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   /* Enable FMC clock */
+ 381:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   __HAL_RCC_FMC_CLK_ENABLE();
+ 397              		.loc 1 381 0
+ 398 0006 544B     		ldr	r3, .L42
+ 399 0008 9A6B     		ldr	r2, [r3, #56]
+ 400 000a 42F00102 		orr	r2, r2, #1
+ 401 000e 9A63     		str	r2, [r3, #56]
+ 402 0010 9A6B     		ldr	r2, [r3, #56]
+ 403 0012 02F00102 		and	r2, r2, #1
+ 404 0016 0192     		str	r2, [sp, #4]
+ 405 0018 019A     		ldr	r2, [sp, #4]
+ 406              	.LBE2:
+ 407              	.LBB3:
+ 382:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   
+ 383:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   /* Enable chosen DMAx clock */
+ 384:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   __DMAx_CLK_ENABLE();
+ 408              		.loc 1 384 0
+ 409 001a 1A6B     		ldr	r2, [r3, #48]
+ 410 001c 42F48002 		orr	r2, r2, #4194304
+ 411 0020 1A63     		str	r2, [r3, #48]
+ 412 0022 1A6B     		ldr	r2, [r3, #48]
+ 413 0024 02F48002 		and	r2, r2, #4194304
+ 414 0028 0292     		str	r2, [sp, #8]
+ 415 002a 029A     		ldr	r2, [sp, #8]
+ 416              	.LBE3:
+ 417              	.LBB4:
+ 385:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** 
+ 386:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   /* Enable GPIOs clock */
+ 387:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   __HAL_RCC_GPIOC_CLK_ENABLE();
+ 418              		.loc 1 387 0
+ 419 002c 1A6B     		ldr	r2, [r3, #48]
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cciPwsQF.s 			page 15
+
+
+ 420 002e 42F00402 		orr	r2, r2, #4
+ 421 0032 1A63     		str	r2, [r3, #48]
+ 422 0034 1A6B     		ldr	r2, [r3, #48]
+ 423 0036 02F00402 		and	r2, r2, #4
+ 424 003a 0392     		str	r2, [sp, #12]
+ 425 003c 039A     		ldr	r2, [sp, #12]
+ 426              	.LBE4:
+ 427              	.LBB5:
+ 388:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   __HAL_RCC_GPIOD_CLK_ENABLE();
+ 428              		.loc 1 388 0
+ 429 003e 1A6B     		ldr	r2, [r3, #48]
+ 430 0040 42F00802 		orr	r2, r2, #8
+ 431 0044 1A63     		str	r2, [r3, #48]
+ 432 0046 1A6B     		ldr	r2, [r3, #48]
+ 433 0048 02F00802 		and	r2, r2, #8
+ 434 004c 0492     		str	r2, [sp, #16]
+ 435 004e 049A     		ldr	r2, [sp, #16]
+ 436              	.LBE5:
+ 437              	.LBB6:
+ 389:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   __HAL_RCC_GPIOE_CLK_ENABLE();
+ 438              		.loc 1 389 0
+ 439 0050 1A6B     		ldr	r2, [r3, #48]
+ 440 0052 42F01002 		orr	r2, r2, #16
+ 441 0056 1A63     		str	r2, [r3, #48]
+ 442 0058 1A6B     		ldr	r2, [r3, #48]
+ 443 005a 02F01002 		and	r2, r2, #16
+ 444 005e 0592     		str	r2, [sp, #20]
+ 445 0060 059A     		ldr	r2, [sp, #20]
+ 446              	.LBE6:
+ 447              	.LBB7:
+ 390:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   __HAL_RCC_GPIOF_CLK_ENABLE();
+ 448              		.loc 1 390 0
+ 449 0062 1A6B     		ldr	r2, [r3, #48]
+ 450 0064 42F02002 		orr	r2, r2, #32
+ 451 0068 1A63     		str	r2, [r3, #48]
+ 452 006a 1A6B     		ldr	r2, [r3, #48]
+ 453 006c 02F02002 		and	r2, r2, #32
+ 454 0070 0692     		str	r2, [sp, #24]
+ 455 0072 069A     		ldr	r2, [sp, #24]
+ 456              	.LBE7:
+ 457              	.LBB8:
+ 391:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   __HAL_RCC_GPIOG_CLK_ENABLE();
+ 458              		.loc 1 391 0
+ 459 0074 1A6B     		ldr	r2, [r3, #48]
+ 460 0076 42F04002 		orr	r2, r2, #64
+ 461 007a 1A63     		str	r2, [r3, #48]
+ 462 007c 1A6B     		ldr	r2, [r3, #48]
+ 463 007e 02F04002 		and	r2, r2, #64
+ 464 0082 0792     		str	r2, [sp, #28]
+ 465 0084 079A     		ldr	r2, [sp, #28]
+ 466              	.LBE8:
+ 467              	.LBB9:
+ 392:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   __HAL_RCC_GPIOH_CLK_ENABLE();
+ 468              		.loc 1 392 0
+ 469 0086 1A6B     		ldr	r2, [r3, #48]
+ 470 0088 42F08002 		orr	r2, r2, #128
+ 471 008c 1A63     		str	r2, [r3, #48]
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cciPwsQF.s 			page 16
+
+
+ 472 008e 1B6B     		ldr	r3, [r3, #48]
+ 473 0090 03F08003 		and	r3, r3, #128
+ 474 0094 0893     		str	r3, [sp, #32]
+ 475 0096 089B     		ldr	r3, [sp, #32]
+ 476              	.LBE9:
+ 393:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   
+ 394:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   /* Common GPIO configuration */
+ 395:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   gpio_init_structure.Mode      = GPIO_MODE_AF_PP;
+ 477              		.loc 1 395 0
+ 478 0098 0223     		movs	r3, #2
+ 479 009a 0A93     		str	r3, [sp, #40]
+ 396:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   gpio_init_structure.Pull      = GPIO_PULLUP;
+ 480              		.loc 1 396 0
+ 481 009c 0122     		movs	r2, #1
+ 482 009e 0B92     		str	r2, [sp, #44]
+ 397:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   gpio_init_structure.Speed     = GPIO_SPEED_FAST;
+ 483              		.loc 1 397 0
+ 484 00a0 0C93     		str	r3, [sp, #48]
+ 398:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   gpio_init_structure.Alternate = GPIO_AF12_FMC;
+ 485              		.loc 1 398 0
+ 486 00a2 0C23     		movs	r3, #12
+ 487 00a4 0D93     		str	r3, [sp, #52]
+ 399:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   
+ 400:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   /* GPIOC configuration */
+ 401:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   gpio_init_structure.Pin   = GPIO_PIN_3;
+ 488              		.loc 1 401 0
+ 489 00a6 0EAC     		add	r4, sp, #56
+ 490 00a8 0823     		movs	r3, #8
+ 491 00aa 44F8143D 		str	r3, [r4, #-20]!
+ 402:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   HAL_GPIO_Init(GPIOC, &gpio_init_structure);
+ 492              		.loc 1 402 0
+ 493 00ae 2146     		mov	r1, r4
+ 494              	.LVL33:
+ 495 00b0 2A48     		ldr	r0, .L42+4
+ 496              	.LVL34:
+ 497 00b2 FFF7FEFF 		bl	HAL_GPIO_Init
+ 498              	.LVL35:
+ 403:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** 
+ 404:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   /* GPIOD configuration */
+ 405:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   gpio_init_structure.Pin   = GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_8 | GPIO_PIN_9 |
+ 499              		.loc 1 405 0
+ 500 00b6 4CF20373 		movw	r3, #50947
+ 501 00ba 0993     		str	r3, [sp, #36]
+ 406:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****                               GPIO_PIN_10 | GPIO_PIN_14 | GPIO_PIN_15;
+ 407:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   HAL_GPIO_Init(GPIOD, &gpio_init_structure);
+ 502              		.loc 1 407 0
+ 503 00bc 2146     		mov	r1, r4
+ 504 00be 2848     		ldr	r0, .L42+8
+ 505 00c0 FFF7FEFF 		bl	HAL_GPIO_Init
+ 506              	.LVL36:
+ 408:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** 
+ 409:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   /* GPIOE configuration */  
+ 410:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   gpio_init_structure.Pin   = GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_7| GPIO_PIN_8 | GPIO_PIN_9 |\
+ 507              		.loc 1 410 0
+ 508 00c4 4FF68373 		movw	r3, #65411
+ 509 00c8 0993     		str	r3, [sp, #36]
+ 411:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****                               GPIO_PIN_10 | GPIO_PIN_11 | GPIO_PIN_12 | GPIO_PIN_13 | GPIO_PIN_14 |
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cciPwsQF.s 			page 17
+
+
+ 412:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****                               GPIO_PIN_15;
+ 413:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   HAL_GPIO_Init(GPIOE, &gpio_init_structure);
+ 510              		.loc 1 413 0
+ 511 00ca 2146     		mov	r1, r4
+ 512 00cc 2548     		ldr	r0, .L42+12
+ 513 00ce FFF7FEFF 		bl	HAL_GPIO_Init
+ 514              	.LVL37:
+ 414:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   
+ 415:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   /* GPIOF configuration */  
+ 416:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   gpio_init_structure.Pin   = GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_2| GPIO_PIN_3 | GPIO_PIN_4 |\
+ 515              		.loc 1 416 0
+ 516 00d2 4FF63F03 		movw	r3, #63551
+ 517 00d6 0993     		str	r3, [sp, #36]
+ 417:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****                               GPIO_PIN_5 | GPIO_PIN_11 | GPIO_PIN_12 | GPIO_PIN_13 | GPIO_PIN_14 |\
+ 418:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****                               GPIO_PIN_15;
+ 419:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   HAL_GPIO_Init(GPIOF, &gpio_init_structure);
+ 518              		.loc 1 419 0
+ 519 00d8 2146     		mov	r1, r4
+ 520 00da 2348     		ldr	r0, .L42+16
+ 521 00dc FFF7FEFF 		bl	HAL_GPIO_Init
+ 522              	.LVL38:
+ 420:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   
+ 421:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   /* GPIOG configuration */  
+ 422:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   gpio_init_structure.Pin   = GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_4| GPIO_PIN_5 | GPIO_PIN_8 |\
+ 523              		.loc 1 422 0
+ 524 00e0 48F23313 		movw	r3, #33075
+ 525 00e4 0993     		str	r3, [sp, #36]
+ 423:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****                               GPIO_PIN_15;
+ 424:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   HAL_GPIO_Init(GPIOG, &gpio_init_structure);
+ 526              		.loc 1 424 0
+ 527 00e6 2146     		mov	r1, r4
+ 528 00e8 2048     		ldr	r0, .L42+20
+ 529 00ea FFF7FEFF 		bl	HAL_GPIO_Init
+ 530              	.LVL39:
+ 425:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** 
+ 426:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   /* GPIOH configuration */  
+ 427:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   gpio_init_structure.Pin   = GPIO_PIN_3 | GPIO_PIN_5;
+ 531              		.loc 1 427 0
+ 532 00ee 2823     		movs	r3, #40
+ 533 00f0 0993     		str	r3, [sp, #36]
+ 428:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   HAL_GPIO_Init(GPIOH, &gpio_init_structure); 
+ 534              		.loc 1 428 0
+ 535 00f2 2146     		mov	r1, r4
+ 536 00f4 1E48     		ldr	r0, .L42+24
+ 537 00f6 FFF7FEFF 		bl	HAL_GPIO_Init
+ 538              	.LVL40:
+ 429:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   
+ 430:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   /* Configure common DMA parameters */
+ 431:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   dma_handle.Init.Channel             = SDRAM_DMAx_CHANNEL;
+ 539              		.loc 1 431 0
+ 540 00fa 1E4C     		ldr	r4, .L42+28
+ 541 00fc 0025     		movs	r5, #0
+ 542 00fe 6560     		str	r5, [r4, #4]
+ 432:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   dma_handle.Init.Direction           = DMA_MEMORY_TO_MEMORY;
+ 543              		.loc 1 432 0
+ 544 0100 8023     		movs	r3, #128
+ 545 0102 A360     		str	r3, [r4, #8]
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cciPwsQF.s 			page 18
+
+
+ 433:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   dma_handle.Init.PeriphInc           = DMA_PINC_ENABLE;
+ 546              		.loc 1 433 0
+ 547 0104 4FF40073 		mov	r3, #512
+ 548 0108 E360     		str	r3, [r4, #12]
+ 434:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   dma_handle.Init.MemInc              = DMA_MINC_ENABLE;
+ 549              		.loc 1 434 0
+ 550 010a 4FF48063 		mov	r3, #1024
+ 551 010e 2361     		str	r3, [r4, #16]
+ 435:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   dma_handle.Init.PeriphDataAlignment = DMA_PDATAALIGN_WORD;
+ 552              		.loc 1 435 0
+ 553 0110 4FF48053 		mov	r3, #4096
+ 554 0114 6361     		str	r3, [r4, #20]
+ 436:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   dma_handle.Init.MemDataAlignment    = DMA_MDATAALIGN_WORD;
+ 555              		.loc 1 436 0
+ 556 0116 4FF48043 		mov	r3, #16384
+ 557 011a A361     		str	r3, [r4, #24]
+ 437:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   dma_handle.Init.Mode                = DMA_NORMAL;
+ 558              		.loc 1 437 0
+ 559 011c E561     		str	r5, [r4, #28]
+ 438:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   dma_handle.Init.Priority            = DMA_PRIORITY_HIGH;
+ 560              		.loc 1 438 0
+ 561 011e 4FF40033 		mov	r3, #131072
+ 562 0122 2362     		str	r3, [r4, #32]
+ 439:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   dma_handle.Init.FIFOMode            = DMA_FIFOMODE_DISABLE;         
+ 563              		.loc 1 439 0
+ 564 0124 6562     		str	r5, [r4, #36]
+ 440:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   dma_handle.Init.FIFOThreshold       = DMA_FIFO_THRESHOLD_FULL;
+ 565              		.loc 1 440 0
+ 566 0126 0323     		movs	r3, #3
+ 567 0128 A362     		str	r3, [r4, #40]
+ 441:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   dma_handle.Init.MemBurst            = DMA_MBURST_SINGLE;
+ 568              		.loc 1 441 0
+ 569 012a E562     		str	r5, [r4, #44]
+ 442:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   dma_handle.Init.PeriphBurst         = DMA_PBURST_SINGLE; 
+ 570              		.loc 1 442 0
+ 571 012c 2563     		str	r5, [r4, #48]
+ 443:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   
+ 444:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   dma_handle.Instance = SDRAM_DMAx_STREAM;
+ 572              		.loc 1 444 0
+ 573 012e 124B     		ldr	r3, .L42+32
+ 574 0130 2360     		str	r3, [r4]
+ 445:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   
+ 446:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****    /* Associate the DMA handle */
+ 447:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   __HAL_LINKDMA(hsdram, hdma, dma_handle);
+ 575              		.loc 1 447 0
+ 576 0132 3463     		str	r4, [r6, #48]
+ 577 0134 A663     		str	r6, [r4, #56]
+ 448:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   
+ 449:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   /* Deinitialize the stream for new transfer */
+ 450:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   HAL_DMA_DeInit(&dma_handle);
+ 578              		.loc 1 450 0
+ 579 0136 2046     		mov	r0, r4
+ 580 0138 FFF7FEFF 		bl	HAL_DMA_DeInit
+ 581              	.LVL41:
+ 451:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   
+ 452:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   /* Configure the DMA stream */
+ 453:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   HAL_DMA_Init(&dma_handle); 
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cciPwsQF.s 			page 19
+
+
+ 582              		.loc 1 453 0
+ 583 013c 2046     		mov	r0, r4
+ 584 013e FFF7FEFF 		bl	HAL_DMA_Init
+ 585              	.LVL42:
+ 454:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   
+ 455:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   /* NVIC configuration for DMA transfer complete interrupt */
+ 456:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   HAL_NVIC_SetPriority(SDRAM_DMAx_IRQn, 0x0F, 0);
+ 586              		.loc 1 456 0
+ 587 0142 2A46     		mov	r2, r5
+ 588 0144 0F21     		movs	r1, #15
+ 589 0146 3820     		movs	r0, #56
+ 590 0148 FFF7FEFF 		bl	HAL_NVIC_SetPriority
+ 591              	.LVL43:
+ 457:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   HAL_NVIC_EnableIRQ(SDRAM_DMAx_IRQn);
+ 592              		.loc 1 457 0
+ 593 014c 3820     		movs	r0, #56
+ 594 014e FFF7FEFF 		bl	HAL_NVIC_EnableIRQ
+ 595              	.LVL44:
+ 458:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** }
+ 596              		.loc 1 458 0
+ 597 0152 0EB0     		add	sp, sp, #56
+ 598              	.LCFI10:
+ 599              		.cfi_def_cfa_offset 16
+ 600              		@ sp needed
+ 601 0154 70BD     		pop	{r4, r5, r6, pc}
+ 602              	.LVL45:
+ 603              	.L43:
+ 604 0156 00BF     		.align	2
+ 605              	.L42:
+ 606 0158 00380240 		.word	1073887232
+ 607 015c 00080240 		.word	1073874944
+ 608 0160 000C0240 		.word	1073875968
+ 609 0164 00100240 		.word	1073876992
+ 610 0168 00140240 		.word	1073878016
+ 611 016c 00180240 		.word	1073879040
+ 612 0170 001C0240 		.word	1073880064
+ 613 0174 00000000 		.word	.LANCHOR1
+ 614 0178 10640240 		.word	1073898512
+ 615              		.cfi_endproc
+ 616              	.LFE144:
+ 618              		.section	.text.BSP_SDRAM_Init,"ax",%progbits
+ 619              		.align	1
+ 620              		.global	BSP_SDRAM_Init
+ 621              		.syntax unified
+ 622              		.thumb
+ 623              		.thumb_func
+ 624              		.fpu fpv5-sp-d16
+ 626              	BSP_SDRAM_Init:
+ 627              	.LFB136:
+ 147:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   static uint8_t sdramstatus = SDRAM_ERROR;
+ 628              		.loc 1 147 0
+ 629              		.cfi_startproc
+ 630              		@ args = 0, pretend = 0, frame = 0
+ 631              		@ frame_needed = 0, uses_anonymous_args = 0
+ 632 0000 38B5     		push	{r3, r4, r5, lr}
+ 633              	.LCFI11:
+ 634              		.cfi_def_cfa_offset 16
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cciPwsQF.s 			page 20
+
+
+ 635              		.cfi_offset 3, -16
+ 636              		.cfi_offset 4, -12
+ 637              		.cfi_offset 5, -8
+ 638              		.cfi_offset 14, -4
+ 150:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****     
+ 639              		.loc 1 150 0
+ 640 0002 1B4C     		ldr	r4, .L49
+ 641 0004 1B4B     		ldr	r3, .L49+4
+ 642 0006 2360     		str	r3, [r4]
+ 153:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   Timing.ExitSelfRefreshDelay = 7;
+ 643              		.loc 1 153 0
+ 644 0008 1B4D     		ldr	r5, .L49+8
+ 645 000a 0223     		movs	r3, #2
+ 646 000c 2B60     		str	r3, [r5]
+ 154:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   Timing.SelfRefreshTime      = 4;
+ 647              		.loc 1 154 0
+ 648 000e 0721     		movs	r1, #7
+ 649 0010 6960     		str	r1, [r5, #4]
+ 155:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   Timing.RowCycleDelay        = 7;
+ 650              		.loc 1 155 0
+ 651 0012 0422     		movs	r2, #4
+ 652 0014 AA60     		str	r2, [r5, #8]
+ 156:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   Timing.WriteRecoveryTime    = 2;
+ 653              		.loc 1 156 0
+ 654 0016 E960     		str	r1, [r5, #12]
+ 157:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   Timing.RPDelay              = 2;
+ 655              		.loc 1 157 0
+ 656 0018 2B61     		str	r3, [r5, #16]
+ 158:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   Timing.RCDDelay             = 2;
+ 657              		.loc 1 158 0
+ 658 001a 6B61     		str	r3, [r5, #20]
+ 159:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   
+ 659              		.loc 1 159 0
+ 660 001c AB61     		str	r3, [r5, #24]
+ 161:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   sdramHandle.Init.ColumnBitsNumber   = FMC_SDRAM_COLUMN_BITS_NUM_8;
+ 661              		.loc 1 161 0
+ 662 001e 0021     		movs	r1, #0
+ 663 0020 6160     		str	r1, [r4, #4]
+ 162:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   sdramHandle.Init.RowBitsNumber      = FMC_SDRAM_ROW_BITS_NUM_12;
+ 664              		.loc 1 162 0
+ 665 0022 A160     		str	r1, [r4, #8]
+ 163:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   sdramHandle.Init.MemoryDataWidth    = SDRAM_MEMORY_WIDTH;
+ 666              		.loc 1 163 0
+ 667 0024 E260     		str	r2, [r4, #12]
+ 164:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   sdramHandle.Init.InternalBankNumber = FMC_SDRAM_INTERN_BANKS_NUM_4;
+ 668              		.loc 1 164 0
+ 669 0026 1023     		movs	r3, #16
+ 670 0028 2361     		str	r3, [r4, #16]
+ 165:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   sdramHandle.Init.CASLatency         = FMC_SDRAM_CAS_LATENCY_2;
+ 671              		.loc 1 165 0
+ 672 002a 4023     		movs	r3, #64
+ 673 002c 6361     		str	r3, [r4, #20]
+ 166:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   sdramHandle.Init.WriteProtection    = FMC_SDRAM_WRITE_PROTECTION_DISABLE;
+ 674              		.loc 1 166 0
+ 675 002e 4FF48073 		mov	r3, #256
+ 676 0032 A361     		str	r3, [r4, #24]
+ 167:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   sdramHandle.Init.SDClockPeriod      = SDCLOCK_PERIOD;
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cciPwsQF.s 			page 21
+
+
+ 677              		.loc 1 167 0
+ 678 0034 E161     		str	r1, [r4, #28]
+ 168:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   sdramHandle.Init.ReadBurst          = FMC_SDRAM_RBURST_ENABLE;
+ 679              		.loc 1 168 0
+ 680 0036 4FF40063 		mov	r3, #2048
+ 681 003a 2362     		str	r3, [r4, #32]
+ 169:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   sdramHandle.Init.ReadPipeDelay      = FMC_SDRAM_RPIPE_DELAY_0;
+ 682              		.loc 1 169 0
+ 683 003c 4FF48053 		mov	r3, #4096
+ 684 0040 6362     		str	r3, [r4, #36]
+ 170:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   
+ 685              		.loc 1 170 0
+ 686 0042 A162     		str	r1, [r4, #40]
+ 174:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** 
+ 687              		.loc 1 174 0
+ 688 0044 2046     		mov	r0, r4
+ 689 0046 FFF7FEFF 		bl	BSP_SDRAM_MspInit
+ 690              	.LVL46:
+ 176:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   {
+ 691              		.loc 1 176 0
+ 692 004a 2946     		mov	r1, r5
+ 693 004c 2046     		mov	r0, r4
+ 694 004e FFF7FEFF 		bl	HAL_SDRAM_Init
+ 695              	.LVL47:
+ 696 0052 48B9     		cbnz	r0, .L48
+ 182:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   }
+ 697              		.loc 1 182 0
+ 698 0054 0022     		movs	r2, #0
+ 699 0056 094B     		ldr	r3, .L49+12
+ 700 0058 1A70     		strb	r2, [r3]
+ 701              	.L46:
+ 186:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   
+ 702              		.loc 1 186 0
+ 703 005a 40F20360 		movw	r0, #1539
+ 704 005e FFF7FEFF 		bl	BSP_SDRAM_Initialization_sequence
+ 705              	.LVL48:
+ 189:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** 
+ 706              		.loc 1 189 0
+ 707 0062 064B     		ldr	r3, .L49+12
+ 708 0064 1878     		ldrb	r0, [r3]	@ zero_extendqisi2
+ 709 0066 38BD     		pop	{r3, r4, r5, pc}
+ 710              	.L48:
+ 178:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   }
+ 711              		.loc 1 178 0
+ 712 0068 0122     		movs	r2, #1
+ 713 006a 044B     		ldr	r3, .L49+12
+ 714 006c 1A70     		strb	r2, [r3]
+ 715 006e F4E7     		b	.L46
+ 716              	.L50:
+ 717              		.align	2
+ 718              	.L49:
+ 719 0070 00000000 		.word	sdramHandle
+ 720 0074 400100A0 		.word	-1610612416
+ 721 0078 00000000 		.word	.LANCHOR2
+ 722 007c 00000000 		.word	.LANCHOR3
+ 723              		.cfi_endproc
+ 724              	.LFE136:
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cciPwsQF.s 			page 22
+
+
+ 726              		.section	.text.BSP_SDRAM_MspDeInit,"ax",%progbits
+ 727              		.align	1
+ 728              		.weak	BSP_SDRAM_MspDeInit
+ 729              		.syntax unified
+ 730              		.thumb
+ 731              		.thumb_func
+ 732              		.fpu fpv5-sp-d16
+ 734              	BSP_SDRAM_MspDeInit:
+ 735              	.LFB145:
+ 459:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** 
+ 460:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** /**
+ 461:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * @brief  DeInitializes SDRAM MSP.
+ 462:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * @param  hsdram: SDRAM handle
+ 463:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * @param  Params
+ 464:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   * @retval None
+ 465:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   */
+ 466:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** __weak void BSP_SDRAM_MspDeInit(SDRAM_HandleTypeDef  *hsdram, void *Params)
+ 467:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** {  
+ 736              		.loc 1 467 0
+ 737              		.cfi_startproc
+ 738              		@ args = 0, pretend = 0, frame = 0
+ 739              		@ frame_needed = 0, uses_anonymous_args = 0
+ 740              	.LVL49:
+ 741 0000 08B5     		push	{r3, lr}
+ 742              	.LCFI12:
+ 743              		.cfi_def_cfa_offset 8
+ 744              		.cfi_offset 3, -8
+ 745              		.cfi_offset 14, -4
+ 468:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****     static DMA_HandleTypeDef dma_handle;
+ 469:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   
+ 470:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****     /* Disable NVIC configuration for DMA interrupt */
+ 471:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****     HAL_NVIC_DisableIRQ(SDRAM_DMAx_IRQn);
+ 746              		.loc 1 471 0
+ 747 0002 3820     		movs	r0, #56
+ 748              	.LVL50:
+ 749 0004 FFF7FEFF 		bl	HAL_NVIC_DisableIRQ
+ 750              	.LVL51:
+ 472:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** 
+ 473:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****     /* Deinitialize the stream for new transfer */
+ 474:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****     dma_handle.Instance = SDRAM_DMAx_STREAM;
+ 751              		.loc 1 474 0
+ 752 0008 0248     		ldr	r0, .L53
+ 753 000a 034B     		ldr	r3, .L53+4
+ 754 000c 0360     		str	r3, [r0]
+ 475:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****     HAL_DMA_DeInit(&dma_handle);
+ 755              		.loc 1 475 0
+ 756 000e FFF7FEFF 		bl	HAL_DMA_DeInit
+ 757              	.LVL52:
+ 758 0012 08BD     		pop	{r3, pc}
+ 759              	.L54:
+ 760              		.align	2
+ 761              	.L53:
+ 762 0014 00000000 		.word	.LANCHOR4
+ 763 0018 10640240 		.word	1073898512
+ 764              		.cfi_endproc
+ 765              	.LFE145:
+ 767              		.section	.text.BSP_SDRAM_DeInit,"ax",%progbits
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cciPwsQF.s 			page 23
+
+
+ 768              		.align	1
+ 769              		.global	BSP_SDRAM_DeInit
+ 770              		.syntax unified
+ 771              		.thumb
+ 772              		.thumb_func
+ 773              		.fpu fpv5-sp-d16
+ 775              	BSP_SDRAM_DeInit:
+ 776              	.LFB137:
+ 196:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   static uint8_t sdramstatus = SDRAM_ERROR;
+ 777              		.loc 1 196 0
+ 778              		.cfi_startproc
+ 779              		@ args = 0, pretend = 0, frame = 0
+ 780              		@ frame_needed = 0, uses_anonymous_args = 0
+ 781 0000 08B5     		push	{r3, lr}
+ 782              	.LCFI13:
+ 783              		.cfi_def_cfa_offset 8
+ 784              		.cfi_offset 3, -8
+ 785              		.cfi_offset 14, -4
+ 199:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** 
+ 786              		.loc 1 199 0
+ 787 0002 0A48     		ldr	r0, .L60
+ 788 0004 0A4B     		ldr	r3, .L60+4
+ 789 0006 0360     		str	r3, [r0]
+ 201:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   {
+ 790              		.loc 1 201 0
+ 791 0008 FFF7FEFF 		bl	HAL_SDRAM_DeInit
+ 792              	.LVL53:
+ 793 000c 48B9     		cbnz	r0, .L59
+ 207:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   }
+ 794              		.loc 1 207 0
+ 795 000e 0022     		movs	r2, #0
+ 796 0010 084B     		ldr	r3, .L60+8
+ 797 0012 1A70     		strb	r2, [r3]
+ 798              	.L57:
+ 211:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   
+ 799              		.loc 1 211 0
+ 800 0014 0021     		movs	r1, #0
+ 801 0016 0548     		ldr	r0, .L60
+ 802 0018 FFF7FEFF 		bl	BSP_SDRAM_MspDeInit
+ 803              	.LVL54:
+ 214:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c **** 
+ 804              		.loc 1 214 0
+ 805 001c 054B     		ldr	r3, .L60+8
+ 806 001e 1878     		ldrb	r0, [r3]	@ zero_extendqisi2
+ 807 0020 08BD     		pop	{r3, pc}
+ 808              	.L59:
+ 203:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.c ****   }
+ 809              		.loc 1 203 0
+ 810 0022 0122     		movs	r2, #1
+ 811 0024 034B     		ldr	r3, .L60+8
+ 812 0026 1A70     		strb	r2, [r3]
+ 813 0028 F4E7     		b	.L57
+ 814              	.L61:
+ 815 002a 00BF     		.align	2
+ 816              	.L60:
+ 817 002c 00000000 		.word	sdramHandle
+ 818 0030 400100A0 		.word	-1610612416
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cciPwsQF.s 			page 24
+
+
+ 819 0034 00000000 		.word	.LANCHOR5
+ 820              		.cfi_endproc
+ 821              	.LFE137:
+ 823              		.comm	sdramHandle,52,4
+ 824              		.section	.bss.Command,"aw",%nobits
+ 825              		.align	2
+ 826              		.set	.LANCHOR0,. + 0
+ 829              	Command:
+ 830 0000 00000000 		.space	16
+ 830      00000000 
+ 830      00000000 
+ 830      00000000 
+ 831              		.section	.bss.Timing,"aw",%nobits
+ 832              		.align	2
+ 833              		.set	.LANCHOR2,. + 0
+ 836              	Timing:
+ 837 0000 00000000 		.space	28
+ 837      00000000 
+ 837      00000000 
+ 837      00000000 
+ 837      00000000 
+ 838              		.section	.bss.dma_handle.11712,"aw",%nobits
+ 839              		.align	2
+ 840              		.set	.LANCHOR1,. + 0
+ 843              	dma_handle.11712:
+ 844 0000 00000000 		.space	96
+ 844      00000000 
+ 844      00000000 
+ 844      00000000 
+ 844      00000000 
+ 845              		.section	.bss.dma_handle.11726,"aw",%nobits
+ 846              		.align	2
+ 847              		.set	.LANCHOR4,. + 0
+ 850              	dma_handle.11726:
+ 851 0000 00000000 		.space	96
+ 851      00000000 
+ 851      00000000 
+ 851      00000000 
+ 851      00000000 
+ 852              		.section	.data.sdramstatus.11676,"aw",%progbits
+ 853              		.set	.LANCHOR3,. + 0
+ 856              	sdramstatus.11676:
+ 857 0000 01       		.byte	1
+ 858              		.section	.data.sdramstatus.11680,"aw",%progbits
+ 859              		.set	.LANCHOR5,. + 0
+ 862              	sdramstatus.11680:
+ 863 0000 01       		.byte	1
+ 864              		.text
+ 865              	.Letext0:
+ 866              		.file 2 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 867              		.file 3 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 868              		.file 4 "Drivers/CMSIS/Include/core_cm7.h"
+ 869              		.file 5 "Drivers/CMSIS/Device/ST/STM32F7xx/Include/system_stm32f7xx.h"
+ 870              		.file 6 "Drivers/CMSIS/Device/ST/STM32F7xx/Include/stm32f746xx.h"
+ 871              		.file 7 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\lock.h"
+ 872              		.file 8 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\_types.h"
+ 873              		.file 9 "c:\\gcc_toolchain\\6_2017-q1-update\\lib\\gcc\\arm-none-eabi\\6.3.1\\include\\stddef.h"
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cciPwsQF.s 			page 25
+
+
+ 874              		.file 10 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\reent.h"
+ 875              		.file 11 "Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_def.h"
+ 876              		.file 12 "Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_gpio.h"
+ 877              		.file 13 "Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_dma.h"
+ 878              		.file 14 "Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_fmc.h"
+ 879              		.file 15 "Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_sdram.h"
+ 880              		.file 16 "Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_cortex.h"
+ 881              		.file 17 "Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal.h"
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cciPwsQF.s 			page 26
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 stm32746g_discovery_sdram.c
+C:\Users\Student\AppData\Local\Temp\cciPwsQF.s:18     .text.BSP_SDRAM_Initialization_sequence:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cciPwsQF.s:25     .text.BSP_SDRAM_Initialization_sequence:00000000 BSP_SDRAM_Initialization_sequence
+C:\Users\Student\AppData\Local\Temp\cciPwsQF.s:138    .text.BSP_SDRAM_Initialization_sequence:00000094 $d
+                            *COM*:00000034 sdramHandle
+C:\Users\Student\AppData\Local\Temp\cciPwsQF.s:144    .text.BSP_SDRAM_ReadData:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cciPwsQF.s:151    .text.BSP_SDRAM_ReadData:00000000 BSP_SDRAM_ReadData
+C:\Users\Student\AppData\Local\Temp\cciPwsQF.s:185    .text.BSP_SDRAM_ReadData:00000018 $d
+C:\Users\Student\AppData\Local\Temp\cciPwsQF.s:190    .text.BSP_SDRAM_ReadData_DMA:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cciPwsQF.s:197    .text.BSP_SDRAM_ReadData_DMA:00000000 BSP_SDRAM_ReadData_DMA
+C:\Users\Student\AppData\Local\Temp\cciPwsQF.s:231    .text.BSP_SDRAM_ReadData_DMA:00000018 $d
+C:\Users\Student\AppData\Local\Temp\cciPwsQF.s:236    .text.BSP_SDRAM_WriteData:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cciPwsQF.s:243    .text.BSP_SDRAM_WriteData:00000000 BSP_SDRAM_WriteData
+C:\Users\Student\AppData\Local\Temp\cciPwsQF.s:277    .text.BSP_SDRAM_WriteData:00000018 $d
+C:\Users\Student\AppData\Local\Temp\cciPwsQF.s:282    .text.BSP_SDRAM_WriteData_DMA:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cciPwsQF.s:289    .text.BSP_SDRAM_WriteData_DMA:00000000 BSP_SDRAM_WriteData_DMA
+C:\Users\Student\AppData\Local\Temp\cciPwsQF.s:323    .text.BSP_SDRAM_WriteData_DMA:00000018 $d
+C:\Users\Student\AppData\Local\Temp\cciPwsQF.s:328    .text.BSP_SDRAM_Sendcmd:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cciPwsQF.s:335    .text.BSP_SDRAM_Sendcmd:00000000 BSP_SDRAM_Sendcmd
+C:\Users\Student\AppData\Local\Temp\cciPwsQF.s:366    .text.BSP_SDRAM_Sendcmd:00000018 $d
+C:\Users\Student\AppData\Local\Temp\cciPwsQF.s:371    .text.BSP_SDRAM_MspInit:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cciPwsQF.s:378    .text.BSP_SDRAM_MspInit:00000000 BSP_SDRAM_MspInit
+C:\Users\Student\AppData\Local\Temp\cciPwsQF.s:606    .text.BSP_SDRAM_MspInit:00000158 $d
+C:\Users\Student\AppData\Local\Temp\cciPwsQF.s:619    .text.BSP_SDRAM_Init:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cciPwsQF.s:626    .text.BSP_SDRAM_Init:00000000 BSP_SDRAM_Init
+C:\Users\Student\AppData\Local\Temp\cciPwsQF.s:719    .text.BSP_SDRAM_Init:00000070 $d
+C:\Users\Student\AppData\Local\Temp\cciPwsQF.s:727    .text.BSP_SDRAM_MspDeInit:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cciPwsQF.s:734    .text.BSP_SDRAM_MspDeInit:00000000 BSP_SDRAM_MspDeInit
+C:\Users\Student\AppData\Local\Temp\cciPwsQF.s:762    .text.BSP_SDRAM_MspDeInit:00000014 $d
+C:\Users\Student\AppData\Local\Temp\cciPwsQF.s:768    .text.BSP_SDRAM_DeInit:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cciPwsQF.s:775    .text.BSP_SDRAM_DeInit:00000000 BSP_SDRAM_DeInit
+C:\Users\Student\AppData\Local\Temp\cciPwsQF.s:817    .text.BSP_SDRAM_DeInit:0000002c $d
+C:\Users\Student\AppData\Local\Temp\cciPwsQF.s:825    .bss.Command:00000000 $d
+C:\Users\Student\AppData\Local\Temp\cciPwsQF.s:829    .bss.Command:00000000 Command
+C:\Users\Student\AppData\Local\Temp\cciPwsQF.s:832    .bss.Timing:00000000 $d
+C:\Users\Student\AppData\Local\Temp\cciPwsQF.s:836    .bss.Timing:00000000 Timing
+C:\Users\Student\AppData\Local\Temp\cciPwsQF.s:839    .bss.dma_handle.11712:00000000 $d
+C:\Users\Student\AppData\Local\Temp\cciPwsQF.s:843    .bss.dma_handle.11712:00000000 dma_handle.11712
+C:\Users\Student\AppData\Local\Temp\cciPwsQF.s:846    .bss.dma_handle.11726:00000000 $d
+C:\Users\Student\AppData\Local\Temp\cciPwsQF.s:850    .bss.dma_handle.11726:00000000 dma_handle.11726
+C:\Users\Student\AppData\Local\Temp\cciPwsQF.s:856    .data.sdramstatus.11676:00000000 sdramstatus.11676
+C:\Users\Student\AppData\Local\Temp\cciPwsQF.s:862    .data.sdramstatus.11680:00000000 sdramstatus.11680
+                     .debug_frame:00000010 $d
+
+UNDEFINED SYMBOLS
+HAL_SDRAM_SendCommand
+HAL_Delay
+HAL_SDRAM_ProgramRefreshRate
+HAL_SDRAM_Read_32b
+HAL_SDRAM_Read_DMA
+HAL_SDRAM_Write_32b
+HAL_SDRAM_Write_DMA
+HAL_GPIO_Init
+HAL_DMA_DeInit
+HAL_DMA_Init
+HAL_NVIC_SetPriority
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cciPwsQF.s 			page 27
+
+
+HAL_NVIC_EnableIRQ
+HAL_SDRAM_Init
+HAL_NVIC_DisableIRQ
+HAL_SDRAM_DeInit

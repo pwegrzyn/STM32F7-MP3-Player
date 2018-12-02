@@ -1,0 +1,1657 @@
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"tcpip.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.tcpip_thread,"ax",%progbits
+  18              		.align	1
+  19              		.syntax unified
+  20              		.thumb
+  21              		.thumb_func
+  22              		.fpu fpv5-sp-d16
+  24              	tcpip_thread:
+  25              	.LFB157:
+  26              		.file 1 "Middlewares/Third_Party/LwIP/src/api/tcpip.c"
+   1:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** /**
+   2:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * @file
+   3:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * Sequential API Main thread module
+   4:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  *
+   5:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  */
+   6:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+   7:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** /*
+   8:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * Copyright (c) 2001-2004 Swedish Institute of Computer Science.
+   9:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * All rights reserved.
+  10:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  *
+  11:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * Redistribution and use in source and binary forms, with or without modification,
+  12:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * are permitted provided that the following conditions are met:
+  13:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  *
+  14:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * 1. Redistributions of source code must retain the above copyright notice,
+  15:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  *    this list of conditions and the following disclaimer.
+  16:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * 2. Redistributions in binary form must reproduce the above copyright notice,
+  17:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  *    this list of conditions and the following disclaimer in the documentation
+  18:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  *    and/or other materials provided with the distribution.
+  19:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * 3. The name of the author may not be used to endorse or promote products
+  20:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  *    derived from this software without specific prior written permission.
+  21:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  *
+  22:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+  23:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+  24:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
+  25:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+  26:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+  27:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  28:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  29:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+  30:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
+  31:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * OF SUCH DAMAGE.
+  32:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  *
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s 			page 2
+
+
+  33:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * This file is part of the lwIP TCP/IP stack.
+  34:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  *
+  35:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * Author: Adam Dunkels <adam@sics.se>
+  36:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  *
+  37:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  */
+  38:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+  39:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** #include "lwip/opt.h"
+  40:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+  41:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** #if !NO_SYS /* don't build if not configured for use in lwipopts.h */
+  42:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+  43:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** #include "lwip/priv/tcpip_priv.h"
+  44:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** #include "lwip/sys.h"
+  45:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** #include "lwip/memp.h"
+  46:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** #include "lwip/mem.h"
+  47:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** #include "lwip/init.h"
+  48:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** #include "lwip/ip.h"
+  49:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** #include "lwip/pbuf.h"
+  50:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** #include "lwip/etharp.h"
+  51:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** #include "netif/ethernet.h"
+  52:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+  53:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** #define TCPIP_MSG_VAR_REF(name)     API_VAR_REF(name)
+  54:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** #define TCPIP_MSG_VAR_DECLARE(name) API_VAR_DECLARE(struct tcpip_msg, name)
+  55:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** #define TCPIP_MSG_VAR_ALLOC(name)   API_VAR_ALLOC(struct tcpip_msg, MEMP_TCPIP_MSG_API, name, ERR_M
+  56:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** #define TCPIP_MSG_VAR_FREE(name)    API_VAR_FREE(MEMP_TCPIP_MSG_API, name)
+  57:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+  58:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** /* global variables */
+  59:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** static tcpip_init_done_fn tcpip_init_done;
+  60:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** static void *tcpip_init_done_arg;
+  61:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** static sys_mbox_t mbox;
+  62:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+  63:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** #if LWIP_TCPIP_CORE_LOCKING
+  64:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** /** The global semaphore to lock the stack. */
+  65:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** sys_mutex_t lock_tcpip_core;
+  66:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** #endif /* LWIP_TCPIP_CORE_LOCKING */
+  67:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+  68:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** #if LWIP_TIMERS
+  69:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** /* wait for a message, timeouts are processed while waiting */
+  70:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** #define TCPIP_MBOX_FETCH(mbox, msg) sys_timeouts_mbox_fetch(mbox, msg)
+  71:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** #else /* LWIP_TIMERS */
+  72:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** /* wait for a message with timers disabled (e.g. pass a timer-check trigger into tcpip_thread) */
+  73:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** #define TCPIP_MBOX_FETCH(mbox, msg) sys_mbox_fetch(mbox, msg)
+  74:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** #endif /* LWIP_TIMERS */
+  75:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+  76:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** /**
+  77:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * The main lwIP thread. This thread has exclusive access to lwIP core functions
+  78:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * (unless access to them is not locked). Other threads communicate with this
+  79:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * thread using message boxes.
+  80:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  *
+  81:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * It also starts all the timers to make sure they are running in the right
+  82:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * thread context.
+  83:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  *
+  84:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * @param arg unused argument
+  85:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  */
+  86:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** static void
+  87:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** tcpip_thread(void *arg)
+  88:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** {
+  27              		.loc 1 88 0
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s 			page 3
+
+
+  28              		.cfi_startproc
+  29              		@ Volatile: function does not return.
+  30              		@ args = 0, pretend = 0, frame = 8
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              	.LVL0:
+  33 0000 00B5     		push	{lr}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 4
+  36              		.cfi_offset 14, -4
+  37 0002 83B0     		sub	sp, sp, #12
+  38              	.LCFI1:
+  39              		.cfi_def_cfa_offset 16
+  89:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   struct tcpip_msg *msg;
+  90:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   LWIP_UNUSED_ARG(arg);
+  91:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+  92:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   if (tcpip_init_done != NULL) {
+  40              		.loc 1 92 0
+  41 0004 204B     		ldr	r3, .L14
+  42 0006 1B68     		ldr	r3, [r3]
+  43 0008 13B1     		cbz	r3, .L2
+  93:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****     tcpip_init_done(tcpip_init_done_arg);
+  44              		.loc 1 93 0
+  45 000a 204A     		ldr	r2, .L14+4
+  46 000c 1068     		ldr	r0, [r2]
+  47              	.LVL1:
+  48 000e 9847     		blx	r3
+  49              	.LVL2:
+  50              	.L2:
+  94:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   }
+  95:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+  96:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   LOCK_TCPIP_CORE();
+  51              		.loc 1 96 0
+  52 0010 1F48     		ldr	r0, .L14+8
+  53 0012 FFF7FEFF 		bl	sys_mutex_lock
+  54              	.LVL3:
+  55 0016 0EE0     		b	.L3
+  56              	.L12:
+  97:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   while (1) {                          /* MAIN Loop */
+  98:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****     UNLOCK_TCPIP_CORE();
+  99:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****     LWIP_TCPIP_THREAD_ALIVE();
+ 100:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****     /* wait for a message, timeouts are processed while waiting */
+ 101:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****     TCPIP_MBOX_FETCH(&mbox, (void **)&msg);
+ 102:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****     LOCK_TCPIP_CORE();
+ 103:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****     if (msg == NULL) {
+ 104:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****       LWIP_DEBUGF(TCPIP_DEBUG, ("tcpip_thread: invalid message: NULL\n"));
+ 105:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****       LWIP_ASSERT("tcpip_thread: invalid message", 0);
+  57              		.loc 1 105 0 discriminator 1
+  58 0018 1E4B     		ldr	r3, .L14+12
+  59 001a 6922     		movs	r2, #105
+  60 001c 1E49     		ldr	r1, .L14+16
+  61 001e 1F48     		ldr	r0, .L14+20
+  62 0020 FFF7FEFF 		bl	printf
+  63              	.LVL4:
+ 106:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****       continue;
+  64              		.loc 1 106 0 discriminator 1
+  65 0024 07E0     		b	.L3
+  66              	.L13:
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s 			page 4
+
+
+ 107:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****     }
+ 108:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****     switch (msg->type) {
+ 109:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** #if !LWIP_TCPIP_CORE_LOCKING
+ 110:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****     case TCPIP_MSG_API:
+ 111:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****       LWIP_DEBUGF(TCPIP_DEBUG, ("tcpip_thread: API message %p\n", (void *)msg));
+ 112:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****       msg->msg.api_msg.function(msg->msg.api_msg.msg);
+ 113:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****       break;
+ 114:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****     case TCPIP_MSG_API_CALL:
+ 115:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****       LWIP_DEBUGF(TCPIP_DEBUG, ("tcpip_thread: API CALL message %p\n", (void *)msg));
+ 116:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****       msg->msg.api_call.arg->err = msg->msg.api_call.function(msg->msg.api_call.arg);
+ 117:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****       sys_sem_signal(msg->msg.api_call.sem);
+ 118:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****       break;
+ 119:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** #endif /* !LWIP_TCPIP_CORE_LOCKING */
+ 120:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+ 121:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** #if !LWIP_TCPIP_CORE_LOCKING_INPUT
+ 122:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****     case TCPIP_MSG_INPKT:
+ 123:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****       LWIP_DEBUGF(TCPIP_DEBUG, ("tcpip_thread: PACKET %p\n", (void *)msg));
+ 124:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****       msg->msg.inp.input_fn(msg->msg.inp.p, msg->msg.inp.netif);
+  67              		.loc 1 124 0
+  68 0026 DA68     		ldr	r2, [r3, #12]
+  69 0028 9968     		ldr	r1, [r3, #8]
+  70 002a 5868     		ldr	r0, [r3, #4]
+  71 002c 9047     		blx	r2
+  72              	.LVL5:
+ 125:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****       memp_free(MEMP_TCPIP_MSG_INPKT, msg);
+  73              		.loc 1 125 0
+  74 002e 0199     		ldr	r1, [sp, #4]
+  75 0030 0920     		movs	r0, #9
+  76 0032 FFF7FEFF 		bl	memp_free
+  77              	.LVL6:
+  78              	.L3:
+  98:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****     LWIP_TCPIP_THREAD_ALIVE();
+  79              		.loc 1 98 0
+  80 0036 164C     		ldr	r4, .L14+8
+  81 0038 2046     		mov	r0, r4
+  82 003a FFF7FEFF 		bl	sys_mutex_unlock
+  83              	.LVL7:
+ 101:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****     LOCK_TCPIP_CORE();
+  84              		.loc 1 101 0
+  85 003e 01A9     		add	r1, sp, #4
+  86 0040 1748     		ldr	r0, .L14+24
+  87 0042 FFF7FEFF 		bl	sys_timeouts_mbox_fetch
+  88              	.LVL8:
+ 102:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****     if (msg == NULL) {
+  89              		.loc 1 102 0
+  90 0046 2046     		mov	r0, r4
+  91 0048 FFF7FEFF 		bl	sys_mutex_lock
+  92              	.LVL9:
+ 103:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****       LWIP_DEBUGF(TCPIP_DEBUG, ("tcpip_thread: invalid message: NULL\n"));
+  93              		.loc 1 103 0
+  94 004c 019B     		ldr	r3, [sp, #4]
+  95 004e 002B     		cmp	r3, #0
+  96 0050 E2D0     		beq	.L12
+ 108:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** #if !LWIP_TCPIP_CORE_LOCKING
+  97              		.loc 1 108 0
+  98 0052 1A78     		ldrb	r2, [r3]	@ zero_extendqisi2
+  99 0054 032A     		cmp	r2, #3
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s 			page 5
+
+
+ 100 0056 0AD0     		beq	.L7
+ 101 0058 042A     		cmp	r2, #4
+ 102 005a 10D0     		beq	.L8
+ 103 005c 022A     		cmp	r2, #2
+ 104 005e E2D0     		beq	.L13
+ 126:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****       break;
+ 127:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** #endif /* !LWIP_TCPIP_CORE_LOCKING_INPUT */
+ 128:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+ 129:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** #if LWIP_TCPIP_TIMEOUT && LWIP_TIMERS
+ 130:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****     case TCPIP_MSG_TIMEOUT:
+ 131:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****       LWIP_DEBUGF(TCPIP_DEBUG, ("tcpip_thread: TIMEOUT %p\n", (void *)msg));
+ 132:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****       sys_timeout(msg->msg.tmo.msecs, msg->msg.tmo.h, msg->msg.tmo.arg);
+ 133:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****       memp_free(MEMP_TCPIP_MSG_API, msg);
+ 134:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****       break;
+ 135:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****     case TCPIP_MSG_UNTIMEOUT:
+ 136:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****       LWIP_DEBUGF(TCPIP_DEBUG, ("tcpip_thread: UNTIMEOUT %p\n", (void *)msg));
+ 137:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****       sys_untimeout(msg->msg.tmo.h, msg->msg.tmo.arg);
+ 138:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****       memp_free(MEMP_TCPIP_MSG_API, msg);
+ 139:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****       break;
+ 140:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** #endif /* LWIP_TCPIP_TIMEOUT && LWIP_TIMERS */
+ 141:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+ 142:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****     case TCPIP_MSG_CALLBACK:
+ 143:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****       LWIP_DEBUGF(TCPIP_DEBUG, ("tcpip_thread: CALLBACK %p\n", (void *)msg));
+ 144:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****       msg->msg.cb.function(msg->msg.cb.ctx);
+ 145:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****       memp_free(MEMP_TCPIP_MSG_API, msg);
+ 146:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****       break;
+ 147:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+ 148:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****     case TCPIP_MSG_CALLBACK_STATIC:
+ 149:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****       LWIP_DEBUGF(TCPIP_DEBUG, ("tcpip_thread: CALLBACK_STATIC %p\n", (void *)msg));
+ 150:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****       msg->msg.cb.function(msg->msg.cb.ctx);
+ 151:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****       break;
+ 152:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+ 153:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****     default:
+ 154:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****       LWIP_DEBUGF(TCPIP_DEBUG, ("tcpip_thread: invalid message: %d\n", msg->type));
+ 155:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****       LWIP_ASSERT("tcpip_thread: invalid message", 0);
+ 105              		.loc 1 155 0 discriminator 1
+ 106 0060 0C4B     		ldr	r3, .L14+12
+ 107 0062 9B22     		movs	r2, #155
+ 108 0064 0C49     		ldr	r1, .L14+16
+ 109 0066 0D48     		ldr	r0, .L14+20
+ 110 0068 FFF7FEFF 		bl	printf
+ 111              	.LVL10:
+ 156:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****       break;
+ 112              		.loc 1 156 0 discriminator 1
+ 113 006c E3E7     		b	.L3
+ 114              	.L7:
+ 144:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****       memp_free(MEMP_TCPIP_MSG_API, msg);
+ 115              		.loc 1 144 0
+ 116 006e 5A68     		ldr	r2, [r3, #4]
+ 117 0070 9868     		ldr	r0, [r3, #8]
+ 118 0072 9047     		blx	r2
+ 119              	.LVL11:
+ 145:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****       break;
+ 120              		.loc 1 145 0
+ 121 0074 0199     		ldr	r1, [sp, #4]
+ 122 0076 0820     		movs	r0, #8
+ 123 0078 FFF7FEFF 		bl	memp_free
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s 			page 6
+
+
+ 124              	.LVL12:
+ 146:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+ 125              		.loc 1 146 0
+ 126 007c DBE7     		b	.L3
+ 127              	.L8:
+ 150:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****       break;
+ 128              		.loc 1 150 0
+ 129 007e 5A68     		ldr	r2, [r3, #4]
+ 130 0080 9868     		ldr	r0, [r3, #8]
+ 131 0082 9047     		blx	r2
+ 132              	.LVL13:
+ 151:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+ 133              		.loc 1 151 0
+ 134 0084 D7E7     		b	.L3
+ 135              	.L15:
+ 136 0086 00BF     		.align	2
+ 137              	.L14:
+ 138 0088 00000000 		.word	.LANCHOR0
+ 139 008c 00000000 		.word	.LANCHOR1
+ 140 0090 00000000 		.word	lock_tcpip_core
+ 141 0094 00000000 		.word	.LC0
+ 142 0098 30000000 		.word	.LC1
+ 143 009c 50000000 		.word	.LC2
+ 144 00a0 00000000 		.word	.LANCHOR2
+ 145              		.cfi_endproc
+ 146              	.LFE157:
+ 148              		.section	.text.pbuf_free_int,"ax",%progbits
+ 149              		.align	1
+ 150              		.syntax unified
+ 151              		.thumb
+ 152              		.thumb_func
+ 153              		.fpu fpv5-sp-d16
+ 155              	pbuf_free_int:
+ 156              	.LFB167:
+ 157:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****     }
+ 158:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   }
+ 159:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** }
+ 160:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+ 161:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** /**
+ 162:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * Pass a received packet to tcpip_thread for input processing
+ 163:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  *
+ 164:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * @param p the received packet
+ 165:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * @param inp the network interface on which the packet was received
+ 166:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * @param input_fn input function to call
+ 167:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  */
+ 168:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** err_t
+ 169:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** tcpip_inpkt(struct pbuf *p, struct netif *inp, netif_input_fn input_fn)
+ 170:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** {
+ 171:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** #if LWIP_TCPIP_CORE_LOCKING_INPUT
+ 172:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   err_t ret;
+ 173:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   LWIP_DEBUGF(TCPIP_DEBUG, ("tcpip_inpkt: PACKET %p/%p\n", (void *)p, (void *)inp));
+ 174:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   LOCK_TCPIP_CORE();
+ 175:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   ret = input_fn(p, inp);
+ 176:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   UNLOCK_TCPIP_CORE();
+ 177:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   return ret;
+ 178:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** #else /* LWIP_TCPIP_CORE_LOCKING_INPUT */
+ 179:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   struct tcpip_msg *msg;
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s 			page 7
+
+
+ 180:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+ 181:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   LWIP_ASSERT("Invalid mbox", sys_mbox_valid_val(mbox));
+ 182:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+ 183:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   msg = (struct tcpip_msg *)memp_malloc(MEMP_TCPIP_MSG_INPKT);
+ 184:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   if (msg == NULL) {
+ 185:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****     return ERR_MEM;
+ 186:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   }
+ 187:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+ 188:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   msg->type = TCPIP_MSG_INPKT;
+ 189:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   msg->msg.inp.p = p;
+ 190:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   msg->msg.inp.netif = inp;
+ 191:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   msg->msg.inp.input_fn = input_fn;
+ 192:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   if (sys_mbox_trypost(&mbox, msg) != ERR_OK) {
+ 193:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****     memp_free(MEMP_TCPIP_MSG_INPKT, msg);
+ 194:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****     return ERR_MEM;
+ 195:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   }
+ 196:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   return ERR_OK;
+ 197:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** #endif /* LWIP_TCPIP_CORE_LOCKING_INPUT */
+ 198:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** }
+ 199:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+ 200:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** /**
+ 201:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * @ingroup lwip_os
+ 202:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * Pass a received packet to tcpip_thread for input processing with
+ 203:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * ethernet_input or ip_input. Don't call directly, pass to netif_add()
+ 204:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * and call netif->input().
+ 205:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  *
+ 206:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * @param p the received packet, p->payload pointing to the Ethernet header or
+ 207:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  *          to an IP header (if inp doesn't have NETIF_FLAG_ETHARP or
+ 208:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  *          NETIF_FLAG_ETHERNET flags)
+ 209:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * @param inp the network interface on which the packet was received
+ 210:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  */
+ 211:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** err_t
+ 212:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** tcpip_input(struct pbuf *p, struct netif *inp)
+ 213:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** {
+ 214:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** #if LWIP_ETHERNET
+ 215:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   if (inp->flags & (NETIF_FLAG_ETHARP | NETIF_FLAG_ETHERNET)) {
+ 216:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****     return tcpip_inpkt(p, inp, ethernet_input);
+ 217:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   } else
+ 218:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** #endif /* LWIP_ETHERNET */
+ 219:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   return tcpip_inpkt(p, inp, ip_input);
+ 220:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** }
+ 221:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+ 222:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** /**
+ 223:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * Call a specific function in the thread context of
+ 224:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * tcpip_thread for easy access synchronization.
+ 225:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * A function called in that way may access lwIP core code
+ 226:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * without fearing concurrent access.
+ 227:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  *
+ 228:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * @param function the function to call
+ 229:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * @param ctx parameter passed to f
+ 230:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * @param block 1 to block until the request is posted, 0 to non-blocking mode
+ 231:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * @return ERR_OK if the function was called, another err_t if not
+ 232:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  */
+ 233:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** err_t
+ 234:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** tcpip_callback_with_block(tcpip_callback_fn function, void *ctx, u8_t block)
+ 235:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** {
+ 236:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   struct tcpip_msg *msg;
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s 			page 8
+
+
+ 237:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+ 238:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   LWIP_ASSERT("Invalid mbox", sys_mbox_valid_val(mbox));
+ 239:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+ 240:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   msg = (struct tcpip_msg *)memp_malloc(MEMP_TCPIP_MSG_API);
+ 241:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   if (msg == NULL) {
+ 242:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****     return ERR_MEM;
+ 243:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   }
+ 244:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+ 245:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   msg->type = TCPIP_MSG_CALLBACK;
+ 246:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   msg->msg.cb.function = function;
+ 247:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   msg->msg.cb.ctx = ctx;
+ 248:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   if (block) {
+ 249:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****     sys_mbox_post(&mbox, msg);
+ 250:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   } else {
+ 251:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****     if (sys_mbox_trypost(&mbox, msg) != ERR_OK) {
+ 252:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****       memp_free(MEMP_TCPIP_MSG_API, msg);
+ 253:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****       return ERR_MEM;
+ 254:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****     }
+ 255:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   }
+ 256:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   return ERR_OK;
+ 257:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** }
+ 258:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+ 259:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** #if LWIP_TCPIP_TIMEOUT && LWIP_TIMERS
+ 260:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** /**
+ 261:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * call sys_timeout in tcpip_thread
+ 262:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  *
+ 263:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * @param msecs time in milliseconds for timeout
+ 264:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * @param h function to be called on timeout
+ 265:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * @param arg argument to pass to timeout function h
+ 266:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * @return ERR_MEM on memory error, ERR_OK otherwise
+ 267:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  */
+ 268:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** err_t
+ 269:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** tcpip_timeout(u32_t msecs, sys_timeout_handler h, void *arg)
+ 270:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** {
+ 271:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   struct tcpip_msg *msg;
+ 272:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+ 273:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   LWIP_ASSERT("Invalid mbox", sys_mbox_valid_val(mbox));
+ 274:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+ 275:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   msg = (struct tcpip_msg *)memp_malloc(MEMP_TCPIP_MSG_API);
+ 276:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   if (msg == NULL) {
+ 277:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****     return ERR_MEM;
+ 278:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   }
+ 279:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+ 280:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   msg->type = TCPIP_MSG_TIMEOUT;
+ 281:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   msg->msg.tmo.msecs = msecs;
+ 282:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   msg->msg.tmo.h = h;
+ 283:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   msg->msg.tmo.arg = arg;
+ 284:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   sys_mbox_post(&mbox, msg);
+ 285:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   return ERR_OK;
+ 286:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** }
+ 287:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+ 288:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** /**
+ 289:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * call sys_untimeout in tcpip_thread
+ 290:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  *
+ 291:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * @param h function to be called on timeout
+ 292:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * @param arg argument to pass to timeout function h
+ 293:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * @return ERR_MEM on memory error, ERR_OK otherwise
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s 			page 9
+
+
+ 294:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  */
+ 295:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** err_t
+ 296:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** tcpip_untimeout(sys_timeout_handler h, void *arg)
+ 297:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** {
+ 298:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   struct tcpip_msg *msg;
+ 299:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+ 300:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   LWIP_ASSERT("Invalid mbox", sys_mbox_valid_val(mbox));
+ 301:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+ 302:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   msg = (struct tcpip_msg *)memp_malloc(MEMP_TCPIP_MSG_API);
+ 303:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   if (msg == NULL) {
+ 304:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****     return ERR_MEM;
+ 305:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   }
+ 306:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+ 307:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   msg->type = TCPIP_MSG_UNTIMEOUT;
+ 308:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   msg->msg.tmo.h = h;
+ 309:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   msg->msg.tmo.arg = arg;
+ 310:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   sys_mbox_post(&mbox, msg);
+ 311:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   return ERR_OK;
+ 312:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** }
+ 313:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** #endif /* LWIP_TCPIP_TIMEOUT && LWIP_TIMERS */
+ 314:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+ 315:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+ 316:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** /**
+ 317:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * Sends a message to TCPIP thread to call a function. Caller thread blocks on
+ 318:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * on a provided semaphore, which ist NOT automatically signalled by TCPIP thread,
+ 319:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * this has to be done by the user.
+ 320:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * It is recommended to use LWIP_TCPIP_CORE_LOCKING since this is the way
+ 321:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * with least runtime overhead.
+ 322:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  *
+ 323:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * @param fn function to be called from TCPIP thread
+ 324:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * @param apimsg argument to API function
+ 325:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * @param sem semaphore to wait on
+ 326:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * @return ERR_OK if the function was called, another err_t if not
+ 327:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  */
+ 328:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** err_t
+ 329:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** tcpip_send_msg_wait_sem(tcpip_callback_fn fn, void *apimsg, sys_sem_t* sem)
+ 330:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** {
+ 331:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** #if LWIP_TCPIP_CORE_LOCKING
+ 332:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   LWIP_UNUSED_ARG(sem);
+ 333:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   LOCK_TCPIP_CORE();
+ 334:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   fn(apimsg);
+ 335:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   UNLOCK_TCPIP_CORE();
+ 336:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   return ERR_OK;
+ 337:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** #else /* LWIP_TCPIP_CORE_LOCKING */
+ 338:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   TCPIP_MSG_VAR_DECLARE(msg);
+ 339:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+ 340:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   LWIP_ASSERT("semaphore not initialized", sys_sem_valid(sem));
+ 341:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   LWIP_ASSERT("Invalid mbox", sys_mbox_valid_val(mbox));
+ 342:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+ 343:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   TCPIP_MSG_VAR_ALLOC(msg);
+ 344:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   TCPIP_MSG_VAR_REF(msg).type = TCPIP_MSG_API;
+ 345:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   TCPIP_MSG_VAR_REF(msg).msg.api_msg.function = fn;
+ 346:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   TCPIP_MSG_VAR_REF(msg).msg.api_msg.msg = apimsg;
+ 347:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   sys_mbox_post(&mbox, &TCPIP_MSG_VAR_REF(msg));
+ 348:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   sys_arch_sem_wait(sem, 0);
+ 349:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   TCPIP_MSG_VAR_FREE(msg);
+ 350:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   return ERR_OK;
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s 			page 10
+
+
+ 351:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** #endif /* LWIP_TCPIP_CORE_LOCKING */
+ 352:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** }
+ 353:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+ 354:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** /**
+ 355:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * Synchronously calls function in TCPIP thread and waits for its completion.
+ 356:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * It is recommended to use LWIP_TCPIP_CORE_LOCKING (preferred) or
+ 357:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * LWIP_NETCONN_SEM_PER_THREAD. 
+ 358:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * If not, a semaphore is created and destroyed on every call which is usually
+ 359:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * an expensive/slow operation.
+ 360:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * @param fn Function to call
+ 361:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * @param call Call parameters
+ 362:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * @return Return value from tcpip_api_call_fn
+ 363:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  */
+ 364:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** err_t
+ 365:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** tcpip_api_call(tcpip_api_call_fn fn, struct tcpip_api_call_data *call)
+ 366:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** {
+ 367:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** #if LWIP_TCPIP_CORE_LOCKING
+ 368:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   err_t err;
+ 369:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   LOCK_TCPIP_CORE();
+ 370:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   err = fn(call);
+ 371:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   UNLOCK_TCPIP_CORE();
+ 372:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   return err;
+ 373:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** #else /* LWIP_TCPIP_CORE_LOCKING */
+ 374:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   TCPIP_MSG_VAR_DECLARE(msg);
+ 375:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+ 376:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** #if !LWIP_NETCONN_SEM_PER_THREAD
+ 377:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   err_t err = sys_sem_new(&call->sem, 0);
+ 378:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   if (err != ERR_OK) {
+ 379:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****     return err;
+ 380:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   }
+ 381:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** #endif /* LWIP_NETCONN_SEM_PER_THREAD */
+ 382:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+ 383:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   LWIP_ASSERT("Invalid mbox", sys_mbox_valid_val(mbox));
+ 384:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+ 385:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   TCPIP_MSG_VAR_ALLOC(msg);
+ 386:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   TCPIP_MSG_VAR_REF(msg).type = TCPIP_MSG_API_CALL;
+ 387:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   TCPIP_MSG_VAR_REF(msg).msg.api_call.arg = call;
+ 388:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   TCPIP_MSG_VAR_REF(msg).msg.api_call.function = fn;
+ 389:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** #if LWIP_NETCONN_SEM_PER_THREAD
+ 390:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   TCPIP_MSG_VAR_REF(msg).msg.api_call.sem = LWIP_NETCONN_THREAD_SEM_GET();
+ 391:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** #else /* LWIP_NETCONN_SEM_PER_THREAD */
+ 392:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   TCPIP_MSG_VAR_REF(msg).msg.api_call.sem = &call->sem;
+ 393:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** #endif /* LWIP_NETCONN_SEM_PER_THREAD */
+ 394:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   sys_mbox_post(&mbox, &TCPIP_MSG_VAR_REF(msg));
+ 395:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   sys_arch_sem_wait(TCPIP_MSG_VAR_REF(msg).msg.api_call.sem, 0);
+ 396:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   TCPIP_MSG_VAR_FREE(msg);
+ 397:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+ 398:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** #if !LWIP_NETCONN_SEM_PER_THREAD
+ 399:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   sys_sem_free(&call->sem);
+ 400:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** #endif /* LWIP_NETCONN_SEM_PER_THREAD */
+ 401:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+ 402:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   return call->err;
+ 403:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** #endif /* LWIP_TCPIP_CORE_LOCKING */
+ 404:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** }
+ 405:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+ 406:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** /**
+ 407:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * Allocate a structure for a static callback message and initialize it.
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s 			page 11
+
+
+ 408:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * This is intended to be used to send "static" messages from interrupt context.
+ 409:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  *
+ 410:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * @param function the function to call
+ 411:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * @param ctx parameter passed to function
+ 412:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * @return a struct pointer to pass to tcpip_trycallback().
+ 413:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  */
+ 414:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** struct tcpip_callback_msg*
+ 415:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** tcpip_callbackmsg_new(tcpip_callback_fn function, void *ctx)
+ 416:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** {
+ 417:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   struct tcpip_msg *msg = (struct tcpip_msg *)memp_malloc(MEMP_TCPIP_MSG_API);
+ 418:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   if (msg == NULL) {
+ 419:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****     return NULL;
+ 420:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   }
+ 421:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   msg->type = TCPIP_MSG_CALLBACK_STATIC;
+ 422:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   msg->msg.cb.function = function;
+ 423:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   msg->msg.cb.ctx = ctx;
+ 424:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   return (struct tcpip_callback_msg*)msg;
+ 425:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** }
+ 426:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+ 427:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** /**
+ 428:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * Free a callback message allocated by tcpip_callbackmsg_new().
+ 429:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  *
+ 430:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * @param msg the message to free
+ 431:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  */
+ 432:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** void
+ 433:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** tcpip_callbackmsg_delete(struct tcpip_callback_msg* msg)
+ 434:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** {
+ 435:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   memp_free(MEMP_TCPIP_MSG_API, msg);
+ 436:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** }
+ 437:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+ 438:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** /**
+ 439:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * Try to post a callback-message to the tcpip_thread mbox
+ 440:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * This is intended to be used to send "static" messages from interrupt context.
+ 441:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  *
+ 442:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * @param msg pointer to the message to post
+ 443:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * @return sys_mbox_trypost() return code
+ 444:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  */
+ 445:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** err_t
+ 446:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** tcpip_trycallback(struct tcpip_callback_msg* msg)
+ 447:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** {
+ 448:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   LWIP_ASSERT("Invalid mbox", sys_mbox_valid_val(mbox));
+ 449:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   return sys_mbox_trypost(&mbox, msg);
+ 450:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** }
+ 451:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+ 452:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** /**
+ 453:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * @ingroup lwip_os
+ 454:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * Initialize this module:
+ 455:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * - initialize all sub modules
+ 456:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * - start the tcpip_thread
+ 457:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  *
+ 458:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * @param initfunc a function to call when tcpip_thread is running and finished initializing
+ 459:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * @param arg argument to pass to initfunc
+ 460:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  */
+ 461:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** void
+ 462:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** tcpip_init(tcpip_init_done_fn initfunc, void *arg)
+ 463:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** {
+ 464:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   lwip_init();
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s 			page 12
+
+
+ 465:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+ 466:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   tcpip_init_done = initfunc;
+ 467:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   tcpip_init_done_arg = arg;
+ 468:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   if (sys_mbox_new(&mbox, TCPIP_MBOX_SIZE) != ERR_OK) {
+ 469:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****     LWIP_ASSERT("failed to create tcpip_thread mbox", 0);
+ 470:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   }
+ 471:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** #if LWIP_TCPIP_CORE_LOCKING
+ 472:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   if (sys_mutex_new(&lock_tcpip_core) != ERR_OK) {
+ 473:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****     LWIP_ASSERT("failed to create lock_tcpip_core", 0);
+ 474:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   }
+ 475:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** #endif /* LWIP_TCPIP_CORE_LOCKING */
+ 476:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+ 477:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   sys_thread_new(TCPIP_THREAD_NAME, tcpip_thread, NULL, TCPIP_THREAD_STACKSIZE, TCPIP_THREAD_PRIO);
+ 478:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** }
+ 479:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+ 480:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** /**
+ 481:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * Simple callback function used with tcpip_callback to free a pbuf
+ 482:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * (pbuf_free has a wrong signature for tcpip_callback)
+ 483:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  *
+ 484:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * @param p The pbuf (chain) to be dereferenced.
+ 485:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  */
+ 486:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** static void
+ 487:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** pbuf_free_int(void *p)
+ 488:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** {
+ 157              		.loc 1 488 0
+ 158              		.cfi_startproc
+ 159              		@ args = 0, pretend = 0, frame = 0
+ 160              		@ frame_needed = 0, uses_anonymous_args = 0
+ 161              	.LVL14:
+ 162 0000 08B5     		push	{r3, lr}
+ 163              	.LCFI2:
+ 164              		.cfi_def_cfa_offset 8
+ 165              		.cfi_offset 3, -8
+ 166              		.cfi_offset 14, -4
+ 167              	.LVL15:
+ 489:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   struct pbuf *q = (struct pbuf *)p;
+ 490:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   pbuf_free(q);
+ 168              		.loc 1 490 0
+ 169 0002 FFF7FEFF 		bl	pbuf_free
+ 170              	.LVL16:
+ 171 0006 08BD     		pop	{r3, pc}
+ 172              		.cfi_endproc
+ 173              	.LFE167:
+ 175              		.section	.text.tcpip_inpkt,"ax",%progbits
+ 176              		.align	1
+ 177              		.global	tcpip_inpkt
+ 178              		.syntax unified
+ 179              		.thumb
+ 180              		.thumb_func
+ 181              		.fpu fpv5-sp-d16
+ 183              	tcpip_inpkt:
+ 184              	.LFB158:
+ 170:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** #if LWIP_TCPIP_CORE_LOCKING_INPUT
+ 185              		.loc 1 170 0
+ 186              		.cfi_startproc
+ 187              		@ args = 0, pretend = 0, frame = 0
+ 188              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s 			page 13
+
+
+ 189              	.LVL17:
+ 190 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 191              	.LCFI3:
+ 192              		.cfi_def_cfa_offset 24
+ 193              		.cfi_offset 3, -24
+ 194              		.cfi_offset 4, -20
+ 195              		.cfi_offset 5, -16
+ 196              		.cfi_offset 6, -12
+ 197              		.cfi_offset 7, -8
+ 198              		.cfi_offset 14, -4
+ 199 0002 0746     		mov	r7, r0
+ 200 0004 0E46     		mov	r6, r1
+ 201 0006 1546     		mov	r5, r2
+ 181:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+ 202              		.loc 1 181 0
+ 203 0008 1348     		ldr	r0, .L25
+ 204              	.LVL18:
+ 205 000a FFF7FEFF 		bl	sys_mbox_valid
+ 206              	.LVL19:
+ 207 000e 88B1     		cbz	r0, .L23
+ 208              	.L19:
+ 183:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   if (msg == NULL) {
+ 209              		.loc 1 183 0
+ 210 0010 0920     		movs	r0, #9
+ 211 0012 FFF7FEFF 		bl	memp_malloc
+ 212              	.LVL20:
+ 184:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****     return ERR_MEM;
+ 213              		.loc 1 184 0
+ 214 0016 0446     		mov	r4, r0
+ 215 0018 D0B1     		cbz	r0, .L21
+ 188:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   msg->msg.inp.p = p;
+ 216              		.loc 1 188 0
+ 217 001a 0223     		movs	r3, #2
+ 218 001c 0370     		strb	r3, [r0]
+ 189:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   msg->msg.inp.netif = inp;
+ 219              		.loc 1 189 0
+ 220 001e 4760     		str	r7, [r0, #4]
+ 190:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   msg->msg.inp.input_fn = input_fn;
+ 221              		.loc 1 190 0
+ 222 0020 8660     		str	r6, [r0, #8]
+ 191:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   if (sys_mbox_trypost(&mbox, msg) != ERR_OK) {
+ 223              		.loc 1 191 0
+ 224 0022 C560     		str	r5, [r0, #12]
+ 192:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****     memp_free(MEMP_TCPIP_MSG_INPKT, msg);
+ 225              		.loc 1 192 0
+ 226 0024 0146     		mov	r1, r0
+ 227 0026 0C48     		ldr	r0, .L25
+ 228              	.LVL21:
+ 229 0028 FFF7FEFF 		bl	sys_mbox_trypost
+ 230              	.LVL22:
+ 231 002c 0346     		mov	r3, r0
+ 232 002e 40B9     		cbnz	r0, .L24
+ 233              	.L20:
+ 198:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+ 234              		.loc 1 198 0
+ 235 0030 1846     		mov	r0, r3
+ 236 0032 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s 			page 14
+
+
+ 237              	.LVL23:
+ 238              	.L23:
+ 181:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+ 239              		.loc 1 181 0 discriminator 1
+ 240 0034 094B     		ldr	r3, .L25+4
+ 241 0036 B522     		movs	r2, #181
+ 242 0038 0949     		ldr	r1, .L25+8
+ 243 003a 0A48     		ldr	r0, .L25+12
+ 244 003c FFF7FEFF 		bl	printf
+ 245              	.LVL24:
+ 246 0040 E6E7     		b	.L19
+ 247              	.LVL25:
+ 248              	.L24:
+ 193:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****     return ERR_MEM;
+ 249              		.loc 1 193 0
+ 250 0042 2146     		mov	r1, r4
+ 251 0044 0920     		movs	r0, #9
+ 252 0046 FFF7FEFF 		bl	memp_free
+ 253              	.LVL26:
+ 194:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   }
+ 254              		.loc 1 194 0
+ 255 004a 4FF0FF33 		mov	r3, #-1
+ 256 004e EFE7     		b	.L20
+ 257              	.LVL27:
+ 258              	.L21:
+ 185:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   }
+ 259              		.loc 1 185 0
+ 260 0050 4FF0FF33 		mov	r3, #-1
+ 261 0054 ECE7     		b	.L20
+ 262              	.L26:
+ 263 0056 00BF     		.align	2
+ 264              	.L25:
+ 265 0058 00000000 		.word	.LANCHOR2
+ 266 005c 00000000 		.word	.LC0
+ 267 0060 00000000 		.word	.LC3
+ 268 0064 50000000 		.word	.LC2
+ 269              		.cfi_endproc
+ 270              	.LFE158:
+ 272              		.section	.text.tcpip_input,"ax",%progbits
+ 273              		.align	1
+ 274              		.global	tcpip_input
+ 275              		.syntax unified
+ 276              		.thumb
+ 277              		.thumb_func
+ 278              		.fpu fpv5-sp-d16
+ 280              	tcpip_input:
+ 281              	.LFB159:
+ 213:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** #if LWIP_ETHERNET
+ 282              		.loc 1 213 0
+ 283              		.cfi_startproc
+ 284              		@ args = 0, pretend = 0, frame = 0
+ 285              		@ frame_needed = 0, uses_anonymous_args = 0
+ 286              	.LVL28:
+ 287 0000 08B5     		push	{r3, lr}
+ 288              	.LCFI4:
+ 289              		.cfi_def_cfa_offset 8
+ 290              		.cfi_offset 3, -8
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s 			page 15
+
+
+ 291              		.cfi_offset 14, -4
+ 215:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****     return tcpip_inpkt(p, inp, ethernet_input);
+ 292              		.loc 1 215 0
+ 293 0002 91F82F30 		ldrb	r3, [r1, #47]	@ zero_extendqisi2
+ 294 0006 13F0180F 		tst	r3, #24
+ 295 000a 03D1     		bne	.L31
+ 219:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** }
+ 296              		.loc 1 219 0
+ 297 000c 034A     		ldr	r2, .L32
+ 298 000e FFF7FEFF 		bl	tcpip_inpkt
+ 299              	.LVL29:
+ 220:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+ 300              		.loc 1 220 0
+ 301 0012 08BD     		pop	{r3, pc}
+ 302              	.LVL30:
+ 303              	.L31:
+ 216:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   } else
+ 304              		.loc 1 216 0
+ 305 0014 024A     		ldr	r2, .L32+4
+ 306 0016 FFF7FEFF 		bl	tcpip_inpkt
+ 307              	.LVL31:
+ 308 001a 08BD     		pop	{r3, pc}
+ 309              	.L33:
+ 310              		.align	2
+ 311              	.L32:
+ 312 001c 00000000 		.word	ip4_input
+ 313 0020 00000000 		.word	ethernet_input
+ 314              		.cfi_endproc
+ 315              	.LFE159:
+ 317              		.section	.text.tcpip_callback_with_block,"ax",%progbits
+ 318              		.align	1
+ 319              		.global	tcpip_callback_with_block
+ 320              		.syntax unified
+ 321              		.thumb
+ 322              		.thumb_func
+ 323              		.fpu fpv5-sp-d16
+ 325              	tcpip_callback_with_block:
+ 326              	.LFB160:
+ 235:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   struct tcpip_msg *msg;
+ 327              		.loc 1 235 0
+ 328              		.cfi_startproc
+ 329              		@ args = 0, pretend = 0, frame = 0
+ 330              		@ frame_needed = 0, uses_anonymous_args = 0
+ 331              	.LVL32:
+ 332 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 333              	.LCFI5:
+ 334              		.cfi_def_cfa_offset 24
+ 335              		.cfi_offset 3, -24
+ 336              		.cfi_offset 4, -20
+ 337              		.cfi_offset 5, -16
+ 338              		.cfi_offset 6, -12
+ 339              		.cfi_offset 7, -8
+ 340              		.cfi_offset 14, -4
+ 341 0002 0746     		mov	r7, r0
+ 342 0004 0E46     		mov	r6, r1
+ 343 0006 1546     		mov	r5, r2
+ 238:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s 			page 16
+
+
+ 344              		.loc 1 238 0
+ 345 0008 1648     		ldr	r0, .L43
+ 346              	.LVL33:
+ 347 000a FFF7FEFF 		bl	sys_mbox_valid
+ 348              	.LVL34:
+ 349 000e 88B1     		cbz	r0, .L40
+ 350              	.L35:
+ 240:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   if (msg == NULL) {
+ 351              		.loc 1 240 0
+ 352 0010 0820     		movs	r0, #8
+ 353 0012 FFF7FEFF 		bl	memp_malloc
+ 354              	.LVL35:
+ 241:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****     return ERR_MEM;
+ 355              		.loc 1 241 0
+ 356 0016 0446     		mov	r4, r0
+ 357 0018 00B3     		cbz	r0, .L38
+ 245:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   msg->msg.cb.function = function;
+ 358              		.loc 1 245 0
+ 359 001a 0323     		movs	r3, #3
+ 360 001c 0370     		strb	r3, [r0]
+ 246:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   msg->msg.cb.ctx = ctx;
+ 361              		.loc 1 246 0
+ 362 001e 4760     		str	r7, [r0, #4]
+ 247:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   if (block) {
+ 363              		.loc 1 247 0
+ 364 0020 8660     		str	r6, [r0, #8]
+ 248:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****     sys_mbox_post(&mbox, msg);
+ 365              		.loc 1 248 0
+ 366 0022 75B9     		cbnz	r5, .L41
+ 251:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****       memp_free(MEMP_TCPIP_MSG_API, msg);
+ 367              		.loc 1 251 0
+ 368 0024 0146     		mov	r1, r0
+ 369 0026 0F48     		ldr	r0, .L43
+ 370              	.LVL36:
+ 371 0028 FFF7FEFF 		bl	sys_mbox_trypost
+ 372              	.LVL37:
+ 373 002c 0346     		mov	r3, r0
+ 374 002e 70B9     		cbnz	r0, .L42
+ 375              	.L36:
+ 257:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+ 376              		.loc 1 257 0
+ 377 0030 1846     		mov	r0, r3
+ 378 0032 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 379              	.LVL38:
+ 380              	.L40:
+ 238:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+ 381              		.loc 1 238 0 discriminator 1
+ 382 0034 0C4B     		ldr	r3, .L43+4
+ 383 0036 EE22     		movs	r2, #238
+ 384 0038 0C49     		ldr	r1, .L43+8
+ 385 003a 0D48     		ldr	r0, .L43+12
+ 386 003c FFF7FEFF 		bl	printf
+ 387              	.LVL39:
+ 388 0040 E6E7     		b	.L35
+ 389              	.LVL40:
+ 390              	.L41:
+ 249:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   } else {
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s 			page 17
+
+
+ 391              		.loc 1 249 0
+ 392 0042 0146     		mov	r1, r0
+ 393 0044 0748     		ldr	r0, .L43
+ 394              	.LVL41:
+ 395 0046 FFF7FEFF 		bl	sys_mbox_post
+ 396              	.LVL42:
+ 256:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** }
+ 397              		.loc 1 256 0
+ 398 004a 0023     		movs	r3, #0
+ 399 004c F0E7     		b	.L36
+ 400              	.L42:
+ 252:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****       return ERR_MEM;
+ 401              		.loc 1 252 0
+ 402 004e 2146     		mov	r1, r4
+ 403 0050 0820     		movs	r0, #8
+ 404 0052 FFF7FEFF 		bl	memp_free
+ 405              	.LVL43:
+ 253:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****     }
+ 406              		.loc 1 253 0
+ 407 0056 4FF0FF33 		mov	r3, #-1
+ 408 005a E9E7     		b	.L36
+ 409              	.LVL44:
+ 410              	.L38:
+ 242:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   }
+ 411              		.loc 1 242 0
+ 412 005c 4FF0FF33 		mov	r3, #-1
+ 413 0060 E6E7     		b	.L36
+ 414              	.L44:
+ 415 0062 00BF     		.align	2
+ 416              	.L43:
+ 417 0064 00000000 		.word	.LANCHOR2
+ 418 0068 00000000 		.word	.LC0
+ 419 006c 00000000 		.word	.LC3
+ 420 0070 50000000 		.word	.LC2
+ 421              		.cfi_endproc
+ 422              	.LFE160:
+ 424              		.section	.text.tcpip_send_msg_wait_sem,"ax",%progbits
+ 425              		.align	1
+ 426              		.global	tcpip_send_msg_wait_sem
+ 427              		.syntax unified
+ 428              		.thumb
+ 429              		.thumb_func
+ 430              		.fpu fpv5-sp-d16
+ 432              	tcpip_send_msg_wait_sem:
+ 433              	.LFB161:
+ 330:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** #if LWIP_TCPIP_CORE_LOCKING
+ 434              		.loc 1 330 0
+ 435              		.cfi_startproc
+ 436              		@ args = 0, pretend = 0, frame = 0
+ 437              		@ frame_needed = 0, uses_anonymous_args = 0
+ 438              	.LVL45:
+ 439 0000 70B5     		push	{r4, r5, r6, lr}
+ 440              	.LCFI6:
+ 441              		.cfi_def_cfa_offset 16
+ 442              		.cfi_offset 4, -16
+ 443              		.cfi_offset 5, -12
+ 444              		.cfi_offset 6, -8
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s 			page 18
+
+
+ 445              		.cfi_offset 14, -4
+ 446 0002 0546     		mov	r5, r0
+ 447 0004 0E46     		mov	r6, r1
+ 333:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   fn(apimsg);
+ 448              		.loc 1 333 0
+ 449 0006 054C     		ldr	r4, .L47
+ 450 0008 2046     		mov	r0, r4
+ 451              	.LVL46:
+ 452 000a FFF7FEFF 		bl	sys_mutex_lock
+ 453              	.LVL47:
+ 334:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   UNLOCK_TCPIP_CORE();
+ 454              		.loc 1 334 0
+ 455 000e 3046     		mov	r0, r6
+ 456 0010 A847     		blx	r5
+ 457              	.LVL48:
+ 335:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   return ERR_OK;
+ 458              		.loc 1 335 0
+ 459 0012 2046     		mov	r0, r4
+ 460 0014 FFF7FEFF 		bl	sys_mutex_unlock
+ 461              	.LVL49:
+ 352:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+ 462              		.loc 1 352 0
+ 463 0018 0020     		movs	r0, #0
+ 464 001a 70BD     		pop	{r4, r5, r6, pc}
+ 465              	.LVL50:
+ 466              	.L48:
+ 467              		.align	2
+ 468              	.L47:
+ 469 001c 00000000 		.word	lock_tcpip_core
+ 470              		.cfi_endproc
+ 471              	.LFE161:
+ 473              		.section	.text.tcpip_api_call,"ax",%progbits
+ 474              		.align	1
+ 475              		.global	tcpip_api_call
+ 476              		.syntax unified
+ 477              		.thumb
+ 478              		.thumb_func
+ 479              		.fpu fpv5-sp-d16
+ 481              	tcpip_api_call:
+ 482              	.LFB162:
+ 366:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** #if LWIP_TCPIP_CORE_LOCKING
+ 483              		.loc 1 366 0
+ 484              		.cfi_startproc
+ 485              		@ args = 0, pretend = 0, frame = 0
+ 486              		@ frame_needed = 0, uses_anonymous_args = 0
+ 487              	.LVL51:
+ 488 0000 70B5     		push	{r4, r5, r6, lr}
+ 489              	.LCFI7:
+ 490              		.cfi_def_cfa_offset 16
+ 491              		.cfi_offset 4, -16
+ 492              		.cfi_offset 5, -12
+ 493              		.cfi_offset 6, -8
+ 494              		.cfi_offset 14, -4
+ 495 0002 0546     		mov	r5, r0
+ 496 0004 0E46     		mov	r6, r1
+ 369:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   err = fn(call);
+ 497              		.loc 1 369 0
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s 			page 19
+
+
+ 498 0006 064C     		ldr	r4, .L51
+ 499 0008 2046     		mov	r0, r4
+ 500              	.LVL52:
+ 501 000a FFF7FEFF 		bl	sys_mutex_lock
+ 502              	.LVL53:
+ 370:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   UNLOCK_TCPIP_CORE();
+ 503              		.loc 1 370 0
+ 504 000e 3046     		mov	r0, r6
+ 505 0010 A847     		blx	r5
+ 506              	.LVL54:
+ 507 0012 0546     		mov	r5, r0
+ 508              	.LVL55:
+ 371:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   return err;
+ 509              		.loc 1 371 0
+ 510 0014 2046     		mov	r0, r4
+ 511 0016 FFF7FEFF 		bl	sys_mutex_unlock
+ 512              	.LVL56:
+ 404:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+ 513              		.loc 1 404 0
+ 514 001a 2846     		mov	r0, r5
+ 515 001c 70BD     		pop	{r4, r5, r6, pc}
+ 516              	.LVL57:
+ 517              	.L52:
+ 518 001e 00BF     		.align	2
+ 519              	.L51:
+ 520 0020 00000000 		.word	lock_tcpip_core
+ 521              		.cfi_endproc
+ 522              	.LFE162:
+ 524              		.section	.text.tcpip_callbackmsg_new,"ax",%progbits
+ 525              		.align	1
+ 526              		.global	tcpip_callbackmsg_new
+ 527              		.syntax unified
+ 528              		.thumb
+ 529              		.thumb_func
+ 530              		.fpu fpv5-sp-d16
+ 532              	tcpip_callbackmsg_new:
+ 533              	.LFB163:
+ 416:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   struct tcpip_msg *msg = (struct tcpip_msg *)memp_malloc(MEMP_TCPIP_MSG_API);
+ 534              		.loc 1 416 0
+ 535              		.cfi_startproc
+ 536              		@ args = 0, pretend = 0, frame = 0
+ 537              		@ frame_needed = 0, uses_anonymous_args = 0
+ 538              	.LVL58:
+ 539 0000 38B5     		push	{r3, r4, r5, lr}
+ 540              	.LCFI8:
+ 541              		.cfi_def_cfa_offset 16
+ 542              		.cfi_offset 3, -16
+ 543              		.cfi_offset 4, -12
+ 544              		.cfi_offset 5, -8
+ 545              		.cfi_offset 14, -4
+ 546 0002 0546     		mov	r5, r0
+ 547 0004 0C46     		mov	r4, r1
+ 417:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   if (msg == NULL) {
+ 548              		.loc 1 417 0
+ 549 0006 0820     		movs	r0, #8
+ 550              	.LVL59:
+ 551 0008 FFF7FEFF 		bl	memp_malloc
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s 			page 20
+
+
+ 552              	.LVL60:
+ 418:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****     return NULL;
+ 553              		.loc 1 418 0
+ 554 000c 20B1     		cbz	r0, .L55
+ 421:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   msg->msg.cb.function = function;
+ 555              		.loc 1 421 0
+ 556 000e 0422     		movs	r2, #4
+ 557 0010 0270     		strb	r2, [r0]
+ 422:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   msg->msg.cb.ctx = ctx;
+ 558              		.loc 1 422 0
+ 559 0012 4560     		str	r5, [r0, #4]
+ 423:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   return (struct tcpip_callback_msg*)msg;
+ 560              		.loc 1 423 0
+ 561 0014 8460     		str	r4, [r0, #8]
+ 424:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** }
+ 562              		.loc 1 424 0
+ 563 0016 38BD     		pop	{r3, r4, r5, pc}
+ 564              	.LVL61:
+ 565              	.L55:
+ 419:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   }
+ 566              		.loc 1 419 0
+ 567 0018 0020     		movs	r0, #0
+ 568              	.LVL62:
+ 425:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+ 569              		.loc 1 425 0
+ 570 001a 38BD     		pop	{r3, r4, r5, pc}
+ 571              		.cfi_endproc
+ 572              	.LFE163:
+ 574              		.section	.text.tcpip_callbackmsg_delete,"ax",%progbits
+ 575              		.align	1
+ 576              		.global	tcpip_callbackmsg_delete
+ 577              		.syntax unified
+ 578              		.thumb
+ 579              		.thumb_func
+ 580              		.fpu fpv5-sp-d16
+ 582              	tcpip_callbackmsg_delete:
+ 583              	.LFB164:
+ 434:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   memp_free(MEMP_TCPIP_MSG_API, msg);
+ 584              		.loc 1 434 0
+ 585              		.cfi_startproc
+ 586              		@ args = 0, pretend = 0, frame = 0
+ 587              		@ frame_needed = 0, uses_anonymous_args = 0
+ 588              	.LVL63:
+ 589 0000 08B5     		push	{r3, lr}
+ 590              	.LCFI9:
+ 591              		.cfi_def_cfa_offset 8
+ 592              		.cfi_offset 3, -8
+ 593              		.cfi_offset 14, -4
+ 435:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** }
+ 594              		.loc 1 435 0
+ 595 0002 0146     		mov	r1, r0
+ 596 0004 0820     		movs	r0, #8
+ 597              	.LVL64:
+ 598 0006 FFF7FEFF 		bl	memp_free
+ 599              	.LVL65:
+ 600 000a 08BD     		pop	{r3, pc}
+ 601              		.cfi_endproc
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s 			page 21
+
+
+ 602              	.LFE164:
+ 604              		.section	.text.tcpip_trycallback,"ax",%progbits
+ 605              		.align	1
+ 606              		.global	tcpip_trycallback
+ 607              		.syntax unified
+ 608              		.thumb
+ 609              		.thumb_func
+ 610              		.fpu fpv5-sp-d16
+ 612              	tcpip_trycallback:
+ 613              	.LFB165:
+ 447:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   LWIP_ASSERT("Invalid mbox", sys_mbox_valid_val(mbox));
+ 614              		.loc 1 447 0
+ 615              		.cfi_startproc
+ 616              		@ args = 0, pretend = 0, frame = 0
+ 617              		@ frame_needed = 0, uses_anonymous_args = 0
+ 618              	.LVL66:
+ 619 0000 10B5     		push	{r4, lr}
+ 620              	.LCFI10:
+ 621              		.cfi_def_cfa_offset 8
+ 622              		.cfi_offset 4, -8
+ 623              		.cfi_offset 14, -4
+ 624 0002 0446     		mov	r4, r0
+ 448:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   return sys_mbox_trypost(&mbox, msg);
+ 625              		.loc 1 448 0
+ 626 0004 0848     		ldr	r0, .L63
+ 627              	.LVL67:
+ 628 0006 FFF7FEFF 		bl	sys_mbox_valid
+ 629              	.LVL68:
+ 630 000a 20B1     		cbz	r0, .L62
+ 631              	.L60:
+ 449:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** }
+ 632              		.loc 1 449 0
+ 633 000c 2146     		mov	r1, r4
+ 634 000e 0648     		ldr	r0, .L63
+ 635 0010 FFF7FEFF 		bl	sys_mbox_trypost
+ 636              	.LVL69:
+ 450:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+ 637              		.loc 1 450 0
+ 638 0014 10BD     		pop	{r4, pc}
+ 639              	.LVL70:
+ 640              	.L62:
+ 448:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   return sys_mbox_trypost(&mbox, msg);
+ 641              		.loc 1 448 0 discriminator 1
+ 642 0016 054B     		ldr	r3, .L63+4
+ 643 0018 4FF4E072 		mov	r2, #448
+ 644 001c 0449     		ldr	r1, .L63+8
+ 645 001e 0548     		ldr	r0, .L63+12
+ 646 0020 FFF7FEFF 		bl	printf
+ 647              	.LVL71:
+ 648 0024 F2E7     		b	.L60
+ 649              	.L64:
+ 650 0026 00BF     		.align	2
+ 651              	.L63:
+ 652 0028 00000000 		.word	.LANCHOR2
+ 653 002c 00000000 		.word	.LC0
+ 654 0030 00000000 		.word	.LC3
+ 655 0034 50000000 		.word	.LC2
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s 			page 22
+
+
+ 656              		.cfi_endproc
+ 657              	.LFE165:
+ 659              		.section	.text.tcpip_init,"ax",%progbits
+ 660              		.align	1
+ 661              		.global	tcpip_init
+ 662              		.syntax unified
+ 663              		.thumb
+ 664              		.thumb_func
+ 665              		.fpu fpv5-sp-d16
+ 667              	tcpip_init:
+ 668              	.LFB166:
+ 463:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   lwip_init();
+ 669              		.loc 1 463 0
+ 670              		.cfi_startproc
+ 671              		@ args = 0, pretend = 0, frame = 0
+ 672              		@ frame_needed = 0, uses_anonymous_args = 0
+ 673              	.LVL72:
+ 674 0000 30B5     		push	{r4, r5, lr}
+ 675              	.LCFI11:
+ 676              		.cfi_def_cfa_offset 12
+ 677              		.cfi_offset 4, -12
+ 678              		.cfi_offset 5, -8
+ 679              		.cfi_offset 14, -4
+ 680 0002 83B0     		sub	sp, sp, #12
+ 681              	.LCFI12:
+ 682              		.cfi_def_cfa_offset 24
+ 683 0004 0546     		mov	r5, r0
+ 684 0006 0C46     		mov	r4, r1
+ 464:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+ 685              		.loc 1 464 0
+ 686 0008 FFF7FEFF 		bl	lwip_init
+ 687              	.LVL73:
+ 466:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   tcpip_init_done_arg = arg;
+ 688              		.loc 1 466 0
+ 689 000c 134B     		ldr	r3, .L71
+ 690 000e 1D60     		str	r5, [r3]
+ 467:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   if (sys_mbox_new(&mbox, TCPIP_MBOX_SIZE) != ERR_OK) {
+ 691              		.loc 1 467 0
+ 692 0010 134B     		ldr	r3, .L71+4
+ 693 0012 1C60     		str	r4, [r3]
+ 468:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****     LWIP_ASSERT("failed to create tcpip_thread mbox", 0);
+ 694              		.loc 1 468 0
+ 695 0014 0621     		movs	r1, #6
+ 696 0016 1348     		ldr	r0, .L71+8
+ 697 0018 FFF7FEFF 		bl	sys_mbox_new
+ 698              	.LVL74:
+ 699 001c 70B9     		cbnz	r0, .L69
+ 700              	.L66:
+ 472:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****     LWIP_ASSERT("failed to create lock_tcpip_core", 0);
+ 701              		.loc 1 472 0
+ 702 001e 1248     		ldr	r0, .L71+12
+ 703 0020 FFF7FEFF 		bl	sys_mutex_new
+ 704              	.LVL75:
+ 705 0024 90B9     		cbnz	r0, .L70
+ 706              	.L67:
+ 477:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** }
+ 707              		.loc 1 477 0
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s 			page 23
+
+
+ 708 0026 0323     		movs	r3, #3
+ 709 0028 0093     		str	r3, [sp]
+ 710 002a 4FF48063 		mov	r3, #1024
+ 711 002e 0022     		movs	r2, #0
+ 712 0030 0E49     		ldr	r1, .L71+16
+ 713 0032 0F48     		ldr	r0, .L71+20
+ 714 0034 FFF7FEFF 		bl	sys_thread_new
+ 715              	.LVL76:
+ 478:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+ 716              		.loc 1 478 0
+ 717 0038 03B0     		add	sp, sp, #12
+ 718              	.LCFI13:
+ 719              		.cfi_remember_state
+ 720              		.cfi_def_cfa_offset 12
+ 721              		@ sp needed
+ 722 003a 30BD     		pop	{r4, r5, pc}
+ 723              	.LVL77:
+ 724              	.L69:
+ 725              	.LCFI14:
+ 726              		.cfi_restore_state
+ 469:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   }
+ 727              		.loc 1 469 0 discriminator 1
+ 728 003c 0D4B     		ldr	r3, .L71+24
+ 729 003e 40F2D512 		movw	r2, #469
+ 730 0042 0D49     		ldr	r1, .L71+28
+ 731 0044 0D48     		ldr	r0, .L71+32
+ 732 0046 FFF7FEFF 		bl	printf
+ 733              	.LVL78:
+ 734 004a E8E7     		b	.L66
+ 735              	.L70:
+ 473:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   }
+ 736              		.loc 1 473 0 discriminator 1
+ 737 004c 094B     		ldr	r3, .L71+24
+ 738 004e 40F2D912 		movw	r2, #473
+ 739 0052 0B49     		ldr	r1, .L71+36
+ 740 0054 0948     		ldr	r0, .L71+32
+ 741 0056 FFF7FEFF 		bl	printf
+ 742              	.LVL79:
+ 743 005a E4E7     		b	.L67
+ 744              	.L72:
+ 745              		.align	2
+ 746              	.L71:
+ 747 005c 00000000 		.word	.LANCHOR0
+ 748 0060 00000000 		.word	.LANCHOR1
+ 749 0064 00000000 		.word	.LANCHOR2
+ 750 0068 00000000 		.word	lock_tcpip_core
+ 751 006c 00000000 		.word	tcpip_thread
+ 752 0070 48000000 		.word	.LC6
+ 753 0074 00000000 		.word	.LC0
+ 754 0078 00000000 		.word	.LC4
+ 755 007c 50000000 		.word	.LC2
+ 756 0080 24000000 		.word	.LC5
+ 757              		.cfi_endproc
+ 758              	.LFE166:
+ 760              		.section	.text.pbuf_free_callback,"ax",%progbits
+ 761              		.align	1
+ 762              		.global	pbuf_free_callback
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s 			page 24
+
+
+ 763              		.syntax unified
+ 764              		.thumb
+ 765              		.thumb_func
+ 766              		.fpu fpv5-sp-d16
+ 768              	pbuf_free_callback:
+ 769              	.LFB168:
+ 491:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** }
+ 492:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+ 493:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** /**
+ 494:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * A simple wrapper function that allows you to free a pbuf from interrupt context.
+ 495:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  *
+ 496:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * @param p The pbuf (chain) to be dereferenced.
+ 497:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * @return ERR_OK if callback could be enqueued, an err_t if not
+ 498:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  */
+ 499:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** err_t
+ 500:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** pbuf_free_callback(struct pbuf *p)
+ 501:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** {
+ 770              		.loc 1 501 0
+ 771              		.cfi_startproc
+ 772              		@ args = 0, pretend = 0, frame = 0
+ 773              		@ frame_needed = 0, uses_anonymous_args = 0
+ 774              	.LVL80:
+ 775 0000 08B5     		push	{r3, lr}
+ 776              	.LCFI15:
+ 777              		.cfi_def_cfa_offset 8
+ 778              		.cfi_offset 3, -8
+ 779              		.cfi_offset 14, -4
+ 502:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   return tcpip_callback_with_block(pbuf_free_int, p, 0);
+ 780              		.loc 1 502 0
+ 781 0002 0022     		movs	r2, #0
+ 782 0004 0146     		mov	r1, r0
+ 783 0006 0248     		ldr	r0, .L75
+ 784              	.LVL81:
+ 785 0008 FFF7FEFF 		bl	tcpip_callback_with_block
+ 786              	.LVL82:
+ 503:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** }
+ 787              		.loc 1 503 0
+ 788 000c 08BD     		pop	{r3, pc}
+ 789              	.L76:
+ 790 000e 00BF     		.align	2
+ 791              	.L75:
+ 792 0010 00000000 		.word	pbuf_free_int
+ 793              		.cfi_endproc
+ 794              	.LFE168:
+ 796              		.section	.text.mem_free_callback,"ax",%progbits
+ 797              		.align	1
+ 798              		.global	mem_free_callback
+ 799              		.syntax unified
+ 800              		.thumb
+ 801              		.thumb_func
+ 802              		.fpu fpv5-sp-d16
+ 804              	mem_free_callback:
+ 805              	.LFB169:
+ 504:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** 
+ 505:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** /**
+ 506:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * A simple wrapper function that allows you to free heap memory from
+ 507:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * interrupt context.
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s 			page 25
+
+
+ 508:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  *
+ 509:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * @param m the heap memory to free
+ 510:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  * @return ERR_OK if callback could be enqueued, an err_t if not
+ 511:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****  */
+ 512:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** err_t
+ 513:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** mem_free_callback(void *m)
+ 514:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** {
+ 806              		.loc 1 514 0
+ 807              		.cfi_startproc
+ 808              		@ args = 0, pretend = 0, frame = 0
+ 809              		@ frame_needed = 0, uses_anonymous_args = 0
+ 810              	.LVL83:
+ 811 0000 08B5     		push	{r3, lr}
+ 812              	.LCFI16:
+ 813              		.cfi_def_cfa_offset 8
+ 814              		.cfi_offset 3, -8
+ 815              		.cfi_offset 14, -4
+ 515:Middlewares/Third_Party/LwIP/src/api/tcpip.c ****   return tcpip_callback_with_block(mem_free, m, 0);
+ 816              		.loc 1 515 0
+ 817 0002 0022     		movs	r2, #0
+ 818 0004 0146     		mov	r1, r0
+ 819 0006 0248     		ldr	r0, .L79
+ 820              	.LVL84:
+ 821 0008 FFF7FEFF 		bl	tcpip_callback_with_block
+ 822              	.LVL85:
+ 516:Middlewares/Third_Party/LwIP/src/api/tcpip.c **** }
+ 823              		.loc 1 516 0
+ 824 000c 08BD     		pop	{r3, pc}
+ 825              	.L80:
+ 826 000e 00BF     		.align	2
+ 827              	.L79:
+ 828 0010 00000000 		.word	mem_free
+ 829              		.cfi_endproc
+ 830              	.LFE169:
+ 832              		.comm	lock_tcpip_core,4,4
+ 833              		.section	.bss.mbox,"aw",%nobits
+ 834              		.align	2
+ 835              		.set	.LANCHOR2,. + 0
+ 838              	mbox:
+ 839 0000 00000000 		.space	4
+ 840              		.section	.bss.tcpip_init_done,"aw",%nobits
+ 841              		.align	2
+ 842              		.set	.LANCHOR0,. + 0
+ 845              	tcpip_init_done:
+ 846 0000 00000000 		.space	4
+ 847              		.section	.bss.tcpip_init_done_arg,"aw",%nobits
+ 848              		.align	2
+ 849              		.set	.LANCHOR1,. + 0
+ 852              	tcpip_init_done_arg:
+ 853 0000 00000000 		.space	4
+ 854              		.section	.rodata.tcpip_init.str1.4,"aMS",%progbits,1
+ 855              		.align	2
+ 856              	.LC4:
+ 857 0000 6661696C 		.ascii	"failed to create tcpip_thread mbox\000"
+ 857      65642074 
+ 857      6F206372 
+ 857      65617465 
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s 			page 26
+
+
+ 857      20746370 
+ 858 0023 00       		.space	1
+ 859              	.LC5:
+ 860 0024 6661696C 		.ascii	"failed to create lock_tcpip_core\000"
+ 860      65642074 
+ 860      6F206372 
+ 860      65617465 
+ 860      206C6F63 
+ 861 0045 000000   		.space	3
+ 862              	.LC6:
+ 863 0048 74637069 		.ascii	"tcpip_thread\000"
+ 863      705F7468 
+ 863      72656164 
+ 863      00
+ 864              		.section	.rodata.tcpip_inpkt.str1.4,"aMS",%progbits,1
+ 865              		.align	2
+ 866              	.LC3:
+ 867 0000 496E7661 		.ascii	"Invalid mbox\000"
+ 867      6C696420 
+ 867      6D626F78 
+ 867      00
+ 868              		.section	.rodata.tcpip_thread.str1.4,"aMS",%progbits,1
+ 869              		.align	2
+ 870              	.LC0:
+ 871 0000 4D696464 		.ascii	"Middlewares/Third_Party/LwIP/src/api/tcpip.c\000"
+ 871      6C657761 
+ 871      7265732F 
+ 871      54686972 
+ 871      645F5061 
+ 872 002d 000000   		.space	3
+ 873              	.LC1:
+ 874 0030 74637069 		.ascii	"tcpip_thread: invalid message\000"
+ 874      705F7468 
+ 874      72656164 
+ 874      3A20696E 
+ 874      76616C69 
+ 875 004e 0000     		.space	2
+ 876              	.LC2:
+ 877 0050 41737365 		.ascii	"Assertion \"%s\" failed at line %d in %s\012\000"
+ 877      7274696F 
+ 877      6E202225 
+ 877      73222066 
+ 877      61696C65 
+ 878              		.text
+ 879              	.Letext0:
+ 880              		.file 2 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 881              		.file 3 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 882              		.file 4 "Drivers/CMSIS/Include/core_cm7.h"
+ 883              		.file 5 "Drivers/CMSIS/Device/ST/STM32F7xx/Include/system_stm32f7xx.h"
+ 884              		.file 6 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\lock.h"
+ 885              		.file 7 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\_types.h"
+ 886              		.file 8 "c:\\gcc_toolchain\\6_2017-q1-update\\lib\\gcc\\arm-none-eabi\\6.3.1\\include\\stddef.h"
+ 887              		.file 9 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\reent.h"
+ 888              		.file 10 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\stdlib.h"
+ 889              		.file 11 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\time.h"
+ 890              		.file 12 "Middlewares/Third_Party/LwIP/src/include/lwip/arch.h"
+ 891              		.file 13 "Middlewares/Third_Party/LwIP/src/include/lwip/err.h"
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s 			page 27
+
+
+ 892              		.file 14 "Middlewares/Third_Party/FreeRTOS/Source/include/queue.h"
+ 893              		.file 15 "Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h"
+ 894              		.file 16 "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h"
+ 895              		.file 17 "Middlewares/Third_Party/LwIP/system/arch/sys_arch.h"
+ 896              		.file 18 "Middlewares/Third_Party/LwIP/src/include/lwip/timeouts.h"
+ 897              		.file 19 "Middlewares/Third_Party/LwIP/src/include/lwip/ip4_addr.h"
+ 898              		.file 20 "Middlewares/Third_Party/LwIP/src/include/lwip/ip_addr.h"
+ 899              		.file 21 "Middlewares/Third_Party/LwIP/src/include/lwip/pbuf.h"
+ 900              		.file 22 "Middlewares/Third_Party/LwIP/src/include/lwip/memp.h"
+ 901              		.file 23 "Middlewares/Third_Party/LwIP/src/include/lwip/priv/memp_priv.h"
+ 902              		.file 24 "Middlewares/Third_Party/LwIP/src/include/lwip/netif.h"
+ 903              		.file 25 "Middlewares/Third_Party/LwIP/src/include/lwip/tcpip.h"
+ 904              		.file 26 "Middlewares/Third_Party/LwIP/src/include/lwip/priv/tcpip_priv.h"
+ 905              		.file 27 "Middlewares/Third_Party/LwIP/src/include/lwip/prot/ip4.h"
+ 906              		.file 28 "Middlewares/Third_Party/LwIP/src/include/lwip/ip.h"
+ 907              		.file 29 "Middlewares/Third_Party/LwIP/src/include/lwip/prot/ethernet.h"
+ 908              		.file 30 "Middlewares/Third_Party/LwIP/src/include/netif/ethernet.h"
+ 909              		.file 31 "Middlewares/Third_Party/LwIP/src/include/lwip/init.h"
+ 910              		.file 32 "Middlewares/Third_Party/LwIP/src/include/lwip/sys.h"
+ 911              		.file 33 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\stdio.h"
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s 			page 28
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 tcpip.c
+C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s:18     .text.tcpip_thread:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s:24     .text.tcpip_thread:00000000 tcpip_thread
+C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s:138    .text.tcpip_thread:00000088 $d
+                            *COM*:00000004 lock_tcpip_core
+C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s:149    .text.pbuf_free_int:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s:155    .text.pbuf_free_int:00000000 pbuf_free_int
+C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s:176    .text.tcpip_inpkt:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s:183    .text.tcpip_inpkt:00000000 tcpip_inpkt
+C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s:265    .text.tcpip_inpkt:00000058 $d
+C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s:273    .text.tcpip_input:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s:280    .text.tcpip_input:00000000 tcpip_input
+C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s:312    .text.tcpip_input:0000001c $d
+C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s:318    .text.tcpip_callback_with_block:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s:325    .text.tcpip_callback_with_block:00000000 tcpip_callback_with_block
+C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s:417    .text.tcpip_callback_with_block:00000064 $d
+C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s:425    .text.tcpip_send_msg_wait_sem:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s:432    .text.tcpip_send_msg_wait_sem:00000000 tcpip_send_msg_wait_sem
+C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s:469    .text.tcpip_send_msg_wait_sem:0000001c $d
+C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s:474    .text.tcpip_api_call:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s:481    .text.tcpip_api_call:00000000 tcpip_api_call
+C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s:520    .text.tcpip_api_call:00000020 $d
+C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s:525    .text.tcpip_callbackmsg_new:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s:532    .text.tcpip_callbackmsg_new:00000000 tcpip_callbackmsg_new
+C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s:575    .text.tcpip_callbackmsg_delete:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s:582    .text.tcpip_callbackmsg_delete:00000000 tcpip_callbackmsg_delete
+C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s:605    .text.tcpip_trycallback:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s:612    .text.tcpip_trycallback:00000000 tcpip_trycallback
+C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s:652    .text.tcpip_trycallback:00000028 $d
+C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s:660    .text.tcpip_init:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s:667    .text.tcpip_init:00000000 tcpip_init
+C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s:747    .text.tcpip_init:0000005c $d
+C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s:761    .text.pbuf_free_callback:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s:768    .text.pbuf_free_callback:00000000 pbuf_free_callback
+C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s:792    .text.pbuf_free_callback:00000010 $d
+C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s:797    .text.mem_free_callback:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s:804    .text.mem_free_callback:00000000 mem_free_callback
+C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s:828    .text.mem_free_callback:00000010 $d
+C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s:834    .bss.mbox:00000000 $d
+C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s:838    .bss.mbox:00000000 mbox
+C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s:841    .bss.tcpip_init_done:00000000 $d
+C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s:845    .bss.tcpip_init_done:00000000 tcpip_init_done
+C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s:848    .bss.tcpip_init_done_arg:00000000 $d
+C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s:852    .bss.tcpip_init_done_arg:00000000 tcpip_init_done_arg
+C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s:855    .rodata.tcpip_init.str1.4:00000000 $d
+C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s:865    .rodata.tcpip_inpkt.str1.4:00000000 $d
+C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s:869    .rodata.tcpip_thread.str1.4:00000000 $d
+                     .debug_frame:00000010 $d
+
+UNDEFINED SYMBOLS
+sys_mutex_lock
+printf
+memp_free
+sys_mutex_unlock
+sys_timeouts_mbox_fetch
+pbuf_free
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc7sbfNq.s 			page 29
+
+
+sys_mbox_valid
+memp_malloc
+sys_mbox_trypost
+ip4_input
+ethernet_input
+sys_mbox_post
+lwip_init
+sys_mbox_new
+sys_mutex_new
+sys_thread_new
+mem_free

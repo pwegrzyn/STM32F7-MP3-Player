@@ -1,0 +1,1840 @@
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"ft5336.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.ft5336_Reset,"ax",%progbits
+  18              		.align	1
+  19              		.global	ft5336_Reset
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  23              		.fpu fpv5-sp-d16
+  25              	ft5336_Reset:
+  26              	.LFB1:
+  27              		.file 1 "Drivers/BSP/Components/ft5336/ft5336.c"
+   1:Drivers/BSP/Components/ft5336/ft5336.c **** /**
+   2:Drivers/BSP/Components/ft5336/ft5336.c ****   ******************************************************************************
+   3:Drivers/BSP/Components/ft5336/ft5336.c ****   * @file    ft5336.c
+   4:Drivers/BSP/Components/ft5336/ft5336.c ****   * @author  MCD Application Team
+   5:Drivers/BSP/Components/ft5336/ft5336.c ****   * @brief   This file provides a set of functions needed to manage the FT5336
+   6:Drivers/BSP/Components/ft5336/ft5336.c ****   *          touch screen devices.
+   7:Drivers/BSP/Components/ft5336/ft5336.c ****   ******************************************************************************
+   8:Drivers/BSP/Components/ft5336/ft5336.c ****   * @attention
+   9:Drivers/BSP/Components/ft5336/ft5336.c ****   *
+  10:Drivers/BSP/Components/ft5336/ft5336.c ****   * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
+  11:Drivers/BSP/Components/ft5336/ft5336.c ****   *
+  12:Drivers/BSP/Components/ft5336/ft5336.c ****   * Redistribution and use in source and binary forms, with or without modification,
+  13:Drivers/BSP/Components/ft5336/ft5336.c ****   * are permitted provided that the following conditions are met:
+  14:Drivers/BSP/Components/ft5336/ft5336.c ****   *   1. Redistributions of source code must retain the above copyright notice,
+  15:Drivers/BSP/Components/ft5336/ft5336.c ****   *      this list of conditions and the following disclaimer.
+  16:Drivers/BSP/Components/ft5336/ft5336.c ****   *   2. Redistributions in binary form must reproduce the above copyright notice,
+  17:Drivers/BSP/Components/ft5336/ft5336.c ****   *      this list of conditions and the following disclaimer in the documentation
+  18:Drivers/BSP/Components/ft5336/ft5336.c ****   *      and/or other materials provided with the distribution.
+  19:Drivers/BSP/Components/ft5336/ft5336.c ****   *   3. Neither the name of STMicroelectronics nor the names of its contributors
+  20:Drivers/BSP/Components/ft5336/ft5336.c ****   *      may be used to endorse or promote products derived from this software
+  21:Drivers/BSP/Components/ft5336/ft5336.c ****   *      without specific prior written permission.
+  22:Drivers/BSP/Components/ft5336/ft5336.c ****   *
+  23:Drivers/BSP/Components/ft5336/ft5336.c ****   * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  24:Drivers/BSP/Components/ft5336/ft5336.c ****   * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  25:Drivers/BSP/Components/ft5336/ft5336.c ****   * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+  26:Drivers/BSP/Components/ft5336/ft5336.c ****   * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+  27:Drivers/BSP/Components/ft5336/ft5336.c ****   * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+  28:Drivers/BSP/Components/ft5336/ft5336.c ****   * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+  29:Drivers/BSP/Components/ft5336/ft5336.c ****   * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+  30:Drivers/BSP/Components/ft5336/ft5336.c ****   * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+  31:Drivers/BSP/Components/ft5336/ft5336.c ****   * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s 			page 2
+
+
+  32:Drivers/BSP/Components/ft5336/ft5336.c ****   * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  33:Drivers/BSP/Components/ft5336/ft5336.c ****   *
+  34:Drivers/BSP/Components/ft5336/ft5336.c ****   ******************************************************************************
+  35:Drivers/BSP/Components/ft5336/ft5336.c ****   */
+  36:Drivers/BSP/Components/ft5336/ft5336.c **** 
+  37:Drivers/BSP/Components/ft5336/ft5336.c **** /* Includes ------------------------------------------------------------------*/
+  38:Drivers/BSP/Components/ft5336/ft5336.c **** #include "ft5336.h"
+  39:Drivers/BSP/Components/ft5336/ft5336.c **** 
+  40:Drivers/BSP/Components/ft5336/ft5336.c **** /** @addtogroup BSP
+  41:Drivers/BSP/Components/ft5336/ft5336.c ****   * @{
+  42:Drivers/BSP/Components/ft5336/ft5336.c ****   */
+  43:Drivers/BSP/Components/ft5336/ft5336.c **** 
+  44:Drivers/BSP/Components/ft5336/ft5336.c **** /** @addtogroup Component
+  45:Drivers/BSP/Components/ft5336/ft5336.c ****   * @{
+  46:Drivers/BSP/Components/ft5336/ft5336.c ****   */
+  47:Drivers/BSP/Components/ft5336/ft5336.c **** 
+  48:Drivers/BSP/Components/ft5336/ft5336.c **** /** @defgroup FT5336
+  49:Drivers/BSP/Components/ft5336/ft5336.c ****   * @{
+  50:Drivers/BSP/Components/ft5336/ft5336.c ****   */
+  51:Drivers/BSP/Components/ft5336/ft5336.c **** 
+  52:Drivers/BSP/Components/ft5336/ft5336.c **** /* Private typedef -----------------------------------------------------------*/
+  53:Drivers/BSP/Components/ft5336/ft5336.c **** 
+  54:Drivers/BSP/Components/ft5336/ft5336.c **** /** @defgroup FT5336_Private_Types_Definitions
+  55:Drivers/BSP/Components/ft5336/ft5336.c ****   * @{
+  56:Drivers/BSP/Components/ft5336/ft5336.c ****   */
+  57:Drivers/BSP/Components/ft5336/ft5336.c **** 
+  58:Drivers/BSP/Components/ft5336/ft5336.c **** /* Private define ------------------------------------------------------------*/
+  59:Drivers/BSP/Components/ft5336/ft5336.c **** 
+  60:Drivers/BSP/Components/ft5336/ft5336.c **** /** @defgroup FT5336_Private_Defines
+  61:Drivers/BSP/Components/ft5336/ft5336.c ****   * @{
+  62:Drivers/BSP/Components/ft5336/ft5336.c ****   */
+  63:Drivers/BSP/Components/ft5336/ft5336.c **** 
+  64:Drivers/BSP/Components/ft5336/ft5336.c **** /* Private macro -------------------------------------------------------------*/
+  65:Drivers/BSP/Components/ft5336/ft5336.c **** 
+  66:Drivers/BSP/Components/ft5336/ft5336.c **** /** @defgroup FT5336_Private_Macros
+  67:Drivers/BSP/Components/ft5336/ft5336.c ****   * @{
+  68:Drivers/BSP/Components/ft5336/ft5336.c ****   */
+  69:Drivers/BSP/Components/ft5336/ft5336.c **** 
+  70:Drivers/BSP/Components/ft5336/ft5336.c **** /* Private variables ---------------------------------------------------------*/
+  71:Drivers/BSP/Components/ft5336/ft5336.c **** 
+  72:Drivers/BSP/Components/ft5336/ft5336.c **** /** @defgroup FT5336_Private_Variables
+  73:Drivers/BSP/Components/ft5336/ft5336.c ****   * @{
+  74:Drivers/BSP/Components/ft5336/ft5336.c ****   */
+  75:Drivers/BSP/Components/ft5336/ft5336.c **** 
+  76:Drivers/BSP/Components/ft5336/ft5336.c **** /* Touch screen driver structure initialization */
+  77:Drivers/BSP/Components/ft5336/ft5336.c **** TS_DrvTypeDef ft5336_ts_drv =
+  78:Drivers/BSP/Components/ft5336/ft5336.c **** {
+  79:Drivers/BSP/Components/ft5336/ft5336.c ****   ft5336_Init,
+  80:Drivers/BSP/Components/ft5336/ft5336.c ****   ft5336_ReadID,
+  81:Drivers/BSP/Components/ft5336/ft5336.c ****   ft5336_Reset,
+  82:Drivers/BSP/Components/ft5336/ft5336.c **** 
+  83:Drivers/BSP/Components/ft5336/ft5336.c ****   ft5336_TS_Start,
+  84:Drivers/BSP/Components/ft5336/ft5336.c ****   ft5336_TS_DetectTouch,
+  85:Drivers/BSP/Components/ft5336/ft5336.c ****   ft5336_TS_GetXY,
+  86:Drivers/BSP/Components/ft5336/ft5336.c **** 
+  87:Drivers/BSP/Components/ft5336/ft5336.c ****   ft5336_TS_EnableIT,
+  88:Drivers/BSP/Components/ft5336/ft5336.c ****   ft5336_TS_ClearIT,
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s 			page 3
+
+
+  89:Drivers/BSP/Components/ft5336/ft5336.c ****   ft5336_TS_ITStatus,
+  90:Drivers/BSP/Components/ft5336/ft5336.c ****   ft5336_TS_DisableIT
+  91:Drivers/BSP/Components/ft5336/ft5336.c **** 
+  92:Drivers/BSP/Components/ft5336/ft5336.c **** };
+  93:Drivers/BSP/Components/ft5336/ft5336.c **** 
+  94:Drivers/BSP/Components/ft5336/ft5336.c **** /* Global ft5336 handle */
+  95:Drivers/BSP/Components/ft5336/ft5336.c **** static ft5336_handle_TypeDef ft5336_handle = { FT5336_I2C_NOT_INITIALIZED, 0, 0};
+  96:Drivers/BSP/Components/ft5336/ft5336.c **** 
+  97:Drivers/BSP/Components/ft5336/ft5336.c **** /**
+  98:Drivers/BSP/Components/ft5336/ft5336.c ****   * @}
+  99:Drivers/BSP/Components/ft5336/ft5336.c ****   */
+ 100:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 101:Drivers/BSP/Components/ft5336/ft5336.c **** /** @defgroup ft5336_Private_Function_Prototypes
+ 102:Drivers/BSP/Components/ft5336/ft5336.c ****   * @{
+ 103:Drivers/BSP/Components/ft5336/ft5336.c ****   */
+ 104:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 105:Drivers/BSP/Components/ft5336/ft5336.c **** /* Private functions prototypes-----------------------------------------------*/
+ 106:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 107:Drivers/BSP/Components/ft5336/ft5336.c **** /**
+ 108:Drivers/BSP/Components/ft5336/ft5336.c ****   * @brief  Return the status of I2C was initialized or not.
+ 109:Drivers/BSP/Components/ft5336/ft5336.c ****   * @param  None.
+ 110:Drivers/BSP/Components/ft5336/ft5336.c ****   * @retval : I2C initialization status.
+ 111:Drivers/BSP/Components/ft5336/ft5336.c ****   */
+ 112:Drivers/BSP/Components/ft5336/ft5336.c **** static uint8_t ft5336_Get_I2C_InitializedStatus(void);
+ 113:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 114:Drivers/BSP/Components/ft5336/ft5336.c **** /**
+ 115:Drivers/BSP/Components/ft5336/ft5336.c ****   * @brief  I2C initialize if needed.
+ 116:Drivers/BSP/Components/ft5336/ft5336.c ****   * @param  None.
+ 117:Drivers/BSP/Components/ft5336/ft5336.c ****   * @retval : None.
+ 118:Drivers/BSP/Components/ft5336/ft5336.c ****   */
+ 119:Drivers/BSP/Components/ft5336/ft5336.c **** static void ft5336_I2C_InitializeIfRequired(void);
+ 120:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 121:Drivers/BSP/Components/ft5336/ft5336.c **** /**
+ 122:Drivers/BSP/Components/ft5336/ft5336.c ****   * @brief  Basic static configuration of TouchScreen
+ 123:Drivers/BSP/Components/ft5336/ft5336.c ****   * @param  DeviceAddr: FT5336 Device address for communication on I2C Bus.
+ 124:Drivers/BSP/Components/ft5336/ft5336.c ****   * @retval Status FT5336_STATUS_OK or FT5336_STATUS_NOT_OK.
+ 125:Drivers/BSP/Components/ft5336/ft5336.c ****   */
+ 126:Drivers/BSP/Components/ft5336/ft5336.c **** static uint32_t ft5336_TS_Configure(uint16_t DeviceAddr);
+ 127:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 128:Drivers/BSP/Components/ft5336/ft5336.c **** /** @defgroup ft5336_Private_Functions
+ 129:Drivers/BSP/Components/ft5336/ft5336.c ****   * @{
+ 130:Drivers/BSP/Components/ft5336/ft5336.c ****   */
+ 131:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 132:Drivers/BSP/Components/ft5336/ft5336.c **** /** @defgroup ft5336_Public_Function_Body
+ 133:Drivers/BSP/Components/ft5336/ft5336.c ****   * @{
+ 134:Drivers/BSP/Components/ft5336/ft5336.c ****   */
+ 135:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 136:Drivers/BSP/Components/ft5336/ft5336.c **** /* Public functions bodies-----------------------------------------------*/
+ 137:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 138:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 139:Drivers/BSP/Components/ft5336/ft5336.c **** /**
+ 140:Drivers/BSP/Components/ft5336/ft5336.c ****   * @brief  Initialize the ft5336 communication bus
+ 141:Drivers/BSP/Components/ft5336/ft5336.c ****   *         from MCU to FT5336 : ie I2C channel initialization (if required).
+ 142:Drivers/BSP/Components/ft5336/ft5336.c ****   * @param  DeviceAddr: Device address on communication Bus (I2C slave address of FT5336).
+ 143:Drivers/BSP/Components/ft5336/ft5336.c ****   * @retval None
+ 144:Drivers/BSP/Components/ft5336/ft5336.c ****   */
+ 145:Drivers/BSP/Components/ft5336/ft5336.c **** void ft5336_Init(uint16_t DeviceAddr)
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s 			page 4
+
+
+ 146:Drivers/BSP/Components/ft5336/ft5336.c **** {
+ 147:Drivers/BSP/Components/ft5336/ft5336.c ****   /* Wait at least 200ms after power up before accessing registers
+ 148:Drivers/BSP/Components/ft5336/ft5336.c ****    * Trsi timing (Time of starting to report point after resetting) from FT5336GQQ datasheet */
+ 149:Drivers/BSP/Components/ft5336/ft5336.c ****   TS_IO_Delay(200);
+ 150:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 151:Drivers/BSP/Components/ft5336/ft5336.c ****   /* Initialize I2C link if needed */
+ 152:Drivers/BSP/Components/ft5336/ft5336.c ****   ft5336_I2C_InitializeIfRequired();
+ 153:Drivers/BSP/Components/ft5336/ft5336.c **** }
+ 154:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 155:Drivers/BSP/Components/ft5336/ft5336.c **** /**
+ 156:Drivers/BSP/Components/ft5336/ft5336.c ****   * @brief  Software Reset the ft5336.
+ 157:Drivers/BSP/Components/ft5336/ft5336.c ****   *         @note : Not applicable to FT5336.
+ 158:Drivers/BSP/Components/ft5336/ft5336.c ****   * @param  DeviceAddr: Device address on communication Bus (I2C slave address of FT5336).
+ 159:Drivers/BSP/Components/ft5336/ft5336.c ****   * @retval None
+ 160:Drivers/BSP/Components/ft5336/ft5336.c ****   */
+ 161:Drivers/BSP/Components/ft5336/ft5336.c **** void ft5336_Reset(uint16_t DeviceAddr)
+ 162:Drivers/BSP/Components/ft5336/ft5336.c **** {
+  28              		.loc 1 162 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+  33              	.LVL0:
+  34 0000 7047     		bx	lr
+  35              		.cfi_endproc
+  36              	.LFE1:
+  38              		.section	.text.ft5336_TS_ITStatus,"ax",%progbits
+  39              		.align	1
+  40              		.global	ft5336_TS_ITStatus
+  41              		.syntax unified
+  42              		.thumb
+  43              		.thumb_func
+  44              		.fpu fpv5-sp-d16
+  46              	ft5336_TS_ITStatus:
+  47              	.LFB8:
+ 163:Drivers/BSP/Components/ft5336/ft5336.c ****   /* Do nothing */
+ 164:Drivers/BSP/Components/ft5336/ft5336.c ****   /* No software reset sequence available in FT5336 IC */
+ 165:Drivers/BSP/Components/ft5336/ft5336.c **** }
+ 166:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 167:Drivers/BSP/Components/ft5336/ft5336.c **** /**
+ 168:Drivers/BSP/Components/ft5336/ft5336.c ****   * @brief  Read the ft5336 device ID, pre initialize I2C in case of need to be
+ 169:Drivers/BSP/Components/ft5336/ft5336.c ****   *         able to read the FT5336 device ID, and verify this is a FT5336.
+ 170:Drivers/BSP/Components/ft5336/ft5336.c ****   * @param  DeviceAddr: I2C FT5336 Slave address.
+ 171:Drivers/BSP/Components/ft5336/ft5336.c ****   * @retval The Device ID (two bytes).
+ 172:Drivers/BSP/Components/ft5336/ft5336.c ****   */
+ 173:Drivers/BSP/Components/ft5336/ft5336.c **** uint16_t ft5336_ReadID(uint16_t DeviceAddr)
+ 174:Drivers/BSP/Components/ft5336/ft5336.c **** {
+ 175:Drivers/BSP/Components/ft5336/ft5336.c ****   volatile uint8_t ucReadId = 0;
+ 176:Drivers/BSP/Components/ft5336/ft5336.c ****   uint8_t nbReadAttempts = 0;
+ 177:Drivers/BSP/Components/ft5336/ft5336.c ****   uint8_t bFoundDevice = 0; /* Device not found by default */
+ 178:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 179:Drivers/BSP/Components/ft5336/ft5336.c ****   /* Initialize I2C link if needed */
+ 180:Drivers/BSP/Components/ft5336/ft5336.c ****   ft5336_I2C_InitializeIfRequired();
+ 181:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 182:Drivers/BSP/Components/ft5336/ft5336.c ****   /* At maximum 4 attempts to read ID : exit at first finding of the searched device ID */
+ 183:Drivers/BSP/Components/ft5336/ft5336.c ****   for(nbReadAttempts = 0; ((nbReadAttempts < 3) && !(bFoundDevice)); nbReadAttempts++)
+ 184:Drivers/BSP/Components/ft5336/ft5336.c ****   {
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s 			page 5
+
+
+ 185:Drivers/BSP/Components/ft5336/ft5336.c ****     /* Read register FT5336_CHIP_ID_REG as DeviceID detection */
+ 186:Drivers/BSP/Components/ft5336/ft5336.c ****     ucReadId = TS_IO_Read(DeviceAddr, FT5336_CHIP_ID_REG);
+ 187:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 188:Drivers/BSP/Components/ft5336/ft5336.c ****     /* Found the searched device ID ? */
+ 189:Drivers/BSP/Components/ft5336/ft5336.c ****     if(ucReadId == FT5336_ID_VALUE)
+ 190:Drivers/BSP/Components/ft5336/ft5336.c ****     {
+ 191:Drivers/BSP/Components/ft5336/ft5336.c ****       /* Set device as found */
+ 192:Drivers/BSP/Components/ft5336/ft5336.c ****       bFoundDevice = 1;
+ 193:Drivers/BSP/Components/ft5336/ft5336.c ****     }
+ 194:Drivers/BSP/Components/ft5336/ft5336.c ****   }
+ 195:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 196:Drivers/BSP/Components/ft5336/ft5336.c ****   /* Return the device ID value */
+ 197:Drivers/BSP/Components/ft5336/ft5336.c ****   return (ucReadId);
+ 198:Drivers/BSP/Components/ft5336/ft5336.c **** }
+ 199:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 200:Drivers/BSP/Components/ft5336/ft5336.c **** /**
+ 201:Drivers/BSP/Components/ft5336/ft5336.c ****   * @brief  Configures the touch Screen IC device to start detecting touches
+ 202:Drivers/BSP/Components/ft5336/ft5336.c ****   * @param  DeviceAddr: Device address on communication Bus (I2C slave address).
+ 203:Drivers/BSP/Components/ft5336/ft5336.c ****   * @retval None.
+ 204:Drivers/BSP/Components/ft5336/ft5336.c ****   */
+ 205:Drivers/BSP/Components/ft5336/ft5336.c **** void ft5336_TS_Start(uint16_t DeviceAddr)
+ 206:Drivers/BSP/Components/ft5336/ft5336.c **** {
+ 207:Drivers/BSP/Components/ft5336/ft5336.c ****   /* Minimum static configuration of FT5336 */
+ 208:Drivers/BSP/Components/ft5336/ft5336.c ****   FT5336_ASSERT(ft5336_TS_Configure(DeviceAddr));
+ 209:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 210:Drivers/BSP/Components/ft5336/ft5336.c ****   /* By default set FT5336 IC in Polling mode : no INT generation on FT5336 for new touch available
+ 211:Drivers/BSP/Components/ft5336/ft5336.c ****   /* Note TS_INT is active low                                                                     
+ 212:Drivers/BSP/Components/ft5336/ft5336.c ****   ft5336_TS_DisableIT(DeviceAddr);
+ 213:Drivers/BSP/Components/ft5336/ft5336.c **** }
+ 214:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 215:Drivers/BSP/Components/ft5336/ft5336.c **** /**
+ 216:Drivers/BSP/Components/ft5336/ft5336.c ****   * @brief  Return if there is touches detected or not.
+ 217:Drivers/BSP/Components/ft5336/ft5336.c ****   *         Try to detect new touches and forget the old ones (reset internal global
+ 218:Drivers/BSP/Components/ft5336/ft5336.c ****   *         variables).
+ 219:Drivers/BSP/Components/ft5336/ft5336.c ****   * @param  DeviceAddr: Device address on communication Bus.
+ 220:Drivers/BSP/Components/ft5336/ft5336.c ****   * @retval : Number of active touches detected (can be 0, 1 or 2).
+ 221:Drivers/BSP/Components/ft5336/ft5336.c ****   */
+ 222:Drivers/BSP/Components/ft5336/ft5336.c **** uint8_t ft5336_TS_DetectTouch(uint16_t DeviceAddr)
+ 223:Drivers/BSP/Components/ft5336/ft5336.c **** {
+ 224:Drivers/BSP/Components/ft5336/ft5336.c ****   volatile uint8_t nbTouch = 0;
+ 225:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 226:Drivers/BSP/Components/ft5336/ft5336.c ****   /* Read register FT5336_TD_STAT_REG to check number of touches detection */
+ 227:Drivers/BSP/Components/ft5336/ft5336.c ****   nbTouch = TS_IO_Read(DeviceAddr, FT5336_TD_STAT_REG);
+ 228:Drivers/BSP/Components/ft5336/ft5336.c ****   nbTouch &= FT5336_TD_STAT_MASK;
+ 229:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 230:Drivers/BSP/Components/ft5336/ft5336.c ****   if(nbTouch > FT5336_MAX_DETECTABLE_TOUCH)
+ 231:Drivers/BSP/Components/ft5336/ft5336.c ****   {
+ 232:Drivers/BSP/Components/ft5336/ft5336.c ****     /* If invalid number of touch detected, set it to zero */
+ 233:Drivers/BSP/Components/ft5336/ft5336.c ****     nbTouch = 0;
+ 234:Drivers/BSP/Components/ft5336/ft5336.c ****   }
+ 235:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 236:Drivers/BSP/Components/ft5336/ft5336.c ****   /* Update ft5336 driver internal global : current number of active touches */
+ 237:Drivers/BSP/Components/ft5336/ft5336.c ****   ft5336_handle.currActiveTouchNb = nbTouch;
+ 238:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 239:Drivers/BSP/Components/ft5336/ft5336.c ****   /* Reset current active touch index on which to work on */
+ 240:Drivers/BSP/Components/ft5336/ft5336.c ****   ft5336_handle.currActiveTouchIdx = 0;
+ 241:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s 			page 6
+
+
+ 242:Drivers/BSP/Components/ft5336/ft5336.c ****   return(nbTouch);
+ 243:Drivers/BSP/Components/ft5336/ft5336.c **** }
+ 244:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 245:Drivers/BSP/Components/ft5336/ft5336.c **** /**
+ 246:Drivers/BSP/Components/ft5336/ft5336.c ****   * @brief  Get the touch screen X and Y positions values
+ 247:Drivers/BSP/Components/ft5336/ft5336.c ****   *         Manage multi touch thanks to touch Index global
+ 248:Drivers/BSP/Components/ft5336/ft5336.c ****   *         variable 'ft5336_handle.currActiveTouchIdx'.
+ 249:Drivers/BSP/Components/ft5336/ft5336.c ****   * @param  DeviceAddr: Device address on communication Bus.
+ 250:Drivers/BSP/Components/ft5336/ft5336.c ****   * @param  X: Pointer to X position value
+ 251:Drivers/BSP/Components/ft5336/ft5336.c ****   * @param  Y: Pointer to Y position value
+ 252:Drivers/BSP/Components/ft5336/ft5336.c ****   * @retval None.
+ 253:Drivers/BSP/Components/ft5336/ft5336.c ****   */
+ 254:Drivers/BSP/Components/ft5336/ft5336.c **** void ft5336_TS_GetXY(uint16_t DeviceAddr, uint16_t *X, uint16_t *Y)
+ 255:Drivers/BSP/Components/ft5336/ft5336.c **** {
+ 256:Drivers/BSP/Components/ft5336/ft5336.c ****   volatile uint8_t ucReadData = 0;
+ 257:Drivers/BSP/Components/ft5336/ft5336.c ****   static uint16_t coord;
+ 258:Drivers/BSP/Components/ft5336/ft5336.c ****   uint8_t regAddressXLow = 0;
+ 259:Drivers/BSP/Components/ft5336/ft5336.c ****   uint8_t regAddressXHigh = 0;
+ 260:Drivers/BSP/Components/ft5336/ft5336.c ****   uint8_t regAddressYLow = 0;
+ 261:Drivers/BSP/Components/ft5336/ft5336.c ****   uint8_t regAddressYHigh = 0;
+ 262:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 263:Drivers/BSP/Components/ft5336/ft5336.c ****   if(ft5336_handle.currActiveTouchIdx < ft5336_handle.currActiveTouchNb)
+ 264:Drivers/BSP/Components/ft5336/ft5336.c ****   {
+ 265:Drivers/BSP/Components/ft5336/ft5336.c ****     switch(ft5336_handle.currActiveTouchIdx)
+ 266:Drivers/BSP/Components/ft5336/ft5336.c ****     {
+ 267:Drivers/BSP/Components/ft5336/ft5336.c ****     case 0 :
+ 268:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressXLow  = FT5336_P1_XL_REG;
+ 269:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressXHigh = FT5336_P1_XH_REG;
+ 270:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressYLow  = FT5336_P1_YL_REG;
+ 271:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressYHigh = FT5336_P1_YH_REG;
+ 272:Drivers/BSP/Components/ft5336/ft5336.c ****       break;
+ 273:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 274:Drivers/BSP/Components/ft5336/ft5336.c ****     case 1 :
+ 275:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressXLow  = FT5336_P2_XL_REG;
+ 276:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressXHigh = FT5336_P2_XH_REG;
+ 277:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressYLow  = FT5336_P2_YL_REG;
+ 278:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressYHigh = FT5336_P2_YH_REG;
+ 279:Drivers/BSP/Components/ft5336/ft5336.c ****       break;
+ 280:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 281:Drivers/BSP/Components/ft5336/ft5336.c ****     case 2 :
+ 282:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressXLow  = FT5336_P3_XL_REG;
+ 283:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressXHigh = FT5336_P3_XH_REG;
+ 284:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressYLow  = FT5336_P3_YL_REG;
+ 285:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressYHigh = FT5336_P3_YH_REG;
+ 286:Drivers/BSP/Components/ft5336/ft5336.c ****       break;
+ 287:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 288:Drivers/BSP/Components/ft5336/ft5336.c ****     case 3 :
+ 289:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressXLow  = FT5336_P4_XL_REG;
+ 290:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressXHigh = FT5336_P4_XH_REG;
+ 291:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressYLow  = FT5336_P4_YL_REG;
+ 292:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressYHigh = FT5336_P4_YH_REG;
+ 293:Drivers/BSP/Components/ft5336/ft5336.c ****       break;
+ 294:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 295:Drivers/BSP/Components/ft5336/ft5336.c ****     case 4 :
+ 296:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressXLow  = FT5336_P5_XL_REG;
+ 297:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressXHigh = FT5336_P5_XH_REG;
+ 298:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressYLow  = FT5336_P5_YL_REG;
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s 			page 7
+
+
+ 299:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressYHigh = FT5336_P5_YH_REG;
+ 300:Drivers/BSP/Components/ft5336/ft5336.c ****       break;
+ 301:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 302:Drivers/BSP/Components/ft5336/ft5336.c ****     case 5 :
+ 303:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressXLow  = FT5336_P6_XL_REG;
+ 304:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressXHigh = FT5336_P6_XH_REG;
+ 305:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressYLow  = FT5336_P6_YL_REG;
+ 306:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressYHigh = FT5336_P6_YH_REG;
+ 307:Drivers/BSP/Components/ft5336/ft5336.c ****       break;
+ 308:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 309:Drivers/BSP/Components/ft5336/ft5336.c ****     case 6 :
+ 310:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressXLow  = FT5336_P7_XL_REG;
+ 311:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressXHigh = FT5336_P7_XH_REG;
+ 312:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressYLow  = FT5336_P7_YL_REG;
+ 313:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressYHigh = FT5336_P7_YH_REG;
+ 314:Drivers/BSP/Components/ft5336/ft5336.c ****       break;
+ 315:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 316:Drivers/BSP/Components/ft5336/ft5336.c ****     case 7 :
+ 317:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressXLow  = FT5336_P8_XL_REG;
+ 318:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressXHigh = FT5336_P8_XH_REG;
+ 319:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressYLow  = FT5336_P8_YL_REG;
+ 320:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressYHigh = FT5336_P8_YH_REG;
+ 321:Drivers/BSP/Components/ft5336/ft5336.c ****       break;
+ 322:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 323:Drivers/BSP/Components/ft5336/ft5336.c ****     case 8 :
+ 324:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressXLow  = FT5336_P9_XL_REG;
+ 325:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressXHigh = FT5336_P9_XH_REG;
+ 326:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressYLow  = FT5336_P9_YL_REG;
+ 327:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressYHigh = FT5336_P9_YH_REG;
+ 328:Drivers/BSP/Components/ft5336/ft5336.c ****       break;
+ 329:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 330:Drivers/BSP/Components/ft5336/ft5336.c ****     case 9 :
+ 331:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressXLow  = FT5336_P10_XL_REG;
+ 332:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressXHigh = FT5336_P10_XH_REG;
+ 333:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressYLow  = FT5336_P10_YL_REG;
+ 334:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressYHigh = FT5336_P10_YH_REG;
+ 335:Drivers/BSP/Components/ft5336/ft5336.c ****       break;
+ 336:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 337:Drivers/BSP/Components/ft5336/ft5336.c ****     default :
+ 338:Drivers/BSP/Components/ft5336/ft5336.c ****       break;
+ 339:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 340:Drivers/BSP/Components/ft5336/ft5336.c ****     } /* end switch(ft5336_handle.currActiveTouchIdx) */
+ 341:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 342:Drivers/BSP/Components/ft5336/ft5336.c ****     /* Read low part of X position */
+ 343:Drivers/BSP/Components/ft5336/ft5336.c ****     ucReadData = TS_IO_Read(DeviceAddr, regAddressXLow);
+ 344:Drivers/BSP/Components/ft5336/ft5336.c ****     coord = (ucReadData & FT5336_TOUCH_POS_LSB_MASK) >> FT5336_TOUCH_POS_LSB_SHIFT;
+ 345:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 346:Drivers/BSP/Components/ft5336/ft5336.c ****     /* Read high part of X position */
+ 347:Drivers/BSP/Components/ft5336/ft5336.c ****     ucReadData = TS_IO_Read(DeviceAddr, regAddressXHigh);
+ 348:Drivers/BSP/Components/ft5336/ft5336.c ****     coord |= ((ucReadData & FT5336_TOUCH_POS_MSB_MASK) >> FT5336_TOUCH_POS_MSB_SHIFT) << 8;
+ 349:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 350:Drivers/BSP/Components/ft5336/ft5336.c ****     /* Send back ready X position to caller */
+ 351:Drivers/BSP/Components/ft5336/ft5336.c ****     *X = coord;
+ 352:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 353:Drivers/BSP/Components/ft5336/ft5336.c ****     /* Read low part of Y position */
+ 354:Drivers/BSP/Components/ft5336/ft5336.c ****     ucReadData = TS_IO_Read(DeviceAddr, regAddressYLow);
+ 355:Drivers/BSP/Components/ft5336/ft5336.c ****     coord = (ucReadData & FT5336_TOUCH_POS_LSB_MASK) >> FT5336_TOUCH_POS_LSB_SHIFT;
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s 			page 8
+
+
+ 356:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 357:Drivers/BSP/Components/ft5336/ft5336.c ****     /* Read high part of Y position */
+ 358:Drivers/BSP/Components/ft5336/ft5336.c ****     ucReadData = TS_IO_Read(DeviceAddr, regAddressYHigh);
+ 359:Drivers/BSP/Components/ft5336/ft5336.c ****     coord |= ((ucReadData & FT5336_TOUCH_POS_MSB_MASK) >> FT5336_TOUCH_POS_MSB_SHIFT) << 8;
+ 360:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 361:Drivers/BSP/Components/ft5336/ft5336.c ****     /* Send back ready Y position to caller */
+ 362:Drivers/BSP/Components/ft5336/ft5336.c ****     *Y = coord;
+ 363:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 364:Drivers/BSP/Components/ft5336/ft5336.c ****     ft5336_handle.currActiveTouchIdx++; /* next call will work on next touch */
+ 365:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 366:Drivers/BSP/Components/ft5336/ft5336.c ****   } /* of if(ft5336_handle.currActiveTouchIdx < ft5336_handle.currActiveTouchNb) */
+ 367:Drivers/BSP/Components/ft5336/ft5336.c **** }
+ 368:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 369:Drivers/BSP/Components/ft5336/ft5336.c **** /**
+ 370:Drivers/BSP/Components/ft5336/ft5336.c ****   * @brief  Configure the FT5336 device to generate IT on given INT pin
+ 371:Drivers/BSP/Components/ft5336/ft5336.c ****   *         connected to MCU as EXTI.
+ 372:Drivers/BSP/Components/ft5336/ft5336.c ****   * @param  DeviceAddr: Device address on communication Bus (Slave I2C address of FT5336).
+ 373:Drivers/BSP/Components/ft5336/ft5336.c ****   * @retval None
+ 374:Drivers/BSP/Components/ft5336/ft5336.c ****   */
+ 375:Drivers/BSP/Components/ft5336/ft5336.c **** void ft5336_TS_EnableIT(uint16_t DeviceAddr)
+ 376:Drivers/BSP/Components/ft5336/ft5336.c **** {
+ 377:Drivers/BSP/Components/ft5336/ft5336.c ****    uint8_t regValue = 0;
+ 378:Drivers/BSP/Components/ft5336/ft5336.c ****    regValue = (FT5336_G_MODE_INTERRUPT_TRIGGER & (FT5336_G_MODE_INTERRUPT_MASK >> FT5336_G_MODE_INT
+ 379:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 380:Drivers/BSP/Components/ft5336/ft5336.c ****    /* Set interrupt trigger mode in FT5336_GMODE_REG */
+ 381:Drivers/BSP/Components/ft5336/ft5336.c ****    TS_IO_Write(DeviceAddr, FT5336_GMODE_REG, regValue);
+ 382:Drivers/BSP/Components/ft5336/ft5336.c **** }
+ 383:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 384:Drivers/BSP/Components/ft5336/ft5336.c **** /**
+ 385:Drivers/BSP/Components/ft5336/ft5336.c ****   * @brief  Configure the FT5336 device to stop generating IT on the given INT pin
+ 386:Drivers/BSP/Components/ft5336/ft5336.c ****   *         connected to MCU as EXTI.
+ 387:Drivers/BSP/Components/ft5336/ft5336.c ****   * @param  DeviceAddr: Device address on communication Bus (Slave I2C address of FT5336).
+ 388:Drivers/BSP/Components/ft5336/ft5336.c ****   * @retval None
+ 389:Drivers/BSP/Components/ft5336/ft5336.c ****   */
+ 390:Drivers/BSP/Components/ft5336/ft5336.c **** void ft5336_TS_DisableIT(uint16_t DeviceAddr)
+ 391:Drivers/BSP/Components/ft5336/ft5336.c **** {
+ 392:Drivers/BSP/Components/ft5336/ft5336.c ****   uint8_t regValue = 0;
+ 393:Drivers/BSP/Components/ft5336/ft5336.c ****   regValue = (FT5336_G_MODE_INTERRUPT_POLLING & (FT5336_G_MODE_INTERRUPT_MASK >> FT5336_G_MODE_INTE
+ 394:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 395:Drivers/BSP/Components/ft5336/ft5336.c ****   /* Set interrupt polling mode in FT5336_GMODE_REG */
+ 396:Drivers/BSP/Components/ft5336/ft5336.c ****   TS_IO_Write(DeviceAddr, FT5336_GMODE_REG, regValue);
+ 397:Drivers/BSP/Components/ft5336/ft5336.c **** }
+ 398:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 399:Drivers/BSP/Components/ft5336/ft5336.c **** /**
+ 400:Drivers/BSP/Components/ft5336/ft5336.c ****   * @brief  Get IT status from FT5336 interrupt status registers
+ 401:Drivers/BSP/Components/ft5336/ft5336.c ****   *         Should be called Following an EXTI coming to the MCU to know the detailed
+ 402:Drivers/BSP/Components/ft5336/ft5336.c ****   *         reason of the interrupt.
+ 403:Drivers/BSP/Components/ft5336/ft5336.c ****   *         @note : This feature is not applicable to FT5336.
+ 404:Drivers/BSP/Components/ft5336/ft5336.c ****   * @param  DeviceAddr: Device address on communication Bus (I2C slave address of FT5336).
+ 405:Drivers/BSP/Components/ft5336/ft5336.c ****   * @retval TS interrupts status : always return 0 here
+ 406:Drivers/BSP/Components/ft5336/ft5336.c ****   */
+ 407:Drivers/BSP/Components/ft5336/ft5336.c **** uint8_t ft5336_TS_ITStatus(uint16_t DeviceAddr)
+ 408:Drivers/BSP/Components/ft5336/ft5336.c **** {
+  48              		.loc 1 408 0
+  49              		.cfi_startproc
+  50              		@ args = 0, pretend = 0, frame = 0
+  51              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s 			page 9
+
+
+  52              		@ link register save eliminated.
+  53              	.LVL1:
+ 409:Drivers/BSP/Components/ft5336/ft5336.c ****   /* Always return 0 as feature not applicable to FT5336 */
+ 410:Drivers/BSP/Components/ft5336/ft5336.c ****   return 0;
+ 411:Drivers/BSP/Components/ft5336/ft5336.c **** }
+  54              		.loc 1 411 0
+  55 0000 0020     		movs	r0, #0
+  56              	.LVL2:
+  57 0002 7047     		bx	lr
+  58              		.cfi_endproc
+  59              	.LFE8:
+  61              		.section	.text.ft5336_TS_ClearIT,"ax",%progbits
+  62              		.align	1
+  63              		.global	ft5336_TS_ClearIT
+  64              		.syntax unified
+  65              		.thumb
+  66              		.thumb_func
+  67              		.fpu fpv5-sp-d16
+  69              	ft5336_TS_ClearIT:
+  70              	.LFB9:
+ 412:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 413:Drivers/BSP/Components/ft5336/ft5336.c **** /**
+ 414:Drivers/BSP/Components/ft5336/ft5336.c ****   * @brief  Clear IT status in FT5336 interrupt status clear registers
+ 415:Drivers/BSP/Components/ft5336/ft5336.c ****   *         Should be called Following an EXTI coming to the MCU.
+ 416:Drivers/BSP/Components/ft5336/ft5336.c ****   *         @note : This feature is not applicable to FT5336.
+ 417:Drivers/BSP/Components/ft5336/ft5336.c ****   * @param  DeviceAddr: Device address on communication Bus (I2C slave address of FT5336).
+ 418:Drivers/BSP/Components/ft5336/ft5336.c ****   * @retval None
+ 419:Drivers/BSP/Components/ft5336/ft5336.c ****   */
+ 420:Drivers/BSP/Components/ft5336/ft5336.c **** void ft5336_TS_ClearIT(uint16_t DeviceAddr)
+ 421:Drivers/BSP/Components/ft5336/ft5336.c **** {
+  71              		.loc 1 421 0
+  72              		.cfi_startproc
+  73              		@ args = 0, pretend = 0, frame = 0
+  74              		@ frame_needed = 0, uses_anonymous_args = 0
+  75              		@ link register save eliminated.
+  76              	.LVL3:
+  77 0000 7047     		bx	lr
+  78              		.cfi_endproc
+  79              	.LFE9:
+  81              		.section	.text.ft5336_Get_I2C_InitializedStatus,"ax",%progbits
+  82              		.align	1
+  83              		.syntax unified
+  84              		.thumb
+  85              		.thumb_func
+  86              		.fpu fpv5-sp-d16
+  88              	ft5336_Get_I2C_InitializedStatus:
+  89              	.LFB12:
+ 422:Drivers/BSP/Components/ft5336/ft5336.c ****   /* Nothing to be done here for FT5336 */
+ 423:Drivers/BSP/Components/ft5336/ft5336.c **** }
+ 424:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 425:Drivers/BSP/Components/ft5336/ft5336.c **** /**** NEW FEATURES enabled when Multi-touch support is enabled ****/
+ 426:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 427:Drivers/BSP/Components/ft5336/ft5336.c **** #if (TS_MULTI_TOUCH_SUPPORTED == 1)
+ 428:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 429:Drivers/BSP/Components/ft5336/ft5336.c **** /**
+ 430:Drivers/BSP/Components/ft5336/ft5336.c ****   * @brief  Get the last touch gesture identification (zoom, move up/down...).
+ 431:Drivers/BSP/Components/ft5336/ft5336.c ****   * @param  DeviceAddr: Device address on communication Bus (I2C slave address of FT5336).
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s 			page 10
+
+
+ 432:Drivers/BSP/Components/ft5336/ft5336.c ****   * @param  pGestureId : Pointer to get last touch gesture Identification.
+ 433:Drivers/BSP/Components/ft5336/ft5336.c ****   * @retval None.
+ 434:Drivers/BSP/Components/ft5336/ft5336.c ****   */
+ 435:Drivers/BSP/Components/ft5336/ft5336.c **** void ft5336_TS_GetGestureID(uint16_t DeviceAddr, uint32_t * pGestureId)
+ 436:Drivers/BSP/Components/ft5336/ft5336.c **** {
+ 437:Drivers/BSP/Components/ft5336/ft5336.c ****   volatile uint8_t ucReadData = 0;
+ 438:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 439:Drivers/BSP/Components/ft5336/ft5336.c ****   ucReadData = TS_IO_Read(DeviceAddr, FT5336_GEST_ID_REG);
+ 440:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 441:Drivers/BSP/Components/ft5336/ft5336.c ****   * pGestureId = ucReadData;
+ 442:Drivers/BSP/Components/ft5336/ft5336.c **** }
+ 443:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 444:Drivers/BSP/Components/ft5336/ft5336.c **** /**
+ 445:Drivers/BSP/Components/ft5336/ft5336.c ****   * @brief  Get the touch detailed informations on touch number 'touchIdx' (0..1)
+ 446:Drivers/BSP/Components/ft5336/ft5336.c ****   *         This touch detailed information contains :
+ 447:Drivers/BSP/Components/ft5336/ft5336.c ****   *         - weight that was applied to this touch
+ 448:Drivers/BSP/Components/ft5336/ft5336.c ****   *         - sub-area of the touch in the touch panel
+ 449:Drivers/BSP/Components/ft5336/ft5336.c ****   *         - event of linked to the touch (press down, lift up, ...)
+ 450:Drivers/BSP/Components/ft5336/ft5336.c ****   * @param  DeviceAddr: Device address on communication Bus (I2C slave address of FT5336).
+ 451:Drivers/BSP/Components/ft5336/ft5336.c ****   * @param  touchIdx : Passed index of the touch (0..1) on which we want to get the
+ 452:Drivers/BSP/Components/ft5336/ft5336.c ****   *                    detailed information.
+ 453:Drivers/BSP/Components/ft5336/ft5336.c ****   * @param  pWeight : Pointer to to get the weight information of 'touchIdx'.
+ 454:Drivers/BSP/Components/ft5336/ft5336.c ****   * @param  pArea   : Pointer to to get the sub-area information of 'touchIdx'.
+ 455:Drivers/BSP/Components/ft5336/ft5336.c ****   * @param  pEvent  : Pointer to to get the event information of 'touchIdx'.
+ 456:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 457:Drivers/BSP/Components/ft5336/ft5336.c ****   * @retval None.
+ 458:Drivers/BSP/Components/ft5336/ft5336.c ****   */
+ 459:Drivers/BSP/Components/ft5336/ft5336.c **** void ft5336_TS_GetTouchInfo(uint16_t   DeviceAddr,
+ 460:Drivers/BSP/Components/ft5336/ft5336.c ****                             uint32_t   touchIdx,
+ 461:Drivers/BSP/Components/ft5336/ft5336.c ****                             uint32_t * pWeight,
+ 462:Drivers/BSP/Components/ft5336/ft5336.c ****                             uint32_t * pArea,
+ 463:Drivers/BSP/Components/ft5336/ft5336.c ****                             uint32_t * pEvent)
+ 464:Drivers/BSP/Components/ft5336/ft5336.c **** {
+ 465:Drivers/BSP/Components/ft5336/ft5336.c ****   volatile uint8_t ucReadData = 0;
+ 466:Drivers/BSP/Components/ft5336/ft5336.c ****   uint8_t regAddressXHigh = 0;
+ 467:Drivers/BSP/Components/ft5336/ft5336.c ****   uint8_t regAddressPWeight = 0;
+ 468:Drivers/BSP/Components/ft5336/ft5336.c ****   uint8_t regAddressPMisc = 0;
+ 469:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 470:Drivers/BSP/Components/ft5336/ft5336.c ****   if(touchIdx < ft5336_handle.currActiveTouchNb)
+ 471:Drivers/BSP/Components/ft5336/ft5336.c ****   {
+ 472:Drivers/BSP/Components/ft5336/ft5336.c ****     switch(touchIdx)
+ 473:Drivers/BSP/Components/ft5336/ft5336.c ****     {
+ 474:Drivers/BSP/Components/ft5336/ft5336.c ****     case 0 :
+ 475:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressXHigh   = FT5336_P1_XH_REG;
+ 476:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressPWeight = FT5336_P1_WEIGHT_REG;
+ 477:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressPMisc   = FT5336_P1_MISC_REG;
+ 478:Drivers/BSP/Components/ft5336/ft5336.c ****       break;
+ 479:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 480:Drivers/BSP/Components/ft5336/ft5336.c ****     case 1 :
+ 481:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressXHigh   = FT5336_P2_XH_REG;
+ 482:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressPWeight = FT5336_P2_WEIGHT_REG;
+ 483:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressPMisc   = FT5336_P2_MISC_REG;
+ 484:Drivers/BSP/Components/ft5336/ft5336.c ****       break;
+ 485:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 486:Drivers/BSP/Components/ft5336/ft5336.c ****     case 2 :
+ 487:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressXHigh   = FT5336_P3_XH_REG;
+ 488:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressPWeight = FT5336_P3_WEIGHT_REG;
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s 			page 11
+
+
+ 489:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressPMisc   = FT5336_P3_MISC_REG;
+ 490:Drivers/BSP/Components/ft5336/ft5336.c ****       break;
+ 491:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 492:Drivers/BSP/Components/ft5336/ft5336.c ****     case 3 :
+ 493:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressXHigh   = FT5336_P4_XH_REG;
+ 494:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressPWeight = FT5336_P4_WEIGHT_REG;
+ 495:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressPMisc   = FT5336_P4_MISC_REG;
+ 496:Drivers/BSP/Components/ft5336/ft5336.c ****       break;
+ 497:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 498:Drivers/BSP/Components/ft5336/ft5336.c ****     case 4 :
+ 499:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressXHigh   = FT5336_P5_XH_REG;
+ 500:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressPWeight = FT5336_P5_WEIGHT_REG;
+ 501:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressPMisc   = FT5336_P5_MISC_REG;
+ 502:Drivers/BSP/Components/ft5336/ft5336.c ****       break;
+ 503:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 504:Drivers/BSP/Components/ft5336/ft5336.c ****     case 5 :
+ 505:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressXHigh   = FT5336_P6_XH_REG;
+ 506:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressPWeight = FT5336_P6_WEIGHT_REG;
+ 507:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressPMisc   = FT5336_P6_MISC_REG;
+ 508:Drivers/BSP/Components/ft5336/ft5336.c ****       break;
+ 509:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 510:Drivers/BSP/Components/ft5336/ft5336.c ****     case 6 :
+ 511:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressXHigh   = FT5336_P7_XH_REG;
+ 512:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressPWeight = FT5336_P7_WEIGHT_REG;
+ 513:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressPMisc   = FT5336_P7_MISC_REG;
+ 514:Drivers/BSP/Components/ft5336/ft5336.c ****       break;
+ 515:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 516:Drivers/BSP/Components/ft5336/ft5336.c ****     case 7 :
+ 517:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressXHigh   = FT5336_P8_XH_REG;
+ 518:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressPWeight = FT5336_P8_WEIGHT_REG;
+ 519:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressPMisc   = FT5336_P8_MISC_REG;
+ 520:Drivers/BSP/Components/ft5336/ft5336.c ****       break;
+ 521:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 522:Drivers/BSP/Components/ft5336/ft5336.c ****     case 8 :
+ 523:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressXHigh   = FT5336_P9_XH_REG;
+ 524:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressPWeight = FT5336_P9_WEIGHT_REG;
+ 525:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressPMisc   = FT5336_P9_MISC_REG;
+ 526:Drivers/BSP/Components/ft5336/ft5336.c ****       break;
+ 527:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 528:Drivers/BSP/Components/ft5336/ft5336.c ****     case 9 :
+ 529:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressXHigh   = FT5336_P10_XH_REG;
+ 530:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressPWeight = FT5336_P10_WEIGHT_REG;
+ 531:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressPMisc   = FT5336_P10_MISC_REG;
+ 532:Drivers/BSP/Components/ft5336/ft5336.c ****       break;
+ 533:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 534:Drivers/BSP/Components/ft5336/ft5336.c ****     default :
+ 535:Drivers/BSP/Components/ft5336/ft5336.c ****       break;
+ 536:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 537:Drivers/BSP/Components/ft5336/ft5336.c ****     } /* end switch(touchIdx) */
+ 538:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 539:Drivers/BSP/Components/ft5336/ft5336.c ****     /* Read Event Id of touch index */
+ 540:Drivers/BSP/Components/ft5336/ft5336.c ****     ucReadData = TS_IO_Read(DeviceAddr, regAddressXHigh);
+ 541:Drivers/BSP/Components/ft5336/ft5336.c ****     * pEvent = (ucReadData & FT5336_TOUCH_EVT_FLAG_MASK) >> FT5336_TOUCH_EVT_FLAG_SHIFT;
+ 542:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 543:Drivers/BSP/Components/ft5336/ft5336.c ****     /* Read weight of touch index */
+ 544:Drivers/BSP/Components/ft5336/ft5336.c ****     ucReadData = TS_IO_Read(DeviceAddr, regAddressPWeight);
+ 545:Drivers/BSP/Components/ft5336/ft5336.c ****     * pWeight = (ucReadData & FT5336_TOUCH_WEIGHT_MASK) >> FT5336_TOUCH_WEIGHT_SHIFT;
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s 			page 12
+
+
+ 546:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 547:Drivers/BSP/Components/ft5336/ft5336.c ****     /* Read area of touch index */
+ 548:Drivers/BSP/Components/ft5336/ft5336.c ****     ucReadData = TS_IO_Read(DeviceAddr, regAddressPMisc);
+ 549:Drivers/BSP/Components/ft5336/ft5336.c ****     * pArea = (ucReadData & FT5336_TOUCH_AREA_MASK) >> FT5336_TOUCH_AREA_SHIFT;
+ 550:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 551:Drivers/BSP/Components/ft5336/ft5336.c ****   } /* of if(touchIdx < ft5336_handle.currActiveTouchNb) */
+ 552:Drivers/BSP/Components/ft5336/ft5336.c **** }
+ 553:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 554:Drivers/BSP/Components/ft5336/ft5336.c **** #endif /* TS_MULTI_TOUCH_SUPPORTED == 1 */
+ 555:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 556:Drivers/BSP/Components/ft5336/ft5336.c **** /** @defgroup ft5336_Static_Function_Body
+ 557:Drivers/BSP/Components/ft5336/ft5336.c ****   * @{
+ 558:Drivers/BSP/Components/ft5336/ft5336.c ****   */
+ 559:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 560:Drivers/BSP/Components/ft5336/ft5336.c **** /* Static functions bodies-----------------------------------------------*/
+ 561:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 562:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 563:Drivers/BSP/Components/ft5336/ft5336.c **** /**
+ 564:Drivers/BSP/Components/ft5336/ft5336.c ****   * @brief  Return the status of I2C was initialized or not.
+ 565:Drivers/BSP/Components/ft5336/ft5336.c ****   * @param  None.
+ 566:Drivers/BSP/Components/ft5336/ft5336.c ****   * @retval : I2C initialization status.
+ 567:Drivers/BSP/Components/ft5336/ft5336.c ****   */
+ 568:Drivers/BSP/Components/ft5336/ft5336.c **** static uint8_t ft5336_Get_I2C_InitializedStatus(void)
+ 569:Drivers/BSP/Components/ft5336/ft5336.c **** {
+  90              		.loc 1 569 0
+  91              		.cfi_startproc
+  92              		@ args = 0, pretend = 0, frame = 0
+  93              		@ frame_needed = 0, uses_anonymous_args = 0
+  94              		@ link register save eliminated.
+ 570:Drivers/BSP/Components/ft5336/ft5336.c ****   return(ft5336_handle.i2cInitialized);
+ 571:Drivers/BSP/Components/ft5336/ft5336.c **** }
+  95              		.loc 1 571 0
+  96 0000 014B     		ldr	r3, .L5
+  97 0002 1878     		ldrb	r0, [r3]	@ zero_extendqisi2
+  98 0004 7047     		bx	lr
+  99              	.L6:
+ 100 0006 00BF     		.align	2
+ 101              	.L5:
+ 102 0008 00000000 		.word	.LANCHOR0
+ 103              		.cfi_endproc
+ 104              	.LFE12:
+ 106              		.section	.text.ft5336_I2C_InitializeIfRequired,"ax",%progbits
+ 107              		.align	1
+ 108              		.syntax unified
+ 109              		.thumb
+ 110              		.thumb_func
+ 111              		.fpu fpv5-sp-d16
+ 113              	ft5336_I2C_InitializeIfRequired:
+ 114              	.LFB13:
+ 572:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 573:Drivers/BSP/Components/ft5336/ft5336.c **** /**
+ 574:Drivers/BSP/Components/ft5336/ft5336.c ****   * @brief  I2C initialize if needed.
+ 575:Drivers/BSP/Components/ft5336/ft5336.c ****   * @param  None.
+ 576:Drivers/BSP/Components/ft5336/ft5336.c ****   * @retval : None.
+ 577:Drivers/BSP/Components/ft5336/ft5336.c ****   */
+ 578:Drivers/BSP/Components/ft5336/ft5336.c **** static void ft5336_I2C_InitializeIfRequired(void)
+ 579:Drivers/BSP/Components/ft5336/ft5336.c **** {
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s 			page 13
+
+
+ 115              		.loc 1 579 0
+ 116              		.cfi_startproc
+ 117              		@ args = 0, pretend = 0, frame = 0
+ 118              		@ frame_needed = 0, uses_anonymous_args = 0
+ 119 0000 08B5     		push	{r3, lr}
+ 120              	.LCFI0:
+ 121              		.cfi_def_cfa_offset 8
+ 122              		.cfi_offset 3, -8
+ 123              		.cfi_offset 14, -4
+ 580:Drivers/BSP/Components/ft5336/ft5336.c ****   if(ft5336_Get_I2C_InitializedStatus() == FT5336_I2C_NOT_INITIALIZED)
+ 124              		.loc 1 580 0
+ 125 0002 FFF7FEFF 		bl	ft5336_Get_I2C_InitializedStatus
+ 126              	.LVL4:
+ 127 0006 00B1     		cbz	r0, .L10
+ 128              	.L7:
+ 129 0008 08BD     		pop	{r3, pc}
+ 130              	.L10:
+ 581:Drivers/BSP/Components/ft5336/ft5336.c ****   {
+ 582:Drivers/BSP/Components/ft5336/ft5336.c ****     /* Initialize TS IO BUS layer (I2C) */
+ 583:Drivers/BSP/Components/ft5336/ft5336.c ****     TS_IO_Init();
+ 131              		.loc 1 583 0
+ 132 000a FFF7FEFF 		bl	TS_IO_Init
+ 133              	.LVL5:
+ 584:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 585:Drivers/BSP/Components/ft5336/ft5336.c ****     /* Set state to initialized */
+ 586:Drivers/BSP/Components/ft5336/ft5336.c ****     ft5336_handle.i2cInitialized = FT5336_I2C_INITIALIZED;
+ 134              		.loc 1 586 0
+ 135 000e 0122     		movs	r2, #1
+ 136 0010 014B     		ldr	r3, .L11
+ 137 0012 1A70     		strb	r2, [r3]
+ 587:Drivers/BSP/Components/ft5336/ft5336.c ****   }
+ 588:Drivers/BSP/Components/ft5336/ft5336.c **** }
+ 138              		.loc 1 588 0
+ 139 0014 F8E7     		b	.L7
+ 140              	.L12:
+ 141 0016 00BF     		.align	2
+ 142              	.L11:
+ 143 0018 00000000 		.word	.LANCHOR0
+ 144              		.cfi_endproc
+ 145              	.LFE13:
+ 147              		.section	.text.ft5336_Init,"ax",%progbits
+ 148              		.align	1
+ 149              		.global	ft5336_Init
+ 150              		.syntax unified
+ 151              		.thumb
+ 152              		.thumb_func
+ 153              		.fpu fpv5-sp-d16
+ 155              	ft5336_Init:
+ 156              	.LFB0:
+ 146:Drivers/BSP/Components/ft5336/ft5336.c ****   /* Wait at least 200ms after power up before accessing registers
+ 157              		.loc 1 146 0
+ 158              		.cfi_startproc
+ 159              		@ args = 0, pretend = 0, frame = 0
+ 160              		@ frame_needed = 0, uses_anonymous_args = 0
+ 161              	.LVL6:
+ 162 0000 08B5     		push	{r3, lr}
+ 163              	.LCFI1:
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s 			page 14
+
+
+ 164              		.cfi_def_cfa_offset 8
+ 165              		.cfi_offset 3, -8
+ 166              		.cfi_offset 14, -4
+ 149:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 167              		.loc 1 149 0
+ 168 0002 C820     		movs	r0, #200
+ 169              	.LVL7:
+ 170 0004 FFF7FEFF 		bl	TS_IO_Delay
+ 171              	.LVL8:
+ 152:Drivers/BSP/Components/ft5336/ft5336.c **** }
+ 172              		.loc 1 152 0
+ 173 0008 FFF7FEFF 		bl	ft5336_I2C_InitializeIfRequired
+ 174              	.LVL9:
+ 175 000c 08BD     		pop	{r3, pc}
+ 176              		.cfi_endproc
+ 177              	.LFE0:
+ 179              		.section	.text.ft5336_ReadID,"ax",%progbits
+ 180              		.align	1
+ 181              		.global	ft5336_ReadID
+ 182              		.syntax unified
+ 183              		.thumb
+ 184              		.thumb_func
+ 185              		.fpu fpv5-sp-d16
+ 187              	ft5336_ReadID:
+ 188              	.LFB2:
+ 174:Drivers/BSP/Components/ft5336/ft5336.c ****   volatile uint8_t ucReadId = 0;
+ 189              		.loc 1 174 0
+ 190              		.cfi_startproc
+ 191              		@ args = 0, pretend = 0, frame = 8
+ 192              		@ frame_needed = 0, uses_anonymous_args = 0
+ 193              	.LVL10:
+ 194 0000 70B5     		push	{r4, r5, r6, lr}
+ 195              	.LCFI2:
+ 196              		.cfi_def_cfa_offset 16
+ 197              		.cfi_offset 4, -16
+ 198              		.cfi_offset 5, -12
+ 199              		.cfi_offset 6, -8
+ 200              		.cfi_offset 14, -4
+ 201 0002 82B0     		sub	sp, sp, #8
+ 202              	.LCFI3:
+ 203              		.cfi_def_cfa_offset 24
+ 204 0004 0646     		mov	r6, r0
+ 175:Drivers/BSP/Components/ft5336/ft5336.c ****   uint8_t nbReadAttempts = 0;
+ 205              		.loc 1 175 0
+ 206 0006 0024     		movs	r4, #0
+ 207 0008 8DF80740 		strb	r4, [sp, #7]
+ 208              	.LVL11:
+ 180:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 209              		.loc 1 180 0
+ 210 000c FFF7FEFF 		bl	ft5336_I2C_InitializeIfRequired
+ 211              	.LVL12:
+ 177:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 212              		.loc 1 177 0
+ 213 0010 2546     		mov	r5, r4
+ 183:Drivers/BSP/Components/ft5336/ft5336.c ****   {
+ 214              		.loc 1 183 0
+ 215 0012 01E0     		b	.L16
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s 			page 15
+
+
+ 216              	.LVL13:
+ 217              	.L17:
+ 183:Drivers/BSP/Components/ft5336/ft5336.c ****   {
+ 218              		.loc 1 183 0 is_stmt 0 discriminator 2
+ 219 0014 0134     		adds	r4, r4, #1
+ 220              	.LVL14:
+ 221 0016 E4B2     		uxtb	r4, r4
+ 222              	.LVL15:
+ 223              	.L16:
+ 183:Drivers/BSP/Components/ft5336/ft5336.c ****   {
+ 224              		.loc 1 183 0 discriminator 1
+ 225 0018 85F00103 		eor	r3, r5, #1
+ 226 001c 022C     		cmp	r4, #2
+ 227 001e 8CBF     		ite	hi
+ 228 0020 0023     		movhi	r3, #0
+ 229 0022 03F00103 		andls	r3, r3, #1
+ 230 0026 63B1     		cbz	r3, .L21
+ 186:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 231              		.loc 1 186 0 is_stmt 1
+ 232 0028 A821     		movs	r1, #168
+ 233 002a F0B2     		uxtb	r0, r6
+ 234 002c FFF7FEFF 		bl	TS_IO_Read
+ 235              	.LVL16:
+ 236 0030 8DF80700 		strb	r0, [sp, #7]
+ 189:Drivers/BSP/Components/ft5336/ft5336.c ****     {
+ 237              		.loc 1 189 0
+ 238 0034 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 239 0038 DBB2     		uxtb	r3, r3
+ 240 003a 512B     		cmp	r3, #81
+ 241 003c EAD1     		bne	.L17
+ 192:Drivers/BSP/Components/ft5336/ft5336.c ****     }
+ 242              		.loc 1 192 0
+ 243 003e 0125     		movs	r5, #1
+ 244              	.LVL17:
+ 245 0040 E8E7     		b	.L17
+ 246              	.LVL18:
+ 247              	.L21:
+ 197:Drivers/BSP/Components/ft5336/ft5336.c **** }
+ 248              		.loc 1 197 0
+ 249 0042 9DF80700 		ldrb	r0, [sp, #7]	@ zero_extendqisi2
+ 198:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 250              		.loc 1 198 0
+ 251 0046 02B0     		add	sp, sp, #8
+ 252              	.LCFI4:
+ 253              		.cfi_def_cfa_offset 16
+ 254              		@ sp needed
+ 255 0048 70BD     		pop	{r4, r5, r6, pc}
+ 256              		.cfi_endproc
+ 257              	.LFE2:
+ 259              		.section	.text.ft5336_TS_DetectTouch,"ax",%progbits
+ 260              		.align	1
+ 261              		.global	ft5336_TS_DetectTouch
+ 262              		.syntax unified
+ 263              		.thumb
+ 264              		.thumb_func
+ 265              		.fpu fpv5-sp-d16
+ 267              	ft5336_TS_DetectTouch:
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s 			page 16
+
+
+ 268              	.LFB4:
+ 223:Drivers/BSP/Components/ft5336/ft5336.c ****   volatile uint8_t nbTouch = 0;
+ 269              		.loc 1 223 0
+ 270              		.cfi_startproc
+ 271              		@ args = 0, pretend = 0, frame = 8
+ 272              		@ frame_needed = 0, uses_anonymous_args = 0
+ 273              	.LVL19:
+ 274 0000 00B5     		push	{lr}
+ 275              	.LCFI5:
+ 276              		.cfi_def_cfa_offset 4
+ 277              		.cfi_offset 14, -4
+ 278 0002 83B0     		sub	sp, sp, #12
+ 279              	.LCFI6:
+ 280              		.cfi_def_cfa_offset 16
+ 224:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 281              		.loc 1 224 0
+ 282 0004 0023     		movs	r3, #0
+ 283 0006 8DF80730 		strb	r3, [sp, #7]
+ 227:Drivers/BSP/Components/ft5336/ft5336.c ****   nbTouch &= FT5336_TD_STAT_MASK;
+ 284              		.loc 1 227 0
+ 285 000a 0221     		movs	r1, #2
+ 286 000c C0B2     		uxtb	r0, r0
+ 287              	.LVL20:
+ 288 000e FFF7FEFF 		bl	TS_IO_Read
+ 289              	.LVL21:
+ 290 0012 8DF80700 		strb	r0, [sp, #7]
+ 228:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 291              		.loc 1 228 0
+ 292 0016 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 293 001a 03F00F03 		and	r3, r3, #15
+ 294 001e 8DF80730 		strb	r3, [sp, #7]
+ 230:Drivers/BSP/Components/ft5336/ft5336.c ****   {
+ 295              		.loc 1 230 0
+ 296 0022 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 297 0026 DBB2     		uxtb	r3, r3
+ 298 0028 052B     		cmp	r3, #5
+ 299 002a 02D9     		bls	.L23
+ 233:Drivers/BSP/Components/ft5336/ft5336.c ****   }
+ 300              		.loc 1 233 0
+ 301 002c 0023     		movs	r3, #0
+ 302 002e 8DF80730 		strb	r3, [sp, #7]
+ 303              	.L23:
+ 237:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 304              		.loc 1 237 0
+ 305 0032 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+ 306 0036 044B     		ldr	r3, .L25
+ 307 0038 5A70     		strb	r2, [r3, #1]
+ 240:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 308              		.loc 1 240 0
+ 309 003a 0022     		movs	r2, #0
+ 310 003c 9A70     		strb	r2, [r3, #2]
+ 242:Drivers/BSP/Components/ft5336/ft5336.c **** }
+ 311              		.loc 1 242 0
+ 312 003e 9DF80700 		ldrb	r0, [sp, #7]	@ zero_extendqisi2
+ 243:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 313              		.loc 1 243 0
+ 314 0042 03B0     		add	sp, sp, #12
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s 			page 17
+
+
+ 315              	.LCFI7:
+ 316              		.cfi_def_cfa_offset 4
+ 317              		@ sp needed
+ 318 0044 5DF804FB 		ldr	pc, [sp], #4
+ 319              	.L26:
+ 320              		.align	2
+ 321              	.L25:
+ 322 0048 00000000 		.word	.LANCHOR0
+ 323              		.cfi_endproc
+ 324              	.LFE4:
+ 326              		.section	.text.ft5336_TS_GetXY,"ax",%progbits
+ 327              		.align	1
+ 328              		.global	ft5336_TS_GetXY
+ 329              		.syntax unified
+ 330              		.thumb
+ 331              		.thumb_func
+ 332              		.fpu fpv5-sp-d16
+ 334              	ft5336_TS_GetXY:
+ 335              	.LFB5:
+ 255:Drivers/BSP/Components/ft5336/ft5336.c ****   volatile uint8_t ucReadData = 0;
+ 336              		.loc 1 255 0
+ 337              		.cfi_startproc
+ 338              		@ args = 0, pretend = 0, frame = 8
+ 339              		@ frame_needed = 0, uses_anonymous_args = 0
+ 340              	.LVL22:
+ 341 0000 2DE9F047 		push	{r4, r5, r6, r7, r8, r9, r10, lr}
+ 342              	.LCFI8:
+ 343              		.cfi_def_cfa_offset 32
+ 344              		.cfi_offset 4, -32
+ 345              		.cfi_offset 5, -28
+ 346              		.cfi_offset 6, -24
+ 347              		.cfi_offset 7, -20
+ 348              		.cfi_offset 8, -16
+ 349              		.cfi_offset 9, -12
+ 350              		.cfi_offset 10, -8
+ 351              		.cfi_offset 14, -4
+ 352 0004 82B0     		sub	sp, sp, #8
+ 353              	.LCFI9:
+ 354              		.cfi_def_cfa_offset 40
+ 256:Drivers/BSP/Components/ft5336/ft5336.c ****   static uint16_t coord;
+ 355              		.loc 1 256 0
+ 356 0006 0023     		movs	r3, #0
+ 357 0008 8DF80730 		strb	r3, [sp, #7]
+ 358              	.LVL23:
+ 263:Drivers/BSP/Components/ft5336/ft5336.c ****   {
+ 359              		.loc 1 263 0
+ 360 000c 504C     		ldr	r4, .L43
+ 361 000e A378     		ldrb	r3, [r4, #2]	@ zero_extendqisi2
+ 362 0010 6478     		ldrb	r4, [r4, #1]	@ zero_extendqisi2
+ 363 0012 A342     		cmp	r3, r4
+ 364 0014 80F09880 		bcs	.L27
+ 265:Drivers/BSP/Components/ft5336/ft5336.c ****     {
+ 365              		.loc 1 265 0
+ 366 0018 092B     		cmp	r3, #9
+ 367 001a 06D8     		bhi	.L29
+ 368 001c DFE803F0 		tbb	[pc, r3]
+ 369              	.L31:
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s 			page 18
+
+
+ 370 0020 53       		.byte	(.L41-.L31)/2
+ 371 0021 0B       		.byte	(.L32-.L31)/2
+ 372 0022 13       		.byte	(.L33-.L31)/2
+ 373 0023 1B       		.byte	(.L34-.L31)/2
+ 374 0024 23       		.byte	(.L35-.L31)/2
+ 375 0025 2B       		.byte	(.L36-.L31)/2
+ 376 0026 33       		.byte	(.L37-.L31)/2
+ 377 0027 3B       		.byte	(.L38-.L31)/2
+ 378 0028 43       		.byte	(.L39-.L31)/2
+ 379 0029 4B       		.byte	(.L40-.L31)/2
+ 380              		.p2align 1
+ 381              	.L29:
+ 261:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 382              		.loc 1 261 0
+ 383 002a 4FF00008 		mov	r8, #0
+ 260:Drivers/BSP/Components/ft5336/ft5336.c ****   uint8_t regAddressYHigh = 0;
+ 384              		.loc 1 260 0
+ 385 002e C146     		mov	r9, r8
+ 259:Drivers/BSP/Components/ft5336/ft5336.c ****   uint8_t regAddressYLow = 0;
+ 386              		.loc 1 259 0
+ 387 0030 C246     		mov	r10, r8
+ 258:Drivers/BSP/Components/ft5336/ft5336.c ****   uint8_t regAddressXHigh = 0;
+ 388              		.loc 1 258 0
+ 389 0032 4346     		mov	r3, r8
+ 390 0034 4EE0     		b	.L30
+ 391              	.L32:
+ 392              	.LVL24:
+ 278:Drivers/BSP/Components/ft5336/ft5336.c ****       break;
+ 393              		.loc 1 278 0
+ 394 0036 4FF00B08 		mov	r8, #11
+ 277:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressYHigh = FT5336_P2_YH_REG;
+ 395              		.loc 1 277 0
+ 396 003a 4FF00C09 		mov	r9, #12
+ 276:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressYLow  = FT5336_P2_YL_REG;
+ 397              		.loc 1 276 0
+ 398 003e 4FF0090A 		mov	r10, #9
+ 275:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressXHigh = FT5336_P2_XH_REG;
+ 399              		.loc 1 275 0
+ 400 0042 0A23     		movs	r3, #10
+ 279:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 401              		.loc 1 279 0
+ 402 0044 46E0     		b	.L30
+ 403              	.LVL25:
+ 404              	.L33:
+ 285:Drivers/BSP/Components/ft5336/ft5336.c ****       break;
+ 405              		.loc 1 285 0
+ 406 0046 4FF01108 		mov	r8, #17
+ 284:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressYHigh = FT5336_P3_YH_REG;
+ 407              		.loc 1 284 0
+ 408 004a 4FF01209 		mov	r9, #18
+ 283:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressYLow  = FT5336_P3_YL_REG;
+ 409              		.loc 1 283 0
+ 410 004e 4FF00F0A 		mov	r10, #15
+ 282:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressXHigh = FT5336_P3_XH_REG;
+ 411              		.loc 1 282 0
+ 412 0052 1023     		movs	r3, #16
+ 286:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s 			page 19
+
+
+ 413              		.loc 1 286 0
+ 414 0054 3EE0     		b	.L30
+ 415              	.LVL26:
+ 416              	.L34:
+ 292:Drivers/BSP/Components/ft5336/ft5336.c ****       break;
+ 417              		.loc 1 292 0
+ 418 0056 4FF01708 		mov	r8, #23
+ 291:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressYHigh = FT5336_P4_YH_REG;
+ 419              		.loc 1 291 0
+ 420 005a 4FF01809 		mov	r9, #24
+ 290:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressYLow  = FT5336_P4_YL_REG;
+ 421              		.loc 1 290 0
+ 422 005e 4FF0150A 		mov	r10, #21
+ 289:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressXHigh = FT5336_P4_XH_REG;
+ 423              		.loc 1 289 0
+ 424 0062 1623     		movs	r3, #22
+ 293:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 425              		.loc 1 293 0
+ 426 0064 36E0     		b	.L30
+ 427              	.LVL27:
+ 428              	.L35:
+ 299:Drivers/BSP/Components/ft5336/ft5336.c ****       break;
+ 429              		.loc 1 299 0
+ 430 0066 4FF01D08 		mov	r8, #29
+ 298:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressYHigh = FT5336_P5_YH_REG;
+ 431              		.loc 1 298 0
+ 432 006a 4FF01E09 		mov	r9, #30
+ 297:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressYLow  = FT5336_P5_YL_REG;
+ 433              		.loc 1 297 0
+ 434 006e 4FF01B0A 		mov	r10, #27
+ 296:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressXHigh = FT5336_P5_XH_REG;
+ 435              		.loc 1 296 0
+ 436 0072 1C23     		movs	r3, #28
+ 300:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 437              		.loc 1 300 0
+ 438 0074 2EE0     		b	.L30
+ 439              	.LVL28:
+ 440              	.L36:
+ 306:Drivers/BSP/Components/ft5336/ft5336.c ****       break;
+ 441              		.loc 1 306 0
+ 442 0076 4FF02308 		mov	r8, #35
+ 305:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressYHigh = FT5336_P6_YH_REG;
+ 443              		.loc 1 305 0
+ 444 007a 4FF02409 		mov	r9, #36
+ 304:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressYLow  = FT5336_P6_YL_REG;
+ 445              		.loc 1 304 0
+ 446 007e 4FF0210A 		mov	r10, #33
+ 303:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressXHigh = FT5336_P6_XH_REG;
+ 447              		.loc 1 303 0
+ 448 0082 2223     		movs	r3, #34
+ 307:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 449              		.loc 1 307 0
+ 450 0084 26E0     		b	.L30
+ 451              	.LVL29:
+ 452              	.L37:
+ 313:Drivers/BSP/Components/ft5336/ft5336.c ****       break;
+ 453              		.loc 1 313 0
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s 			page 20
+
+
+ 454 0086 4FF02908 		mov	r8, #41
+ 312:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressYHigh = FT5336_P7_YH_REG;
+ 455              		.loc 1 312 0
+ 456 008a 4FF02A09 		mov	r9, #42
+ 311:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressYLow  = FT5336_P7_YL_REG;
+ 457              		.loc 1 311 0
+ 458 008e 4FF0270A 		mov	r10, #39
+ 310:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressXHigh = FT5336_P7_XH_REG;
+ 459              		.loc 1 310 0
+ 460 0092 2823     		movs	r3, #40
+ 314:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 461              		.loc 1 314 0
+ 462 0094 1EE0     		b	.L30
+ 463              	.LVL30:
+ 464              	.L38:
+ 320:Drivers/BSP/Components/ft5336/ft5336.c ****       break;
+ 465              		.loc 1 320 0
+ 466 0096 4FF02F08 		mov	r8, #47
+ 319:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressYHigh = FT5336_P8_YH_REG;
+ 467              		.loc 1 319 0
+ 468 009a 4FF03009 		mov	r9, #48
+ 318:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressYLow  = FT5336_P8_YL_REG;
+ 469              		.loc 1 318 0
+ 470 009e 4FF02D0A 		mov	r10, #45
+ 317:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressXHigh = FT5336_P8_XH_REG;
+ 471              		.loc 1 317 0
+ 472 00a2 2E23     		movs	r3, #46
+ 321:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 473              		.loc 1 321 0
+ 474 00a4 16E0     		b	.L30
+ 475              	.LVL31:
+ 476              	.L39:
+ 327:Drivers/BSP/Components/ft5336/ft5336.c ****       break;
+ 477              		.loc 1 327 0
+ 478 00a6 4FF03508 		mov	r8, #53
+ 326:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressYHigh = FT5336_P9_YH_REG;
+ 479              		.loc 1 326 0
+ 480 00aa 4FF03609 		mov	r9, #54
+ 325:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressYLow  = FT5336_P9_YL_REG;
+ 481              		.loc 1 325 0
+ 482 00ae 4FF0330A 		mov	r10, #51
+ 324:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressXHigh = FT5336_P9_XH_REG;
+ 483              		.loc 1 324 0
+ 484 00b2 3423     		movs	r3, #52
+ 328:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 485              		.loc 1 328 0
+ 486 00b4 0EE0     		b	.L30
+ 487              	.LVL32:
+ 488              	.L40:
+ 334:Drivers/BSP/Components/ft5336/ft5336.c ****       break;
+ 489              		.loc 1 334 0
+ 490 00b6 4FF03B08 		mov	r8, #59
+ 333:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressYHigh = FT5336_P10_YH_REG;
+ 491              		.loc 1 333 0
+ 492 00ba 4FF03C09 		mov	r9, #60
+ 332:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressYLow  = FT5336_P10_YL_REG;
+ 493              		.loc 1 332 0
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s 			page 21
+
+
+ 494 00be 4FF0390A 		mov	r10, #57
+ 331:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressXHigh = FT5336_P10_XH_REG;
+ 495              		.loc 1 331 0
+ 496 00c2 3A23     		movs	r3, #58
+ 335:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 497              		.loc 1 335 0
+ 498 00c4 06E0     		b	.L30
+ 499              	.LVL33:
+ 500              	.L41:
+ 271:Drivers/BSP/Components/ft5336/ft5336.c ****       break;
+ 501              		.loc 1 271 0
+ 502 00c6 4FF00508 		mov	r8, #5
+ 270:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressYHigh = FT5336_P1_YH_REG;
+ 503              		.loc 1 270 0
+ 504 00ca 4FF00609 		mov	r9, #6
+ 269:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressYLow  = FT5336_P1_YL_REG;
+ 505              		.loc 1 269 0
+ 506 00ce 4FF0030A 		mov	r10, #3
+ 268:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressXHigh = FT5336_P1_XH_REG;
+ 507              		.loc 1 268 0
+ 508 00d2 0423     		movs	r3, #4
+ 509              	.LVL34:
+ 510              	.L30:
+ 511 00d4 1546     		mov	r5, r2
+ 512 00d6 0F46     		mov	r7, r1
+ 513              	.LVL35:
+ 343:Drivers/BSP/Components/ft5336/ft5336.c ****     coord = (ucReadData & FT5336_TOUCH_POS_LSB_MASK) >> FT5336_TOUCH_POS_LSB_SHIFT;
+ 514              		.loc 1 343 0
+ 515 00d8 C6B2     		uxtb	r6, r0
+ 516 00da 1946     		mov	r1, r3
+ 517              	.LVL36:
+ 518 00dc 3046     		mov	r0, r6
+ 519              	.LVL37:
+ 520 00de FFF7FEFF 		bl	TS_IO_Read
+ 521              	.LVL38:
+ 522 00e2 8DF80700 		strb	r0, [sp, #7]
+ 344:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 523              		.loc 1 344 0
+ 524 00e6 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 525 00ea 1A4C     		ldr	r4, .L43+4
+ 526 00ec 2380     		strh	r3, [r4]	@ movhi
+ 347:Drivers/BSP/Components/ft5336/ft5336.c ****     coord |= ((ucReadData & FT5336_TOUCH_POS_MSB_MASK) >> FT5336_TOUCH_POS_MSB_SHIFT) << 8;
+ 527              		.loc 1 347 0
+ 528 00ee 5146     		mov	r1, r10
+ 529 00f0 3046     		mov	r0, r6
+ 530 00f2 FFF7FEFF 		bl	TS_IO_Read
+ 531              	.LVL39:
+ 532 00f6 8DF80700 		strb	r0, [sp, #7]
+ 348:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 533              		.loc 1 348 0
+ 534 00fa 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 535 00fe 1B02     		lsls	r3, r3, #8
+ 536 0100 03F47063 		and	r3, r3, #3840
+ 537 0104 2288     		ldrh	r2, [r4]
+ 538 0106 1343     		orrs	r3, r3, r2
+ 539 0108 9BB2     		uxth	r3, r3
+ 540 010a 2380     		strh	r3, [r4]	@ movhi
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s 			page 22
+
+
+ 351:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 541              		.loc 1 351 0
+ 542 010c 3B80     		strh	r3, [r7]	@ movhi
+ 354:Drivers/BSP/Components/ft5336/ft5336.c ****     coord = (ucReadData & FT5336_TOUCH_POS_LSB_MASK) >> FT5336_TOUCH_POS_LSB_SHIFT;
+ 543              		.loc 1 354 0
+ 544 010e 4946     		mov	r1, r9
+ 545 0110 3046     		mov	r0, r6
+ 546 0112 FFF7FEFF 		bl	TS_IO_Read
+ 547              	.LVL40:
+ 548 0116 8DF80700 		strb	r0, [sp, #7]
+ 355:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 549              		.loc 1 355 0
+ 550 011a 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 551 011e 2380     		strh	r3, [r4]	@ movhi
+ 358:Drivers/BSP/Components/ft5336/ft5336.c ****     coord |= ((ucReadData & FT5336_TOUCH_POS_MSB_MASK) >> FT5336_TOUCH_POS_MSB_SHIFT) << 8;
+ 552              		.loc 1 358 0
+ 553 0120 4146     		mov	r1, r8
+ 554 0122 3046     		mov	r0, r6
+ 555 0124 FFF7FEFF 		bl	TS_IO_Read
+ 556              	.LVL41:
+ 557 0128 8DF80700 		strb	r0, [sp, #7]
+ 359:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 558              		.loc 1 359 0
+ 559 012c 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 560 0130 1B02     		lsls	r3, r3, #8
+ 561 0132 03F47063 		and	r3, r3, #3840
+ 562 0136 2288     		ldrh	r2, [r4]
+ 563 0138 1343     		orrs	r3, r3, r2
+ 564 013a 9BB2     		uxth	r3, r3
+ 565 013c 2380     		strh	r3, [r4]	@ movhi
+ 362:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 566              		.loc 1 362 0
+ 567 013e 2B80     		strh	r3, [r5]	@ movhi
+ 364:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 568              		.loc 1 364 0
+ 569 0140 034A     		ldr	r2, .L43
+ 570 0142 9378     		ldrb	r3, [r2, #2]	@ zero_extendqisi2
+ 571 0144 0133     		adds	r3, r3, #1
+ 572 0146 9370     		strb	r3, [r2, #2]
+ 573              	.LVL42:
+ 574              	.L27:
+ 367:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 575              		.loc 1 367 0
+ 576 0148 02B0     		add	sp, sp, #8
+ 577              	.LCFI10:
+ 578              		.cfi_def_cfa_offset 32
+ 579              		@ sp needed
+ 580 014a BDE8F087 		pop	{r4, r5, r6, r7, r8, r9, r10, pc}
+ 581              	.L44:
+ 582 014e 00BF     		.align	2
+ 583              	.L43:
+ 584 0150 00000000 		.word	.LANCHOR0
+ 585 0154 00000000 		.word	.LANCHOR1
+ 586              		.cfi_endproc
+ 587              	.LFE5:
+ 589              		.section	.text.ft5336_TS_EnableIT,"ax",%progbits
+ 590              		.align	1
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s 			page 23
+
+
+ 591              		.global	ft5336_TS_EnableIT
+ 592              		.syntax unified
+ 593              		.thumb
+ 594              		.thumb_func
+ 595              		.fpu fpv5-sp-d16
+ 597              	ft5336_TS_EnableIT:
+ 598              	.LFB6:
+ 376:Drivers/BSP/Components/ft5336/ft5336.c ****    uint8_t regValue = 0;
+ 599              		.loc 1 376 0
+ 600              		.cfi_startproc
+ 601              		@ args = 0, pretend = 0, frame = 0
+ 602              		@ frame_needed = 0, uses_anonymous_args = 0
+ 603              	.LVL43:
+ 604 0000 08B5     		push	{r3, lr}
+ 605              	.LCFI11:
+ 606              		.cfi_def_cfa_offset 8
+ 607              		.cfi_offset 3, -8
+ 608              		.cfi_offset 14, -4
+ 609              	.LVL44:
+ 381:Drivers/BSP/Components/ft5336/ft5336.c **** }
+ 610              		.loc 1 381 0
+ 611 0002 0122     		movs	r2, #1
+ 612 0004 A421     		movs	r1, #164
+ 613 0006 C0B2     		uxtb	r0, r0
+ 614              	.LVL45:
+ 615 0008 FFF7FEFF 		bl	TS_IO_Write
+ 616              	.LVL46:
+ 617 000c 08BD     		pop	{r3, pc}
+ 618              		.cfi_endproc
+ 619              	.LFE6:
+ 621              		.section	.text.ft5336_TS_DisableIT,"ax",%progbits
+ 622              		.align	1
+ 623              		.global	ft5336_TS_DisableIT
+ 624              		.syntax unified
+ 625              		.thumb
+ 626              		.thumb_func
+ 627              		.fpu fpv5-sp-d16
+ 629              	ft5336_TS_DisableIT:
+ 630              	.LFB7:
+ 391:Drivers/BSP/Components/ft5336/ft5336.c ****   uint8_t regValue = 0;
+ 631              		.loc 1 391 0
+ 632              		.cfi_startproc
+ 633              		@ args = 0, pretend = 0, frame = 0
+ 634              		@ frame_needed = 0, uses_anonymous_args = 0
+ 635              	.LVL47:
+ 636 0000 08B5     		push	{r3, lr}
+ 637              	.LCFI12:
+ 638              		.cfi_def_cfa_offset 8
+ 639              		.cfi_offset 3, -8
+ 640              		.cfi_offset 14, -4
+ 641              	.LVL48:
+ 396:Drivers/BSP/Components/ft5336/ft5336.c **** }
+ 642              		.loc 1 396 0
+ 643 0002 0022     		movs	r2, #0
+ 644 0004 A421     		movs	r1, #164
+ 645 0006 C0B2     		uxtb	r0, r0
+ 646              	.LVL49:
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s 			page 24
+
+
+ 647 0008 FFF7FEFF 		bl	TS_IO_Write
+ 648              	.LVL50:
+ 649 000c 08BD     		pop	{r3, pc}
+ 650              		.cfi_endproc
+ 651              	.LFE7:
+ 653              		.section	.text.ft5336_TS_Start,"ax",%progbits
+ 654              		.align	1
+ 655              		.global	ft5336_TS_Start
+ 656              		.syntax unified
+ 657              		.thumb
+ 658              		.thumb_func
+ 659              		.fpu fpv5-sp-d16
+ 661              	ft5336_TS_Start:
+ 662              	.LFB3:
+ 206:Drivers/BSP/Components/ft5336/ft5336.c ****   /* Minimum static configuration of FT5336 */
+ 663              		.loc 1 206 0
+ 664              		.cfi_startproc
+ 665              		@ args = 0, pretend = 0, frame = 0
+ 666              		@ frame_needed = 0, uses_anonymous_args = 0
+ 667              	.LVL51:
+ 668 0000 08B5     		push	{r3, lr}
+ 669              	.LCFI13:
+ 670              		.cfi_def_cfa_offset 8
+ 671              		.cfi_offset 3, -8
+ 672              		.cfi_offset 14, -4
+ 212:Drivers/BSP/Components/ft5336/ft5336.c **** }
+ 673              		.loc 1 212 0
+ 674 0002 FFF7FEFF 		bl	ft5336_TS_DisableIT
+ 675              	.LVL52:
+ 676 0006 08BD     		pop	{r3, pc}
+ 677              		.cfi_endproc
+ 678              	.LFE3:
+ 680              		.section	.text.ft5336_TS_GetGestureID,"ax",%progbits
+ 681              		.align	1
+ 682              		.global	ft5336_TS_GetGestureID
+ 683              		.syntax unified
+ 684              		.thumb
+ 685              		.thumb_func
+ 686              		.fpu fpv5-sp-d16
+ 688              	ft5336_TS_GetGestureID:
+ 689              	.LFB10:
+ 436:Drivers/BSP/Components/ft5336/ft5336.c ****   volatile uint8_t ucReadData = 0;
+ 690              		.loc 1 436 0
+ 691              		.cfi_startproc
+ 692              		@ args = 0, pretend = 0, frame = 8
+ 693              		@ frame_needed = 0, uses_anonymous_args = 0
+ 694              	.LVL53:
+ 695 0000 10B5     		push	{r4, lr}
+ 696              	.LCFI14:
+ 697              		.cfi_def_cfa_offset 8
+ 698              		.cfi_offset 4, -8
+ 699              		.cfi_offset 14, -4
+ 700 0002 82B0     		sub	sp, sp, #8
+ 701              	.LCFI15:
+ 702              		.cfi_def_cfa_offset 16
+ 703 0004 0C46     		mov	r4, r1
+ 437:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s 			page 25
+
+
+ 704              		.loc 1 437 0
+ 705 0006 0023     		movs	r3, #0
+ 706 0008 8DF80730 		strb	r3, [sp, #7]
+ 439:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 707              		.loc 1 439 0
+ 708 000c 0121     		movs	r1, #1
+ 709              	.LVL54:
+ 710 000e C0B2     		uxtb	r0, r0
+ 711              	.LVL55:
+ 712 0010 FFF7FEFF 		bl	TS_IO_Read
+ 713              	.LVL56:
+ 714 0014 8DF80700 		strb	r0, [sp, #7]
+ 441:Drivers/BSP/Components/ft5336/ft5336.c **** }
+ 715              		.loc 1 441 0
+ 716 0018 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 717 001c 2360     		str	r3, [r4]
+ 442:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 718              		.loc 1 442 0
+ 719 001e 02B0     		add	sp, sp, #8
+ 720              	.LCFI16:
+ 721              		.cfi_def_cfa_offset 8
+ 722              		@ sp needed
+ 723 0020 10BD     		pop	{r4, pc}
+ 724              		.cfi_endproc
+ 725              	.LFE10:
+ 727              		.section	.text.ft5336_TS_GetTouchInfo,"ax",%progbits
+ 728              		.align	1
+ 729              		.global	ft5336_TS_GetTouchInfo
+ 730              		.syntax unified
+ 731              		.thumb
+ 732              		.thumb_func
+ 733              		.fpu fpv5-sp-d16
+ 735              	ft5336_TS_GetTouchInfo:
+ 736              	.LFB11:
+ 464:Drivers/BSP/Components/ft5336/ft5336.c ****   volatile uint8_t ucReadData = 0;
+ 737              		.loc 1 464 0
+ 738              		.cfi_startproc
+ 739              		@ args = 4, pretend = 0, frame = 8
+ 740              		@ frame_needed = 0, uses_anonymous_args = 0
+ 741              	.LVL57:
+ 742 0000 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+ 743              	.LCFI17:
+ 744              		.cfi_def_cfa_offset 24
+ 745              		.cfi_offset 4, -24
+ 746              		.cfi_offset 5, -20
+ 747              		.cfi_offset 6, -16
+ 748              		.cfi_offset 7, -12
+ 749              		.cfi_offset 8, -8
+ 750              		.cfi_offset 14, -4
+ 751 0004 82B0     		sub	sp, sp, #8
+ 752              	.LCFI18:
+ 753              		.cfi_def_cfa_offset 32
+ 465:Drivers/BSP/Components/ft5336/ft5336.c ****   uint8_t regAddressXHigh = 0;
+ 754              		.loc 1 465 0
+ 755 0006 0024     		movs	r4, #0
+ 756 0008 8DF80740 		strb	r4, [sp, #7]
+ 757              	.LVL58:
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s 			page 26
+
+
+ 470:Drivers/BSP/Components/ft5336/ft5336.c ****   {
+ 758              		.loc 1 470 0
+ 759 000c 334C     		ldr	r4, .L69
+ 760 000e 6478     		ldrb	r4, [r4, #1]	@ zero_extendqisi2
+ 761 0010 8C42     		cmp	r4, r1
+ 762 0012 5FD9     		bls	.L53
+ 472:Drivers/BSP/Components/ft5336/ft5336.c ****     {
+ 763              		.loc 1 472 0
+ 764 0014 0929     		cmp	r1, #9
+ 765 0016 06D8     		bhi	.L55
+ 766 0018 DFE801F0 		tbb	[pc, r1]
+ 767              	.L57:
+ 768 001c 36       		.byte	(.L67-.L57)/2
+ 769 001d 09       		.byte	(.L58-.L57)/2
+ 770 001e 0E       		.byte	(.L59-.L57)/2
+ 771 001f 13       		.byte	(.L60-.L57)/2
+ 772 0020 18       		.byte	(.L61-.L57)/2
+ 773 0021 1D       		.byte	(.L62-.L57)/2
+ 774 0022 22       		.byte	(.L63-.L57)/2
+ 775 0023 27       		.byte	(.L64-.L57)/2
+ 776 0024 2C       		.byte	(.L65-.L57)/2
+ 777 0025 31       		.byte	(.L66-.L57)/2
+ 778              		.p2align 1
+ 779              	.L55:
+ 468:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 780              		.loc 1 468 0
+ 781 0026 0027     		movs	r7, #0
+ 467:Drivers/BSP/Components/ft5336/ft5336.c ****   uint8_t regAddressPMisc = 0;
+ 782              		.loc 1 467 0
+ 783 0028 B846     		mov	r8, r7
+ 466:Drivers/BSP/Components/ft5336/ft5336.c ****   uint8_t regAddressPWeight = 0;
+ 784              		.loc 1 466 0
+ 785 002a 3946     		mov	r1, r7
+ 786              	.LVL59:
+ 787 002c 30E0     		b	.L56
+ 788              	.LVL60:
+ 789              	.L58:
+ 483:Drivers/BSP/Components/ft5336/ft5336.c ****       break;
+ 790              		.loc 1 483 0
+ 791 002e 0E27     		movs	r7, #14
+ 482:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressPMisc   = FT5336_P2_MISC_REG;
+ 792              		.loc 1 482 0
+ 793 0030 4FF00D08 		mov	r8, #13
+ 481:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressPWeight = FT5336_P2_WEIGHT_REG;
+ 794              		.loc 1 481 0
+ 795 0034 0921     		movs	r1, #9
+ 796              	.LVL61:
+ 484:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 797              		.loc 1 484 0
+ 798 0036 2BE0     		b	.L56
+ 799              	.LVL62:
+ 800              	.L59:
+ 489:Drivers/BSP/Components/ft5336/ft5336.c ****       break;
+ 801              		.loc 1 489 0
+ 802 0038 1427     		movs	r7, #20
+ 488:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressPMisc   = FT5336_P3_MISC_REG;
+ 803              		.loc 1 488 0
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s 			page 27
+
+
+ 804 003a 4FF01308 		mov	r8, #19
+ 487:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressPWeight = FT5336_P3_WEIGHT_REG;
+ 805              		.loc 1 487 0
+ 806 003e 0F21     		movs	r1, #15
+ 807              	.LVL63:
+ 490:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 808              		.loc 1 490 0
+ 809 0040 26E0     		b	.L56
+ 810              	.LVL64:
+ 811              	.L60:
+ 495:Drivers/BSP/Components/ft5336/ft5336.c ****       break;
+ 812              		.loc 1 495 0
+ 813 0042 1A27     		movs	r7, #26
+ 494:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressPMisc   = FT5336_P4_MISC_REG;
+ 814              		.loc 1 494 0
+ 815 0044 4FF01908 		mov	r8, #25
+ 493:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressPWeight = FT5336_P4_WEIGHT_REG;
+ 816              		.loc 1 493 0
+ 817 0048 1521     		movs	r1, #21
+ 818              	.LVL65:
+ 496:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 819              		.loc 1 496 0
+ 820 004a 21E0     		b	.L56
+ 821              	.LVL66:
+ 822              	.L61:
+ 501:Drivers/BSP/Components/ft5336/ft5336.c ****       break;
+ 823              		.loc 1 501 0
+ 824 004c 2027     		movs	r7, #32
+ 500:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressPMisc   = FT5336_P5_MISC_REG;
+ 825              		.loc 1 500 0
+ 826 004e 4FF01F08 		mov	r8, #31
+ 499:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressPWeight = FT5336_P5_WEIGHT_REG;
+ 827              		.loc 1 499 0
+ 828 0052 1B21     		movs	r1, #27
+ 829              	.LVL67:
+ 502:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 830              		.loc 1 502 0
+ 831 0054 1CE0     		b	.L56
+ 832              	.LVL68:
+ 833              	.L62:
+ 507:Drivers/BSP/Components/ft5336/ft5336.c ****       break;
+ 834              		.loc 1 507 0
+ 835 0056 2627     		movs	r7, #38
+ 506:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressPMisc   = FT5336_P6_MISC_REG;
+ 836              		.loc 1 506 0
+ 837 0058 4FF02508 		mov	r8, #37
+ 505:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressPWeight = FT5336_P6_WEIGHT_REG;
+ 838              		.loc 1 505 0
+ 839 005c 2121     		movs	r1, #33
+ 840              	.LVL69:
+ 508:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 841              		.loc 1 508 0
+ 842 005e 17E0     		b	.L56
+ 843              	.LVL70:
+ 844              	.L63:
+ 513:Drivers/BSP/Components/ft5336/ft5336.c ****       break;
+ 845              		.loc 1 513 0
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s 			page 28
+
+
+ 846 0060 2C27     		movs	r7, #44
+ 512:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressPMisc   = FT5336_P7_MISC_REG;
+ 847              		.loc 1 512 0
+ 848 0062 4FF02B08 		mov	r8, #43
+ 511:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressPWeight = FT5336_P7_WEIGHT_REG;
+ 849              		.loc 1 511 0
+ 850 0066 2721     		movs	r1, #39
+ 851              	.LVL71:
+ 514:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 852              		.loc 1 514 0
+ 853 0068 12E0     		b	.L56
+ 854              	.LVL72:
+ 855              	.L64:
+ 519:Drivers/BSP/Components/ft5336/ft5336.c ****       break;
+ 856              		.loc 1 519 0
+ 857 006a 3227     		movs	r7, #50
+ 518:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressPMisc   = FT5336_P8_MISC_REG;
+ 858              		.loc 1 518 0
+ 859 006c 4FF03108 		mov	r8, #49
+ 517:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressPWeight = FT5336_P8_WEIGHT_REG;
+ 860              		.loc 1 517 0
+ 861 0070 2D21     		movs	r1, #45
+ 862              	.LVL73:
+ 520:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 863              		.loc 1 520 0
+ 864 0072 0DE0     		b	.L56
+ 865              	.LVL74:
+ 866              	.L65:
+ 525:Drivers/BSP/Components/ft5336/ft5336.c ****       break;
+ 867              		.loc 1 525 0
+ 868 0074 3827     		movs	r7, #56
+ 524:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressPMisc   = FT5336_P9_MISC_REG;
+ 869              		.loc 1 524 0
+ 870 0076 4FF03708 		mov	r8, #55
+ 523:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressPWeight = FT5336_P9_WEIGHT_REG;
+ 871              		.loc 1 523 0
+ 872 007a 3321     		movs	r1, #51
+ 873              	.LVL75:
+ 526:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 874              		.loc 1 526 0
+ 875 007c 08E0     		b	.L56
+ 876              	.LVL76:
+ 877              	.L66:
+ 531:Drivers/BSP/Components/ft5336/ft5336.c ****       break;
+ 878              		.loc 1 531 0
+ 879 007e 3E27     		movs	r7, #62
+ 530:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressPMisc   = FT5336_P10_MISC_REG;
+ 880              		.loc 1 530 0
+ 881 0080 4FF03D08 		mov	r8, #61
+ 529:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressPWeight = FT5336_P10_WEIGHT_REG;
+ 882              		.loc 1 529 0
+ 883 0084 3921     		movs	r1, #57
+ 884              	.LVL77:
+ 532:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 885              		.loc 1 532 0
+ 886 0086 03E0     		b	.L56
+ 887              	.LVL78:
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s 			page 29
+
+
+ 888              	.L67:
+ 477:Drivers/BSP/Components/ft5336/ft5336.c ****       break;
+ 889              		.loc 1 477 0
+ 890 0088 0827     		movs	r7, #8
+ 476:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressPMisc   = FT5336_P1_MISC_REG;
+ 891              		.loc 1 476 0
+ 892 008a 4FF00708 		mov	r8, #7
+ 475:Drivers/BSP/Components/ft5336/ft5336.c ****       regAddressPWeight = FT5336_P1_WEIGHT_REG;
+ 893              		.loc 1 475 0
+ 894 008e 0321     		movs	r1, #3
+ 895              	.LVL79:
+ 896              	.L56:
+ 897 0090 1D46     		mov	r5, r3
+ 898 0092 1646     		mov	r6, r2
+ 899              	.LVL80:
+ 540:Drivers/BSP/Components/ft5336/ft5336.c ****     * pEvent = (ucReadData & FT5336_TOUCH_EVT_FLAG_MASK) >> FT5336_TOUCH_EVT_FLAG_SHIFT;
+ 900              		.loc 1 540 0
+ 901 0094 C4B2     		uxtb	r4, r0
+ 902 0096 2046     		mov	r0, r4
+ 903              	.LVL81:
+ 904 0098 FFF7FEFF 		bl	TS_IO_Read
+ 905              	.LVL82:
+ 906 009c 8DF80700 		strb	r0, [sp, #7]
+ 541:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 907              		.loc 1 541 0
+ 908 00a0 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 909 00a4 9B09     		lsrs	r3, r3, #6
+ 910 00a6 089A     		ldr	r2, [sp, #32]
+ 911 00a8 1360     		str	r3, [r2]
+ 544:Drivers/BSP/Components/ft5336/ft5336.c ****     * pWeight = (ucReadData & FT5336_TOUCH_WEIGHT_MASK) >> FT5336_TOUCH_WEIGHT_SHIFT;
+ 912              		.loc 1 544 0
+ 913 00aa 4146     		mov	r1, r8
+ 914 00ac 2046     		mov	r0, r4
+ 915 00ae FFF7FEFF 		bl	TS_IO_Read
+ 916              	.LVL83:
+ 917 00b2 8DF80700 		strb	r0, [sp, #7]
+ 545:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 918              		.loc 1 545 0
+ 919 00b6 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 920 00ba 3360     		str	r3, [r6]
+ 548:Drivers/BSP/Components/ft5336/ft5336.c ****     * pArea = (ucReadData & FT5336_TOUCH_AREA_MASK) >> FT5336_TOUCH_AREA_SHIFT;
+ 921              		.loc 1 548 0
+ 922 00bc 3946     		mov	r1, r7
+ 923 00be 2046     		mov	r0, r4
+ 924 00c0 FFF7FEFF 		bl	TS_IO_Read
+ 925              	.LVL84:
+ 926 00c4 8DF80700 		strb	r0, [sp, #7]
+ 549:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 927              		.loc 1 549 0
+ 928 00c8 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+ 929 00cc 1209     		lsrs	r2, r2, #4
+ 930 00ce 02F00402 		and	r2, r2, #4
+ 931 00d2 2A60     		str	r2, [r5]
+ 932              	.LVL85:
+ 933              	.L53:
+ 552:Drivers/BSP/Components/ft5336/ft5336.c **** 
+ 934              		.loc 1 552 0
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s 			page 30
+
+
+ 935 00d4 02B0     		add	sp, sp, #8
+ 936              	.LCFI19:
+ 937              		.cfi_def_cfa_offset 24
+ 938              		@ sp needed
+ 939 00d6 BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 940              	.LVL86:
+ 941              	.L70:
+ 942 00da 00BF     		.align	2
+ 943              	.L69:
+ 944 00dc 00000000 		.word	.LANCHOR0
+ 945              		.cfi_endproc
+ 946              	.LFE11:
+ 948              		.global	ft5336_ts_drv
+ 949              		.section	.bss.coord.5391,"aw",%nobits
+ 950              		.align	1
+ 951              		.set	.LANCHOR1,. + 0
+ 954              	coord.5391:
+ 955 0000 0000     		.space	2
+ 956              		.section	.bss.ft5336_handle,"aw",%nobits
+ 957              		.align	2
+ 958              		.set	.LANCHOR0,. + 0
+ 961              	ft5336_handle:
+ 962 0000 000000   		.space	3
+ 963              		.section	.data.ft5336_ts_drv,"aw",%progbits
+ 964              		.align	2
+ 967              	ft5336_ts_drv:
+ 968 0000 00000000 		.word	ft5336_Init
+ 969 0004 00000000 		.word	ft5336_ReadID
+ 970 0008 00000000 		.word	ft5336_Reset
+ 971 000c 00000000 		.word	ft5336_TS_Start
+ 972 0010 00000000 		.word	ft5336_TS_DetectTouch
+ 973 0014 00000000 		.word	ft5336_TS_GetXY
+ 974 0018 00000000 		.word	ft5336_TS_EnableIT
+ 975 001c 00000000 		.word	ft5336_TS_ClearIT
+ 976 0020 00000000 		.word	ft5336_TS_ITStatus
+ 977 0024 00000000 		.word	ft5336_TS_DisableIT
+ 978              		.text
+ 979              	.Letext0:
+ 980              		.file 2 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 981              		.file 3 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 982              		.file 4 "Drivers/BSP/Components/ft5336/../Common/ts.h"
+ 983              		.file 5 "Drivers/BSP/Components/ft5336/ft5336.h"
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s 			page 31
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 ft5336.c
+C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s:18     .text.ft5336_Reset:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s:25     .text.ft5336_Reset:00000000 ft5336_Reset
+C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s:39     .text.ft5336_TS_ITStatus:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s:46     .text.ft5336_TS_ITStatus:00000000 ft5336_TS_ITStatus
+C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s:62     .text.ft5336_TS_ClearIT:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s:69     .text.ft5336_TS_ClearIT:00000000 ft5336_TS_ClearIT
+C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s:82     .text.ft5336_Get_I2C_InitializedStatus:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s:88     .text.ft5336_Get_I2C_InitializedStatus:00000000 ft5336_Get_I2C_InitializedStatus
+C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s:102    .text.ft5336_Get_I2C_InitializedStatus:00000008 $d
+C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s:107    .text.ft5336_I2C_InitializeIfRequired:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s:113    .text.ft5336_I2C_InitializeIfRequired:00000000 ft5336_I2C_InitializeIfRequired
+C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s:143    .text.ft5336_I2C_InitializeIfRequired:00000018 $d
+C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s:148    .text.ft5336_Init:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s:155    .text.ft5336_Init:00000000 ft5336_Init
+C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s:180    .text.ft5336_ReadID:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s:187    .text.ft5336_ReadID:00000000 ft5336_ReadID
+C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s:260    .text.ft5336_TS_DetectTouch:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s:267    .text.ft5336_TS_DetectTouch:00000000 ft5336_TS_DetectTouch
+C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s:322    .text.ft5336_TS_DetectTouch:00000048 $d
+C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s:327    .text.ft5336_TS_GetXY:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s:334    .text.ft5336_TS_GetXY:00000000 ft5336_TS_GetXY
+C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s:370    .text.ft5336_TS_GetXY:00000020 $d
+C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s:380    .text.ft5336_TS_GetXY:0000002a $t
+C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s:584    .text.ft5336_TS_GetXY:00000150 $d
+C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s:590    .text.ft5336_TS_EnableIT:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s:597    .text.ft5336_TS_EnableIT:00000000 ft5336_TS_EnableIT
+C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s:622    .text.ft5336_TS_DisableIT:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s:629    .text.ft5336_TS_DisableIT:00000000 ft5336_TS_DisableIT
+C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s:654    .text.ft5336_TS_Start:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s:661    .text.ft5336_TS_Start:00000000 ft5336_TS_Start
+C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s:681    .text.ft5336_TS_GetGestureID:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s:688    .text.ft5336_TS_GetGestureID:00000000 ft5336_TS_GetGestureID
+C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s:728    .text.ft5336_TS_GetTouchInfo:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s:735    .text.ft5336_TS_GetTouchInfo:00000000 ft5336_TS_GetTouchInfo
+C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s:768    .text.ft5336_TS_GetTouchInfo:0000001c $d
+C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s:778    .text.ft5336_TS_GetTouchInfo:00000026 $t
+C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s:944    .text.ft5336_TS_GetTouchInfo:000000dc $d
+C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s:967    .data.ft5336_ts_drv:00000000 ft5336_ts_drv
+C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s:950    .bss.coord.5391:00000000 $d
+C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s:954    .bss.coord.5391:00000000 coord.5391
+C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s:957    .bss.ft5336_handle:00000000 $d
+C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s:961    .bss.ft5336_handle:00000000 ft5336_handle
+C:\Users\Student\AppData\Local\Temp\ccTLqXQe.s:964    .data.ft5336_ts_drv:00000000 $d
+                     .debug_frame:00000010 $d
+
+UNDEFINED SYMBOLS
+TS_IO_Init
+TS_IO_Delay
+TS_IO_Read
+TS_IO_Write

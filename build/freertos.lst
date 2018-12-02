@@ -1,0 +1,221 @@
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc03JXDL.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"freertos.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.vApplicationIdleHook,"ax",%progbits
+  18              		.align	1
+  19              		.weak	vApplicationIdleHook
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  23              		.fpu fpv5-sp-d16
+  25              	vApplicationIdleHook:
+  26              	.LFB5:
+  27              		.file 1 "Src/freertos.c"
+   1:Src/freertos.c **** /* USER CODE BEGIN Header */
+   2:Src/freertos.c **** /**
+   3:Src/freertos.c ****   ******************************************************************************
+   4:Src/freertos.c ****   * File Name          : freertos.c
+   5:Src/freertos.c ****   * Description        : Code for freertos applications
+   6:Src/freertos.c ****   ******************************************************************************
+   7:Src/freertos.c ****   * This notice applies to any and all portions of this file
+   8:Src/freertos.c ****   * that are not between comment pairs USER CODE BEGIN and
+   9:Src/freertos.c ****   * USER CODE END. Other portions of this file, whether 
+  10:Src/freertos.c ****   * inserted by the user or by software development tools
+  11:Src/freertos.c ****   * are owned by their respective copyright owners.
+  12:Src/freertos.c ****   *
+  13:Src/freertos.c ****   * Copyright (c) 2018 STMicroelectronics International N.V. 
+  14:Src/freertos.c ****   * All rights reserved.
+  15:Src/freertos.c ****   *
+  16:Src/freertos.c ****   * Redistribution and use in source and binary forms, with or without 
+  17:Src/freertos.c ****   * modification, are permitted, provided that the following conditions are met:
+  18:Src/freertos.c ****   *
+  19:Src/freertos.c ****   * 1. Redistribution of source code must retain the above copyright notice, 
+  20:Src/freertos.c ****   *    this list of conditions and the following disclaimer.
+  21:Src/freertos.c ****   * 2. Redistributions in binary form must reproduce the above copyright notice,
+  22:Src/freertos.c ****   *    this list of conditions and the following disclaimer in the documentation
+  23:Src/freertos.c ****   *    and/or other materials provided with the distribution.
+  24:Src/freertos.c ****   * 3. Neither the name of STMicroelectronics nor the names of other 
+  25:Src/freertos.c ****   *    contributors to this software may be used to endorse or promote products 
+  26:Src/freertos.c ****   *    derived from this software without specific written permission.
+  27:Src/freertos.c ****   * 4. This software, including modifications and/or derivative works of this 
+  28:Src/freertos.c ****   *    software, must execute solely and exclusively on microcontroller or
+  29:Src/freertos.c ****   *    microprocessor devices manufactured by or for STMicroelectronics.
+  30:Src/freertos.c ****   * 5. Redistribution and use of this software other than as permitted under 
+  31:Src/freertos.c ****   *    this license is void and will automatically terminate your rights under 
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc03JXDL.s 			page 2
+
+
+  32:Src/freertos.c ****   *    this license. 
+  33:Src/freertos.c ****   *
+  34:Src/freertos.c ****   * THIS SOFTWARE IS PROVIDED BY STMICROELECTRONICS AND CONTRIBUTORS "AS IS" 
+  35:Src/freertos.c ****   * AND ANY EXPRESS, IMPLIED OR STATUTORY WARRANTIES, INCLUDING, BUT NOT 
+  36:Src/freertos.c ****   * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A 
+  37:Src/freertos.c ****   * PARTICULAR PURPOSE AND NON-INFRINGEMENT OF THIRD PARTY INTELLECTUAL PROPERTY
+  38:Src/freertos.c ****   * RIGHTS ARE DISCLAIMED TO THE FULLEST EXTENT PERMITTED BY LAW. IN NO EVENT 
+  39:Src/freertos.c ****   * SHALL STMICROELECTRONICS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+  40:Src/freertos.c ****   * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+  41:Src/freertos.c ****   * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, 
+  42:Src/freertos.c ****   * OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF 
+  43:Src/freertos.c ****   * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING 
+  44:Src/freertos.c ****   * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+  45:Src/freertos.c ****   * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  46:Src/freertos.c ****   *
+  47:Src/freertos.c ****   ******************************************************************************
+  48:Src/freertos.c ****   */
+  49:Src/freertos.c **** /* USER CODE END Header */
+  50:Src/freertos.c **** 
+  51:Src/freertos.c **** /* Includes ------------------------------------------------------------------*/
+  52:Src/freertos.c **** #include "FreeRTOS.h"
+  53:Src/freertos.c **** #include "task.h"
+  54:Src/freertos.c **** #include "main.h"
+  55:Src/freertos.c **** 
+  56:Src/freertos.c **** /* Private includes ----------------------------------------------------------*/
+  57:Src/freertos.c **** /* USER CODE BEGIN Includes */     
+  58:Src/freertos.c **** 
+  59:Src/freertos.c **** /* USER CODE END Includes */
+  60:Src/freertos.c **** 
+  61:Src/freertos.c **** /* Private typedef -----------------------------------------------------------*/
+  62:Src/freertos.c **** /* USER CODE BEGIN PTD */
+  63:Src/freertos.c **** 
+  64:Src/freertos.c **** /* USER CODE END PTD */
+  65:Src/freertos.c **** 
+  66:Src/freertos.c **** /* Private define ------------------------------------------------------------*/
+  67:Src/freertos.c **** /* USER CODE BEGIN PD */
+  68:Src/freertos.c **** 
+  69:Src/freertos.c **** /* USER CODE END PD */
+  70:Src/freertos.c **** 
+  71:Src/freertos.c **** /* Private macro -------------------------------------------------------------*/
+  72:Src/freertos.c **** /* USER CODE BEGIN PM */
+  73:Src/freertos.c **** 
+  74:Src/freertos.c **** /* USER CODE END PM */
+  75:Src/freertos.c **** 
+  76:Src/freertos.c **** /* Private variables ---------------------------------------------------------*/
+  77:Src/freertos.c **** /* USER CODE BEGIN Variables */
+  78:Src/freertos.c **** 
+  79:Src/freertos.c **** /* USER CODE END Variables */
+  80:Src/freertos.c **** 
+  81:Src/freertos.c **** /* Private function prototypes -----------------------------------------------*/
+  82:Src/freertos.c **** /* USER CODE BEGIN FunctionPrototypes */
+  83:Src/freertos.c **** void vApplicationIdleHook(void) __attribute__((weak));
+  84:Src/freertos.c **** void vApplicationStackOverflowHook(xTaskHandle xTask, signed char *pcTaskName) __attribute__((weak)
+  85:Src/freertos.c **** void vApplicationMallocFailedHook(void) __attribute__((weak));
+  86:Src/freertos.c **** 
+  87:Src/freertos.c **** /* USER CODE END FunctionPrototypes */
+  88:Src/freertos.c **** 
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc03JXDL.s 			page 3
+
+
+  89:Src/freertos.c **** /* Hook prototypes */
+  90:Src/freertos.c **** void vApplicationIdleHook(void);
+  91:Src/freertos.c **** void vApplicationStackOverflowHook(xTaskHandle xTask, signed char *pcTaskName);
+  92:Src/freertos.c **** void vApplicationMallocFailedHook(void);
+  93:Src/freertos.c **** 
+  94:Src/freertos.c **** /* USER CODE BEGIN 2 */
+  95:Src/freertos.c **** void vApplicationIdleHook( void )
+  96:Src/freertos.c **** {
+  28              		.loc 1 96 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+  33 0000 7047     		bx	lr
+  34              		.cfi_endproc
+  35              	.LFE5:
+  37              		.section	.text.vApplicationStackOverflowHook,"ax",%progbits
+  38              		.align	1
+  39              		.weak	vApplicationStackOverflowHook
+  40              		.syntax unified
+  41              		.thumb
+  42              		.thumb_func
+  43              		.fpu fpv5-sp-d16
+  45              	vApplicationStackOverflowHook:
+  46              	.LFB6:
+  97:Src/freertos.c ****    /* vApplicationIdleHook() will only be called if configUSE_IDLE_HOOK is set
+  98:Src/freertos.c ****    to 1 in FreeRTOSConfig.h. It will be called on each iteration of the idle
+  99:Src/freertos.c ****    task. It is essential that code added to this hook function never attempts
+ 100:Src/freertos.c ****    to block in any way (for example, call xQueueReceive() with a block time
+ 101:Src/freertos.c ****    specified, or call vTaskDelay()). If the application makes use of the
+ 102:Src/freertos.c ****    vTaskDelete() API function (as this demo application does) then it is also
+ 103:Src/freertos.c ****    important that vApplicationIdleHook() is permitted to return to its calling
+ 104:Src/freertos.c ****    function, because it is the responsibility of the idle task to clean up
+ 105:Src/freertos.c ****    memory allocated by the kernel to any task that has since been deleted. */
+ 106:Src/freertos.c **** }
+ 107:Src/freertos.c **** /* USER CODE END 2 */
+ 108:Src/freertos.c **** 
+ 109:Src/freertos.c **** /* USER CODE BEGIN 4 */
+ 110:Src/freertos.c **** void vApplicationStackOverflowHook(xTaskHandle xTask, signed char *pcTaskName)
+ 111:Src/freertos.c **** {
+  47              		.loc 1 111 0
+  48              		.cfi_startproc
+  49              		@ args = 0, pretend = 0, frame = 0
+  50              		@ frame_needed = 0, uses_anonymous_args = 0
+  51              		@ link register save eliminated.
+  52              	.LVL0:
+  53 0000 7047     		bx	lr
+  54              		.cfi_endproc
+  55              	.LFE6:
+  57              		.section	.text.vApplicationMallocFailedHook,"ax",%progbits
+  58              		.align	1
+  59              		.weak	vApplicationMallocFailedHook
+  60              		.syntax unified
+  61              		.thumb
+  62              		.thumb_func
+  63              		.fpu fpv5-sp-d16
+  65              	vApplicationMallocFailedHook:
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc03JXDL.s 			page 4
+
+
+  66              	.LFB7:
+ 112:Src/freertos.c ****    /* Run time stack overflow checking is performed if
+ 113:Src/freertos.c ****    configCHECK_FOR_STACK_OVERFLOW is defined to 1 or 2. This hook function is
+ 114:Src/freertos.c ****    called if a stack overflow is detected. */
+ 115:Src/freertos.c **** }
+ 116:Src/freertos.c **** /* USER CODE END 4 */
+ 117:Src/freertos.c **** 
+ 118:Src/freertos.c **** /* USER CODE BEGIN 5 */
+ 119:Src/freertos.c **** void vApplicationMallocFailedHook(void)
+ 120:Src/freertos.c **** {
+  67              		.loc 1 120 0
+  68              		.cfi_startproc
+  69              		@ args = 0, pretend = 0, frame = 0
+  70              		@ frame_needed = 0, uses_anonymous_args = 0
+  71              		@ link register save eliminated.
+  72 0000 7047     		bx	lr
+  73              		.cfi_endproc
+  74              	.LFE7:
+  76              		.text
+  77              	.Letext0:
+  78              		.file 2 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\machine\\_default_types.h"
+  79              		.file 3 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\_stdint.h"
+  80              		.file 4 "Middlewares/Third_Party/FreeRTOS/Source/include/task.h"
+  81              		.file 5 "Inc/FreeRTOSConfig.h"
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc03JXDL.s 			page 5
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 freertos.c
+C:\Users\Student\AppData\Local\Temp\cc03JXDL.s:18     .text.vApplicationIdleHook:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cc03JXDL.s:25     .text.vApplicationIdleHook:00000000 vApplicationIdleHook
+C:\Users\Student\AppData\Local\Temp\cc03JXDL.s:38     .text.vApplicationStackOverflowHook:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cc03JXDL.s:45     .text.vApplicationStackOverflowHook:00000000 vApplicationStackOverflowHook
+C:\Users\Student\AppData\Local\Temp\cc03JXDL.s:58     .text.vApplicationMallocFailedHook:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cc03JXDL.s:65     .text.vApplicationMallocFailedHook:00000000 vApplicationMallocFailedHook
+                     .debug_frame:00000010 $d
+
+NO UNDEFINED SYMBOLS

@@ -1,0 +1,3822 @@
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"wm8994.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.CODEC_IO_Write,"ax",%progbits
+  18              		.align	1
+  19              		.syntax unified
+  20              		.thumb
+  21              		.thumb_func
+  22              		.fpu fpv5-sp-d16
+  24              	CODEC_IO_Write:
+  25              	.LFB12:
+  26              		.file 1 "Drivers/BSP/Components/wm8994/wm8994.c"
+   1:Drivers/BSP/Components/wm8994/wm8994.c **** /**
+   2:Drivers/BSP/Components/wm8994/wm8994.c ****   ******************************************************************************
+   3:Drivers/BSP/Components/wm8994/wm8994.c ****   * @file    wm8994.c
+   4:Drivers/BSP/Components/wm8994/wm8994.c ****   * @author  MCD Application Team
+   5:Drivers/BSP/Components/wm8994/wm8994.c ****   * @brief   This file provides the WM8994 Audio Codec driver.
+   6:Drivers/BSP/Components/wm8994/wm8994.c ****   ******************************************************************************
+   7:Drivers/BSP/Components/wm8994/wm8994.c ****   * @attention
+   8:Drivers/BSP/Components/wm8994/wm8994.c ****   *
+   9:Drivers/BSP/Components/wm8994/wm8994.c ****   * <h2><center>&copy; COPYRIGHT(c) 2016 STMicroelectronics</center></h2>
+  10:Drivers/BSP/Components/wm8994/wm8994.c ****   *
+  11:Drivers/BSP/Components/wm8994/wm8994.c ****   * Redistribution and use in source and binary forms, with or without modification,
+  12:Drivers/BSP/Components/wm8994/wm8994.c ****   * are permitted provided that the following conditions are met:
+  13:Drivers/BSP/Components/wm8994/wm8994.c ****   *   1. Redistributions of source code must retain the above copyright notice,
+  14:Drivers/BSP/Components/wm8994/wm8994.c ****   *      this list of conditions and the following disclaimer.
+  15:Drivers/BSP/Components/wm8994/wm8994.c ****   *   2. Redistributions in binary form must reproduce the above copyright notice,
+  16:Drivers/BSP/Components/wm8994/wm8994.c ****   *      this list of conditions and the following disclaimer in the documentation
+  17:Drivers/BSP/Components/wm8994/wm8994.c ****   *      and/or other materials provided with the distribution.
+  18:Drivers/BSP/Components/wm8994/wm8994.c ****   *   3. Neither the name of STMicroelectronics nor the names of its contributors
+  19:Drivers/BSP/Components/wm8994/wm8994.c ****   *      may be used to endorse or promote products derived from this software
+  20:Drivers/BSP/Components/wm8994/wm8994.c ****   *      without specific prior written permission.
+  21:Drivers/BSP/Components/wm8994/wm8994.c ****   *
+  22:Drivers/BSP/Components/wm8994/wm8994.c ****   * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  23:Drivers/BSP/Components/wm8994/wm8994.c ****   * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  24:Drivers/BSP/Components/wm8994/wm8994.c ****   * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+  25:Drivers/BSP/Components/wm8994/wm8994.c ****   * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+  26:Drivers/BSP/Components/wm8994/wm8994.c ****   * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+  27:Drivers/BSP/Components/wm8994/wm8994.c ****   * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+  28:Drivers/BSP/Components/wm8994/wm8994.c ****   * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+  29:Drivers/BSP/Components/wm8994/wm8994.c ****   * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+  30:Drivers/BSP/Components/wm8994/wm8994.c ****   * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+  31:Drivers/BSP/Components/wm8994/wm8994.c ****   * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  32:Drivers/BSP/Components/wm8994/wm8994.c ****   *
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 2
+
+
+  33:Drivers/BSP/Components/wm8994/wm8994.c ****   ******************************************************************************
+  34:Drivers/BSP/Components/wm8994/wm8994.c ****   */
+  35:Drivers/BSP/Components/wm8994/wm8994.c **** 
+  36:Drivers/BSP/Components/wm8994/wm8994.c **** /* Includes ------------------------------------------------------------------*/
+  37:Drivers/BSP/Components/wm8994/wm8994.c **** #include "wm8994.h"
+  38:Drivers/BSP/Components/wm8994/wm8994.c **** 
+  39:Drivers/BSP/Components/wm8994/wm8994.c **** /** @addtogroup BSP
+  40:Drivers/BSP/Components/wm8994/wm8994.c ****   * @{
+  41:Drivers/BSP/Components/wm8994/wm8994.c ****   */
+  42:Drivers/BSP/Components/wm8994/wm8994.c ****   
+  43:Drivers/BSP/Components/wm8994/wm8994.c **** /** @addtogroup Components
+  44:Drivers/BSP/Components/wm8994/wm8994.c ****   * @{
+  45:Drivers/BSP/Components/wm8994/wm8994.c ****   */ 
+  46:Drivers/BSP/Components/wm8994/wm8994.c **** 
+  47:Drivers/BSP/Components/wm8994/wm8994.c **** /** @addtogroup wm8994
+  48:Drivers/BSP/Components/wm8994/wm8994.c ****   * @brief     This file provides a set of functions needed to drive the 
+  49:Drivers/BSP/Components/wm8994/wm8994.c ****   *            WM8994 audio codec.
+  50:Drivers/BSP/Components/wm8994/wm8994.c ****   * @{
+  51:Drivers/BSP/Components/wm8994/wm8994.c ****   */
+  52:Drivers/BSP/Components/wm8994/wm8994.c **** 
+  53:Drivers/BSP/Components/wm8994/wm8994.c **** /** @defgroup WM8994_Private_Types
+  54:Drivers/BSP/Components/wm8994/wm8994.c ****   * @{
+  55:Drivers/BSP/Components/wm8994/wm8994.c ****   */
+  56:Drivers/BSP/Components/wm8994/wm8994.c **** 
+  57:Drivers/BSP/Components/wm8994/wm8994.c **** /**
+  58:Drivers/BSP/Components/wm8994/wm8994.c ****   * @}
+  59:Drivers/BSP/Components/wm8994/wm8994.c ****   */ 
+  60:Drivers/BSP/Components/wm8994/wm8994.c ****   
+  61:Drivers/BSP/Components/wm8994/wm8994.c **** /** @defgroup WM8994_Private_Defines
+  62:Drivers/BSP/Components/wm8994/wm8994.c ****   * @{
+  63:Drivers/BSP/Components/wm8994/wm8994.c ****   */
+  64:Drivers/BSP/Components/wm8994/wm8994.c **** /* Uncomment this line to enable verifying data sent to codec after each write 
+  65:Drivers/BSP/Components/wm8994/wm8994.c ****    operation (for debug purpose) */
+  66:Drivers/BSP/Components/wm8994/wm8994.c **** #if !defined (VERIFY_WRITTENDATA)  
+  67:Drivers/BSP/Components/wm8994/wm8994.c **** /*#define VERIFY_WRITTENDATA*/
+  68:Drivers/BSP/Components/wm8994/wm8994.c **** #endif /* VERIFY_WRITTENDATA */
+  69:Drivers/BSP/Components/wm8994/wm8994.c **** /**
+  70:Drivers/BSP/Components/wm8994/wm8994.c ****   * @}
+  71:Drivers/BSP/Components/wm8994/wm8994.c ****   */ 
+  72:Drivers/BSP/Components/wm8994/wm8994.c **** 
+  73:Drivers/BSP/Components/wm8994/wm8994.c **** /** @defgroup WM8994_Private_Macros
+  74:Drivers/BSP/Components/wm8994/wm8994.c ****   * @{
+  75:Drivers/BSP/Components/wm8994/wm8994.c ****   */
+  76:Drivers/BSP/Components/wm8994/wm8994.c **** 
+  77:Drivers/BSP/Components/wm8994/wm8994.c **** /**
+  78:Drivers/BSP/Components/wm8994/wm8994.c ****   * @}
+  79:Drivers/BSP/Components/wm8994/wm8994.c ****   */ 
+  80:Drivers/BSP/Components/wm8994/wm8994.c ****   
+  81:Drivers/BSP/Components/wm8994/wm8994.c **** /** @defgroup WM8994_Private_Variables
+  82:Drivers/BSP/Components/wm8994/wm8994.c ****   * @{
+  83:Drivers/BSP/Components/wm8994/wm8994.c ****   */
+  84:Drivers/BSP/Components/wm8994/wm8994.c **** 
+  85:Drivers/BSP/Components/wm8994/wm8994.c **** /* Audio codec driver structure initialization */  
+  86:Drivers/BSP/Components/wm8994/wm8994.c **** AUDIO_DrvTypeDef wm8994_drv = 
+  87:Drivers/BSP/Components/wm8994/wm8994.c **** {
+  88:Drivers/BSP/Components/wm8994/wm8994.c ****   wm8994_Init,
+  89:Drivers/BSP/Components/wm8994/wm8994.c ****   wm8994_DeInit,
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 3
+
+
+  90:Drivers/BSP/Components/wm8994/wm8994.c ****   wm8994_ReadID,
+  91:Drivers/BSP/Components/wm8994/wm8994.c **** 
+  92:Drivers/BSP/Components/wm8994/wm8994.c ****   wm8994_Play,
+  93:Drivers/BSP/Components/wm8994/wm8994.c ****   wm8994_Pause,
+  94:Drivers/BSP/Components/wm8994/wm8994.c ****   wm8994_Resume,
+  95:Drivers/BSP/Components/wm8994/wm8994.c ****   wm8994_Stop,  
+  96:Drivers/BSP/Components/wm8994/wm8994.c **** 
+  97:Drivers/BSP/Components/wm8994/wm8994.c ****   wm8994_SetFrequency,
+  98:Drivers/BSP/Components/wm8994/wm8994.c ****   wm8994_SetVolume,
+  99:Drivers/BSP/Components/wm8994/wm8994.c ****   wm8994_SetMute,  
+ 100:Drivers/BSP/Components/wm8994/wm8994.c ****   wm8994_SetOutputMode,
+ 101:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 102:Drivers/BSP/Components/wm8994/wm8994.c ****   wm8994_Reset
+ 103:Drivers/BSP/Components/wm8994/wm8994.c **** };
+ 104:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 105:Drivers/BSP/Components/wm8994/wm8994.c **** static uint32_t outputEnabled = 0;
+ 106:Drivers/BSP/Components/wm8994/wm8994.c **** static uint32_t inputEnabled = 0;
+ 107:Drivers/BSP/Components/wm8994/wm8994.c **** static uint8_t ColdStartup = 1;
+ 108:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 109:Drivers/BSP/Components/wm8994/wm8994.c **** /**
+ 110:Drivers/BSP/Components/wm8994/wm8994.c ****   * @}
+ 111:Drivers/BSP/Components/wm8994/wm8994.c ****   */ 
+ 112:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 113:Drivers/BSP/Components/wm8994/wm8994.c **** /** @defgroup WM8994_Function_Prototypes
+ 114:Drivers/BSP/Components/wm8994/wm8994.c ****   * @{
+ 115:Drivers/BSP/Components/wm8994/wm8994.c ****   */
+ 116:Drivers/BSP/Components/wm8994/wm8994.c **** static uint8_t CODEC_IO_Write(uint8_t Addr, uint16_t Reg, uint16_t Value);
+ 117:Drivers/BSP/Components/wm8994/wm8994.c **** /**
+ 118:Drivers/BSP/Components/wm8994/wm8994.c ****   * @}
+ 119:Drivers/BSP/Components/wm8994/wm8994.c ****   */ 
+ 120:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 121:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 122:Drivers/BSP/Components/wm8994/wm8994.c **** /** @defgroup WM8994_Private_Functions
+ 123:Drivers/BSP/Components/wm8994/wm8994.c ****   * @{
+ 124:Drivers/BSP/Components/wm8994/wm8994.c ****   */ 
+ 125:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 126:Drivers/BSP/Components/wm8994/wm8994.c **** /**
+ 127:Drivers/BSP/Components/wm8994/wm8994.c ****   * @brief Initializes the audio codec and the control interface.
+ 128:Drivers/BSP/Components/wm8994/wm8994.c ****   * @param DeviceAddr: Device address on communication Bus.   
+ 129:Drivers/BSP/Components/wm8994/wm8994.c ****   * @param OutputInputDevice: can be OUTPUT_DEVICE_SPEAKER, OUTPUT_DEVICE_HEADPHONE,
+ 130:Drivers/BSP/Components/wm8994/wm8994.c ****   *  OUTPUT_DEVICE_BOTH, OUTPUT_DEVICE_AUTO, INPUT_DEVICE_DIGITAL_MICROPHONE_1,
+ 131:Drivers/BSP/Components/wm8994/wm8994.c ****   *  INPUT_DEVICE_DIGITAL_MICROPHONE_2, INPUT_DEVICE_DIGITAL_MIC1_MIC2, 
+ 132:Drivers/BSP/Components/wm8994/wm8994.c ****   *  INPUT_DEVICE_INPUT_LINE_1 or INPUT_DEVICE_INPUT_LINE_2.
+ 133:Drivers/BSP/Components/wm8994/wm8994.c ****   * @param Volume: Initial volume level (from 0 (Mute) to 100 (Max))
+ 134:Drivers/BSP/Components/wm8994/wm8994.c ****   * @param AudioFreq: Audio Frequency 
+ 135:Drivers/BSP/Components/wm8994/wm8994.c ****   * @retval 0 if correct communication, else wrong communication
+ 136:Drivers/BSP/Components/wm8994/wm8994.c ****   */
+ 137:Drivers/BSP/Components/wm8994/wm8994.c **** uint32_t wm8994_Init(uint16_t DeviceAddr, uint16_t OutputInputDevice, uint8_t Volume, uint32_t Audi
+ 138:Drivers/BSP/Components/wm8994/wm8994.c **** {
+ 139:Drivers/BSP/Components/wm8994/wm8994.c ****   uint32_t counter = 0;
+ 140:Drivers/BSP/Components/wm8994/wm8994.c ****   uint16_t output_device = OutputInputDevice & 0xFF;
+ 141:Drivers/BSP/Components/wm8994/wm8994.c ****   uint16_t input_device = OutputInputDevice & 0xFF00;
+ 142:Drivers/BSP/Components/wm8994/wm8994.c ****   uint16_t power_mgnt_reg_1 = 0;
+ 143:Drivers/BSP/Components/wm8994/wm8994.c ****   
+ 144:Drivers/BSP/Components/wm8994/wm8994.c ****   /* Initialize the Control interface of the Audio Codec */
+ 145:Drivers/BSP/Components/wm8994/wm8994.c ****   AUDIO_IO_Init();
+ 146:Drivers/BSP/Components/wm8994/wm8994.c ****   /* wm8994 Errata Work-Arounds */
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 4
+
+
+ 147:Drivers/BSP/Components/wm8994/wm8994.c ****   counter += CODEC_IO_Write(DeviceAddr, 0x102, 0x0003);
+ 148:Drivers/BSP/Components/wm8994/wm8994.c ****   counter += CODEC_IO_Write(DeviceAddr, 0x817, 0x0000);
+ 149:Drivers/BSP/Components/wm8994/wm8994.c ****   counter += CODEC_IO_Write(DeviceAddr, 0x102, 0x0000);
+ 150:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 151:Drivers/BSP/Components/wm8994/wm8994.c ****   /* Enable VMID soft start (fast), Start-up Bias Current Enabled */
+ 152:Drivers/BSP/Components/wm8994/wm8994.c ****   counter += CODEC_IO_Write(DeviceAddr, 0x39, 0x006C);
+ 153:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 154:Drivers/BSP/Components/wm8994/wm8994.c ****     /* Enable bias generator, Enable VMID */
+ 155:Drivers/BSP/Components/wm8994/wm8994.c ****   if (input_device > 0)
+ 156:Drivers/BSP/Components/wm8994/wm8994.c ****   {
+ 157:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x01, 0x0013);
+ 158:Drivers/BSP/Components/wm8994/wm8994.c ****   }
+ 159:Drivers/BSP/Components/wm8994/wm8994.c ****   else
+ 160:Drivers/BSP/Components/wm8994/wm8994.c ****   {
+ 161:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x01, 0x0003);
+ 162:Drivers/BSP/Components/wm8994/wm8994.c ****   }
+ 163:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 164:Drivers/BSP/Components/wm8994/wm8994.c ****   /* Add Delay */
+ 165:Drivers/BSP/Components/wm8994/wm8994.c ****   AUDIO_IO_Delay(50);
+ 166:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 167:Drivers/BSP/Components/wm8994/wm8994.c ****   /* Path Configurations for output */
+ 168:Drivers/BSP/Components/wm8994/wm8994.c ****   if (output_device > 0)
+ 169:Drivers/BSP/Components/wm8994/wm8994.c ****   {
+ 170:Drivers/BSP/Components/wm8994/wm8994.c ****     outputEnabled = 1;
+ 171:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 172:Drivers/BSP/Components/wm8994/wm8994.c ****     switch (output_device)
+ 173:Drivers/BSP/Components/wm8994/wm8994.c ****     {
+ 174:Drivers/BSP/Components/wm8994/wm8994.c ****     case OUTPUT_DEVICE_SPEAKER:
+ 175:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Enable DAC1 (Left), Enable DAC1 (Right),
+ 176:Drivers/BSP/Components/wm8994/wm8994.c ****       Disable DAC2 (Left), Disable DAC2 (Right)*/
+ 177:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x05, 0x0C0C);
+ 178:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 179:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Enable the AIF1 Timeslot 0 (Left) to DAC 1 (Left) mixer path */
+ 180:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x601, 0x0000);
+ 181:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 182:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Enable the AIF1 Timeslot 0 (Right) to DAC 1 (Right) mixer path */
+ 183:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x602, 0x0000);
+ 184:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 185:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Disable the AIF1 Timeslot 1 (Left) to DAC 2 (Left) mixer path */
+ 186:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x604, 0x0002);
+ 187:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 188:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Disable the AIF1 Timeslot 1 (Right) to DAC 2 (Right) mixer path */
+ 189:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x605, 0x0002);
+ 190:Drivers/BSP/Components/wm8994/wm8994.c ****       break;
+ 191:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 192:Drivers/BSP/Components/wm8994/wm8994.c ****     case OUTPUT_DEVICE_HEADPHONE:
+ 193:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Disable DAC1 (Left), Disable DAC1 (Right),
+ 194:Drivers/BSP/Components/wm8994/wm8994.c ****       Enable DAC2 (Left), Enable DAC2 (Right)*/
+ 195:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x05, 0x0303);
+ 196:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 197:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Enable the AIF1 Timeslot 0 (Left) to DAC 1 (Left) mixer path */
+ 198:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x601, 0x0001);
+ 199:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 200:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Enable the AIF1 Timeslot 0 (Right) to DAC 1 (Right) mixer path */
+ 201:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x602, 0x0001);
+ 202:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 203:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Disable the AIF1 Timeslot 1 (Left) to DAC 2 (Left) mixer path */
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 5
+
+
+ 204:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x604, 0x0000);
+ 205:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 206:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Disable the AIF1 Timeslot 1 (Right) to DAC 2 (Right) mixer path */
+ 207:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x605, 0x0000);
+ 208:Drivers/BSP/Components/wm8994/wm8994.c ****       break;
+ 209:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 210:Drivers/BSP/Components/wm8994/wm8994.c ****     case OUTPUT_DEVICE_BOTH:
+ 211:Drivers/BSP/Components/wm8994/wm8994.c ****       if (input_device == INPUT_DEVICE_DIGITAL_MIC1_MIC2)
+ 212:Drivers/BSP/Components/wm8994/wm8994.c ****       {
+ 213:Drivers/BSP/Components/wm8994/wm8994.c ****         /* Enable DAC1 (Left), Enable DAC1 (Right),
+ 214:Drivers/BSP/Components/wm8994/wm8994.c ****         also Enable DAC2 (Left), Enable DAC2 (Right)*/
+ 215:Drivers/BSP/Components/wm8994/wm8994.c ****         counter += CODEC_IO_Write(DeviceAddr, 0x05, 0x0303 | 0x0C0C);
+ 216:Drivers/BSP/Components/wm8994/wm8994.c ****         
+ 217:Drivers/BSP/Components/wm8994/wm8994.c ****         /* Enable the AIF1 Timeslot 0 (Left) to DAC 1 (Left) mixer path
+ 218:Drivers/BSP/Components/wm8994/wm8994.c ****         Enable the AIF1 Timeslot 1 (Left) to DAC 1 (Left) mixer path */
+ 219:Drivers/BSP/Components/wm8994/wm8994.c ****         counter += CODEC_IO_Write(DeviceAddr, 0x601, 0x0003);
+ 220:Drivers/BSP/Components/wm8994/wm8994.c ****         
+ 221:Drivers/BSP/Components/wm8994/wm8994.c ****         /* Enable the AIF1 Timeslot 0 (Right) to DAC 1 (Right) mixer path
+ 222:Drivers/BSP/Components/wm8994/wm8994.c ****         Enable the AIF1 Timeslot 1 (Right) to DAC 1 (Right) mixer path */
+ 223:Drivers/BSP/Components/wm8994/wm8994.c ****         counter += CODEC_IO_Write(DeviceAddr, 0x602, 0x0003);
+ 224:Drivers/BSP/Components/wm8994/wm8994.c ****         
+ 225:Drivers/BSP/Components/wm8994/wm8994.c ****         /* Enable the AIF1 Timeslot 0 (Left) to DAC 2 (Left) mixer path
+ 226:Drivers/BSP/Components/wm8994/wm8994.c ****         Enable the AIF1 Timeslot 1 (Left) to DAC 2 (Left) mixer path  */
+ 227:Drivers/BSP/Components/wm8994/wm8994.c ****         counter += CODEC_IO_Write(DeviceAddr, 0x604, 0x0003);
+ 228:Drivers/BSP/Components/wm8994/wm8994.c ****         
+ 229:Drivers/BSP/Components/wm8994/wm8994.c ****         /* Enable the AIF1 Timeslot 0 (Right) to DAC 2 (Right) mixer path
+ 230:Drivers/BSP/Components/wm8994/wm8994.c ****         Enable the AIF1 Timeslot 1 (Right) to DAC 2 (Right) mixer path */
+ 231:Drivers/BSP/Components/wm8994/wm8994.c ****         counter += CODEC_IO_Write(DeviceAddr, 0x605, 0x0003);
+ 232:Drivers/BSP/Components/wm8994/wm8994.c ****       }
+ 233:Drivers/BSP/Components/wm8994/wm8994.c ****       else
+ 234:Drivers/BSP/Components/wm8994/wm8994.c ****       {
+ 235:Drivers/BSP/Components/wm8994/wm8994.c ****         /* Enable DAC1 (Left), Enable DAC1 (Right),
+ 236:Drivers/BSP/Components/wm8994/wm8994.c ****         also Enable DAC2 (Left), Enable DAC2 (Right)*/
+ 237:Drivers/BSP/Components/wm8994/wm8994.c ****         counter += CODEC_IO_Write(DeviceAddr, 0x05, 0x0303 | 0x0C0C);
+ 238:Drivers/BSP/Components/wm8994/wm8994.c ****         
+ 239:Drivers/BSP/Components/wm8994/wm8994.c ****         /* Enable the AIF1 Timeslot 0 (Left) to DAC 1 (Left) mixer path */
+ 240:Drivers/BSP/Components/wm8994/wm8994.c ****         counter += CODEC_IO_Write(DeviceAddr, 0x601, 0x0001);
+ 241:Drivers/BSP/Components/wm8994/wm8994.c ****         
+ 242:Drivers/BSP/Components/wm8994/wm8994.c ****         /* Enable the AIF1 Timeslot 0 (Right) to DAC 1 (Right) mixer path */
+ 243:Drivers/BSP/Components/wm8994/wm8994.c ****         counter += CODEC_IO_Write(DeviceAddr, 0x602, 0x0001);
+ 244:Drivers/BSP/Components/wm8994/wm8994.c ****         
+ 245:Drivers/BSP/Components/wm8994/wm8994.c ****         /* Enable the AIF1 Timeslot 1 (Left) to DAC 2 (Left) mixer path */
+ 246:Drivers/BSP/Components/wm8994/wm8994.c ****         counter += CODEC_IO_Write(DeviceAddr, 0x604, 0x0002);
+ 247:Drivers/BSP/Components/wm8994/wm8994.c ****         
+ 248:Drivers/BSP/Components/wm8994/wm8994.c ****         /* Enable the AIF1 Timeslot 1 (Right) to DAC 2 (Right) mixer path */
+ 249:Drivers/BSP/Components/wm8994/wm8994.c ****         counter += CODEC_IO_Write(DeviceAddr, 0x605, 0x0002);      
+ 250:Drivers/BSP/Components/wm8994/wm8994.c ****       }
+ 251:Drivers/BSP/Components/wm8994/wm8994.c ****       break;
+ 252:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 253:Drivers/BSP/Components/wm8994/wm8994.c ****     case OUTPUT_DEVICE_AUTO :
+ 254:Drivers/BSP/Components/wm8994/wm8994.c ****     default:
+ 255:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Disable DAC1 (Left), Disable DAC1 (Right),
+ 256:Drivers/BSP/Components/wm8994/wm8994.c ****       Enable DAC2 (Left), Enable DAC2 (Right)*/
+ 257:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x05, 0x0303);
+ 258:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 259:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Enable the AIF1 Timeslot 0 (Left) to DAC 1 (Left) mixer path */
+ 260:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x601, 0x0001);
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 6
+
+
+ 261:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 262:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Enable the AIF1 Timeslot 0 (Right) to DAC 1 (Right) mixer path */
+ 263:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x602, 0x0001);
+ 264:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 265:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Disable the AIF1 Timeslot 1 (Left) to DAC 2 (Left) mixer path */
+ 266:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x604, 0x0000);
+ 267:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 268:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Disable the AIF1 Timeslot 1 (Right) to DAC 2 (Right) mixer path */
+ 269:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x605, 0x0000);
+ 270:Drivers/BSP/Components/wm8994/wm8994.c ****       break;
+ 271:Drivers/BSP/Components/wm8994/wm8994.c ****     }
+ 272:Drivers/BSP/Components/wm8994/wm8994.c ****   }
+ 273:Drivers/BSP/Components/wm8994/wm8994.c ****   else
+ 274:Drivers/BSP/Components/wm8994/wm8994.c ****   {
+ 275:Drivers/BSP/Components/wm8994/wm8994.c ****     outputEnabled = 0;
+ 276:Drivers/BSP/Components/wm8994/wm8994.c ****   }
+ 277:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 278:Drivers/BSP/Components/wm8994/wm8994.c ****   /* Path Configurations for input */
+ 279:Drivers/BSP/Components/wm8994/wm8994.c ****   if (input_device > 0)
+ 280:Drivers/BSP/Components/wm8994/wm8994.c ****   {
+ 281:Drivers/BSP/Components/wm8994/wm8994.c ****     inputEnabled = 1;
+ 282:Drivers/BSP/Components/wm8994/wm8994.c ****     switch (input_device)
+ 283:Drivers/BSP/Components/wm8994/wm8994.c ****     {
+ 284:Drivers/BSP/Components/wm8994/wm8994.c ****     case INPUT_DEVICE_DIGITAL_MICROPHONE_2 :
+ 285:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Enable AIF1ADC2 (Left), Enable AIF1ADC2 (Right)
+ 286:Drivers/BSP/Components/wm8994/wm8994.c ****        * Enable DMICDAT2 (Left), Enable DMICDAT2 (Right)
+ 287:Drivers/BSP/Components/wm8994/wm8994.c ****        * Enable Left ADC, Enable Right ADC */
+ 288:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x04, 0x0C30);
+ 289:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 290:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Enable AIF1 DRC2 Signal Detect & DRC in AIF1ADC2 Left/Right Timeslot 1 */
+ 291:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x450, 0x00DB);
+ 292:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 293:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Disable IN1L, IN1R, IN2L, IN2R, Enable Thermal sensor & shutdown */
+ 294:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x02, 0x6000);
+ 295:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 296:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Enable the DMIC2(Left) to AIF1 Timeslot 1 (Left) mixer path */
+ 297:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x608, 0x0002);
+ 298:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 299:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Enable the DMIC2(Right) to AIF1 Timeslot 1 (Right) mixer path */
+ 300:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x609, 0x0002);
+ 301:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 302:Drivers/BSP/Components/wm8994/wm8994.c ****       /* GPIO1 pin configuration GP1_DIR = output, GP1_FN = AIF1 DRC2 signal detect */
+ 303:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x700, 0x000E);
+ 304:Drivers/BSP/Components/wm8994/wm8994.c ****       break;
+ 305:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 306:Drivers/BSP/Components/wm8994/wm8994.c ****     case INPUT_DEVICE_INPUT_LINE_1 :
+ 307:Drivers/BSP/Components/wm8994/wm8994.c ****       /* IN1LN_TO_IN1L, IN1LP_TO_VMID, IN1RN_TO_IN1R, IN1RP_TO_VMID */
+ 308:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x28, 0x0011);
+ 309:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 310:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Disable mute on IN1L_TO_MIXINL and +30dB on IN1L PGA output */
+ 311:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x29, 0x0035);
+ 312:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 313:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Disable mute on IN1R_TO_MIXINL, Gain = +30dB */
+ 314:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x2A, 0x0035);
+ 315:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 316:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Enable AIF1ADC1 (Left), Enable AIF1ADC1 (Right)
+ 317:Drivers/BSP/Components/wm8994/wm8994.c ****        * Enable Left ADC, Enable Right ADC */
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 7
+
+
+ 318:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x04, 0x0303);
+ 319:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 320:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Enable AIF1 DRC1 Signal Detect & DRC in AIF1ADC1 Left/Right Timeslot 0 */
+ 321:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x440, 0x00DB);
+ 322:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 323:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Enable IN1L and IN1R, Disable IN2L and IN2R, Enable Thermal sensor & shutdown */
+ 324:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x02, 0x6350);
+ 325:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 326:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Enable the ADCL(Left) to AIF1 Timeslot 0 (Left) mixer path */
+ 327:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x606, 0x0002);
+ 328:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 329:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Enable the ADCR(Right) to AIF1 Timeslot 0 (Right) mixer path */
+ 330:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x607, 0x0002);
+ 331:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 332:Drivers/BSP/Components/wm8994/wm8994.c ****       /* GPIO1 pin configuration GP1_DIR = output, GP1_FN = AIF1 DRC1 signal detect */
+ 333:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x700, 0x000D);
+ 334:Drivers/BSP/Components/wm8994/wm8994.c ****       break;
+ 335:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 336:Drivers/BSP/Components/wm8994/wm8994.c ****     case INPUT_DEVICE_DIGITAL_MICROPHONE_1 :
+ 337:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Enable AIF1ADC1 (Left), Enable AIF1ADC1 (Right)
+ 338:Drivers/BSP/Components/wm8994/wm8994.c ****        * Enable DMICDAT1 (Left), Enable DMICDAT1 (Right)
+ 339:Drivers/BSP/Components/wm8994/wm8994.c ****        * Enable Left ADC, Enable Right ADC */
+ 340:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x04, 0x030C);
+ 341:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 342:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Enable AIF1 DRC2 Signal Detect & DRC in AIF1ADC1 Left/Right Timeslot 0 */
+ 343:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x440, 0x00DB);
+ 344:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 345:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Disable IN1L, IN1R, IN2L, IN2R, Enable Thermal sensor & shutdown */
+ 346:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x02, 0x6350);
+ 347:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 348:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Enable the DMIC2(Left) to AIF1 Timeslot 0 (Left) mixer path */
+ 349:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x606, 0x0002);
+ 350:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 351:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Enable the DMIC2(Right) to AIF1 Timeslot 0 (Right) mixer path */
+ 352:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x607, 0x0002);
+ 353:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 354:Drivers/BSP/Components/wm8994/wm8994.c ****       /* GPIO1 pin configuration GP1_DIR = output, GP1_FN = AIF1 DRC1 signal detect */
+ 355:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x700, 0x000D);
+ 356:Drivers/BSP/Components/wm8994/wm8994.c ****       break; 
+ 357:Drivers/BSP/Components/wm8994/wm8994.c ****     case INPUT_DEVICE_DIGITAL_MIC1_MIC2 :
+ 358:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Enable AIF1ADC1 (Left), Enable AIF1ADC1 (Right)
+ 359:Drivers/BSP/Components/wm8994/wm8994.c ****        * Enable DMICDAT1 (Left), Enable DMICDAT1 (Right)
+ 360:Drivers/BSP/Components/wm8994/wm8994.c ****        * Enable Left ADC, Enable Right ADC */
+ 361:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x04, 0x0F3C);
+ 362:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 363:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Enable AIF1 DRC2 Signal Detect & DRC in AIF1ADC2 Left/Right Timeslot 1 */
+ 364:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x450, 0x00DB);
+ 365:Drivers/BSP/Components/wm8994/wm8994.c ****       
+ 366:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Enable AIF1 DRC2 Signal Detect & DRC in AIF1ADC1 Left/Right Timeslot 0 */
+ 367:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x440, 0x00DB);
+ 368:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 369:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Disable IN1L, IN1R, Enable IN2L, IN2R, Thermal sensor & shutdown */
+ 370:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x02, 0x63A0);
+ 371:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 372:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Enable the DMIC2(Left) to AIF1 Timeslot 0 (Left) mixer path */
+ 373:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x606, 0x0002);
+ 374:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 8
+
+
+ 375:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Enable the DMIC2(Right) to AIF1 Timeslot 0 (Right) mixer path */
+ 376:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x607, 0x0002);
+ 377:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 378:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Enable the DMIC2(Left) to AIF1 Timeslot 1 (Left) mixer path */
+ 379:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x608, 0x0002);
+ 380:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 381:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Enable the DMIC2(Right) to AIF1 Timeslot 1 (Right) mixer path */
+ 382:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x609, 0x0002);
+ 383:Drivers/BSP/Components/wm8994/wm8994.c ****       
+ 384:Drivers/BSP/Components/wm8994/wm8994.c ****       /* GPIO1 pin configuration GP1_DIR = output, GP1_FN = AIF1 DRC1 signal detect */
+ 385:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x700, 0x000D);
+ 386:Drivers/BSP/Components/wm8994/wm8994.c ****       break;    
+ 387:Drivers/BSP/Components/wm8994/wm8994.c ****     case INPUT_DEVICE_INPUT_LINE_2 :
+ 388:Drivers/BSP/Components/wm8994/wm8994.c ****     default:
+ 389:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Actually, no other input devices supported */
+ 390:Drivers/BSP/Components/wm8994/wm8994.c ****       counter++;
+ 391:Drivers/BSP/Components/wm8994/wm8994.c ****       break;
+ 392:Drivers/BSP/Components/wm8994/wm8994.c ****     }
+ 393:Drivers/BSP/Components/wm8994/wm8994.c ****   }
+ 394:Drivers/BSP/Components/wm8994/wm8994.c ****   else
+ 395:Drivers/BSP/Components/wm8994/wm8994.c ****   {
+ 396:Drivers/BSP/Components/wm8994/wm8994.c ****     inputEnabled = 0;
+ 397:Drivers/BSP/Components/wm8994/wm8994.c ****   }
+ 398:Drivers/BSP/Components/wm8994/wm8994.c ****   
+ 399:Drivers/BSP/Components/wm8994/wm8994.c ****   /*  Clock Configurations */
+ 400:Drivers/BSP/Components/wm8994/wm8994.c ****   switch (AudioFreq)
+ 401:Drivers/BSP/Components/wm8994/wm8994.c ****   {
+ 402:Drivers/BSP/Components/wm8994/wm8994.c ****   case  AUDIO_FREQUENCY_8K:
+ 403:Drivers/BSP/Components/wm8994/wm8994.c ****     /* AIF1 Sample Rate = 8 (KHz), ratio=256 */ 
+ 404:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x210, 0x0003);
+ 405:Drivers/BSP/Components/wm8994/wm8994.c ****     break;
+ 406:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 407:Drivers/BSP/Components/wm8994/wm8994.c ****   case  AUDIO_FREQUENCY_16K:
+ 408:Drivers/BSP/Components/wm8994/wm8994.c ****     /* AIF1 Sample Rate = 16 (KHz), ratio=256 */ 
+ 409:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x210, 0x0033);
+ 410:Drivers/BSP/Components/wm8994/wm8994.c ****     break;
+ 411:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 412:Drivers/BSP/Components/wm8994/wm8994.c ****   case  AUDIO_FREQUENCY_32K:
+ 413:Drivers/BSP/Components/wm8994/wm8994.c ****     /* AIF1 Sample Rate = 32 (KHz), ratio=256 */ 
+ 414:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x210, 0x0063);
+ 415:Drivers/BSP/Components/wm8994/wm8994.c ****     break;
+ 416:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 417:Drivers/BSP/Components/wm8994/wm8994.c ****   case  AUDIO_FREQUENCY_48K:
+ 418:Drivers/BSP/Components/wm8994/wm8994.c ****     /* AIF1 Sample Rate = 48 (KHz), ratio=256 */ 
+ 419:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x210, 0x0083);
+ 420:Drivers/BSP/Components/wm8994/wm8994.c ****     break;
+ 421:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 422:Drivers/BSP/Components/wm8994/wm8994.c ****   case  AUDIO_FREQUENCY_96K:
+ 423:Drivers/BSP/Components/wm8994/wm8994.c ****     /* AIF1 Sample Rate = 96 (KHz), ratio=256 */ 
+ 424:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x210, 0x00A3);
+ 425:Drivers/BSP/Components/wm8994/wm8994.c ****     break;
+ 426:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 427:Drivers/BSP/Components/wm8994/wm8994.c ****   case  AUDIO_FREQUENCY_11K:
+ 428:Drivers/BSP/Components/wm8994/wm8994.c ****     /* AIF1 Sample Rate = 11.025 (KHz), ratio=256 */ 
+ 429:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x210, 0x0013);
+ 430:Drivers/BSP/Components/wm8994/wm8994.c ****     break;
+ 431:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 9
+
+
+ 432:Drivers/BSP/Components/wm8994/wm8994.c ****   case  AUDIO_FREQUENCY_22K:
+ 433:Drivers/BSP/Components/wm8994/wm8994.c ****     /* AIF1 Sample Rate = 22.050 (KHz), ratio=256 */ 
+ 434:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x210, 0x0043);
+ 435:Drivers/BSP/Components/wm8994/wm8994.c ****     break;
+ 436:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 437:Drivers/BSP/Components/wm8994/wm8994.c ****   case  AUDIO_FREQUENCY_44K:
+ 438:Drivers/BSP/Components/wm8994/wm8994.c ****     /* AIF1 Sample Rate = 44.1 (KHz), ratio=256 */ 
+ 439:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x210, 0x0073);
+ 440:Drivers/BSP/Components/wm8994/wm8994.c ****     break; 
+ 441:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 442:Drivers/BSP/Components/wm8994/wm8994.c ****   default:
+ 443:Drivers/BSP/Components/wm8994/wm8994.c ****     /* AIF1 Sample Rate = 48 (KHz), ratio=256 */ 
+ 444:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x210, 0x0083);
+ 445:Drivers/BSP/Components/wm8994/wm8994.c ****     break; 
+ 446:Drivers/BSP/Components/wm8994/wm8994.c ****   }
+ 447:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 448:Drivers/BSP/Components/wm8994/wm8994.c ****   if(input_device == INPUT_DEVICE_DIGITAL_MIC1_MIC2)
+ 449:Drivers/BSP/Components/wm8994/wm8994.c ****   {
+ 450:Drivers/BSP/Components/wm8994/wm8994.c ****   /* AIF1 Word Length = 16-bits, AIF1 Format = DSP mode */
+ 451:Drivers/BSP/Components/wm8994/wm8994.c ****   counter += CODEC_IO_Write(DeviceAddr, 0x300, 0x4018);    
+ 452:Drivers/BSP/Components/wm8994/wm8994.c ****   }
+ 453:Drivers/BSP/Components/wm8994/wm8994.c ****   else
+ 454:Drivers/BSP/Components/wm8994/wm8994.c ****   {
+ 455:Drivers/BSP/Components/wm8994/wm8994.c ****   /* AIF1 Word Length = 16-bits, AIF1 Format = I2S (Default Register Value) */
+ 456:Drivers/BSP/Components/wm8994/wm8994.c ****   counter += CODEC_IO_Write(DeviceAddr, 0x300, 0x4010);
+ 457:Drivers/BSP/Components/wm8994/wm8994.c ****   }
+ 458:Drivers/BSP/Components/wm8994/wm8994.c ****   
+ 459:Drivers/BSP/Components/wm8994/wm8994.c ****   /* slave mode */
+ 460:Drivers/BSP/Components/wm8994/wm8994.c ****   counter += CODEC_IO_Write(DeviceAddr, 0x302, 0x0000);
+ 461:Drivers/BSP/Components/wm8994/wm8994.c ****   
+ 462:Drivers/BSP/Components/wm8994/wm8994.c ****   /* Enable the DSP processing clock for AIF1, Enable the core clock */
+ 463:Drivers/BSP/Components/wm8994/wm8994.c ****   counter += CODEC_IO_Write(DeviceAddr, 0x208, 0x000A);
+ 464:Drivers/BSP/Components/wm8994/wm8994.c ****   
+ 465:Drivers/BSP/Components/wm8994/wm8994.c ****   /* Enable AIF1 Clock, AIF1 Clock Source = MCLK1 pin */
+ 466:Drivers/BSP/Components/wm8994/wm8994.c ****   counter += CODEC_IO_Write(DeviceAddr, 0x200, 0x0001);
+ 467:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 468:Drivers/BSP/Components/wm8994/wm8994.c ****   if (output_device > 0)  /* Audio output selected */
+ 469:Drivers/BSP/Components/wm8994/wm8994.c ****   {
+ 470:Drivers/BSP/Components/wm8994/wm8994.c ****     if (output_device == OUTPUT_DEVICE_HEADPHONE)
+ 471:Drivers/BSP/Components/wm8994/wm8994.c ****     {      
+ 472:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Select DAC1 (Left) to Left Headphone Output PGA (HPOUT1LVOL) path */
+ 473:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x2D, 0x0100);
+ 474:Drivers/BSP/Components/wm8994/wm8994.c ****       
+ 475:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Select DAC1 (Right) to Right Headphone Output PGA (HPOUT1RVOL) path */
+ 476:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x2E, 0x0100);    
+ 477:Drivers/BSP/Components/wm8994/wm8994.c ****             
+ 478:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Startup sequence for Headphone */
+ 479:Drivers/BSP/Components/wm8994/wm8994.c ****       if(ColdStartup)
+ 480:Drivers/BSP/Components/wm8994/wm8994.c ****       {
+ 481:Drivers/BSP/Components/wm8994/wm8994.c ****         counter += CODEC_IO_Write(DeviceAddr,0x110,0x8100);
+ 482:Drivers/BSP/Components/wm8994/wm8994.c ****         
+ 483:Drivers/BSP/Components/wm8994/wm8994.c ****         ColdStartup=0;
+ 484:Drivers/BSP/Components/wm8994/wm8994.c ****         /* Add Delay */
+ 485:Drivers/BSP/Components/wm8994/wm8994.c ****         AUDIO_IO_Delay(300);
+ 486:Drivers/BSP/Components/wm8994/wm8994.c ****       }
+ 487:Drivers/BSP/Components/wm8994/wm8994.c ****       else /* Headphone Warm Start-Up */
+ 488:Drivers/BSP/Components/wm8994/wm8994.c ****       { 
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 10
+
+
+ 489:Drivers/BSP/Components/wm8994/wm8994.c ****         counter += CODEC_IO_Write(DeviceAddr,0x110,0x8108);
+ 490:Drivers/BSP/Components/wm8994/wm8994.c ****         /* Add Delay */
+ 491:Drivers/BSP/Components/wm8994/wm8994.c ****         AUDIO_IO_Delay(50);
+ 492:Drivers/BSP/Components/wm8994/wm8994.c ****       }
+ 493:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 494:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Soft un-Mute the AIF1 Timeslot 0 DAC1 path L&R */
+ 495:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x420, 0x0000);
+ 496:Drivers/BSP/Components/wm8994/wm8994.c ****     }
+ 497:Drivers/BSP/Components/wm8994/wm8994.c ****     /* Analog Output Configuration */
+ 498:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 499:Drivers/BSP/Components/wm8994/wm8994.c ****     /* Enable SPKRVOL PGA, Enable SPKMIXR, Enable SPKLVOL PGA, Enable SPKMIXL */
+ 500:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x03, 0x0300);
+ 501:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 502:Drivers/BSP/Components/wm8994/wm8994.c ****     /* Left Speaker Mixer Volume = 0dB */
+ 503:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x22, 0x0000);
+ 504:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 505:Drivers/BSP/Components/wm8994/wm8994.c ****     /* Speaker output mode = Class D, Right Speaker Mixer Volume = 0dB ((0x23, 0x0100) = class AB)*
+ 506:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x23, 0x0000);
+ 507:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 508:Drivers/BSP/Components/wm8994/wm8994.c ****     /* Unmute DAC2 (Left) to Left Speaker Mixer (SPKMIXL) path,
+ 509:Drivers/BSP/Components/wm8994/wm8994.c ****     Unmute DAC2 (Right) to Right Speaker Mixer (SPKMIXR) path */
+ 510:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x36, 0x0300);
+ 511:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 512:Drivers/BSP/Components/wm8994/wm8994.c ****     /* Enable bias generator, Enable VMID, Enable SPKOUTL, Enable SPKOUTR */
+ 513:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x01, 0x3003);
+ 514:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 515:Drivers/BSP/Components/wm8994/wm8994.c ****     /* Headphone/Speaker Enable */
+ 516:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 517:Drivers/BSP/Components/wm8994/wm8994.c ****     if (input_device == INPUT_DEVICE_DIGITAL_MIC1_MIC2)
+ 518:Drivers/BSP/Components/wm8994/wm8994.c ****     {
+ 519:Drivers/BSP/Components/wm8994/wm8994.c ****     /* Enable Class W, Class W Envelope Tracking = AIF1 Timeslots 0 and 1 */
+ 520:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x51, 0x0205);
+ 521:Drivers/BSP/Components/wm8994/wm8994.c ****     }
+ 522:Drivers/BSP/Components/wm8994/wm8994.c ****     else
+ 523:Drivers/BSP/Components/wm8994/wm8994.c ****     {
+ 524:Drivers/BSP/Components/wm8994/wm8994.c ****     /* Enable Class W, Class W Envelope Tracking = AIF1 Timeslot 0 */
+ 525:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x51, 0x0005);      
+ 526:Drivers/BSP/Components/wm8994/wm8994.c ****     }
+ 527:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 528:Drivers/BSP/Components/wm8994/wm8994.c ****     /* Enable bias generator, Enable VMID, Enable HPOUT1 (Left) and Enable HPOUT1 (Right) input sta
+ 529:Drivers/BSP/Components/wm8994/wm8994.c ****     /* idem for Speaker */
+ 530:Drivers/BSP/Components/wm8994/wm8994.c ****     power_mgnt_reg_1 |= 0x0303 | 0x3003;
+ 531:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x01, power_mgnt_reg_1);
+ 532:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 533:Drivers/BSP/Components/wm8994/wm8994.c ****     /* Enable HPOUT1 (Left) and HPOUT1 (Right) intermediate stages */
+ 534:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x60, 0x0022);
+ 535:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 536:Drivers/BSP/Components/wm8994/wm8994.c ****     /* Enable Charge Pump */
+ 537:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x4C, 0x9F25);
+ 538:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 539:Drivers/BSP/Components/wm8994/wm8994.c ****     /* Add Delay */
+ 540:Drivers/BSP/Components/wm8994/wm8994.c ****     AUDIO_IO_Delay(15);
+ 541:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 542:Drivers/BSP/Components/wm8994/wm8994.c ****     /* Select DAC1 (Left) to Left Headphone Output PGA (HPOUT1LVOL) path */
+ 543:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x2D, 0x0001);
+ 544:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 545:Drivers/BSP/Components/wm8994/wm8994.c ****     /* Select DAC1 (Right) to Right Headphone Output PGA (HPOUT1RVOL) path */
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 11
+
+
+ 546:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x2E, 0x0001);
+ 547:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 548:Drivers/BSP/Components/wm8994/wm8994.c ****     /* Enable Left Output Mixer (MIXOUTL), Enable Right Output Mixer (MIXOUTR) */
+ 549:Drivers/BSP/Components/wm8994/wm8994.c ****     /* idem for SPKOUTL and SPKOUTR */
+ 550:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x03, 0x0030 | 0x0300);
+ 551:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 552:Drivers/BSP/Components/wm8994/wm8994.c ****     /* Enable DC Servo and trigger start-up mode on left and right channels */
+ 553:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x54, 0x0033);
+ 554:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 555:Drivers/BSP/Components/wm8994/wm8994.c ****     /* Add Delay */
+ 556:Drivers/BSP/Components/wm8994/wm8994.c ****     AUDIO_IO_Delay(257);
+ 557:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 558:Drivers/BSP/Components/wm8994/wm8994.c ****     /* Enable HPOUT1 (Left) and HPOUT1 (Right) intermediate and output stages. Remove clamps */
+ 559:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x60, 0x00EE);
+ 560:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 561:Drivers/BSP/Components/wm8994/wm8994.c ****     /* Unmutes */
+ 562:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 563:Drivers/BSP/Components/wm8994/wm8994.c ****     /* Unmute DAC 1 (Left) */
+ 564:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x610, 0x00C0);
+ 565:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 566:Drivers/BSP/Components/wm8994/wm8994.c ****     /* Unmute DAC 1 (Right) */
+ 567:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x611, 0x00C0);
+ 568:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 569:Drivers/BSP/Components/wm8994/wm8994.c ****     /* Unmute the AIF1 Timeslot 0 DAC path */
+ 570:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x420, 0x0010);
+ 571:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 572:Drivers/BSP/Components/wm8994/wm8994.c ****     /* Unmute DAC 2 (Left) */
+ 573:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x612, 0x00C0);
+ 574:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 575:Drivers/BSP/Components/wm8994/wm8994.c ****     /* Unmute DAC 2 (Right) */
+ 576:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x613, 0x00C0);
+ 577:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 578:Drivers/BSP/Components/wm8994/wm8994.c ****     /* Unmute the AIF1 Timeslot 1 DAC2 path */
+ 579:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x422, 0x0010);
+ 580:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 581:Drivers/BSP/Components/wm8994/wm8994.c ****     /* Volume Control */
+ 582:Drivers/BSP/Components/wm8994/wm8994.c ****     wm8994_SetVolume(DeviceAddr, Volume);
+ 583:Drivers/BSP/Components/wm8994/wm8994.c ****   }
+ 584:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 585:Drivers/BSP/Components/wm8994/wm8994.c ****   if (input_device > 0) /* Audio input selected */
+ 586:Drivers/BSP/Components/wm8994/wm8994.c ****   {
+ 587:Drivers/BSP/Components/wm8994/wm8994.c ****     if ((input_device == INPUT_DEVICE_DIGITAL_MICROPHONE_1) || (input_device == INPUT_DEVICE_DIGITA
+ 588:Drivers/BSP/Components/wm8994/wm8994.c ****     {
+ 589:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Enable Microphone bias 1 generator, Enable VMID */
+ 590:Drivers/BSP/Components/wm8994/wm8994.c ****       power_mgnt_reg_1 |= 0x0013;
+ 591:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x01, power_mgnt_reg_1);
+ 592:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 593:Drivers/BSP/Components/wm8994/wm8994.c ****       /* ADC oversample enable */
+ 594:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x620, 0x0002);
+ 595:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 596:Drivers/BSP/Components/wm8994/wm8994.c ****       /* AIF ADC2 HPF enable, HPF cut = voice mode 1 fc=127Hz at fs=8kHz */
+ 597:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x411, 0x3800);
+ 598:Drivers/BSP/Components/wm8994/wm8994.c ****     }
+ 599:Drivers/BSP/Components/wm8994/wm8994.c ****     else if(input_device == INPUT_DEVICE_DIGITAL_MIC1_MIC2)
+ 600:Drivers/BSP/Components/wm8994/wm8994.c ****     {
+ 601:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Enable Microphone bias 1 generator, Enable VMID */
+ 602:Drivers/BSP/Components/wm8994/wm8994.c ****       power_mgnt_reg_1 |= 0x0013;
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 12
+
+
+ 603:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x01, power_mgnt_reg_1);
+ 604:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 605:Drivers/BSP/Components/wm8994/wm8994.c ****       /* ADC oversample enable */
+ 606:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x620, 0x0002);
+ 607:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 608:Drivers/BSP/Components/wm8994/wm8994.c ****       /* AIF ADC1 HPF enable, HPF cut = voice mode 1 fc=127Hz at fs=8kHz */
+ 609:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x410, 0x1800);
+ 610:Drivers/BSP/Components/wm8994/wm8994.c ****       
+ 611:Drivers/BSP/Components/wm8994/wm8994.c ****       /* AIF ADC2 HPF enable, HPF cut = voice mode 1 fc=127Hz at fs=8kHz */
+ 612:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x411, 0x1800);      
+ 613:Drivers/BSP/Components/wm8994/wm8994.c ****     }    
+ 614:Drivers/BSP/Components/wm8994/wm8994.c ****     else if ((input_device == INPUT_DEVICE_INPUT_LINE_1) || (input_device == INPUT_DEVICE_INPUT_LIN
+ 615:Drivers/BSP/Components/wm8994/wm8994.c ****     {
+ 616:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 617:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Disable mute on IN1L, IN1L Volume = +0dB */
+ 618:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x18, 0x000B);
+ 619:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 620:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Disable mute on IN1R, IN1R Volume = +0dB */
+ 621:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x1A, 0x000B);
+ 622:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 623:Drivers/BSP/Components/wm8994/wm8994.c ****       /* AIF ADC1 HPF enable, HPF cut = hifi mode fc=4Hz at fs=48kHz */
+ 624:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x410, 0x1800);
+ 625:Drivers/BSP/Components/wm8994/wm8994.c ****     }
+ 626:Drivers/BSP/Components/wm8994/wm8994.c ****     /* Volume Control */
+ 627:Drivers/BSP/Components/wm8994/wm8994.c ****     wm8994_SetVolume(DeviceAddr, Volume);
+ 628:Drivers/BSP/Components/wm8994/wm8994.c ****   }
+ 629:Drivers/BSP/Components/wm8994/wm8994.c ****   /* Return communication control value */
+ 630:Drivers/BSP/Components/wm8994/wm8994.c ****   return counter;  
+ 631:Drivers/BSP/Components/wm8994/wm8994.c **** }
+ 632:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 633:Drivers/BSP/Components/wm8994/wm8994.c **** /**
+ 634:Drivers/BSP/Components/wm8994/wm8994.c ****   * @brief  Deinitializes the audio codec.
+ 635:Drivers/BSP/Components/wm8994/wm8994.c ****   * @param  None
+ 636:Drivers/BSP/Components/wm8994/wm8994.c ****   * @retval  None
+ 637:Drivers/BSP/Components/wm8994/wm8994.c ****   */
+ 638:Drivers/BSP/Components/wm8994/wm8994.c **** void wm8994_DeInit(void)
+ 639:Drivers/BSP/Components/wm8994/wm8994.c **** {
+ 640:Drivers/BSP/Components/wm8994/wm8994.c ****   /* Deinitialize Audio Codec interface */
+ 641:Drivers/BSP/Components/wm8994/wm8994.c ****   AUDIO_IO_DeInit();
+ 642:Drivers/BSP/Components/wm8994/wm8994.c **** }
+ 643:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 644:Drivers/BSP/Components/wm8994/wm8994.c **** /**
+ 645:Drivers/BSP/Components/wm8994/wm8994.c ****   * @brief  Get the WM8994 ID.
+ 646:Drivers/BSP/Components/wm8994/wm8994.c ****   * @param DeviceAddr: Device address on communication Bus.
+ 647:Drivers/BSP/Components/wm8994/wm8994.c ****   * @retval The WM8994 ID 
+ 648:Drivers/BSP/Components/wm8994/wm8994.c ****   */
+ 649:Drivers/BSP/Components/wm8994/wm8994.c **** uint32_t wm8994_ReadID(uint16_t DeviceAddr)
+ 650:Drivers/BSP/Components/wm8994/wm8994.c **** {
+ 651:Drivers/BSP/Components/wm8994/wm8994.c ****   /* Initialize the Control interface of the Audio Codec */
+ 652:Drivers/BSP/Components/wm8994/wm8994.c ****   AUDIO_IO_Init();
+ 653:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 654:Drivers/BSP/Components/wm8994/wm8994.c ****   return ((uint32_t)AUDIO_IO_Read(DeviceAddr, WM8994_CHIPID_ADDR));
+ 655:Drivers/BSP/Components/wm8994/wm8994.c **** }
+ 656:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 657:Drivers/BSP/Components/wm8994/wm8994.c **** /**
+ 658:Drivers/BSP/Components/wm8994/wm8994.c ****   * @brief Start the audio Codec play feature.
+ 659:Drivers/BSP/Components/wm8994/wm8994.c ****   * @note For this codec no Play options are required.
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 13
+
+
+ 660:Drivers/BSP/Components/wm8994/wm8994.c ****   * @param DeviceAddr: Device address on communication Bus.   
+ 661:Drivers/BSP/Components/wm8994/wm8994.c ****   * @retval 0 if correct communication, else wrong communication
+ 662:Drivers/BSP/Components/wm8994/wm8994.c ****   */
+ 663:Drivers/BSP/Components/wm8994/wm8994.c **** uint32_t wm8994_Play(uint16_t DeviceAddr, uint16_t* pBuffer, uint16_t Size)
+ 664:Drivers/BSP/Components/wm8994/wm8994.c **** {
+ 665:Drivers/BSP/Components/wm8994/wm8994.c ****   uint32_t counter = 0;
+ 666:Drivers/BSP/Components/wm8994/wm8994.c ****  
+ 667:Drivers/BSP/Components/wm8994/wm8994.c ****   /* Resumes the audio file playing */  
+ 668:Drivers/BSP/Components/wm8994/wm8994.c ****   /* Unmute the output first */
+ 669:Drivers/BSP/Components/wm8994/wm8994.c ****   counter += wm8994_SetMute(DeviceAddr, AUDIO_MUTE_OFF);
+ 670:Drivers/BSP/Components/wm8994/wm8994.c ****   
+ 671:Drivers/BSP/Components/wm8994/wm8994.c ****   return counter;
+ 672:Drivers/BSP/Components/wm8994/wm8994.c **** }
+ 673:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 674:Drivers/BSP/Components/wm8994/wm8994.c **** /**
+ 675:Drivers/BSP/Components/wm8994/wm8994.c ****   * @brief Pauses playing on the audio codec.
+ 676:Drivers/BSP/Components/wm8994/wm8994.c ****   * @param DeviceAddr: Device address on communication Bus. 
+ 677:Drivers/BSP/Components/wm8994/wm8994.c ****   * @retval 0 if correct communication, else wrong communication
+ 678:Drivers/BSP/Components/wm8994/wm8994.c ****   */
+ 679:Drivers/BSP/Components/wm8994/wm8994.c **** uint32_t wm8994_Pause(uint16_t DeviceAddr)
+ 680:Drivers/BSP/Components/wm8994/wm8994.c **** {  
+ 681:Drivers/BSP/Components/wm8994/wm8994.c ****   uint32_t counter = 0;
+ 682:Drivers/BSP/Components/wm8994/wm8994.c ****  
+ 683:Drivers/BSP/Components/wm8994/wm8994.c ****   /* Pause the audio file playing */
+ 684:Drivers/BSP/Components/wm8994/wm8994.c ****   /* Mute the output first */
+ 685:Drivers/BSP/Components/wm8994/wm8994.c ****   counter += wm8994_SetMute(DeviceAddr, AUDIO_MUTE_ON);
+ 686:Drivers/BSP/Components/wm8994/wm8994.c ****   
+ 687:Drivers/BSP/Components/wm8994/wm8994.c ****   /* Put the Codec in Power save mode */
+ 688:Drivers/BSP/Components/wm8994/wm8994.c ****   counter += CODEC_IO_Write(DeviceAddr, 0x02, 0x01);
+ 689:Drivers/BSP/Components/wm8994/wm8994.c ****  
+ 690:Drivers/BSP/Components/wm8994/wm8994.c ****   return counter;
+ 691:Drivers/BSP/Components/wm8994/wm8994.c **** }
+ 692:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 693:Drivers/BSP/Components/wm8994/wm8994.c **** /**
+ 694:Drivers/BSP/Components/wm8994/wm8994.c ****   * @brief Resumes playing on the audio codec.
+ 695:Drivers/BSP/Components/wm8994/wm8994.c ****   * @param DeviceAddr: Device address on communication Bus. 
+ 696:Drivers/BSP/Components/wm8994/wm8994.c ****   * @retval 0 if correct communication, else wrong communication
+ 697:Drivers/BSP/Components/wm8994/wm8994.c ****   */
+ 698:Drivers/BSP/Components/wm8994/wm8994.c **** uint32_t wm8994_Resume(uint16_t DeviceAddr)
+ 699:Drivers/BSP/Components/wm8994/wm8994.c **** {
+ 700:Drivers/BSP/Components/wm8994/wm8994.c ****   uint32_t counter = 0;
+ 701:Drivers/BSP/Components/wm8994/wm8994.c ****  
+ 702:Drivers/BSP/Components/wm8994/wm8994.c ****   /* Resumes the audio file playing */  
+ 703:Drivers/BSP/Components/wm8994/wm8994.c ****   /* Unmute the output first */
+ 704:Drivers/BSP/Components/wm8994/wm8994.c ****   counter += wm8994_SetMute(DeviceAddr, AUDIO_MUTE_OFF);
+ 705:Drivers/BSP/Components/wm8994/wm8994.c ****   
+ 706:Drivers/BSP/Components/wm8994/wm8994.c ****   return counter;
+ 707:Drivers/BSP/Components/wm8994/wm8994.c **** }
+ 708:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 709:Drivers/BSP/Components/wm8994/wm8994.c **** /**
+ 710:Drivers/BSP/Components/wm8994/wm8994.c ****   * @brief Stops audio Codec playing. It powers down the codec.
+ 711:Drivers/BSP/Components/wm8994/wm8994.c ****   * @param DeviceAddr: Device address on communication Bus. 
+ 712:Drivers/BSP/Components/wm8994/wm8994.c ****   * @param CodecPdwnMode: selects the  power down mode.
+ 713:Drivers/BSP/Components/wm8994/wm8994.c ****   *          - CODEC_PDWN_SW: only mutes the audio codec. When resuming from this 
+ 714:Drivers/BSP/Components/wm8994/wm8994.c ****   *                           mode the codec keeps the previous initialization
+ 715:Drivers/BSP/Components/wm8994/wm8994.c ****   *                           (no need to re-Initialize the codec registers).
+ 716:Drivers/BSP/Components/wm8994/wm8994.c ****   *          - CODEC_PDWN_HW: Physically power down the codec. When resuming from this
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 14
+
+
+ 717:Drivers/BSP/Components/wm8994/wm8994.c ****   *                           mode, the codec is set to default configuration 
+ 718:Drivers/BSP/Components/wm8994/wm8994.c ****   *                           (user should re-Initialize the codec in order to 
+ 719:Drivers/BSP/Components/wm8994/wm8994.c ****   *                            play again the audio stream).
+ 720:Drivers/BSP/Components/wm8994/wm8994.c ****   * @retval 0 if correct communication, else wrong communication
+ 721:Drivers/BSP/Components/wm8994/wm8994.c ****   */
+ 722:Drivers/BSP/Components/wm8994/wm8994.c **** uint32_t wm8994_Stop(uint16_t DeviceAddr, uint32_t CodecPdwnMode)
+ 723:Drivers/BSP/Components/wm8994/wm8994.c **** {
+ 724:Drivers/BSP/Components/wm8994/wm8994.c ****   uint32_t counter = 0;
+ 725:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 726:Drivers/BSP/Components/wm8994/wm8994.c ****   if (outputEnabled != 0)
+ 727:Drivers/BSP/Components/wm8994/wm8994.c ****   {
+ 728:Drivers/BSP/Components/wm8994/wm8994.c ****     /* Mute the output first */
+ 729:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += wm8994_SetMute(DeviceAddr, AUDIO_MUTE_ON);
+ 730:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 731:Drivers/BSP/Components/wm8994/wm8994.c ****     if (CodecPdwnMode == CODEC_PDWN_SW)
+ 732:Drivers/BSP/Components/wm8994/wm8994.c ****     {
+ 733:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Only output mute required*/
+ 734:Drivers/BSP/Components/wm8994/wm8994.c ****     }
+ 735:Drivers/BSP/Components/wm8994/wm8994.c ****     else /* CODEC_PDWN_HW */
+ 736:Drivers/BSP/Components/wm8994/wm8994.c ****     {
+ 737:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Mute the AIF1 Timeslot 0 DAC1 path */
+ 738:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x420, 0x0200);
+ 739:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 740:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Mute the AIF1 Timeslot 1 DAC2 path */
+ 741:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x422, 0x0200);
+ 742:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 743:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Disable DAC1L_TO_HPOUT1L */
+ 744:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x2D, 0x0000);
+ 745:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 746:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Disable DAC1R_TO_HPOUT1R */
+ 747:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x2E, 0x0000);
+ 748:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 749:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Disable DAC1 and DAC2 */
+ 750:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x05, 0x0000);
+ 751:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 752:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Reset Codec by writing in 0x0000 address register */
+ 753:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x0000, 0x0000);
+ 754:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 755:Drivers/BSP/Components/wm8994/wm8994.c ****       outputEnabled = 0;
+ 756:Drivers/BSP/Components/wm8994/wm8994.c ****     }
+ 757:Drivers/BSP/Components/wm8994/wm8994.c ****   }
+ 758:Drivers/BSP/Components/wm8994/wm8994.c ****   return counter;
+ 759:Drivers/BSP/Components/wm8994/wm8994.c **** }
+ 760:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 761:Drivers/BSP/Components/wm8994/wm8994.c **** /**
+ 762:Drivers/BSP/Components/wm8994/wm8994.c ****   * @brief Sets higher or lower the codec volume level.
+ 763:Drivers/BSP/Components/wm8994/wm8994.c ****   * @param DeviceAddr: Device address on communication Bus.
+ 764:Drivers/BSP/Components/wm8994/wm8994.c ****   * @param Volume: a byte value from 0 to 255 (refer to codec registers 
+ 765:Drivers/BSP/Components/wm8994/wm8994.c ****   *         description for more details).
+ 766:Drivers/BSP/Components/wm8994/wm8994.c ****   * @retval 0 if correct communication, else wrong communication
+ 767:Drivers/BSP/Components/wm8994/wm8994.c ****   */
+ 768:Drivers/BSP/Components/wm8994/wm8994.c **** uint32_t wm8994_SetVolume(uint16_t DeviceAddr, uint8_t Volume)
+ 769:Drivers/BSP/Components/wm8994/wm8994.c **** {
+ 770:Drivers/BSP/Components/wm8994/wm8994.c ****   uint32_t counter = 0;
+ 771:Drivers/BSP/Components/wm8994/wm8994.c ****   uint8_t convertedvol = VOLUME_CONVERT(Volume);
+ 772:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 773:Drivers/BSP/Components/wm8994/wm8994.c ****   /* Output volume */
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 15
+
+
+ 774:Drivers/BSP/Components/wm8994/wm8994.c ****   if (outputEnabled != 0)
+ 775:Drivers/BSP/Components/wm8994/wm8994.c ****   {
+ 776:Drivers/BSP/Components/wm8994/wm8994.c ****     if(convertedvol > 0x3E)
+ 777:Drivers/BSP/Components/wm8994/wm8994.c ****     {
+ 778:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Unmute audio codec */
+ 779:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += wm8994_SetMute(DeviceAddr, AUDIO_MUTE_OFF);
+ 780:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 781:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Left Headphone Volume */
+ 782:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x1C, 0x3F | 0x140);
+ 783:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 784:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Right Headphone Volume */
+ 785:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x1D, 0x3F | 0x140);
+ 786:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 787:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Left Speaker Volume */
+ 788:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x26, 0x3F | 0x140);
+ 789:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 790:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Right Speaker Volume */
+ 791:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x27, 0x3F | 0x140);
+ 792:Drivers/BSP/Components/wm8994/wm8994.c ****     }
+ 793:Drivers/BSP/Components/wm8994/wm8994.c ****     else if (Volume == 0)
+ 794:Drivers/BSP/Components/wm8994/wm8994.c ****     {
+ 795:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Mute audio codec */
+ 796:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += wm8994_SetMute(DeviceAddr, AUDIO_MUTE_ON);
+ 797:Drivers/BSP/Components/wm8994/wm8994.c ****     }
+ 798:Drivers/BSP/Components/wm8994/wm8994.c ****     else
+ 799:Drivers/BSP/Components/wm8994/wm8994.c ****     {
+ 800:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Unmute audio codec */
+ 801:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += wm8994_SetMute(DeviceAddr, AUDIO_MUTE_OFF);
+ 802:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 803:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Left Headphone Volume */
+ 804:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x1C, convertedvol | 0x140);
+ 805:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 806:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Right Headphone Volume */
+ 807:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x1D, convertedvol | 0x140);
+ 808:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 809:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Left Speaker Volume */
+ 810:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x26, convertedvol | 0x140);
+ 811:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 812:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Right Speaker Volume */
+ 813:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x27, convertedvol | 0x140);
+ 814:Drivers/BSP/Components/wm8994/wm8994.c ****     }
+ 815:Drivers/BSP/Components/wm8994/wm8994.c ****   }
+ 816:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 817:Drivers/BSP/Components/wm8994/wm8994.c ****   /* Input volume */
+ 818:Drivers/BSP/Components/wm8994/wm8994.c ****   if (inputEnabled != 0)
+ 819:Drivers/BSP/Components/wm8994/wm8994.c ****   {
+ 820:Drivers/BSP/Components/wm8994/wm8994.c ****     convertedvol = VOLUME_IN_CONVERT(Volume);
+ 821:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 822:Drivers/BSP/Components/wm8994/wm8994.c ****     /* Left AIF1 ADC1 volume */
+ 823:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x400, convertedvol | 0x100);
+ 824:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 825:Drivers/BSP/Components/wm8994/wm8994.c ****     /* Right AIF1 ADC1 volume */
+ 826:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x401, convertedvol | 0x100);
+ 827:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 828:Drivers/BSP/Components/wm8994/wm8994.c ****     /* Left AIF1 ADC2 volume */
+ 829:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x404, convertedvol | 0x100);
+ 830:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 16
+
+
+ 831:Drivers/BSP/Components/wm8994/wm8994.c ****     /* Right AIF1 ADC2 volume */
+ 832:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x405, convertedvol | 0x100);
+ 833:Drivers/BSP/Components/wm8994/wm8994.c ****   }
+ 834:Drivers/BSP/Components/wm8994/wm8994.c ****   return counter;
+ 835:Drivers/BSP/Components/wm8994/wm8994.c **** }
+ 836:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 837:Drivers/BSP/Components/wm8994/wm8994.c **** /**
+ 838:Drivers/BSP/Components/wm8994/wm8994.c ****   * @brief Enables or disables the mute feature on the audio codec.
+ 839:Drivers/BSP/Components/wm8994/wm8994.c ****   * @param DeviceAddr: Device address on communication Bus.   
+ 840:Drivers/BSP/Components/wm8994/wm8994.c ****   * @param Cmd: AUDIO_MUTE_ON to enable the mute or AUDIO_MUTE_OFF to disable the
+ 841:Drivers/BSP/Components/wm8994/wm8994.c ****   *             mute mode.
+ 842:Drivers/BSP/Components/wm8994/wm8994.c ****   * @retval 0 if correct communication, else wrong communication
+ 843:Drivers/BSP/Components/wm8994/wm8994.c ****   */
+ 844:Drivers/BSP/Components/wm8994/wm8994.c **** uint32_t wm8994_SetMute(uint16_t DeviceAddr, uint32_t Cmd)
+ 845:Drivers/BSP/Components/wm8994/wm8994.c **** {
+ 846:Drivers/BSP/Components/wm8994/wm8994.c ****   uint32_t counter = 0;
+ 847:Drivers/BSP/Components/wm8994/wm8994.c ****   
+ 848:Drivers/BSP/Components/wm8994/wm8994.c ****   if (outputEnabled != 0)
+ 849:Drivers/BSP/Components/wm8994/wm8994.c ****   {
+ 850:Drivers/BSP/Components/wm8994/wm8994.c ****     /* Set the Mute mode */
+ 851:Drivers/BSP/Components/wm8994/wm8994.c ****     if(Cmd == AUDIO_MUTE_ON)
+ 852:Drivers/BSP/Components/wm8994/wm8994.c ****     {
+ 853:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Soft Mute the AIF1 Timeslot 0 DAC1 path L&R */
+ 854:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x420, 0x0200);
+ 855:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 856:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Soft Mute the AIF1 Timeslot 1 DAC2 path L&R */
+ 857:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x422, 0x0200);
+ 858:Drivers/BSP/Components/wm8994/wm8994.c ****     }
+ 859:Drivers/BSP/Components/wm8994/wm8994.c ****     else /* AUDIO_MUTE_OFF Disable the Mute */
+ 860:Drivers/BSP/Components/wm8994/wm8994.c ****     {
+ 861:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Unmute the AIF1 Timeslot 0 DAC1 path L&R */
+ 862:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x420, 0x0010);
+ 863:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 864:Drivers/BSP/Components/wm8994/wm8994.c ****       /* Unmute the AIF1 Timeslot 1 DAC2 path L&R */
+ 865:Drivers/BSP/Components/wm8994/wm8994.c ****       counter += CODEC_IO_Write(DeviceAddr, 0x422, 0x0010);
+ 866:Drivers/BSP/Components/wm8994/wm8994.c ****     }
+ 867:Drivers/BSP/Components/wm8994/wm8994.c ****   }
+ 868:Drivers/BSP/Components/wm8994/wm8994.c ****   return counter;
+ 869:Drivers/BSP/Components/wm8994/wm8994.c **** }
+ 870:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 871:Drivers/BSP/Components/wm8994/wm8994.c **** /**
+ 872:Drivers/BSP/Components/wm8994/wm8994.c ****   * @brief Switch dynamically (while audio file is played) the output target 
+ 873:Drivers/BSP/Components/wm8994/wm8994.c ****   *         (speaker or headphone).
+ 874:Drivers/BSP/Components/wm8994/wm8994.c ****   * @param DeviceAddr: Device address on communication Bus.
+ 875:Drivers/BSP/Components/wm8994/wm8994.c ****   * @param Output: specifies the audio output target: OUTPUT_DEVICE_SPEAKER,
+ 876:Drivers/BSP/Components/wm8994/wm8994.c ****   *         OUTPUT_DEVICE_HEADPHONE, OUTPUT_DEVICE_BOTH or OUTPUT_DEVICE_AUTO 
+ 877:Drivers/BSP/Components/wm8994/wm8994.c ****   * @retval 0 if correct communication, else wrong communication
+ 878:Drivers/BSP/Components/wm8994/wm8994.c ****   */
+ 879:Drivers/BSP/Components/wm8994/wm8994.c **** uint32_t wm8994_SetOutputMode(uint16_t DeviceAddr, uint8_t Output)
+ 880:Drivers/BSP/Components/wm8994/wm8994.c **** {
+ 881:Drivers/BSP/Components/wm8994/wm8994.c ****   uint32_t counter = 0; 
+ 882:Drivers/BSP/Components/wm8994/wm8994.c ****   
+ 883:Drivers/BSP/Components/wm8994/wm8994.c ****   switch (Output) 
+ 884:Drivers/BSP/Components/wm8994/wm8994.c ****   {
+ 885:Drivers/BSP/Components/wm8994/wm8994.c ****   case OUTPUT_DEVICE_SPEAKER:
+ 886:Drivers/BSP/Components/wm8994/wm8994.c ****     /* Enable DAC1 (Left), Enable DAC1 (Right), 
+ 887:Drivers/BSP/Components/wm8994/wm8994.c ****     Disable DAC2 (Left), Disable DAC2 (Right)*/
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 17
+
+
+ 888:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x05, 0x0C0C);
+ 889:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 890:Drivers/BSP/Components/wm8994/wm8994.c ****     /* Enable the AIF1 Timeslot 0 (Left) to DAC 1 (Left) mixer path */
+ 891:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x601, 0x0000);
+ 892:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 893:Drivers/BSP/Components/wm8994/wm8994.c ****     /* Enable the AIF1 Timeslot 0 (Right) to DAC 1 (Right) mixer path */
+ 894:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x602, 0x0000);
+ 895:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 896:Drivers/BSP/Components/wm8994/wm8994.c ****     /* Disable the AIF1 Timeslot 1 (Left) to DAC 2 (Left) mixer path */
+ 897:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x604, 0x0002);
+ 898:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 899:Drivers/BSP/Components/wm8994/wm8994.c ****     /* Disable the AIF1 Timeslot 1 (Right) to DAC 2 (Right) mixer path */
+ 900:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x605, 0x0002);
+ 901:Drivers/BSP/Components/wm8994/wm8994.c ****     break;
+ 902:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 903:Drivers/BSP/Components/wm8994/wm8994.c ****   case OUTPUT_DEVICE_HEADPHONE:
+ 904:Drivers/BSP/Components/wm8994/wm8994.c ****     /* Disable DAC1 (Left), Disable DAC1 (Right), 
+ 905:Drivers/BSP/Components/wm8994/wm8994.c ****     Enable DAC2 (Left), Enable DAC2 (Right)*/
+ 906:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x05, 0x0303);
+ 907:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 908:Drivers/BSP/Components/wm8994/wm8994.c ****     /* Enable the AIF1 Timeslot 0 (Left) to DAC 1 (Left) mixer path */
+ 909:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x601, 0x0001);
+ 910:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 911:Drivers/BSP/Components/wm8994/wm8994.c ****     /* Enable the AIF1 Timeslot 0 (Right) to DAC 1 (Right) mixer path */
+ 912:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x602, 0x0001);
+ 913:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 914:Drivers/BSP/Components/wm8994/wm8994.c ****     /* Disable the AIF1 Timeslot 1 (Left) to DAC 2 (Left) mixer path */
+ 915:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x604, 0x0000);
+ 916:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 917:Drivers/BSP/Components/wm8994/wm8994.c ****     /* Disable the AIF1 Timeslot 1 (Right) to DAC 2 (Right) mixer path */
+ 918:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x605, 0x0000);
+ 919:Drivers/BSP/Components/wm8994/wm8994.c ****     break;
+ 920:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 921:Drivers/BSP/Components/wm8994/wm8994.c ****   case OUTPUT_DEVICE_BOTH:
+ 922:Drivers/BSP/Components/wm8994/wm8994.c ****     /* Enable DAC1 (Left), Enable DAC1 (Right), 
+ 923:Drivers/BSP/Components/wm8994/wm8994.c ****     also Enable DAC2 (Left), Enable DAC2 (Right)*/
+ 924:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x05, 0x0303 | 0x0C0C);
+ 925:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 926:Drivers/BSP/Components/wm8994/wm8994.c ****     /* Enable the AIF1 Timeslot 0 (Left) to DAC 1 (Left) mixer path */
+ 927:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x601, 0x0001);
+ 928:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 929:Drivers/BSP/Components/wm8994/wm8994.c ****     /* Enable the AIF1 Timeslot 0 (Right) to DAC 1 (Right) mixer path */
+ 930:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x602, 0x0001);
+ 931:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 932:Drivers/BSP/Components/wm8994/wm8994.c ****     /* Enable the AIF1 Timeslot 1 (Left) to DAC 2 (Left) mixer path */
+ 933:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x604, 0x0002);
+ 934:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 935:Drivers/BSP/Components/wm8994/wm8994.c ****     /* Enable the AIF1 Timeslot 1 (Right) to DAC 2 (Right) mixer path */
+ 936:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x605, 0x0002);
+ 937:Drivers/BSP/Components/wm8994/wm8994.c ****     break;
+ 938:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 939:Drivers/BSP/Components/wm8994/wm8994.c ****   default:
+ 940:Drivers/BSP/Components/wm8994/wm8994.c ****     /* Disable DAC1 (Left), Disable DAC1 (Right), 
+ 941:Drivers/BSP/Components/wm8994/wm8994.c ****     Enable DAC2 (Left), Enable DAC2 (Right)*/
+ 942:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x05, 0x0303);
+ 943:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 944:Drivers/BSP/Components/wm8994/wm8994.c ****     /* Enable the AIF1 Timeslot 0 (Left) to DAC 1 (Left) mixer path */
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 18
+
+
+ 945:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x601, 0x0001);
+ 946:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 947:Drivers/BSP/Components/wm8994/wm8994.c ****     /* Enable the AIF1 Timeslot 0 (Right) to DAC 1 (Right) mixer path */
+ 948:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x602, 0x0001);
+ 949:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 950:Drivers/BSP/Components/wm8994/wm8994.c ****     /* Disable the AIF1 Timeslot 1 (Left) to DAC 2 (Left) mixer path */
+ 951:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x604, 0x0000);
+ 952:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 953:Drivers/BSP/Components/wm8994/wm8994.c ****     /* Disable the AIF1 Timeslot 1 (Right) to DAC 2 (Right) mixer path */
+ 954:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x605, 0x0000);
+ 955:Drivers/BSP/Components/wm8994/wm8994.c ****     break;    
+ 956:Drivers/BSP/Components/wm8994/wm8994.c ****   }  
+ 957:Drivers/BSP/Components/wm8994/wm8994.c ****   return counter;
+ 958:Drivers/BSP/Components/wm8994/wm8994.c **** }
+ 959:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 960:Drivers/BSP/Components/wm8994/wm8994.c **** /**
+ 961:Drivers/BSP/Components/wm8994/wm8994.c ****   * @brief Sets new frequency.
+ 962:Drivers/BSP/Components/wm8994/wm8994.c ****   * @param DeviceAddr: Device address on communication Bus.
+ 963:Drivers/BSP/Components/wm8994/wm8994.c ****   * @param AudioFreq: Audio frequency used to play the audio stream.
+ 964:Drivers/BSP/Components/wm8994/wm8994.c ****   * @retval 0 if correct communication, else wrong communication
+ 965:Drivers/BSP/Components/wm8994/wm8994.c ****   */
+ 966:Drivers/BSP/Components/wm8994/wm8994.c **** uint32_t wm8994_SetFrequency(uint16_t DeviceAddr, uint32_t AudioFreq)
+ 967:Drivers/BSP/Components/wm8994/wm8994.c **** {
+ 968:Drivers/BSP/Components/wm8994/wm8994.c ****   uint32_t counter = 0;
+ 969:Drivers/BSP/Components/wm8994/wm8994.c ****  
+ 970:Drivers/BSP/Components/wm8994/wm8994.c ****   /*  Clock Configurations */
+ 971:Drivers/BSP/Components/wm8994/wm8994.c ****   switch (AudioFreq)
+ 972:Drivers/BSP/Components/wm8994/wm8994.c ****   {
+ 973:Drivers/BSP/Components/wm8994/wm8994.c ****   case  AUDIO_FREQUENCY_8K:
+ 974:Drivers/BSP/Components/wm8994/wm8994.c ****     /* AIF1 Sample Rate = 8 (KHz), ratio=256 */ 
+ 975:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x210, 0x0003);
+ 976:Drivers/BSP/Components/wm8994/wm8994.c ****     break;
+ 977:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 978:Drivers/BSP/Components/wm8994/wm8994.c ****   case  AUDIO_FREQUENCY_16K:
+ 979:Drivers/BSP/Components/wm8994/wm8994.c ****     /* AIF1 Sample Rate = 16 (KHz), ratio=256 */ 
+ 980:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x210, 0x0033);
+ 981:Drivers/BSP/Components/wm8994/wm8994.c ****     break;
+ 982:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 983:Drivers/BSP/Components/wm8994/wm8994.c ****   case  AUDIO_FREQUENCY_32K:
+ 984:Drivers/BSP/Components/wm8994/wm8994.c ****     /* AIF1 Sample Rate = 32 (KHz), ratio=256 */ 
+ 985:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x210, 0x0063);
+ 986:Drivers/BSP/Components/wm8994/wm8994.c ****     break;
+ 987:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 988:Drivers/BSP/Components/wm8994/wm8994.c ****   case  AUDIO_FREQUENCY_48K:
+ 989:Drivers/BSP/Components/wm8994/wm8994.c ****     /* AIF1 Sample Rate = 48 (KHz), ratio=256 */ 
+ 990:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x210, 0x0083);
+ 991:Drivers/BSP/Components/wm8994/wm8994.c ****     break;
+ 992:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 993:Drivers/BSP/Components/wm8994/wm8994.c ****   case  AUDIO_FREQUENCY_96K:
+ 994:Drivers/BSP/Components/wm8994/wm8994.c ****     /* AIF1 Sample Rate = 96 (KHz), ratio=256 */ 
+ 995:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x210, 0x00A3);
+ 996:Drivers/BSP/Components/wm8994/wm8994.c ****     break;
+ 997:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 998:Drivers/BSP/Components/wm8994/wm8994.c ****   case  AUDIO_FREQUENCY_11K:
+ 999:Drivers/BSP/Components/wm8994/wm8994.c ****     /* AIF1 Sample Rate = 11.025 (KHz), ratio=256 */ 
+1000:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x210, 0x0013);
+1001:Drivers/BSP/Components/wm8994/wm8994.c ****     break;
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 19
+
+
+1002:Drivers/BSP/Components/wm8994/wm8994.c ****     
+1003:Drivers/BSP/Components/wm8994/wm8994.c ****   case  AUDIO_FREQUENCY_22K:
+1004:Drivers/BSP/Components/wm8994/wm8994.c ****     /* AIF1 Sample Rate = 22.050 (KHz), ratio=256 */ 
+1005:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x210, 0x0043);
+1006:Drivers/BSP/Components/wm8994/wm8994.c ****     break;
+1007:Drivers/BSP/Components/wm8994/wm8994.c ****     
+1008:Drivers/BSP/Components/wm8994/wm8994.c ****   case  AUDIO_FREQUENCY_44K:
+1009:Drivers/BSP/Components/wm8994/wm8994.c ****     /* AIF1 Sample Rate = 44.1 (KHz), ratio=256 */ 
+1010:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x210, 0x0073);
+1011:Drivers/BSP/Components/wm8994/wm8994.c ****     break; 
+1012:Drivers/BSP/Components/wm8994/wm8994.c ****     
+1013:Drivers/BSP/Components/wm8994/wm8994.c ****   default:
+1014:Drivers/BSP/Components/wm8994/wm8994.c ****     /* AIF1 Sample Rate = 48 (KHz), ratio=256 */ 
+1015:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x210, 0x0083);
+1016:Drivers/BSP/Components/wm8994/wm8994.c ****     break; 
+1017:Drivers/BSP/Components/wm8994/wm8994.c ****   }
+1018:Drivers/BSP/Components/wm8994/wm8994.c ****   return counter;
+1019:Drivers/BSP/Components/wm8994/wm8994.c **** }
+1020:Drivers/BSP/Components/wm8994/wm8994.c **** 
+1021:Drivers/BSP/Components/wm8994/wm8994.c **** /**
+1022:Drivers/BSP/Components/wm8994/wm8994.c ****   * @brief Resets wm8994 registers.
+1023:Drivers/BSP/Components/wm8994/wm8994.c ****   * @param DeviceAddr: Device address on communication Bus. 
+1024:Drivers/BSP/Components/wm8994/wm8994.c ****   * @retval 0 if correct communication, else wrong communication
+1025:Drivers/BSP/Components/wm8994/wm8994.c ****   */
+1026:Drivers/BSP/Components/wm8994/wm8994.c **** uint32_t wm8994_Reset(uint16_t DeviceAddr)
+1027:Drivers/BSP/Components/wm8994/wm8994.c **** {
+1028:Drivers/BSP/Components/wm8994/wm8994.c ****   uint32_t counter = 0;
+1029:Drivers/BSP/Components/wm8994/wm8994.c ****   
+1030:Drivers/BSP/Components/wm8994/wm8994.c ****   /* Reset Codec by writing in 0x0000 address register */
+1031:Drivers/BSP/Components/wm8994/wm8994.c ****   counter = CODEC_IO_Write(DeviceAddr, 0x0000, 0x0000);
+1032:Drivers/BSP/Components/wm8994/wm8994.c ****   outputEnabled = 0;
+1033:Drivers/BSP/Components/wm8994/wm8994.c ****   inputEnabled=0;
+1034:Drivers/BSP/Components/wm8994/wm8994.c **** 
+1035:Drivers/BSP/Components/wm8994/wm8994.c ****   return counter;
+1036:Drivers/BSP/Components/wm8994/wm8994.c **** }
+1037:Drivers/BSP/Components/wm8994/wm8994.c **** 
+1038:Drivers/BSP/Components/wm8994/wm8994.c **** /**
+1039:Drivers/BSP/Components/wm8994/wm8994.c ****   * @brief  Writes/Read a single data.
+1040:Drivers/BSP/Components/wm8994/wm8994.c ****   * @param  Addr: I2C address
+1041:Drivers/BSP/Components/wm8994/wm8994.c ****   * @param  Reg: Reg address 
+1042:Drivers/BSP/Components/wm8994/wm8994.c ****   * @param  Value: Data to be written
+1043:Drivers/BSP/Components/wm8994/wm8994.c ****   * @retval None
+1044:Drivers/BSP/Components/wm8994/wm8994.c ****   */
+1045:Drivers/BSP/Components/wm8994/wm8994.c **** static uint8_t CODEC_IO_Write(uint8_t Addr, uint16_t Reg, uint16_t Value)
+1046:Drivers/BSP/Components/wm8994/wm8994.c **** {
+  27              		.loc 1 1046 0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 0
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31              	.LVL0:
+  32 0000 08B5     		push	{r3, lr}
+  33              	.LCFI0:
+  34              		.cfi_def_cfa_offset 8
+  35              		.cfi_offset 3, -8
+  36              		.cfi_offset 14, -4
+  37              	.LVL1:
+1047:Drivers/BSP/Components/wm8994/wm8994.c ****   uint32_t result = 0;
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 20
+
+
+1048:Drivers/BSP/Components/wm8994/wm8994.c ****   
+1049:Drivers/BSP/Components/wm8994/wm8994.c ****  AUDIO_IO_Write(Addr, Reg, Value);
+  38              		.loc 1 1049 0
+  39 0002 FFF7FEFF 		bl	AUDIO_IO_Write
+  40              	.LVL2:
+1050:Drivers/BSP/Components/wm8994/wm8994.c ****   
+1051:Drivers/BSP/Components/wm8994/wm8994.c **** #ifdef VERIFY_WRITTENDATA
+1052:Drivers/BSP/Components/wm8994/wm8994.c ****   /* Verify that the data has been correctly written */
+1053:Drivers/BSP/Components/wm8994/wm8994.c ****   result = (AUDIO_IO_Read(Addr, Reg) == Value)? 0:1;
+1054:Drivers/BSP/Components/wm8994/wm8994.c **** #endif /* VERIFY_WRITTENDATA */
+1055:Drivers/BSP/Components/wm8994/wm8994.c ****   
+1056:Drivers/BSP/Components/wm8994/wm8994.c ****   return result;
+1057:Drivers/BSP/Components/wm8994/wm8994.c **** }
+  41              		.loc 1 1057 0
+  42 0006 0020     		movs	r0, #0
+  43 0008 08BD     		pop	{r3, pc}
+  44              		.cfi_endproc
+  45              	.LFE12:
+  47              		.section	.text.wm8994_SetMute,"ax",%progbits
+  48              		.align	1
+  49              		.global	wm8994_SetMute
+  50              		.syntax unified
+  51              		.thumb
+  52              		.thumb_func
+  53              		.fpu fpv5-sp-d16
+  55              	wm8994_SetMute:
+  56              	.LFB8:
+ 845:Drivers/BSP/Components/wm8994/wm8994.c ****   uint32_t counter = 0;
+  57              		.loc 1 845 0
+  58              		.cfi_startproc
+  59              		@ args = 0, pretend = 0, frame = 0
+  60              		@ frame_needed = 0, uses_anonymous_args = 0
+  61              	.LVL3:
+  62 0000 38B5     		push	{r3, r4, r5, lr}
+  63              	.LCFI1:
+  64              		.cfi_def_cfa_offset 16
+  65              		.cfi_offset 3, -16
+  66              		.cfi_offset 4, -12
+  67              		.cfi_offset 5, -8
+  68              		.cfi_offset 14, -4
+  69 0002 0346     		mov	r3, r0
+  70              	.LVL4:
+ 848:Drivers/BSP/Components/wm8994/wm8994.c ****   {
+  71              		.loc 1 848 0
+  72 0004 134A     		ldr	r2, .L8
+  73 0006 1068     		ldr	r0, [r2]
+  74              	.LVL5:
+  75 0008 80B1     		cbz	r0, .L3
+ 851:Drivers/BSP/Components/wm8994/wm8994.c ****     {
+  76              		.loc 1 851 0
+  77 000a 0129     		cmp	r1, #1
+  78 000c 0FD0     		beq	.L7
+ 862:Drivers/BSP/Components/wm8994/wm8994.c **** 
+  79              		.loc 1 862 0
+  80 000e DDB2     		uxtb	r5, r3
+  81 0010 1022     		movs	r2, #16
+  82 0012 4FF48461 		mov	r1, #1056
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 21
+
+
+  83              	.LVL6:
+  84 0016 2846     		mov	r0, r5
+  85 0018 FFF7FEFF 		bl	CODEC_IO_Write
+  86              	.LVL7:
+  87 001c 0446     		mov	r4, r0
+  88              	.LVL8:
+ 865:Drivers/BSP/Components/wm8994/wm8994.c ****     }
+  89              		.loc 1 865 0
+  90 001e 1022     		movs	r2, #16
+  91 0020 40F22241 		movw	r1, #1058
+  92 0024 2846     		mov	r0, r5
+  93              	.LVL9:
+  94 0026 FFF7FEFF 		bl	CODEC_IO_Write
+  95              	.LVL10:
+  96 002a 2044     		add	r0, r0, r4
+  97              	.LVL11:
+  98              	.L3:
+ 869:Drivers/BSP/Components/wm8994/wm8994.c **** 
+  99              		.loc 1 869 0
+ 100 002c 38BD     		pop	{r3, r4, r5, pc}
+ 101              	.LVL12:
+ 102              	.L7:
+ 854:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 103              		.loc 1 854 0
+ 104 002e DDB2     		uxtb	r5, r3
+ 105 0030 4FF40072 		mov	r2, #512
+ 106 0034 4FF48461 		mov	r1, #1056
+ 107              	.LVL13:
+ 108 0038 2846     		mov	r0, r5
+ 109 003a FFF7FEFF 		bl	CODEC_IO_Write
+ 110              	.LVL14:
+ 111 003e 0446     		mov	r4, r0
+ 112              	.LVL15:
+ 857:Drivers/BSP/Components/wm8994/wm8994.c ****     }
+ 113              		.loc 1 857 0
+ 114 0040 4FF40072 		mov	r2, #512
+ 115 0044 40F22241 		movw	r1, #1058
+ 116 0048 2846     		mov	r0, r5
+ 117              	.LVL16:
+ 118 004a FFF7FEFF 		bl	CODEC_IO_Write
+ 119              	.LVL17:
+ 120 004e 2044     		add	r0, r0, r4
+ 121              	.LVL18:
+ 122 0050 38BD     		pop	{r3, r4, r5, pc}
+ 123              	.L9:
+ 124 0052 00BF     		.align	2
+ 125              	.L8:
+ 126 0054 00000000 		.word	.LANCHOR0
+ 127              		.cfi_endproc
+ 128              	.LFE8:
+ 130              		.section	.text.wm8994_Play,"ax",%progbits
+ 131              		.align	1
+ 132              		.global	wm8994_Play
+ 133              		.syntax unified
+ 134              		.thumb
+ 135              		.thumb_func
+ 136              		.fpu fpv5-sp-d16
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 22
+
+
+ 138              	wm8994_Play:
+ 139              	.LFB3:
+ 664:Drivers/BSP/Components/wm8994/wm8994.c ****   uint32_t counter = 0;
+ 140              		.loc 1 664 0
+ 141              		.cfi_startproc
+ 142              		@ args = 0, pretend = 0, frame = 0
+ 143              		@ frame_needed = 0, uses_anonymous_args = 0
+ 144              	.LVL19:
+ 145 0000 08B5     		push	{r3, lr}
+ 146              	.LCFI2:
+ 147              		.cfi_def_cfa_offset 8
+ 148              		.cfi_offset 3, -8
+ 149              		.cfi_offset 14, -4
+ 150              	.LVL20:
+ 669:Drivers/BSP/Components/wm8994/wm8994.c ****   
+ 151              		.loc 1 669 0
+ 152 0002 0021     		movs	r1, #0
+ 153              	.LVL21:
+ 154 0004 FFF7FEFF 		bl	wm8994_SetMute
+ 155              	.LVL22:
+ 672:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 156              		.loc 1 672 0
+ 157 0008 08BD     		pop	{r3, pc}
+ 158              		.cfi_endproc
+ 159              	.LFE3:
+ 161              		.section	.text.wm8994_Resume,"ax",%progbits
+ 162              		.align	1
+ 163              		.global	wm8994_Resume
+ 164              		.syntax unified
+ 165              		.thumb
+ 166              		.thumb_func
+ 167              		.fpu fpv5-sp-d16
+ 169              	wm8994_Resume:
+ 170              	.LFB5:
+ 699:Drivers/BSP/Components/wm8994/wm8994.c ****   uint32_t counter = 0;
+ 171              		.loc 1 699 0
+ 172              		.cfi_startproc
+ 173              		@ args = 0, pretend = 0, frame = 0
+ 174              		@ frame_needed = 0, uses_anonymous_args = 0
+ 175              	.LVL23:
+ 176 0000 08B5     		push	{r3, lr}
+ 177              	.LCFI3:
+ 178              		.cfi_def_cfa_offset 8
+ 179              		.cfi_offset 3, -8
+ 180              		.cfi_offset 14, -4
+ 181              	.LVL24:
+ 704:Drivers/BSP/Components/wm8994/wm8994.c ****   
+ 182              		.loc 1 704 0
+ 183 0002 0021     		movs	r1, #0
+ 184 0004 FFF7FEFF 		bl	wm8994_SetMute
+ 185              	.LVL25:
+ 707:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 186              		.loc 1 707 0
+ 187 0008 08BD     		pop	{r3, pc}
+ 188              		.cfi_endproc
+ 189              	.LFE5:
+ 191              		.section	.text.wm8994_Pause,"ax",%progbits
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 23
+
+
+ 192              		.align	1
+ 193              		.global	wm8994_Pause
+ 194              		.syntax unified
+ 195              		.thumb
+ 196              		.thumb_func
+ 197              		.fpu fpv5-sp-d16
+ 199              	wm8994_Pause:
+ 200              	.LFB4:
+ 680:Drivers/BSP/Components/wm8994/wm8994.c ****   uint32_t counter = 0;
+ 201              		.loc 1 680 0
+ 202              		.cfi_startproc
+ 203              		@ args = 0, pretend = 0, frame = 0
+ 204              		@ frame_needed = 0, uses_anonymous_args = 0
+ 205              	.LVL26:
+ 206 0000 38B5     		push	{r3, r4, r5, lr}
+ 207              	.LCFI4:
+ 208              		.cfi_def_cfa_offset 16
+ 209              		.cfi_offset 3, -16
+ 210              		.cfi_offset 4, -12
+ 211              		.cfi_offset 5, -8
+ 212              		.cfi_offset 14, -4
+ 213 0002 0546     		mov	r5, r0
+ 214              	.LVL27:
+ 685:Drivers/BSP/Components/wm8994/wm8994.c ****   
+ 215              		.loc 1 685 0
+ 216 0004 0121     		movs	r1, #1
+ 217 0006 FFF7FEFF 		bl	wm8994_SetMute
+ 218              	.LVL28:
+ 219 000a 0446     		mov	r4, r0
+ 220              	.LVL29:
+ 688:Drivers/BSP/Components/wm8994/wm8994.c ****  
+ 221              		.loc 1 688 0
+ 222 000c 0122     		movs	r2, #1
+ 223 000e 0221     		movs	r1, #2
+ 224 0010 E8B2     		uxtb	r0, r5
+ 225              	.LVL30:
+ 226 0012 FFF7FEFF 		bl	CODEC_IO_Write
+ 227              	.LVL31:
+ 691:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 228              		.loc 1 691 0
+ 229 0016 2044     		add	r0, r0, r4
+ 230              	.LVL32:
+ 231 0018 38BD     		pop	{r3, r4, r5, pc}
+ 232              		.cfi_endproc
+ 233              	.LFE4:
+ 235              		.section	.text.wm8994_Stop,"ax",%progbits
+ 236              		.align	1
+ 237              		.global	wm8994_Stop
+ 238              		.syntax unified
+ 239              		.thumb
+ 240              		.thumb_func
+ 241              		.fpu fpv5-sp-d16
+ 243              	wm8994_Stop:
+ 244              	.LFB6:
+ 723:Drivers/BSP/Components/wm8994/wm8994.c ****   uint32_t counter = 0;
+ 245              		.loc 1 723 0
+ 246              		.cfi_startproc
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 24
+
+
+ 247              		@ args = 0, pretend = 0, frame = 0
+ 248              		@ frame_needed = 0, uses_anonymous_args = 0
+ 249              	.LVL33:
+ 250 0000 70B5     		push	{r4, r5, r6, lr}
+ 251              	.LCFI5:
+ 252              		.cfi_def_cfa_offset 16
+ 253              		.cfi_offset 4, -16
+ 254              		.cfi_offset 5, -12
+ 255              		.cfi_offset 6, -8
+ 256              		.cfi_offset 14, -4
+ 257              	.LVL34:
+ 726:Drivers/BSP/Components/wm8994/wm8994.c ****   {
+ 258              		.loc 1 726 0
+ 259 0002 1D4B     		ldr	r3, .L20
+ 260 0004 1C68     		ldr	r4, [r3]
+ 261 0006 0CB9     		cbnz	r4, .L19
+ 262              	.LVL35:
+ 263              	.L16:
+ 759:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 264              		.loc 1 759 0
+ 265 0008 2046     		mov	r0, r4
+ 266 000a 70BD     		pop	{r4, r5, r6, pc}
+ 267              	.LVL36:
+ 268              	.L19:
+ 269 000c 0E46     		mov	r6, r1
+ 270 000e 0546     		mov	r5, r0
+ 729:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 271              		.loc 1 729 0
+ 272 0010 0121     		movs	r1, #1
+ 273              	.LVL37:
+ 274 0012 FFF7FEFF 		bl	wm8994_SetMute
+ 275              	.LVL38:
+ 276 0016 0446     		mov	r4, r0
+ 277              	.LVL39:
+ 731:Drivers/BSP/Components/wm8994/wm8994.c ****     {
+ 278              		.loc 1 731 0
+ 279 0018 022E     		cmp	r6, #2
+ 280 001a F5D0     		beq	.L16
+ 738:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 281              		.loc 1 738 0
+ 282 001c EDB2     		uxtb	r5, r5
+ 283 001e 4FF40072 		mov	r2, #512
+ 284 0022 4FF48461 		mov	r1, #1056
+ 285 0026 2846     		mov	r0, r5
+ 286              	.LVL40:
+ 287 0028 FFF7FEFF 		bl	CODEC_IO_Write
+ 288              	.LVL41:
+ 289 002c 0444     		add	r4, r4, r0
+ 290              	.LVL42:
+ 741:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 291              		.loc 1 741 0
+ 292 002e 4FF40072 		mov	r2, #512
+ 293 0032 40F22241 		movw	r1, #1058
+ 294 0036 2846     		mov	r0, r5
+ 295 0038 FFF7FEFF 		bl	CODEC_IO_Write
+ 296              	.LVL43:
+ 297 003c 0444     		add	r4, r4, r0
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 25
+
+
+ 298              	.LVL44:
+ 744:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 299              		.loc 1 744 0
+ 300 003e 0022     		movs	r2, #0
+ 301 0040 2D21     		movs	r1, #45
+ 302 0042 2846     		mov	r0, r5
+ 303 0044 FFF7FEFF 		bl	CODEC_IO_Write
+ 304              	.LVL45:
+ 305 0048 0444     		add	r4, r4, r0
+ 306              	.LVL46:
+ 747:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 307              		.loc 1 747 0
+ 308 004a 0022     		movs	r2, #0
+ 309 004c 2E21     		movs	r1, #46
+ 310 004e 2846     		mov	r0, r5
+ 311 0050 FFF7FEFF 		bl	CODEC_IO_Write
+ 312              	.LVL47:
+ 313 0054 0444     		add	r4, r4, r0
+ 314              	.LVL48:
+ 750:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 315              		.loc 1 750 0
+ 316 0056 0022     		movs	r2, #0
+ 317 0058 0521     		movs	r1, #5
+ 318 005a 2846     		mov	r0, r5
+ 319 005c FFF7FEFF 		bl	CODEC_IO_Write
+ 320              	.LVL49:
+ 321 0060 0444     		add	r4, r4, r0
+ 322              	.LVL50:
+ 753:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 323              		.loc 1 753 0
+ 324 0062 0022     		movs	r2, #0
+ 325 0064 1146     		mov	r1, r2
+ 326 0066 2846     		mov	r0, r5
+ 327 0068 FFF7FEFF 		bl	CODEC_IO_Write
+ 328              	.LVL51:
+ 329 006c 0444     		add	r4, r4, r0
+ 330              	.LVL52:
+ 755:Drivers/BSP/Components/wm8994/wm8994.c ****     }
+ 331              		.loc 1 755 0
+ 332 006e 0022     		movs	r2, #0
+ 333 0070 014B     		ldr	r3, .L20
+ 334 0072 1A60     		str	r2, [r3]
+ 758:Drivers/BSP/Components/wm8994/wm8994.c **** }
+ 335              		.loc 1 758 0
+ 336 0074 C8E7     		b	.L16
+ 337              	.L21:
+ 338 0076 00BF     		.align	2
+ 339              	.L20:
+ 340 0078 00000000 		.word	.LANCHOR0
+ 341              		.cfi_endproc
+ 342              	.LFE6:
+ 344              		.section	.text.wm8994_SetVolume,"ax",%progbits
+ 345              		.align	1
+ 346              		.global	wm8994_SetVolume
+ 347              		.syntax unified
+ 348              		.thumb
+ 349              		.thumb_func
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 26
+
+
+ 350              		.fpu fpv5-sp-d16
+ 352              	wm8994_SetVolume:
+ 353              	.LFB7:
+ 769:Drivers/BSP/Components/wm8994/wm8994.c ****   uint32_t counter = 0;
+ 354              		.loc 1 769 0
+ 355              		.cfi_startproc
+ 356              		@ args = 0, pretend = 0, frame = 0
+ 357              		@ frame_needed = 0, uses_anonymous_args = 0
+ 358              	.LVL53:
+ 359 0000 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+ 360              	.LCFI6:
+ 361              		.cfi_def_cfa_offset 24
+ 362              		.cfi_offset 4, -24
+ 363              		.cfi_offset 5, -20
+ 364              		.cfi_offset 6, -16
+ 365              		.cfi_offset 7, -12
+ 366              		.cfi_offset 8, -8
+ 367              		.cfi_offset 14, -4
+ 368 0004 0646     		mov	r6, r0
+ 369 0006 0F46     		mov	r7, r1
+ 370              	.LVL54:
+ 771:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 371              		.loc 1 771 0
+ 372 0008 6429     		cmp	r1, #100
+ 373 000a 45D8     		bhi	.L29
+ 771:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 374              		.loc 1 771 0 is_stmt 0 discriminator 1
+ 375 000c C1EB8113 		rsb	r3, r1, r1, lsl #6
+ 376 0010 464A     		ldr	r2, .L33
+ 377 0012 82FB0312 		smull	r1, r2, r2, r3
+ 378              	.LVL55:
+ 379 0016 DD17     		asrs	r5, r3, #31
+ 380 0018 C5EB6215 		rsb	r5, r5, r2, asr #5
+ 381 001c EDB2     		uxtb	r5, r5
+ 382              	.L23:
+ 383              	.LVL56:
+ 774:Drivers/BSP/Components/wm8994/wm8994.c ****   {
+ 384              		.loc 1 774 0 is_stmt 1 discriminator 4
+ 385 001e 444B     		ldr	r3, .L33+4
+ 386 0020 1C68     		ldr	r4, [r3]
+ 387 0022 44B1     		cbz	r4, .L24
+ 776:Drivers/BSP/Components/wm8994/wm8994.c ****     {
+ 388              		.loc 1 776 0
+ 389 0024 3E2D     		cmp	r5, #62
+ 390 0026 39D8     		bhi	.L32
+ 793:Drivers/BSP/Components/wm8994/wm8994.c ****     {
+ 391              		.loc 1 793 0
+ 392 0028 002F     		cmp	r7, #0
+ 393 002a 5AD1     		bne	.L26
+ 796:Drivers/BSP/Components/wm8994/wm8994.c ****     }
+ 394              		.loc 1 796 0
+ 395 002c 0121     		movs	r1, #1
+ 396 002e 3046     		mov	r0, r6
+ 397              	.LVL57:
+ 398 0030 FFF7FEFF 		bl	wm8994_SetMute
+ 399              	.LVL58:
+ 400 0034 0446     		mov	r4, r0
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 27
+
+
+ 401              	.LVL59:
+ 402              	.L24:
+ 818:Drivers/BSP/Components/wm8994/wm8994.c ****   {
+ 403              		.loc 1 818 0
+ 404 0036 3F4B     		ldr	r3, .L33+8
+ 405 0038 1B68     		ldr	r3, [r3]
+ 406 003a 53B3     		cbz	r3, .L22
+ 820:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 407              		.loc 1 820 0
+ 408 003c 632F     		cmp	r7, #99
+ 409 003e 72D8     		bhi	.L30
+ 820:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 410              		.loc 1 820 0 is_stmt 0 discriminator 1
+ 411 0040 C7EB0711 		rsb	r1, r7, r7, lsl #4
+ 412 0044 0B01     		lsls	r3, r1, #4
+ 413 0046 394A     		ldr	r2, .L33
+ 414 0048 82FB0312 		smull	r1, r2, r2, r3
+ 415 004c DD17     		asrs	r5, r3, #31
+ 416 004e C5EB6215 		rsb	r5, r5, r2, asr #5
+ 417 0052 EDB2     		uxtb	r5, r5
+ 418              	.L28:
+ 419              	.LVL60:
+ 823:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 420              		.loc 1 823 0 is_stmt 1 discriminator 4
+ 421 0054 F6B2     		uxtb	r6, r6
+ 422 0056 45F48075 		orr	r5, r5, #256
+ 423              	.LVL61:
+ 424 005a 2A46     		mov	r2, r5
+ 425 005c 4FF48061 		mov	r1, #1024
+ 426 0060 3046     		mov	r0, r6
+ 427 0062 FFF7FEFF 		bl	CODEC_IO_Write
+ 428              	.LVL62:
+ 429 0066 0444     		add	r4, r4, r0
+ 430              	.LVL63:
+ 826:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 431              		.loc 1 826 0 discriminator 4
+ 432 0068 2A46     		mov	r2, r5
+ 433 006a 40F20141 		movw	r1, #1025
+ 434 006e 3046     		mov	r0, r6
+ 435 0070 FFF7FEFF 		bl	CODEC_IO_Write
+ 436              	.LVL64:
+ 437 0074 0444     		add	r4, r4, r0
+ 438              	.LVL65:
+ 829:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 439              		.loc 1 829 0 discriminator 4
+ 440 0076 2A46     		mov	r2, r5
+ 441 0078 40F20441 		movw	r1, #1028
+ 442 007c 3046     		mov	r0, r6
+ 443 007e FFF7FEFF 		bl	CODEC_IO_Write
+ 444              	.LVL66:
+ 445 0082 0444     		add	r4, r4, r0
+ 446              	.LVL67:
+ 832:Drivers/BSP/Components/wm8994/wm8994.c ****   }
+ 447              		.loc 1 832 0 discriminator 4
+ 448 0084 2A46     		mov	r2, r5
+ 449 0086 40F20541 		movw	r1, #1029
+ 450 008a 3046     		mov	r0, r6
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 28
+
+
+ 451 008c FFF7FEFF 		bl	CODEC_IO_Write
+ 452              	.LVL68:
+ 453 0090 0444     		add	r4, r4, r0
+ 454              	.LVL69:
+ 455              	.L22:
+ 835:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 456              		.loc 1 835 0
+ 457 0092 2046     		mov	r0, r4
+ 458 0094 BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 459              	.LVL70:
+ 460              	.L29:
+ 771:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 461              		.loc 1 771 0
+ 462 0098 6425     		movs	r5, #100
+ 463 009a C0E7     		b	.L23
+ 464              	.LVL71:
+ 465              	.L32:
+ 779:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 466              		.loc 1 779 0
+ 467 009c 0021     		movs	r1, #0
+ 468 009e 3046     		mov	r0, r6
+ 469              	.LVL72:
+ 470 00a0 FFF7FEFF 		bl	wm8994_SetMute
+ 471              	.LVL73:
+ 472 00a4 0446     		mov	r4, r0
+ 473              	.LVL74:
+ 782:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 474              		.loc 1 782 0
+ 475 00a6 F5B2     		uxtb	r5, r6
+ 476              	.LVL75:
+ 477 00a8 40F27F12 		movw	r2, #383
+ 478 00ac 1C21     		movs	r1, #28
+ 479 00ae 2846     		mov	r0, r5
+ 480              	.LVL76:
+ 481 00b0 FFF7FEFF 		bl	CODEC_IO_Write
+ 482              	.LVL77:
+ 483 00b4 0444     		add	r4, r4, r0
+ 484              	.LVL78:
+ 785:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 485              		.loc 1 785 0
+ 486 00b6 40F27F12 		movw	r2, #383
+ 487 00ba 1D21     		movs	r1, #29
+ 488 00bc 2846     		mov	r0, r5
+ 489 00be FFF7FEFF 		bl	CODEC_IO_Write
+ 490              	.LVL79:
+ 491 00c2 0444     		add	r4, r4, r0
+ 492              	.LVL80:
+ 788:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 493              		.loc 1 788 0
+ 494 00c4 40F27F12 		movw	r2, #383
+ 495 00c8 2621     		movs	r1, #38
+ 496 00ca 2846     		mov	r0, r5
+ 497 00cc FFF7FEFF 		bl	CODEC_IO_Write
+ 498              	.LVL81:
+ 499 00d0 0444     		add	r4, r4, r0
+ 500              	.LVL82:
+ 791:Drivers/BSP/Components/wm8994/wm8994.c ****     }
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 29
+
+
+ 501              		.loc 1 791 0
+ 502 00d2 40F27F12 		movw	r2, #383
+ 503 00d6 2721     		movs	r1, #39
+ 504 00d8 2846     		mov	r0, r5
+ 505 00da FFF7FEFF 		bl	CODEC_IO_Write
+ 506              	.LVL83:
+ 507 00de 0444     		add	r4, r4, r0
+ 508              	.LVL84:
+ 509 00e0 A9E7     		b	.L24
+ 510              	.LVL85:
+ 511              	.L26:
+ 801:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 512              		.loc 1 801 0
+ 513 00e2 0021     		movs	r1, #0
+ 514 00e4 3046     		mov	r0, r6
+ 515              	.LVL86:
+ 516 00e6 FFF7FEFF 		bl	wm8994_SetMute
+ 517              	.LVL87:
+ 518 00ea 0446     		mov	r4, r0
+ 519              	.LVL88:
+ 804:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 520              		.loc 1 804 0
+ 521 00ec 5FFA86F8 		uxtb	r8, r6
+ 522 00f0 45F4A075 		orr	r5, r5, #320
+ 523              	.LVL89:
+ 524 00f4 2A46     		mov	r2, r5
+ 525 00f6 1C21     		movs	r1, #28
+ 526 00f8 4046     		mov	r0, r8
+ 527              	.LVL90:
+ 528 00fa FFF7FEFF 		bl	CODEC_IO_Write
+ 529              	.LVL91:
+ 530 00fe 0444     		add	r4, r4, r0
+ 531              	.LVL92:
+ 807:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 532              		.loc 1 807 0
+ 533 0100 2A46     		mov	r2, r5
+ 534 0102 1D21     		movs	r1, #29
+ 535 0104 4046     		mov	r0, r8
+ 536 0106 FFF7FEFF 		bl	CODEC_IO_Write
+ 537              	.LVL93:
+ 538 010a 0444     		add	r4, r4, r0
+ 539              	.LVL94:
+ 810:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 540              		.loc 1 810 0
+ 541 010c 2A46     		mov	r2, r5
+ 542 010e 2621     		movs	r1, #38
+ 543 0110 4046     		mov	r0, r8
+ 544 0112 FFF7FEFF 		bl	CODEC_IO_Write
+ 545              	.LVL95:
+ 546 0116 0444     		add	r4, r4, r0
+ 547              	.LVL96:
+ 813:Drivers/BSP/Components/wm8994/wm8994.c ****     }
+ 548              		.loc 1 813 0
+ 549 0118 2A46     		mov	r2, r5
+ 550 011a 2721     		movs	r1, #39
+ 551 011c 4046     		mov	r0, r8
+ 552 011e FFF7FEFF 		bl	CODEC_IO_Write
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 30
+
+
+ 553              	.LVL97:
+ 554 0122 0444     		add	r4, r4, r0
+ 555              	.LVL98:
+ 556 0124 87E7     		b	.L24
+ 557              	.L30:
+ 820:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 558              		.loc 1 820 0
+ 559 0126 EF25     		movs	r5, #239
+ 560 0128 94E7     		b	.L28
+ 561              	.L34:
+ 562 012a 00BF     		.align	2
+ 563              	.L33:
+ 564 012c 1F85EB51 		.word	1374389535
+ 565 0130 00000000 		.word	.LANCHOR0
+ 566 0134 00000000 		.word	.LANCHOR1
+ 567              		.cfi_endproc
+ 568              	.LFE7:
+ 570              		.section	.text.wm8994_Init,"ax",%progbits
+ 571              		.align	1
+ 572              		.global	wm8994_Init
+ 573              		.syntax unified
+ 574              		.thumb
+ 575              		.thumb_func
+ 576              		.fpu fpv5-sp-d16
+ 578              	wm8994_Init:
+ 579              	.LFB0:
+ 138:Drivers/BSP/Components/wm8994/wm8994.c ****   uint32_t counter = 0;
+ 580              		.loc 1 138 0
+ 581              		.cfi_startproc
+ 582              		@ args = 0, pretend = 0, frame = 0
+ 583              		@ frame_needed = 0, uses_anonymous_args = 0
+ 584              	.LVL99:
+ 585 0000 2DE9F047 		push	{r4, r5, r6, r7, r8, r9, r10, lr}
+ 586              	.LCFI7:
+ 587              		.cfi_def_cfa_offset 32
+ 588              		.cfi_offset 4, -32
+ 589              		.cfi_offset 5, -28
+ 590              		.cfi_offset 6, -24
+ 591              		.cfi_offset 7, -20
+ 592              		.cfi_offset 8, -16
+ 593              		.cfi_offset 9, -12
+ 594              		.cfi_offset 10, -8
+ 595              		.cfi_offset 14, -4
+ 596 0004 8046     		mov	r8, r0
+ 597 0006 9146     		mov	r9, r2
+ 598 0008 9A46     		mov	r10, r3
+ 599              	.LVL100:
+ 140:Drivers/BSP/Components/wm8994/wm8994.c ****   uint16_t input_device = OutputInputDevice & 0xFF00;
+ 600              		.loc 1 140 0
+ 601 000a CFB2     		uxtb	r7, r1
+ 602              	.LVL101:
+ 141:Drivers/BSP/Components/wm8994/wm8994.c ****   uint16_t power_mgnt_reg_1 = 0;
+ 603              		.loc 1 141 0
+ 604 000c 01F47F46 		and	r6, r1, #65280
+ 605              	.LVL102:
+ 145:Drivers/BSP/Components/wm8994/wm8994.c ****   /* wm8994 Errata Work-Arounds */
+ 606              		.loc 1 145 0
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 31
+
+
+ 607 0010 FFF7FEFF 		bl	AUDIO_IO_Init
+ 608              	.LVL103:
+ 147:Drivers/BSP/Components/wm8994/wm8994.c ****   counter += CODEC_IO_Write(DeviceAddr, 0x817, 0x0000);
+ 609              		.loc 1 147 0
+ 610 0014 5FFA88F5 		uxtb	r5, r8
+ 611 0018 0322     		movs	r2, #3
+ 612 001a 4FF48171 		mov	r1, #258
+ 613 001e 2846     		mov	r0, r5
+ 614 0020 FFF7FEFF 		bl	CODEC_IO_Write
+ 615              	.LVL104:
+ 616 0024 0446     		mov	r4, r0
+ 617              	.LVL105:
+ 148:Drivers/BSP/Components/wm8994/wm8994.c ****   counter += CODEC_IO_Write(DeviceAddr, 0x102, 0x0000);
+ 618              		.loc 1 148 0
+ 619 0026 0022     		movs	r2, #0
+ 620 0028 40F61701 		movw	r1, #2071
+ 621 002c 2846     		mov	r0, r5
+ 622              	.LVL106:
+ 623 002e FFF7FEFF 		bl	CODEC_IO_Write
+ 624              	.LVL107:
+ 625 0032 0444     		add	r4, r4, r0
+ 626              	.LVL108:
+ 149:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 627              		.loc 1 149 0
+ 628 0034 0022     		movs	r2, #0
+ 629 0036 4FF48171 		mov	r1, #258
+ 630 003a 2846     		mov	r0, r5
+ 631 003c FFF7FEFF 		bl	CODEC_IO_Write
+ 632              	.LVL109:
+ 633 0040 0444     		add	r4, r4, r0
+ 634              	.LVL110:
+ 152:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 635              		.loc 1 152 0
+ 636 0042 6C22     		movs	r2, #108
+ 637 0044 3921     		movs	r1, #57
+ 638 0046 2846     		mov	r0, r5
+ 639 0048 FFF7FEFF 		bl	CODEC_IO_Write
+ 640              	.LVL111:
+ 641 004c 0444     		add	r4, r4, r0
+ 642              	.LVL112:
+ 155:Drivers/BSP/Components/wm8994/wm8994.c ****   {
+ 643              		.loc 1 155 0
+ 644 004e C6B3     		cbz	r6, .L36
+ 157:Drivers/BSP/Components/wm8994/wm8994.c ****   }
+ 645              		.loc 1 157 0
+ 646 0050 1322     		movs	r2, #19
+ 647 0052 0121     		movs	r1, #1
+ 648 0054 2846     		mov	r0, r5
+ 649 0056 FFF7FEFF 		bl	CODEC_IO_Write
+ 650              	.LVL113:
+ 651 005a 0444     		add	r4, r4, r0
+ 652              	.LVL114:
+ 653              	.L37:
+ 165:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 654              		.loc 1 165 0
+ 655 005c 3220     		movs	r0, #50
+ 656 005e FFF7FEFF 		bl	AUDIO_IO_Delay
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 32
+
+
+ 657              	.LVL115:
+ 168:Drivers/BSP/Components/wm8994/wm8994.c ****   {
+ 658              		.loc 1 168 0
+ 659 0062 002F     		cmp	r7, #0
+ 660 0064 00F0C780 		beq	.L38
+ 170:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 661              		.loc 1 170 0
+ 662 0068 0122     		movs	r2, #1
+ 663 006a E94B     		ldr	r3, .L91
+ 664 006c 1A60     		str	r2, [r3]
+ 172:Drivers/BSP/Components/wm8994/wm8994.c ****     {
+ 665              		.loc 1 172 0
+ 666 006e 022F     		cmp	r7, #2
+ 667 0070 52D0     		beq	.L40
+ 668 0072 032F     		cmp	r7, #3
+ 669 0074 74D0     		beq	.L41
+ 670 0076 9742     		cmp	r7, r2
+ 671 0078 2AD0     		beq	.L79
+ 257:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 672              		.loc 1 257 0
+ 673 007a 40F20332 		movw	r2, #771
+ 674 007e 0521     		movs	r1, #5
+ 675 0080 2846     		mov	r0, r5
+ 676 0082 FFF7FEFF 		bl	CODEC_IO_Write
+ 677              	.LVL116:
+ 678 0086 0444     		add	r4, r4, r0
+ 679              	.LVL117:
+ 260:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 680              		.loc 1 260 0
+ 681 0088 0122     		movs	r2, #1
+ 682 008a 40F20161 		movw	r1, #1537
+ 683 008e 2846     		mov	r0, r5
+ 684 0090 FFF7FEFF 		bl	CODEC_IO_Write
+ 685              	.LVL118:
+ 686 0094 0444     		add	r4, r4, r0
+ 687              	.LVL119:
+ 263:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 688              		.loc 1 263 0
+ 689 0096 0122     		movs	r2, #1
+ 690 0098 40F20261 		movw	r1, #1538
+ 691 009c 2846     		mov	r0, r5
+ 692 009e FFF7FEFF 		bl	CODEC_IO_Write
+ 693              	.LVL120:
+ 694 00a2 0444     		add	r4, r4, r0
+ 695              	.LVL121:
+ 266:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 696              		.loc 1 266 0
+ 697 00a4 0022     		movs	r2, #0
+ 698 00a6 40F20461 		movw	r1, #1540
+ 699 00aa 2846     		mov	r0, r5
+ 700 00ac FFF7FEFF 		bl	CODEC_IO_Write
+ 701              	.LVL122:
+ 702 00b0 0444     		add	r4, r4, r0
+ 703              	.LVL123:
+ 269:Drivers/BSP/Components/wm8994/wm8994.c ****       break;
+ 704              		.loc 1 269 0
+ 705 00b2 0022     		movs	r2, #0
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 33
+
+
+ 706 00b4 40F20561 		movw	r1, #1541
+ 707 00b8 2846     		mov	r0, r5
+ 708 00ba FFF7FEFF 		bl	CODEC_IO_Write
+ 709              	.LVL124:
+ 710 00be 0444     		add	r4, r4, r0
+ 711              	.LVL125:
+ 270:Drivers/BSP/Components/wm8994/wm8994.c ****     }
+ 712              		.loc 1 270 0
+ 713 00c0 9CE0     		b	.L43
+ 714              	.L36:
+ 161:Drivers/BSP/Components/wm8994/wm8994.c ****   }
+ 715              		.loc 1 161 0
+ 716 00c2 0322     		movs	r2, #3
+ 717 00c4 0121     		movs	r1, #1
+ 718 00c6 2846     		mov	r0, r5
+ 719 00c8 FFF7FEFF 		bl	CODEC_IO_Write
+ 720              	.LVL126:
+ 721 00cc 0444     		add	r4, r4, r0
+ 722              	.LVL127:
+ 723 00ce C5E7     		b	.L37
+ 724              	.L79:
+ 177:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 725              		.loc 1 177 0
+ 726 00d0 40F60C42 		movw	r2, #3084
+ 727 00d4 0521     		movs	r1, #5
+ 728 00d6 2846     		mov	r0, r5
+ 729 00d8 FFF7FEFF 		bl	CODEC_IO_Write
+ 730              	.LVL128:
+ 731 00dc 0444     		add	r4, r4, r0
+ 732              	.LVL129:
+ 180:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 733              		.loc 1 180 0
+ 734 00de 0022     		movs	r2, #0
+ 735 00e0 40F20161 		movw	r1, #1537
+ 736 00e4 2846     		mov	r0, r5
+ 737 00e6 FFF7FEFF 		bl	CODEC_IO_Write
+ 738              	.LVL130:
+ 739 00ea 0444     		add	r4, r4, r0
+ 740              	.LVL131:
+ 183:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 741              		.loc 1 183 0
+ 742 00ec 0022     		movs	r2, #0
+ 743 00ee 40F20261 		movw	r1, #1538
+ 744 00f2 2846     		mov	r0, r5
+ 745 00f4 FFF7FEFF 		bl	CODEC_IO_Write
+ 746              	.LVL132:
+ 747 00f8 0444     		add	r4, r4, r0
+ 748              	.LVL133:
+ 186:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 749              		.loc 1 186 0
+ 750 00fa 0222     		movs	r2, #2
+ 751 00fc 40F20461 		movw	r1, #1540
+ 752 0100 2846     		mov	r0, r5
+ 753 0102 FFF7FEFF 		bl	CODEC_IO_Write
+ 754              	.LVL134:
+ 755 0106 0444     		add	r4, r4, r0
+ 756              	.LVL135:
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 34
+
+
+ 189:Drivers/BSP/Components/wm8994/wm8994.c ****       break;
+ 757              		.loc 1 189 0
+ 758 0108 0222     		movs	r2, #2
+ 759 010a 40F20561 		movw	r1, #1541
+ 760 010e 2846     		mov	r0, r5
+ 761 0110 FFF7FEFF 		bl	CODEC_IO_Write
+ 762              	.LVL136:
+ 763 0114 0444     		add	r4, r4, r0
+ 764              	.LVL137:
+ 190:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 765              		.loc 1 190 0
+ 766 0116 71E0     		b	.L43
+ 767              	.L40:
+ 195:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 768              		.loc 1 195 0
+ 769 0118 40F20332 		movw	r2, #771
+ 770 011c 0521     		movs	r1, #5
+ 771 011e 2846     		mov	r0, r5
+ 772 0120 FFF7FEFF 		bl	CODEC_IO_Write
+ 773              	.LVL138:
+ 774 0124 0444     		add	r4, r4, r0
+ 775              	.LVL139:
+ 198:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 776              		.loc 1 198 0
+ 777 0126 0122     		movs	r2, #1
+ 778 0128 40F20161 		movw	r1, #1537
+ 779 012c 2846     		mov	r0, r5
+ 780 012e FFF7FEFF 		bl	CODEC_IO_Write
+ 781              	.LVL140:
+ 782 0132 0444     		add	r4, r4, r0
+ 783              	.LVL141:
+ 201:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 784              		.loc 1 201 0
+ 785 0134 0122     		movs	r2, #1
+ 786 0136 40F20261 		movw	r1, #1538
+ 787 013a 2846     		mov	r0, r5
+ 788 013c FFF7FEFF 		bl	CODEC_IO_Write
+ 789              	.LVL142:
+ 790 0140 0444     		add	r4, r4, r0
+ 791              	.LVL143:
+ 204:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 792              		.loc 1 204 0
+ 793 0142 0022     		movs	r2, #0
+ 794 0144 40F20461 		movw	r1, #1540
+ 795 0148 2846     		mov	r0, r5
+ 796 014a FFF7FEFF 		bl	CODEC_IO_Write
+ 797              	.LVL144:
+ 798 014e 0444     		add	r4, r4, r0
+ 799              	.LVL145:
+ 207:Drivers/BSP/Components/wm8994/wm8994.c ****       break;
+ 800              		.loc 1 207 0
+ 801 0150 0022     		movs	r2, #0
+ 802 0152 40F20561 		movw	r1, #1541
+ 803 0156 2846     		mov	r0, r5
+ 804 0158 FFF7FEFF 		bl	CODEC_IO_Write
+ 805              	.LVL146:
+ 806 015c 0444     		add	r4, r4, r0
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 35
+
+
+ 807              	.LVL147:
+ 208:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 808              		.loc 1 208 0
+ 809 015e 4DE0     		b	.L43
+ 810              	.L41:
+ 211:Drivers/BSP/Components/wm8994/wm8994.c ****       {
+ 811              		.loc 1 211 0
+ 812 0160 B6F5006F 		cmp	r6, #2048
+ 813 0164 23D0     		beq	.L80
+ 237:Drivers/BSP/Components/wm8994/wm8994.c ****         
+ 814              		.loc 1 237 0
+ 815 0166 40F60F72 		movw	r2, #3855
+ 816 016a 0521     		movs	r1, #5
+ 817 016c 2846     		mov	r0, r5
+ 818 016e FFF7FEFF 		bl	CODEC_IO_Write
+ 819              	.LVL148:
+ 820 0172 0444     		add	r4, r4, r0
+ 821              	.LVL149:
+ 240:Drivers/BSP/Components/wm8994/wm8994.c ****         
+ 822              		.loc 1 240 0
+ 823 0174 0122     		movs	r2, #1
+ 824 0176 40F20161 		movw	r1, #1537
+ 825 017a 2846     		mov	r0, r5
+ 826 017c FFF7FEFF 		bl	CODEC_IO_Write
+ 827              	.LVL150:
+ 828 0180 0444     		add	r4, r4, r0
+ 829              	.LVL151:
+ 243:Drivers/BSP/Components/wm8994/wm8994.c ****         
+ 830              		.loc 1 243 0
+ 831 0182 0122     		movs	r2, #1
+ 832 0184 40F20261 		movw	r1, #1538
+ 833 0188 2846     		mov	r0, r5
+ 834 018a FFF7FEFF 		bl	CODEC_IO_Write
+ 835              	.LVL152:
+ 836 018e 0444     		add	r4, r4, r0
+ 837              	.LVL153:
+ 246:Drivers/BSP/Components/wm8994/wm8994.c ****         
+ 838              		.loc 1 246 0
+ 839 0190 0222     		movs	r2, #2
+ 840 0192 40F20461 		movw	r1, #1540
+ 841 0196 2846     		mov	r0, r5
+ 842 0198 FFF7FEFF 		bl	CODEC_IO_Write
+ 843              	.LVL154:
+ 844 019c 0444     		add	r4, r4, r0
+ 845              	.LVL155:
+ 249:Drivers/BSP/Components/wm8994/wm8994.c ****       }
+ 846              		.loc 1 249 0
+ 847 019e 0222     		movs	r2, #2
+ 848 01a0 40F20561 		movw	r1, #1541
+ 849 01a4 2846     		mov	r0, r5
+ 850 01a6 FFF7FEFF 		bl	CODEC_IO_Write
+ 851              	.LVL156:
+ 852 01aa 0444     		add	r4, r4, r0
+ 853              	.LVL157:
+ 854 01ac 26E0     		b	.L43
+ 855              	.L80:
+ 215:Drivers/BSP/Components/wm8994/wm8994.c ****         
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 36
+
+
+ 856              		.loc 1 215 0
+ 857 01ae 40F60F72 		movw	r2, #3855
+ 858 01b2 0521     		movs	r1, #5
+ 859 01b4 2846     		mov	r0, r5
+ 860 01b6 FFF7FEFF 		bl	CODEC_IO_Write
+ 861              	.LVL158:
+ 862 01ba 0444     		add	r4, r4, r0
+ 863              	.LVL159:
+ 219:Drivers/BSP/Components/wm8994/wm8994.c ****         
+ 864              		.loc 1 219 0
+ 865 01bc 0322     		movs	r2, #3
+ 866 01be 40F20161 		movw	r1, #1537
+ 867 01c2 2846     		mov	r0, r5
+ 868 01c4 FFF7FEFF 		bl	CODEC_IO_Write
+ 869              	.LVL160:
+ 870 01c8 0444     		add	r4, r4, r0
+ 871              	.LVL161:
+ 223:Drivers/BSP/Components/wm8994/wm8994.c ****         
+ 872              		.loc 1 223 0
+ 873 01ca 0322     		movs	r2, #3
+ 874 01cc 40F20261 		movw	r1, #1538
+ 875 01d0 2846     		mov	r0, r5
+ 876 01d2 FFF7FEFF 		bl	CODEC_IO_Write
+ 877              	.LVL162:
+ 878 01d6 0444     		add	r4, r4, r0
+ 879              	.LVL163:
+ 227:Drivers/BSP/Components/wm8994/wm8994.c ****         
+ 880              		.loc 1 227 0
+ 881 01d8 0322     		movs	r2, #3
+ 882 01da 40F20461 		movw	r1, #1540
+ 883 01de 2846     		mov	r0, r5
+ 884 01e0 FFF7FEFF 		bl	CODEC_IO_Write
+ 885              	.LVL164:
+ 886 01e4 0444     		add	r4, r4, r0
+ 887              	.LVL165:
+ 231:Drivers/BSP/Components/wm8994/wm8994.c ****       }
+ 888              		.loc 1 231 0
+ 889 01e6 0322     		movs	r2, #3
+ 890 01e8 40F20561 		movw	r1, #1541
+ 891 01ec 2846     		mov	r0, r5
+ 892 01ee FFF7FEFF 		bl	CODEC_IO_Write
+ 893              	.LVL166:
+ 894 01f2 0444     		add	r4, r4, r0
+ 895              	.LVL167:
+ 896 01f4 02E0     		b	.L43
+ 897              	.L38:
+ 275:Drivers/BSP/Components/wm8994/wm8994.c ****   }
+ 898              		.loc 1 275 0
+ 899 01f6 0022     		movs	r2, #0
+ 900 01f8 854B     		ldr	r3, .L91
+ 901 01fa 1A60     		str	r2, [r3]
+ 902              	.L43:
+ 279:Drivers/BSP/Components/wm8994/wm8994.c ****   {
+ 903              		.loc 1 279 0
+ 904 01fc 002E     		cmp	r6, #0
+ 905 01fe 00F0E880 		beq	.L45
+ 281:Drivers/BSP/Components/wm8994/wm8994.c ****     switch (input_device)
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 37
+
+
+ 906              		.loc 1 281 0
+ 907 0202 0122     		movs	r2, #1
+ 908 0204 834B     		ldr	r3, .L91+4
+ 909 0206 1A60     		str	r2, [r3]
+ 282:Drivers/BSP/Components/wm8994/wm8994.c ****     {
+ 910              		.loc 1 282 0
+ 911 0208 B6F5007F 		cmp	r6, #512
+ 912 020c 77D0     		beq	.L47
+ 913 020e 47D9     		bls	.L81
+ 914 0210 B6F5407F 		cmp	r6, #768
+ 915 0214 00F09E80 		beq	.L50
+ 916 0218 B6F5006F 		cmp	r6, #2048
+ 917 021c 40F0D780 		bne	.L46
+ 361:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 918              		.loc 1 361 0
+ 919 0220 40F63C72 		movw	r2, #3900
+ 920 0224 0421     		movs	r1, #4
+ 921 0226 2846     		mov	r0, r5
+ 922 0228 FFF7FEFF 		bl	CODEC_IO_Write
+ 923              	.LVL168:
+ 924 022c 0444     		add	r4, r4, r0
+ 925              	.LVL169:
+ 364:Drivers/BSP/Components/wm8994/wm8994.c ****       
+ 926              		.loc 1 364 0
+ 927 022e DB22     		movs	r2, #219
+ 928 0230 4FF48A61 		mov	r1, #1104
+ 929 0234 2846     		mov	r0, r5
+ 930 0236 FFF7FEFF 		bl	CODEC_IO_Write
+ 931              	.LVL170:
+ 932 023a 0444     		add	r4, r4, r0
+ 933              	.LVL171:
+ 367:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 934              		.loc 1 367 0
+ 935 023c DB22     		movs	r2, #219
+ 936 023e 4FF48861 		mov	r1, #1088
+ 937 0242 2846     		mov	r0, r5
+ 938 0244 FFF7FEFF 		bl	CODEC_IO_Write
+ 939              	.LVL172:
+ 940 0248 0444     		add	r4, r4, r0
+ 941              	.LVL173:
+ 370:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 942              		.loc 1 370 0
+ 943 024a 46F2A032 		movw	r2, #25504
+ 944 024e 0221     		movs	r1, #2
+ 945 0250 2846     		mov	r0, r5
+ 946 0252 FFF7FEFF 		bl	CODEC_IO_Write
+ 947              	.LVL174:
+ 948 0256 0444     		add	r4, r4, r0
+ 949              	.LVL175:
+ 373:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 950              		.loc 1 373 0
+ 951 0258 0222     		movs	r2, #2
+ 952 025a 40F20661 		movw	r1, #1542
+ 953 025e 2846     		mov	r0, r5
+ 954 0260 FFF7FEFF 		bl	CODEC_IO_Write
+ 955              	.LVL176:
+ 956 0264 0444     		add	r4, r4, r0
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 38
+
+
+ 957              	.LVL177:
+ 376:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 958              		.loc 1 376 0
+ 959 0266 0222     		movs	r2, #2
+ 960 0268 40F20761 		movw	r1, #1543
+ 961 026c 2846     		mov	r0, r5
+ 962 026e FFF7FEFF 		bl	CODEC_IO_Write
+ 963              	.LVL178:
+ 964 0272 0444     		add	r4, r4, r0
+ 965              	.LVL179:
+ 379:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 966              		.loc 1 379 0
+ 967 0274 0222     		movs	r2, #2
+ 968 0276 4FF4C161 		mov	r1, #1544
+ 969 027a 2846     		mov	r0, r5
+ 970 027c FFF7FEFF 		bl	CODEC_IO_Write
+ 971              	.LVL180:
+ 972 0280 0444     		add	r4, r4, r0
+ 973              	.LVL181:
+ 382:Drivers/BSP/Components/wm8994/wm8994.c ****       
+ 974              		.loc 1 382 0
+ 975 0282 0222     		movs	r2, #2
+ 976 0284 40F20961 		movw	r1, #1545
+ 977 0288 2846     		mov	r0, r5
+ 978 028a FFF7FEFF 		bl	CODEC_IO_Write
+ 979              	.LVL182:
+ 980 028e 0444     		add	r4, r4, r0
+ 981              	.LVL183:
+ 385:Drivers/BSP/Components/wm8994/wm8994.c ****       break;    
+ 982              		.loc 1 385 0
+ 983 0290 0D22     		movs	r2, #13
+ 984 0292 4FF4E061 		mov	r1, #1792
+ 985 0296 2846     		mov	r0, r5
+ 986 0298 FFF7FEFF 		bl	CODEC_IO_Write
+ 987              	.LVL184:
+ 988 029c 0444     		add	r4, r4, r0
+ 989              	.LVL185:
+ 386:Drivers/BSP/Components/wm8994/wm8994.c ****     case INPUT_DEVICE_INPUT_LINE_2 :
+ 990              		.loc 1 386 0
+ 991 029e 9BE0     		b	.L52
+ 992              	.L81:
+ 282:Drivers/BSP/Components/wm8994/wm8994.c ****     {
+ 993              		.loc 1 282 0
+ 994 02a0 B6F5807F 		cmp	r6, #256
+ 995 02a4 40F09380 		bne	.L46
+ 340:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 996              		.loc 1 340 0
+ 997 02a8 4FF44372 		mov	r2, #780
+ 998 02ac 0421     		movs	r1, #4
+ 999 02ae 2846     		mov	r0, r5
+ 1000 02b0 FFF7FEFF 		bl	CODEC_IO_Write
+ 1001              	.LVL186:
+ 1002 02b4 0444     		add	r4, r4, r0
+ 1003              	.LVL187:
+ 343:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 1004              		.loc 1 343 0
+ 1005 02b6 DB22     		movs	r2, #219
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 39
+
+
+ 1006 02b8 4FF48861 		mov	r1, #1088
+ 1007 02bc 2846     		mov	r0, r5
+ 1008 02be FFF7FEFF 		bl	CODEC_IO_Write
+ 1009              	.LVL188:
+ 1010 02c2 0444     		add	r4, r4, r0
+ 1011              	.LVL189:
+ 346:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 1012              		.loc 1 346 0
+ 1013 02c4 46F25032 		movw	r2, #25424
+ 1014 02c8 0221     		movs	r1, #2
+ 1015 02ca 2846     		mov	r0, r5
+ 1016 02cc FFF7FEFF 		bl	CODEC_IO_Write
+ 1017              	.LVL190:
+ 1018 02d0 0444     		add	r4, r4, r0
+ 1019              	.LVL191:
+ 349:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 1020              		.loc 1 349 0
+ 1021 02d2 0222     		movs	r2, #2
+ 1022 02d4 40F20661 		movw	r1, #1542
+ 1023 02d8 2846     		mov	r0, r5
+ 1024 02da FFF7FEFF 		bl	CODEC_IO_Write
+ 1025              	.LVL192:
+ 1026 02de 0444     		add	r4, r4, r0
+ 1027              	.LVL193:
+ 352:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 1028              		.loc 1 352 0
+ 1029 02e0 0222     		movs	r2, #2
+ 1030 02e2 40F20761 		movw	r1, #1543
+ 1031 02e6 2846     		mov	r0, r5
+ 1032 02e8 FFF7FEFF 		bl	CODEC_IO_Write
+ 1033              	.LVL194:
+ 1034 02ec 0444     		add	r4, r4, r0
+ 1035              	.LVL195:
+ 355:Drivers/BSP/Components/wm8994/wm8994.c ****       break; 
+ 1036              		.loc 1 355 0
+ 1037 02ee 0D22     		movs	r2, #13
+ 1038 02f0 4FF4E061 		mov	r1, #1792
+ 1039 02f4 2846     		mov	r0, r5
+ 1040 02f6 FFF7FEFF 		bl	CODEC_IO_Write
+ 1041              	.LVL196:
+ 1042 02fa 0444     		add	r4, r4, r0
+ 1043              	.LVL197:
+ 356:Drivers/BSP/Components/wm8994/wm8994.c ****     case INPUT_DEVICE_DIGITAL_MIC1_MIC2 :
+ 1044              		.loc 1 356 0
+ 1045 02fc 6CE0     		b	.L52
+ 1046              	.L47:
+ 288:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 1047              		.loc 1 288 0
+ 1048 02fe 4FF44362 		mov	r2, #3120
+ 1049 0302 0421     		movs	r1, #4
+ 1050 0304 2846     		mov	r0, r5
+ 1051 0306 FFF7FEFF 		bl	CODEC_IO_Write
+ 1052              	.LVL198:
+ 1053 030a 0444     		add	r4, r4, r0
+ 1054              	.LVL199:
+ 291:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 1055              		.loc 1 291 0
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 40
+
+
+ 1056 030c DB22     		movs	r2, #219
+ 1057 030e 4FF48A61 		mov	r1, #1104
+ 1058 0312 2846     		mov	r0, r5
+ 1059 0314 FFF7FEFF 		bl	CODEC_IO_Write
+ 1060              	.LVL200:
+ 1061 0318 0444     		add	r4, r4, r0
+ 1062              	.LVL201:
+ 294:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 1063              		.loc 1 294 0
+ 1064 031a 4FF4C042 		mov	r2, #24576
+ 1065 031e 0221     		movs	r1, #2
+ 1066 0320 2846     		mov	r0, r5
+ 1067 0322 FFF7FEFF 		bl	CODEC_IO_Write
+ 1068              	.LVL202:
+ 1069 0326 0444     		add	r4, r4, r0
+ 1070              	.LVL203:
+ 297:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 1071              		.loc 1 297 0
+ 1072 0328 0222     		movs	r2, #2
+ 1073 032a 4FF4C161 		mov	r1, #1544
+ 1074 032e 2846     		mov	r0, r5
+ 1075 0330 FFF7FEFF 		bl	CODEC_IO_Write
+ 1076              	.LVL204:
+ 1077 0334 0444     		add	r4, r4, r0
+ 1078              	.LVL205:
+ 300:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 1079              		.loc 1 300 0
+ 1080 0336 0222     		movs	r2, #2
+ 1081 0338 40F20961 		movw	r1, #1545
+ 1082 033c 2846     		mov	r0, r5
+ 1083 033e FFF7FEFF 		bl	CODEC_IO_Write
+ 1084              	.LVL206:
+ 1085 0342 0444     		add	r4, r4, r0
+ 1086              	.LVL207:
+ 303:Drivers/BSP/Components/wm8994/wm8994.c ****       break;
+ 1087              		.loc 1 303 0
+ 1088 0344 0E22     		movs	r2, #14
+ 1089 0346 4FF4E061 		mov	r1, #1792
+ 1090 034a 2846     		mov	r0, r5
+ 1091 034c FFF7FEFF 		bl	CODEC_IO_Write
+ 1092              	.LVL208:
+ 1093 0350 0444     		add	r4, r4, r0
+ 1094              	.LVL209:
+ 304:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 1095              		.loc 1 304 0
+ 1096 0352 41E0     		b	.L52
+ 1097              	.L50:
+ 308:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 1098              		.loc 1 308 0
+ 1099 0354 1122     		movs	r2, #17
+ 1100 0356 2821     		movs	r1, #40
+ 1101 0358 2846     		mov	r0, r5
+ 1102 035a FFF7FEFF 		bl	CODEC_IO_Write
+ 1103              	.LVL210:
+ 1104 035e 0444     		add	r4, r4, r0
+ 1105              	.LVL211:
+ 311:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 41
+
+
+ 1106              		.loc 1 311 0
+ 1107 0360 3522     		movs	r2, #53
+ 1108 0362 2921     		movs	r1, #41
+ 1109 0364 2846     		mov	r0, r5
+ 1110 0366 FFF7FEFF 		bl	CODEC_IO_Write
+ 1111              	.LVL212:
+ 1112 036a 0444     		add	r4, r4, r0
+ 1113              	.LVL213:
+ 314:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 1114              		.loc 1 314 0
+ 1115 036c 3522     		movs	r2, #53
+ 1116 036e 2A21     		movs	r1, #42
+ 1117 0370 2846     		mov	r0, r5
+ 1118 0372 FFF7FEFF 		bl	CODEC_IO_Write
+ 1119              	.LVL214:
+ 1120 0376 0444     		add	r4, r4, r0
+ 1121              	.LVL215:
+ 318:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 1122              		.loc 1 318 0
+ 1123 0378 40F20332 		movw	r2, #771
+ 1124 037c 0421     		movs	r1, #4
+ 1125 037e 2846     		mov	r0, r5
+ 1126 0380 FFF7FEFF 		bl	CODEC_IO_Write
+ 1127              	.LVL216:
+ 1128 0384 0444     		add	r4, r4, r0
+ 1129              	.LVL217:
+ 321:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 1130              		.loc 1 321 0
+ 1131 0386 DB22     		movs	r2, #219
+ 1132 0388 4FF48861 		mov	r1, #1088
+ 1133 038c 2846     		mov	r0, r5
+ 1134 038e FFF7FEFF 		bl	CODEC_IO_Write
+ 1135              	.LVL218:
+ 1136 0392 0444     		add	r4, r4, r0
+ 1137              	.LVL219:
+ 324:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 1138              		.loc 1 324 0
+ 1139 0394 46F25032 		movw	r2, #25424
+ 1140 0398 0221     		movs	r1, #2
+ 1141 039a 2846     		mov	r0, r5
+ 1142 039c FFF7FEFF 		bl	CODEC_IO_Write
+ 1143              	.LVL220:
+ 1144 03a0 0444     		add	r4, r4, r0
+ 1145              	.LVL221:
+ 327:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 1146              		.loc 1 327 0
+ 1147 03a2 0222     		movs	r2, #2
+ 1148 03a4 40F20661 		movw	r1, #1542
+ 1149 03a8 2846     		mov	r0, r5
+ 1150 03aa FFF7FEFF 		bl	CODEC_IO_Write
+ 1151              	.LVL222:
+ 1152 03ae 0444     		add	r4, r4, r0
+ 1153              	.LVL223:
+ 330:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 1154              		.loc 1 330 0
+ 1155 03b0 0222     		movs	r2, #2
+ 1156 03b2 40F20761 		movw	r1, #1543
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 42
+
+
+ 1157 03b6 2846     		mov	r0, r5
+ 1158 03b8 FFF7FEFF 		bl	CODEC_IO_Write
+ 1159              	.LVL224:
+ 1160 03bc 0444     		add	r4, r4, r0
+ 1161              	.LVL225:
+ 333:Drivers/BSP/Components/wm8994/wm8994.c ****       break;
+ 1162              		.loc 1 333 0
+ 1163 03be 0D22     		movs	r2, #13
+ 1164 03c0 4FF4E061 		mov	r1, #1792
+ 1165 03c4 2846     		mov	r0, r5
+ 1166 03c6 FFF7FEFF 		bl	CODEC_IO_Write
+ 1167              	.LVL226:
+ 1168 03ca 0444     		add	r4, r4, r0
+ 1169              	.LVL227:
+ 334:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 1170              		.loc 1 334 0
+ 1171 03cc 04E0     		b	.L52
+ 1172              	.L46:
+ 390:Drivers/BSP/Components/wm8994/wm8994.c ****       break;
+ 1173              		.loc 1 390 0
+ 1174 03ce 0134     		adds	r4, r4, #1
+ 1175              	.LVL228:
+ 391:Drivers/BSP/Components/wm8994/wm8994.c ****     }
+ 1176              		.loc 1 391 0
+ 1177 03d0 02E0     		b	.L52
+ 1178              	.L45:
+ 396:Drivers/BSP/Components/wm8994/wm8994.c ****   }
+ 1179              		.loc 1 396 0
+ 1180 03d2 0022     		movs	r2, #0
+ 1181 03d4 0F4B     		ldr	r3, .L91+4
+ 1182 03d6 1A60     		str	r2, [r3]
+ 1183              	.L52:
+ 400:Drivers/BSP/Components/wm8994/wm8994.c ****   {
+ 1184              		.loc 1 400 0
+ 1185 03d8 45F22263 		movw	r3, #22050
+ 1186 03dc 9A45     		cmp	r10, r3
+ 1187 03de 00F03081 		beq	.L54
+ 1188 03e2 1BD9     		bls	.L82
+ 1189 03e4 4AF64443 		movw	r3, #44100
+ 1190 03e8 9A45     		cmp	r10, r3
+ 1191 03ea 00F03281 		beq	.L59
+ 1192 03ee 29D9     		bls	.L83
+ 1193 03f0 4BF68033 		movw	r3, #48000
+ 1194 03f4 9A45     		cmp	r10, r3
+ 1195 03f6 00F01481 		beq	.L62
+ 1196 03fa 074B     		ldr	r3, .L91+8
+ 1197 03fc 9A45     		cmp	r10, r3
+ 1198 03fe 19D1     		bne	.L53
+ 424:Drivers/BSP/Components/wm8994/wm8994.c ****     break;
+ 1199              		.loc 1 424 0
+ 1200 0400 A322     		movs	r2, #163
+ 1201 0402 4FF40471 		mov	r1, #528
+ 1202 0406 2846     		mov	r0, r5
+ 1203 0408 FFF7FEFF 		bl	CODEC_IO_Write
+ 1204              	.LVL229:
+ 1205 040c 0444     		add	r4, r4, r0
+ 1206              	.LVL230:
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 43
+
+
+ 425:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 1207              		.loc 1 425 0
+ 1208 040e 2BE0     		b	.L64
+ 1209              	.L92:
+ 1210              		.align	2
+ 1211              	.L91:
+ 1212 0410 00000000 		.word	.LANCHOR0
+ 1213 0414 00000000 		.word	.LANCHOR1
+ 1214 0418 00770100 		.word	96000
+ 1215              	.L82:
+ 400:Drivers/BSP/Components/wm8994/wm8994.c ****   {
+ 1216              		.loc 1 400 0
+ 1217 041c 42F61133 		movw	r3, #11025
+ 1218 0420 9A45     		cmp	r10, r3
+ 1219 0422 00F00681 		beq	.L56
+ 1220 0426 BAF57A5F 		cmp	r10, #16000
+ 1221 042a 00F0F280 		beq	.L57
+ 1222 042e BAF5FA5F 		cmp	r10, #8000
+ 1223 0432 12D0     		beq	.L84
+ 1224              	.L53:
+ 444:Drivers/BSP/Components/wm8994/wm8994.c ****     break; 
+ 1225              		.loc 1 444 0
+ 1226 0434 8322     		movs	r2, #131
+ 1227 0436 4FF40471 		mov	r1, #528
+ 1228 043a 2846     		mov	r0, r5
+ 1229 043c FFF7FEFF 		bl	CODEC_IO_Write
+ 1230              	.LVL231:
+ 1231 0440 0444     		add	r4, r4, r0
+ 1232              	.LVL232:
+ 445:Drivers/BSP/Components/wm8994/wm8994.c ****   }
+ 1233              		.loc 1 445 0
+ 1234 0442 11E0     		b	.L64
+ 1235              	.L83:
+ 400:Drivers/BSP/Components/wm8994/wm8994.c ****   {
+ 1236              		.loc 1 400 0
+ 1237 0444 BAF5FA4F 		cmp	r10, #32000
+ 1238 0448 F4D1     		bne	.L53
+ 414:Drivers/BSP/Components/wm8994/wm8994.c ****     break;
+ 1239              		.loc 1 414 0
+ 1240 044a 6322     		movs	r2, #99
+ 1241 044c 4FF40471 		mov	r1, #528
+ 1242 0450 2846     		mov	r0, r5
+ 1243 0452 FFF7FEFF 		bl	CODEC_IO_Write
+ 1244              	.LVL233:
+ 1245 0456 0444     		add	r4, r4, r0
+ 1246              	.LVL234:
+ 415:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 1247              		.loc 1 415 0
+ 1248 0458 06E0     		b	.L64
+ 1249              	.L84:
+ 404:Drivers/BSP/Components/wm8994/wm8994.c ****     break;
+ 1250              		.loc 1 404 0
+ 1251 045a 0322     		movs	r2, #3
+ 1252 045c 4FF40471 		mov	r1, #528
+ 1253 0460 2846     		mov	r0, r5
+ 1254 0462 FFF7FEFF 		bl	CODEC_IO_Write
+ 1255              	.LVL235:
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 44
+
+
+ 1256 0466 0444     		add	r4, r4, r0
+ 1257              	.LVL236:
+ 1258              	.L64:
+ 448:Drivers/BSP/Components/wm8994/wm8994.c ****   {
+ 1259              		.loc 1 448 0
+ 1260 0468 B6F5006F 		cmp	r6, #2048
+ 1261 046c 00F0F980 		beq	.L85
+ 456:Drivers/BSP/Components/wm8994/wm8994.c ****   }
+ 1262              		.loc 1 456 0
+ 1263 0470 44F21002 		movw	r2, #16400
+ 1264 0474 4FF44071 		mov	r1, #768
+ 1265 0478 2846     		mov	r0, r5
+ 1266 047a FFF7FEFF 		bl	CODEC_IO_Write
+ 1267              	.LVL237:
+ 1268 047e 0444     		add	r4, r4, r0
+ 1269              	.LVL238:
+ 1270              	.L66:
+ 460:Drivers/BSP/Components/wm8994/wm8994.c ****   
+ 1271              		.loc 1 460 0
+ 1272 0480 0022     		movs	r2, #0
+ 1273 0482 40F20231 		movw	r1, #770
+ 1274 0486 2846     		mov	r0, r5
+ 1275 0488 FFF7FEFF 		bl	CODEC_IO_Write
+ 1276              	.LVL239:
+ 1277 048c 0444     		add	r4, r4, r0
+ 1278              	.LVL240:
+ 463:Drivers/BSP/Components/wm8994/wm8994.c ****   
+ 1279              		.loc 1 463 0
+ 1280 048e 0A22     		movs	r2, #10
+ 1281 0490 4FF40271 		mov	r1, #520
+ 1282 0494 2846     		mov	r0, r5
+ 1283 0496 FFF7FEFF 		bl	CODEC_IO_Write
+ 1284              	.LVL241:
+ 1285 049a 0444     		add	r4, r4, r0
+ 1286              	.LVL242:
+ 466:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 1287              		.loc 1 466 0
+ 1288 049c 0122     		movs	r2, #1
+ 1289 049e 4FF40071 		mov	r1, #512
+ 1290 04a2 2846     		mov	r0, r5
+ 1291 04a4 FFF7FEFF 		bl	CODEC_IO_Write
+ 1292              	.LVL243:
+ 1293 04a8 0444     		add	r4, r4, r0
+ 1294              	.LVL244:
+ 468:Drivers/BSP/Components/wm8994/wm8994.c ****   {
+ 1295              		.loc 1 468 0
+ 1296 04aa 002F     		cmp	r7, #0
+ 1297 04ac 00F09880 		beq	.L67
+ 470:Drivers/BSP/Components/wm8994/wm8994.c ****     {      
+ 1298              		.loc 1 470 0
+ 1299 04b0 022F     		cmp	r7, #2
+ 1300 04b2 00F0DF80 		beq	.L86
+ 1301              	.L68:
+ 500:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 1302              		.loc 1 500 0
+ 1303 04b6 4FF44072 		mov	r2, #768
+ 1304 04ba 0321     		movs	r1, #3
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 45
+
+
+ 1305 04bc 2846     		mov	r0, r5
+ 1306 04be FFF7FEFF 		bl	CODEC_IO_Write
+ 1307              	.LVL245:
+ 1308 04c2 0444     		add	r4, r4, r0
+ 1309              	.LVL246:
+ 503:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 1310              		.loc 1 503 0
+ 1311 04c4 0022     		movs	r2, #0
+ 1312 04c6 2221     		movs	r1, #34
+ 1313 04c8 2846     		mov	r0, r5
+ 1314 04ca FFF7FEFF 		bl	CODEC_IO_Write
+ 1315              	.LVL247:
+ 1316 04ce 0444     		add	r4, r4, r0
+ 1317              	.LVL248:
+ 506:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 1318              		.loc 1 506 0
+ 1319 04d0 0022     		movs	r2, #0
+ 1320 04d2 2321     		movs	r1, #35
+ 1321 04d4 2846     		mov	r0, r5
+ 1322 04d6 FFF7FEFF 		bl	CODEC_IO_Write
+ 1323              	.LVL249:
+ 1324 04da 0444     		add	r4, r4, r0
+ 1325              	.LVL250:
+ 510:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 1326              		.loc 1 510 0
+ 1327 04dc 4FF44072 		mov	r2, #768
+ 1328 04e0 3621     		movs	r1, #54
+ 1329 04e2 2846     		mov	r0, r5
+ 1330 04e4 FFF7FEFF 		bl	CODEC_IO_Write
+ 1331              	.LVL251:
+ 1332 04e8 0444     		add	r4, r4, r0
+ 1333              	.LVL252:
+ 513:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 1334              		.loc 1 513 0
+ 1335 04ea 43F20302 		movw	r2, #12291
+ 1336 04ee 0121     		movs	r1, #1
+ 1337 04f0 2846     		mov	r0, r5
+ 1338 04f2 FFF7FEFF 		bl	CODEC_IO_Write
+ 1339              	.LVL253:
+ 1340 04f6 0444     		add	r4, r4, r0
+ 1341              	.LVL254:
+ 517:Drivers/BSP/Components/wm8994/wm8994.c ****     {
+ 1342              		.loc 1 517 0
+ 1343 04f8 B6F5006F 		cmp	r6, #2048
+ 1344 04fc 00F0EE80 		beq	.L87
+ 525:Drivers/BSP/Components/wm8994/wm8994.c ****     }
+ 1345              		.loc 1 525 0
+ 1346 0500 0522     		movs	r2, #5
+ 1347 0502 5121     		movs	r1, #81
+ 1348 0504 2846     		mov	r0, r5
+ 1349 0506 FFF7FEFF 		bl	CODEC_IO_Write
+ 1350              	.LVL255:
+ 1351 050a 0444     		add	r4, r4, r0
+ 1352              	.LVL256:
+ 1353              	.L72:
+ 531:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 1354              		.loc 1 531 0
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 46
+
+
+ 1355 050c 43F20332 		movw	r2, #13059
+ 1356 0510 0121     		movs	r1, #1
+ 1357 0512 2846     		mov	r0, r5
+ 1358 0514 FFF7FEFF 		bl	CODEC_IO_Write
+ 1359              	.LVL257:
+ 1360 0518 0444     		add	r4, r4, r0
+ 1361              	.LVL258:
+ 534:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 1362              		.loc 1 534 0
+ 1363 051a 2222     		movs	r2, #34
+ 1364 051c 6021     		movs	r1, #96
+ 1365 051e 2846     		mov	r0, r5
+ 1366 0520 FFF7FEFF 		bl	CODEC_IO_Write
+ 1367              	.LVL259:
+ 1368 0524 0444     		add	r4, r4, r0
+ 1369              	.LVL260:
+ 537:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 1370              		.loc 1 537 0
+ 1371 0526 49F62572 		movw	r2, #40741
+ 1372 052a 4C21     		movs	r1, #76
+ 1373 052c 2846     		mov	r0, r5
+ 1374 052e FFF7FEFF 		bl	CODEC_IO_Write
+ 1375              	.LVL261:
+ 1376 0532 0444     		add	r4, r4, r0
+ 1377              	.LVL262:
+ 540:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 1378              		.loc 1 540 0
+ 1379 0534 0F20     		movs	r0, #15
+ 1380 0536 FFF7FEFF 		bl	AUDIO_IO_Delay
+ 1381              	.LVL263:
+ 543:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 1382              		.loc 1 543 0
+ 1383 053a 0122     		movs	r2, #1
+ 1384 053c 2D21     		movs	r1, #45
+ 1385 053e 2846     		mov	r0, r5
+ 1386 0540 FFF7FEFF 		bl	CODEC_IO_Write
+ 1387              	.LVL264:
+ 1388 0544 0444     		add	r4, r4, r0
+ 1389              	.LVL265:
+ 546:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 1390              		.loc 1 546 0
+ 1391 0546 0122     		movs	r2, #1
+ 1392 0548 2E21     		movs	r1, #46
+ 1393 054a 2846     		mov	r0, r5
+ 1394 054c FFF7FEFF 		bl	CODEC_IO_Write
+ 1395              	.LVL266:
+ 1396 0550 0444     		add	r4, r4, r0
+ 1397              	.LVL267:
+ 550:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 1398              		.loc 1 550 0
+ 1399 0552 4FF44C72 		mov	r2, #816
+ 1400 0556 0321     		movs	r1, #3
+ 1401 0558 2846     		mov	r0, r5
+ 1402 055a FFF7FEFF 		bl	CODEC_IO_Write
+ 1403              	.LVL268:
+ 1404 055e 0444     		add	r4, r4, r0
+ 1405              	.LVL269:
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 47
+
+
+ 553:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 1406              		.loc 1 553 0
+ 1407 0560 3322     		movs	r2, #51
+ 1408 0562 5421     		movs	r1, #84
+ 1409 0564 2846     		mov	r0, r5
+ 1410 0566 FFF7FEFF 		bl	CODEC_IO_Write
+ 1411              	.LVL270:
+ 1412 056a 0444     		add	r4, r4, r0
+ 1413              	.LVL271:
+ 556:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 1414              		.loc 1 556 0
+ 1415 056c 40F20110 		movw	r0, #257
+ 1416 0570 FFF7FEFF 		bl	AUDIO_IO_Delay
+ 1417              	.LVL272:
+ 559:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 1418              		.loc 1 559 0
+ 1419 0574 EE22     		movs	r2, #238
+ 1420 0576 6021     		movs	r1, #96
+ 1421 0578 2846     		mov	r0, r5
+ 1422 057a FFF7FEFF 		bl	CODEC_IO_Write
+ 1423              	.LVL273:
+ 1424 057e 0444     		add	r4, r4, r0
+ 1425              	.LVL274:
+ 564:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 1426              		.loc 1 564 0
+ 1427 0580 C022     		movs	r2, #192
+ 1428 0582 4FF4C261 		mov	r1, #1552
+ 1429 0586 2846     		mov	r0, r5
+ 1430 0588 FFF7FEFF 		bl	CODEC_IO_Write
+ 1431              	.LVL275:
+ 1432 058c 0444     		add	r4, r4, r0
+ 1433              	.LVL276:
+ 567:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 1434              		.loc 1 567 0
+ 1435 058e C022     		movs	r2, #192
+ 1436 0590 40F21161 		movw	r1, #1553
+ 1437 0594 2846     		mov	r0, r5
+ 1438 0596 FFF7FEFF 		bl	CODEC_IO_Write
+ 1439              	.LVL277:
+ 1440 059a 0444     		add	r4, r4, r0
+ 1441              	.LVL278:
+ 570:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 1442              		.loc 1 570 0
+ 1443 059c 1022     		movs	r2, #16
+ 1444 059e 4FF48461 		mov	r1, #1056
+ 1445 05a2 2846     		mov	r0, r5
+ 1446 05a4 FFF7FEFF 		bl	CODEC_IO_Write
+ 1447              	.LVL279:
+ 1448 05a8 0444     		add	r4, r4, r0
+ 1449              	.LVL280:
+ 573:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 1450              		.loc 1 573 0
+ 1451 05aa C022     		movs	r2, #192
+ 1452 05ac 40F21261 		movw	r1, #1554
+ 1453 05b0 2846     		mov	r0, r5
+ 1454 05b2 FFF7FEFF 		bl	CODEC_IO_Write
+ 1455              	.LVL281:
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 48
+
+
+ 1456 05b6 0444     		add	r4, r4, r0
+ 1457              	.LVL282:
+ 576:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 1458              		.loc 1 576 0
+ 1459 05b8 C022     		movs	r2, #192
+ 1460 05ba 40F21361 		movw	r1, #1555
+ 1461 05be 2846     		mov	r0, r5
+ 1462 05c0 FFF7FEFF 		bl	CODEC_IO_Write
+ 1463              	.LVL283:
+ 1464 05c4 0444     		add	r4, r4, r0
+ 1465              	.LVL284:
+ 579:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 1466              		.loc 1 579 0
+ 1467 05c6 1022     		movs	r2, #16
+ 1468 05c8 40F22241 		movw	r1, #1058
+ 1469 05cc 2846     		mov	r0, r5
+ 1470 05ce FFF7FEFF 		bl	CODEC_IO_Write
+ 1471              	.LVL285:
+ 1472 05d2 0444     		add	r4, r4, r0
+ 1473              	.LVL286:
+ 582:Drivers/BSP/Components/wm8994/wm8994.c ****   }
+ 1474              		.loc 1 582 0
+ 1475 05d4 4946     		mov	r1, r9
+ 1476 05d6 4046     		mov	r0, r8
+ 1477 05d8 FFF7FEFF 		bl	wm8994_SetVolume
+ 1478              	.LVL287:
+ 530:Drivers/BSP/Components/wm8994/wm8994.c ****     counter += CODEC_IO_Write(DeviceAddr, 0x01, power_mgnt_reg_1);
+ 1479              		.loc 1 530 0
+ 1480 05dc 43F20337 		movw	r7, #13059
+ 1481              	.LVL288:
+ 1482              	.L67:
+ 585:Drivers/BSP/Components/wm8994/wm8994.c ****   {
+ 1483              		.loc 1 585 0
+ 1484 05e0 A6B1     		cbz	r6, .L35
+ 587:Drivers/BSP/Components/wm8994/wm8994.c ****     {
+ 1485              		.loc 1 587 0
+ 1486 05e2 B6F5007F 		cmp	r6, #512
+ 1487 05e6 18BF     		it	ne
+ 1488 05e8 B6F5807F 		cmpne	r6, #256
+ 1489 05ec 7ED0     		beq	.L88
+ 599:Drivers/BSP/Components/wm8994/wm8994.c ****     {
+ 1490              		.loc 1 599 0
+ 1491 05ee B6F5006F 		cmp	r6, #2048
+ 1492 05f2 00F09280 		beq	.L89
+ 614:Drivers/BSP/Components/wm8994/wm8994.c ****     {
+ 1493              		.loc 1 614 0
+ 1494 05f6 B6F5806F 		cmp	r6, #1024
+ 1495 05fa 18BF     		it	ne
+ 1496 05fc B6F5407F 		cmpne	r6, #768
+ 1497 0600 00F0AA80 		beq	.L90
+ 1498              	.LVL289:
+ 1499              	.L75:
+ 627:Drivers/BSP/Components/wm8994/wm8994.c ****   }
+ 1500              		.loc 1 627 0
+ 1501 0604 4946     		mov	r1, r9
+ 1502 0606 4046     		mov	r0, r8
+ 1503 0608 FFF7FEFF 		bl	wm8994_SetVolume
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 49
+
+
+ 1504              	.LVL290:
+ 1505              	.L35:
+ 631:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 1506              		.loc 1 631 0
+ 1507 060c 2046     		mov	r0, r4
+ 1508 060e BDE8F087 		pop	{r4, r5, r6, r7, r8, r9, r10, pc}
+ 1509              	.LVL291:
+ 1510              	.L57:
+ 409:Drivers/BSP/Components/wm8994/wm8994.c ****     break;
+ 1511              		.loc 1 409 0
+ 1512 0612 3322     		movs	r2, #51
+ 1513 0614 4FF40471 		mov	r1, #528
+ 1514 0618 2846     		mov	r0, r5
+ 1515 061a FFF7FEFF 		bl	CODEC_IO_Write
+ 1516              	.LVL292:
+ 1517 061e 0444     		add	r4, r4, r0
+ 1518              	.LVL293:
+ 410:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 1519              		.loc 1 410 0
+ 1520 0620 22E7     		b	.L64
+ 1521              	.L62:
+ 419:Drivers/BSP/Components/wm8994/wm8994.c ****     break;
+ 1522              		.loc 1 419 0
+ 1523 0622 8322     		movs	r2, #131
+ 1524 0624 4FF40471 		mov	r1, #528
+ 1525 0628 2846     		mov	r0, r5
+ 1526 062a FFF7FEFF 		bl	CODEC_IO_Write
+ 1527              	.LVL294:
+ 1528 062e 0444     		add	r4, r4, r0
+ 1529              	.LVL295:
+ 420:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 1530              		.loc 1 420 0
+ 1531 0630 1AE7     		b	.L64
+ 1532              	.L56:
+ 429:Drivers/BSP/Components/wm8994/wm8994.c ****     break;
+ 1533              		.loc 1 429 0
+ 1534 0632 1322     		movs	r2, #19
+ 1535 0634 4FF40471 		mov	r1, #528
+ 1536 0638 2846     		mov	r0, r5
+ 1537 063a FFF7FEFF 		bl	CODEC_IO_Write
+ 1538              	.LVL296:
+ 1539 063e 0444     		add	r4, r4, r0
+ 1540              	.LVL297:
+ 430:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 1541              		.loc 1 430 0
+ 1542 0640 12E7     		b	.L64
+ 1543              	.L54:
+ 434:Drivers/BSP/Components/wm8994/wm8994.c ****     break;
+ 1544              		.loc 1 434 0
+ 1545 0642 4322     		movs	r2, #67
+ 1546 0644 4FF40471 		mov	r1, #528
+ 1547 0648 2846     		mov	r0, r5
+ 1548 064a FFF7FEFF 		bl	CODEC_IO_Write
+ 1549              	.LVL298:
+ 1550 064e 0444     		add	r4, r4, r0
+ 1551              	.LVL299:
+ 435:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 50
+
+
+ 1552              		.loc 1 435 0
+ 1553 0650 0AE7     		b	.L64
+ 1554              	.L59:
+ 439:Drivers/BSP/Components/wm8994/wm8994.c ****     break; 
+ 1555              		.loc 1 439 0
+ 1556 0652 7322     		movs	r2, #115
+ 1557 0654 4FF40471 		mov	r1, #528
+ 1558 0658 2846     		mov	r0, r5
+ 1559 065a FFF7FEFF 		bl	CODEC_IO_Write
+ 1560              	.LVL300:
+ 1561 065e 0444     		add	r4, r4, r0
+ 1562              	.LVL301:
+ 440:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 1563              		.loc 1 440 0
+ 1564 0660 02E7     		b	.L64
+ 1565              	.L85:
+ 451:Drivers/BSP/Components/wm8994/wm8994.c ****   }
+ 1566              		.loc 1 451 0
+ 1567 0662 44F21802 		movw	r2, #16408
+ 1568 0666 4FF44071 		mov	r1, #768
+ 1569 066a 2846     		mov	r0, r5
+ 1570 066c FFF7FEFF 		bl	CODEC_IO_Write
+ 1571              	.LVL302:
+ 1572 0670 0444     		add	r4, r4, r0
+ 1573              	.LVL303:
+ 1574 0672 05E7     		b	.L66
+ 1575              	.L86:
+ 473:Drivers/BSP/Components/wm8994/wm8994.c ****       
+ 1576              		.loc 1 473 0
+ 1577 0674 4FF48072 		mov	r2, #256
+ 1578 0678 2D21     		movs	r1, #45
+ 1579 067a 2846     		mov	r0, r5
+ 1580 067c FFF7FEFF 		bl	CODEC_IO_Write
+ 1581              	.LVL304:
+ 1582 0680 0444     		add	r4, r4, r0
+ 1583              	.LVL305:
+ 476:Drivers/BSP/Components/wm8994/wm8994.c ****             
+ 1584              		.loc 1 476 0
+ 1585 0682 4FF48072 		mov	r2, #256
+ 1586 0686 2E21     		movs	r1, #46
+ 1587 0688 2846     		mov	r0, r5
+ 1588 068a FFF7FEFF 		bl	CODEC_IO_Write
+ 1589              	.LVL306:
+ 1590 068e 0444     		add	r4, r4, r0
+ 1591              	.LVL307:
+ 479:Drivers/BSP/Components/wm8994/wm8994.c ****       {
+ 1592              		.loc 1 479 0
+ 1593 0690 3C4B     		ldr	r3, .L93
+ 1594 0692 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1595 0694 B3B1     		cbz	r3, .L69
+ 481:Drivers/BSP/Components/wm8994/wm8994.c ****         
+ 1596              		.loc 1 481 0
+ 1597 0696 4FF40142 		mov	r2, #33024
+ 1598 069a 4FF48871 		mov	r1, #272
+ 1599 069e 2846     		mov	r0, r5
+ 1600 06a0 FFF7FEFF 		bl	CODEC_IO_Write
+ 1601              	.LVL308:
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 51
+
+
+ 1602 06a4 0444     		add	r4, r4, r0
+ 1603              	.LVL309:
+ 483:Drivers/BSP/Components/wm8994/wm8994.c ****         /* Add Delay */
+ 1604              		.loc 1 483 0
+ 1605 06a6 0022     		movs	r2, #0
+ 1606 06a8 364B     		ldr	r3, .L93
+ 1607 06aa 1A70     		strb	r2, [r3]
+ 485:Drivers/BSP/Components/wm8994/wm8994.c ****       }
+ 1608              		.loc 1 485 0
+ 1609 06ac 4FF49670 		mov	r0, #300
+ 1610 06b0 FFF7FEFF 		bl	AUDIO_IO_Delay
+ 1611              	.LVL310:
+ 1612              	.L70:
+ 495:Drivers/BSP/Components/wm8994/wm8994.c ****     }
+ 1613              		.loc 1 495 0
+ 1614 06b4 0022     		movs	r2, #0
+ 1615 06b6 4FF48461 		mov	r1, #1056
+ 1616 06ba 2846     		mov	r0, r5
+ 1617 06bc FFF7FEFF 		bl	CODEC_IO_Write
+ 1618              	.LVL311:
+ 1619 06c0 0444     		add	r4, r4, r0
+ 1620              	.LVL312:
+ 1621 06c2 F8E6     		b	.L68
+ 1622              	.L69:
+ 489:Drivers/BSP/Components/wm8994/wm8994.c ****         /* Add Delay */
+ 1623              		.loc 1 489 0
+ 1624 06c4 48F20812 		movw	r2, #33032
+ 1625 06c8 4FF48871 		mov	r1, #272
+ 1626 06cc 2846     		mov	r0, r5
+ 1627 06ce FFF7FEFF 		bl	CODEC_IO_Write
+ 1628              	.LVL313:
+ 1629 06d2 0444     		add	r4, r4, r0
+ 1630              	.LVL314:
+ 491:Drivers/BSP/Components/wm8994/wm8994.c ****       }
+ 1631              		.loc 1 491 0
+ 1632 06d4 3220     		movs	r0, #50
+ 1633 06d6 FFF7FEFF 		bl	AUDIO_IO_Delay
+ 1634              	.LVL315:
+ 1635 06da EBE7     		b	.L70
+ 1636              	.L87:
+ 520:Drivers/BSP/Components/wm8994/wm8994.c ****     }
+ 1637              		.loc 1 520 0
+ 1638 06dc 40F20522 		movw	r2, #517
+ 1639 06e0 5121     		movs	r1, #81
+ 1640 06e2 2846     		mov	r0, r5
+ 1641 06e4 FFF7FEFF 		bl	CODEC_IO_Write
+ 1642              	.LVL316:
+ 1643 06e8 0444     		add	r4, r4, r0
+ 1644              	.LVL317:
+ 1645 06ea 0FE7     		b	.L72
+ 1646              	.LVL318:
+ 1647              	.L88:
+ 591:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 1648              		.loc 1 591 0
+ 1649 06ec 47F01302 		orr	r2, r7, #19
+ 1650 06f0 0121     		movs	r1, #1
+ 1651 06f2 2846     		mov	r0, r5
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 52
+
+
+ 1652 06f4 FFF7FEFF 		bl	CODEC_IO_Write
+ 1653              	.LVL319:
+ 1654 06f8 0444     		add	r4, r4, r0
+ 1655              	.LVL320:
+ 594:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 1656              		.loc 1 594 0
+ 1657 06fa 0222     		movs	r2, #2
+ 1658 06fc 4FF4C461 		mov	r1, #1568
+ 1659 0700 2846     		mov	r0, r5
+ 1660 0702 FFF7FEFF 		bl	CODEC_IO_Write
+ 1661              	.LVL321:
+ 1662 0706 0444     		add	r4, r4, r0
+ 1663              	.LVL322:
+ 597:Drivers/BSP/Components/wm8994/wm8994.c ****     }
+ 1664              		.loc 1 597 0
+ 1665 0708 4FF46052 		mov	r2, #14336
+ 1666 070c 40F21141 		movw	r1, #1041
+ 1667 0710 2846     		mov	r0, r5
+ 1668 0712 FFF7FEFF 		bl	CODEC_IO_Write
+ 1669              	.LVL323:
+ 1670 0716 0444     		add	r4, r4, r0
+ 1671              	.LVL324:
+ 1672 0718 74E7     		b	.L75
+ 1673              	.LVL325:
+ 1674              	.L89:
+ 603:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 1675              		.loc 1 603 0
+ 1676 071a 47F01302 		orr	r2, r7, #19
+ 1677 071e 0121     		movs	r1, #1
+ 1678 0720 2846     		mov	r0, r5
+ 1679 0722 FFF7FEFF 		bl	CODEC_IO_Write
+ 1680              	.LVL326:
+ 1681 0726 0444     		add	r4, r4, r0
+ 1682              	.LVL327:
+ 606:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 1683              		.loc 1 606 0
+ 1684 0728 0222     		movs	r2, #2
+ 1685 072a 4FF4C461 		mov	r1, #1568
+ 1686 072e 2846     		mov	r0, r5
+ 1687 0730 FFF7FEFF 		bl	CODEC_IO_Write
+ 1688              	.LVL328:
+ 1689 0734 0444     		add	r4, r4, r0
+ 1690              	.LVL329:
+ 609:Drivers/BSP/Components/wm8994/wm8994.c ****       
+ 1691              		.loc 1 609 0
+ 1692 0736 4FF4C052 		mov	r2, #6144
+ 1693 073a 4FF48261 		mov	r1, #1040
+ 1694 073e 2846     		mov	r0, r5
+ 1695 0740 FFF7FEFF 		bl	CODEC_IO_Write
+ 1696              	.LVL330:
+ 1697 0744 0444     		add	r4, r4, r0
+ 1698              	.LVL331:
+ 612:Drivers/BSP/Components/wm8994/wm8994.c ****     }    
+ 1699              		.loc 1 612 0
+ 1700 0746 4FF4C052 		mov	r2, #6144
+ 1701 074a 40F21141 		movw	r1, #1041
+ 1702 074e 2846     		mov	r0, r5
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 53
+
+
+ 1703 0750 FFF7FEFF 		bl	CODEC_IO_Write
+ 1704              	.LVL332:
+ 1705 0754 0444     		add	r4, r4, r0
+ 1706              	.LVL333:
+ 1707 0756 55E7     		b	.L75
+ 1708              	.LVL334:
+ 1709              	.L90:
+ 618:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 1710              		.loc 1 618 0
+ 1711 0758 0B22     		movs	r2, #11
+ 1712 075a 1821     		movs	r1, #24
+ 1713 075c 2846     		mov	r0, r5
+ 1714 075e FFF7FEFF 		bl	CODEC_IO_Write
+ 1715              	.LVL335:
+ 1716 0762 0444     		add	r4, r4, r0
+ 1717              	.LVL336:
+ 621:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 1718              		.loc 1 621 0
+ 1719 0764 0B22     		movs	r2, #11
+ 1720 0766 1A21     		movs	r1, #26
+ 1721 0768 2846     		mov	r0, r5
+ 1722 076a FFF7FEFF 		bl	CODEC_IO_Write
+ 1723              	.LVL337:
+ 1724 076e 0444     		add	r4, r4, r0
+ 1725              	.LVL338:
+ 624:Drivers/BSP/Components/wm8994/wm8994.c ****     }
+ 1726              		.loc 1 624 0
+ 1727 0770 4FF4C052 		mov	r2, #6144
+ 1728 0774 4FF48261 		mov	r1, #1040
+ 1729 0778 2846     		mov	r0, r5
+ 1730 077a FFF7FEFF 		bl	CODEC_IO_Write
+ 1731              	.LVL339:
+ 1732 077e 0444     		add	r4, r4, r0
+ 1733              	.LVL340:
+ 1734 0780 40E7     		b	.L75
+ 1735              	.L94:
+ 1736 0782 00BF     		.align	2
+ 1737              	.L93:
+ 1738 0784 00000000 		.word	.LANCHOR2
+ 1739              		.cfi_endproc
+ 1740              	.LFE0:
+ 1742              		.section	.text.wm8994_SetOutputMode,"ax",%progbits
+ 1743              		.align	1
+ 1744              		.global	wm8994_SetOutputMode
+ 1745              		.syntax unified
+ 1746              		.thumb
+ 1747              		.thumb_func
+ 1748              		.fpu fpv5-sp-d16
+ 1750              	wm8994_SetOutputMode:
+ 1751              	.LFB9:
+ 880:Drivers/BSP/Components/wm8994/wm8994.c ****   uint32_t counter = 0; 
+ 1752              		.loc 1 880 0
+ 1753              		.cfi_startproc
+ 1754              		@ args = 0, pretend = 0, frame = 0
+ 1755              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1756              	.LVL341:
+ 1757 0000 38B5     		push	{r3, r4, r5, lr}
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 54
+
+
+ 1758              	.LCFI8:
+ 1759              		.cfi_def_cfa_offset 16
+ 1760              		.cfi_offset 3, -16
+ 1761              		.cfi_offset 4, -12
+ 1762              		.cfi_offset 5, -8
+ 1763              		.cfi_offset 14, -4
+ 1764              	.LVL342:
+ 883:Drivers/BSP/Components/wm8994/wm8994.c ****   {
+ 1765              		.loc 1 883 0
+ 1766 0002 0229     		cmp	r1, #2
+ 1767 0004 4DD0     		beq	.L97
+ 1768 0006 0329     		cmp	r1, #3
+ 1769 0008 70D0     		beq	.L98
+ 1770 000a 0129     		cmp	r1, #1
+ 1771 000c 24D0     		beq	.L103
+ 942:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 1772              		.loc 1 942 0
+ 1773 000e C5B2     		uxtb	r5, r0
+ 1774 0010 40F20332 		movw	r2, #771
+ 1775 0014 0521     		movs	r1, #5
+ 1776              	.LVL343:
+ 1777 0016 2846     		mov	r0, r5
+ 1778              	.LVL344:
+ 1779 0018 FFF7FEFF 		bl	CODEC_IO_Write
+ 1780              	.LVL345:
+ 1781 001c 0446     		mov	r4, r0
+ 1782              	.LVL346:
+ 945:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 1783              		.loc 1 945 0
+ 1784 001e 0122     		movs	r2, #1
+ 1785 0020 40F20161 		movw	r1, #1537
+ 1786 0024 2846     		mov	r0, r5
+ 1787              	.LVL347:
+ 1788 0026 FFF7FEFF 		bl	CODEC_IO_Write
+ 1789              	.LVL348:
+ 1790 002a 0444     		add	r4, r4, r0
+ 1791              	.LVL349:
+ 948:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 1792              		.loc 1 948 0
+ 1793 002c 0122     		movs	r2, #1
+ 1794 002e 40F20261 		movw	r1, #1538
+ 1795 0032 2846     		mov	r0, r5
+ 1796 0034 FFF7FEFF 		bl	CODEC_IO_Write
+ 1797              	.LVL350:
+ 1798 0038 0444     		add	r4, r4, r0
+ 1799              	.LVL351:
+ 951:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 1800              		.loc 1 951 0
+ 1801 003a 0022     		movs	r2, #0
+ 1802 003c 40F20461 		movw	r1, #1540
+ 1803 0040 2846     		mov	r0, r5
+ 1804 0042 FFF7FEFF 		bl	CODEC_IO_Write
+ 1805              	.LVL352:
+ 1806 0046 0444     		add	r4, r4, r0
+ 1807              	.LVL353:
+ 954:Drivers/BSP/Components/wm8994/wm8994.c ****     break;    
+ 1808              		.loc 1 954 0
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 55
+
+
+ 1809 0048 0022     		movs	r2, #0
+ 1810 004a 40F20561 		movw	r1, #1541
+ 1811 004e 2846     		mov	r0, r5
+ 1812 0050 FFF7FEFF 		bl	CODEC_IO_Write
+ 1813              	.LVL354:
+ 1814 0054 2044     		add	r0, r0, r4
+ 1815              	.LVL355:
+ 958:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 1816              		.loc 1 958 0
+ 1817 0056 38BD     		pop	{r3, r4, r5, pc}
+ 1818              	.LVL356:
+ 1819              	.L103:
+ 888:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 1820              		.loc 1 888 0
+ 1821 0058 C5B2     		uxtb	r5, r0
+ 1822 005a 40F60C42 		movw	r2, #3084
+ 1823 005e 0521     		movs	r1, #5
+ 1824              	.LVL357:
+ 1825 0060 2846     		mov	r0, r5
+ 1826              	.LVL358:
+ 1827 0062 FFF7FEFF 		bl	CODEC_IO_Write
+ 1828              	.LVL359:
+ 1829 0066 0446     		mov	r4, r0
+ 1830              	.LVL360:
+ 891:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 1831              		.loc 1 891 0
+ 1832 0068 0022     		movs	r2, #0
+ 1833 006a 40F20161 		movw	r1, #1537
+ 1834 006e 2846     		mov	r0, r5
+ 1835              	.LVL361:
+ 1836 0070 FFF7FEFF 		bl	CODEC_IO_Write
+ 1837              	.LVL362:
+ 1838 0074 0444     		add	r4, r4, r0
+ 1839              	.LVL363:
+ 894:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 1840              		.loc 1 894 0
+ 1841 0076 0022     		movs	r2, #0
+ 1842 0078 40F20261 		movw	r1, #1538
+ 1843 007c 2846     		mov	r0, r5
+ 1844 007e FFF7FEFF 		bl	CODEC_IO_Write
+ 1845              	.LVL364:
+ 1846 0082 0444     		add	r4, r4, r0
+ 1847              	.LVL365:
+ 897:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 1848              		.loc 1 897 0
+ 1849 0084 0222     		movs	r2, #2
+ 1850 0086 40F20461 		movw	r1, #1540
+ 1851 008a 2846     		mov	r0, r5
+ 1852 008c FFF7FEFF 		bl	CODEC_IO_Write
+ 1853              	.LVL366:
+ 1854 0090 0444     		add	r4, r4, r0
+ 1855              	.LVL367:
+ 900:Drivers/BSP/Components/wm8994/wm8994.c ****     break;
+ 1856              		.loc 1 900 0
+ 1857 0092 0222     		movs	r2, #2
+ 1858 0094 40F20561 		movw	r1, #1541
+ 1859 0098 2846     		mov	r0, r5
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 56
+
+
+ 1860 009a FFF7FEFF 		bl	CODEC_IO_Write
+ 1861              	.LVL368:
+ 1862 009e 2044     		add	r0, r0, r4
+ 1863              	.LVL369:
+ 901:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 1864              		.loc 1 901 0
+ 1865 00a0 38BD     		pop	{r3, r4, r5, pc}
+ 1866              	.LVL370:
+ 1867              	.L97:
+ 906:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 1868              		.loc 1 906 0
+ 1869 00a2 C5B2     		uxtb	r5, r0
+ 1870 00a4 40F20332 		movw	r2, #771
+ 1871 00a8 0521     		movs	r1, #5
+ 1872              	.LVL371:
+ 1873 00aa 2846     		mov	r0, r5
+ 1874              	.LVL372:
+ 1875 00ac FFF7FEFF 		bl	CODEC_IO_Write
+ 1876              	.LVL373:
+ 1877 00b0 0446     		mov	r4, r0
+ 1878              	.LVL374:
+ 909:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 1879              		.loc 1 909 0
+ 1880 00b2 0122     		movs	r2, #1
+ 1881 00b4 40F20161 		movw	r1, #1537
+ 1882 00b8 2846     		mov	r0, r5
+ 1883              	.LVL375:
+ 1884 00ba FFF7FEFF 		bl	CODEC_IO_Write
+ 1885              	.LVL376:
+ 1886 00be 0444     		add	r4, r4, r0
+ 1887              	.LVL377:
+ 912:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 1888              		.loc 1 912 0
+ 1889 00c0 0122     		movs	r2, #1
+ 1890 00c2 40F20261 		movw	r1, #1538
+ 1891 00c6 2846     		mov	r0, r5
+ 1892 00c8 FFF7FEFF 		bl	CODEC_IO_Write
+ 1893              	.LVL378:
+ 1894 00cc 0444     		add	r4, r4, r0
+ 1895              	.LVL379:
+ 915:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 1896              		.loc 1 915 0
+ 1897 00ce 0022     		movs	r2, #0
+ 1898 00d0 40F20461 		movw	r1, #1540
+ 1899 00d4 2846     		mov	r0, r5
+ 1900 00d6 FFF7FEFF 		bl	CODEC_IO_Write
+ 1901              	.LVL380:
+ 1902 00da 0444     		add	r4, r4, r0
+ 1903              	.LVL381:
+ 918:Drivers/BSP/Components/wm8994/wm8994.c ****     break;
+ 1904              		.loc 1 918 0
+ 1905 00dc 0022     		movs	r2, #0
+ 1906 00de 40F20561 		movw	r1, #1541
+ 1907 00e2 2846     		mov	r0, r5
+ 1908 00e4 FFF7FEFF 		bl	CODEC_IO_Write
+ 1909              	.LVL382:
+ 1910 00e8 2044     		add	r0, r0, r4
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 57
+
+
+ 1911              	.LVL383:
+ 919:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 1912              		.loc 1 919 0
+ 1913 00ea 38BD     		pop	{r3, r4, r5, pc}
+ 1914              	.LVL384:
+ 1915              	.L98:
+ 924:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 1916              		.loc 1 924 0
+ 1917 00ec C5B2     		uxtb	r5, r0
+ 1918 00ee 40F60F72 		movw	r2, #3855
+ 1919 00f2 0521     		movs	r1, #5
+ 1920              	.LVL385:
+ 1921 00f4 2846     		mov	r0, r5
+ 1922              	.LVL386:
+ 1923 00f6 FFF7FEFF 		bl	CODEC_IO_Write
+ 1924              	.LVL387:
+ 1925 00fa 0446     		mov	r4, r0
+ 1926              	.LVL388:
+ 927:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 1927              		.loc 1 927 0
+ 1928 00fc 0122     		movs	r2, #1
+ 1929 00fe 40F20161 		movw	r1, #1537
+ 1930 0102 2846     		mov	r0, r5
+ 1931              	.LVL389:
+ 1932 0104 FFF7FEFF 		bl	CODEC_IO_Write
+ 1933              	.LVL390:
+ 1934 0108 0444     		add	r4, r4, r0
+ 1935              	.LVL391:
+ 930:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 1936              		.loc 1 930 0
+ 1937 010a 0122     		movs	r2, #1
+ 1938 010c 40F20261 		movw	r1, #1538
+ 1939 0110 2846     		mov	r0, r5
+ 1940 0112 FFF7FEFF 		bl	CODEC_IO_Write
+ 1941              	.LVL392:
+ 1942 0116 0444     		add	r4, r4, r0
+ 1943              	.LVL393:
+ 933:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 1944              		.loc 1 933 0
+ 1945 0118 0222     		movs	r2, #2
+ 1946 011a 40F20461 		movw	r1, #1540
+ 1947 011e 2846     		mov	r0, r5
+ 1948 0120 FFF7FEFF 		bl	CODEC_IO_Write
+ 1949              	.LVL394:
+ 1950 0124 0444     		add	r4, r4, r0
+ 1951              	.LVL395:
+ 936:Drivers/BSP/Components/wm8994/wm8994.c ****     break;
+ 1952              		.loc 1 936 0
+ 1953 0126 0222     		movs	r2, #2
+ 1954 0128 40F20561 		movw	r1, #1541
+ 1955 012c 2846     		mov	r0, r5
+ 1956 012e FFF7FEFF 		bl	CODEC_IO_Write
+ 1957              	.LVL396:
+ 1958 0132 2044     		add	r0, r0, r4
+ 1959              	.LVL397:
+ 937:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 1960              		.loc 1 937 0
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 58
+
+
+ 1961 0134 38BD     		pop	{r3, r4, r5, pc}
+ 1962              		.cfi_endproc
+ 1963              	.LFE9:
+ 1965              		.section	.text.wm8994_SetFrequency,"ax",%progbits
+ 1966              		.align	1
+ 1967              		.global	wm8994_SetFrequency
+ 1968              		.syntax unified
+ 1969              		.thumb
+ 1970              		.thumb_func
+ 1971              		.fpu fpv5-sp-d16
+ 1973              	wm8994_SetFrequency:
+ 1974              	.LFB10:
+ 967:Drivers/BSP/Components/wm8994/wm8994.c ****   uint32_t counter = 0;
+ 1975              		.loc 1 967 0
+ 1976              		.cfi_startproc
+ 1977              		@ args = 0, pretend = 0, frame = 0
+ 1978              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1979              	.LVL398:
+ 1980 0000 08B5     		push	{r3, lr}
+ 1981              	.LCFI9:
+ 1982              		.cfi_def_cfa_offset 8
+ 1983              		.cfi_offset 3, -8
+ 1984              		.cfi_offset 14, -4
+ 1985              	.LVL399:
+ 971:Drivers/BSP/Components/wm8994/wm8994.c ****   {
+ 1986              		.loc 1 971 0
+ 1987 0002 45F22263 		movw	r3, #22050
+ 1988 0006 9942     		cmp	r1, r3
+ 1989 0008 4AD0     		beq	.L106
+ 1990 000a 12D9     		bls	.L118
+ 1991 000c 4AF64443 		movw	r3, #44100
+ 1992 0010 9942     		cmp	r1, r3
+ 1993 0012 4CD0     		beq	.L111
+ 1994 0014 1ED9     		bls	.L119
+ 1995 0016 4BF68033 		movw	r3, #48000
+ 1996 001a 9942     		cmp	r1, r3
+ 1997 001c 32D0     		beq	.L114
+ 1998 001e 274B     		ldr	r3, .L121
+ 1999 0020 9942     		cmp	r1, r3
+ 2000 0022 10D1     		bne	.L105
+ 995:Drivers/BSP/Components/wm8994/wm8994.c ****     break;
+ 2001              		.loc 1 995 0
+ 2002 0024 A322     		movs	r2, #163
+ 2003 0026 4FF40471 		mov	r1, #528
+ 2004              	.LVL400:
+ 2005 002a C0B2     		uxtb	r0, r0
+ 2006              	.LVL401:
+ 2007 002c FFF7FEFF 		bl	CODEC_IO_Write
+ 2008              	.LVL402:
+ 996:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 2009              		.loc 1 996 0
+ 2010 0030 08BD     		pop	{r3, pc}
+ 2011              	.LVL403:
+ 2012              	.L118:
+ 971:Drivers/BSP/Components/wm8994/wm8994.c ****   {
+ 2013              		.loc 1 971 0
+ 2014 0032 42F61133 		movw	r3, #11025
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 59
+
+
+ 2015 0036 9942     		cmp	r1, r3
+ 2016 0038 2BD0     		beq	.L108
+ 2017 003a B1F57A5F 		cmp	r1, #16000
+ 2018 003e 1AD0     		beq	.L109
+ 2019 0040 B1F5FA5F 		cmp	r1, #8000
+ 2020 0044 10D0     		beq	.L120
+ 2021              	.L105:
+1015:Drivers/BSP/Components/wm8994/wm8994.c ****     break; 
+ 2022              		.loc 1 1015 0
+ 2023 0046 8322     		movs	r2, #131
+ 2024 0048 4FF40471 		mov	r1, #528
+ 2025              	.LVL404:
+ 2026 004c C0B2     		uxtb	r0, r0
+ 2027              	.LVL405:
+ 2028 004e FFF7FEFF 		bl	CODEC_IO_Write
+ 2029              	.LVL406:
+1019:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 2030              		.loc 1 1019 0
+ 2031 0052 08BD     		pop	{r3, pc}
+ 2032              	.LVL407:
+ 2033              	.L119:
+ 971:Drivers/BSP/Components/wm8994/wm8994.c ****   {
+ 2034              		.loc 1 971 0
+ 2035 0054 B1F5FA4F 		cmp	r1, #32000
+ 2036 0058 F5D1     		bne	.L105
+ 985:Drivers/BSP/Components/wm8994/wm8994.c ****     break;
+ 2037              		.loc 1 985 0
+ 2038 005a 6322     		movs	r2, #99
+ 2039 005c 4FF40471 		mov	r1, #528
+ 2040              	.LVL408:
+ 2041 0060 C0B2     		uxtb	r0, r0
+ 2042              	.LVL409:
+ 2043 0062 FFF7FEFF 		bl	CODEC_IO_Write
+ 2044              	.LVL410:
+ 986:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 2045              		.loc 1 986 0
+ 2046 0066 08BD     		pop	{r3, pc}
+ 2047              	.LVL411:
+ 2048              	.L120:
+ 975:Drivers/BSP/Components/wm8994/wm8994.c ****     break;
+ 2049              		.loc 1 975 0
+ 2050 0068 0322     		movs	r2, #3
+ 2051 006a 4FF40471 		mov	r1, #528
+ 2052              	.LVL412:
+ 2053 006e C0B2     		uxtb	r0, r0
+ 2054              	.LVL413:
+ 2055 0070 FFF7FEFF 		bl	CODEC_IO_Write
+ 2056              	.LVL414:
+ 976:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 2057              		.loc 1 976 0
+ 2058 0074 08BD     		pop	{r3, pc}
+ 2059              	.LVL415:
+ 2060              	.L109:
+ 980:Drivers/BSP/Components/wm8994/wm8994.c ****     break;
+ 2061              		.loc 1 980 0
+ 2062 0076 3322     		movs	r2, #51
+ 2063 0078 4FF40471 		mov	r1, #528
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 60
+
+
+ 2064              	.LVL416:
+ 2065 007c C0B2     		uxtb	r0, r0
+ 2066              	.LVL417:
+ 2067 007e FFF7FEFF 		bl	CODEC_IO_Write
+ 2068              	.LVL418:
+ 981:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 2069              		.loc 1 981 0
+ 2070 0082 08BD     		pop	{r3, pc}
+ 2071              	.LVL419:
+ 2072              	.L114:
+ 990:Drivers/BSP/Components/wm8994/wm8994.c ****     break;
+ 2073              		.loc 1 990 0
+ 2074 0084 8322     		movs	r2, #131
+ 2075 0086 4FF40471 		mov	r1, #528
+ 2076              	.LVL420:
+ 2077 008a C0B2     		uxtb	r0, r0
+ 2078              	.LVL421:
+ 2079 008c FFF7FEFF 		bl	CODEC_IO_Write
+ 2080              	.LVL422:
+ 991:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 2081              		.loc 1 991 0
+ 2082 0090 08BD     		pop	{r3, pc}
+ 2083              	.LVL423:
+ 2084              	.L108:
+1000:Drivers/BSP/Components/wm8994/wm8994.c ****     break;
+ 2085              		.loc 1 1000 0
+ 2086 0092 1322     		movs	r2, #19
+ 2087 0094 4FF40471 		mov	r1, #528
+ 2088              	.LVL424:
+ 2089 0098 C0B2     		uxtb	r0, r0
+ 2090              	.LVL425:
+ 2091 009a FFF7FEFF 		bl	CODEC_IO_Write
+ 2092              	.LVL426:
+1001:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 2093              		.loc 1 1001 0
+ 2094 009e 08BD     		pop	{r3, pc}
+ 2095              	.LVL427:
+ 2096              	.L106:
+1005:Drivers/BSP/Components/wm8994/wm8994.c ****     break;
+ 2097              		.loc 1 1005 0
+ 2098 00a0 4322     		movs	r2, #67
+ 2099 00a2 4FF40471 		mov	r1, #528
+ 2100              	.LVL428:
+ 2101 00a6 C0B2     		uxtb	r0, r0
+ 2102              	.LVL429:
+ 2103 00a8 FFF7FEFF 		bl	CODEC_IO_Write
+ 2104              	.LVL430:
+1006:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 2105              		.loc 1 1006 0
+ 2106 00ac 08BD     		pop	{r3, pc}
+ 2107              	.LVL431:
+ 2108              	.L111:
+1010:Drivers/BSP/Components/wm8994/wm8994.c ****     break; 
+ 2109              		.loc 1 1010 0
+ 2110 00ae 7322     		movs	r2, #115
+ 2111 00b0 4FF40471 		mov	r1, #528
+ 2112              	.LVL432:
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 61
+
+
+ 2113 00b4 C0B2     		uxtb	r0, r0
+ 2114              	.LVL433:
+ 2115 00b6 FFF7FEFF 		bl	CODEC_IO_Write
+ 2116              	.LVL434:
+1011:Drivers/BSP/Components/wm8994/wm8994.c ****     
+ 2117              		.loc 1 1011 0
+ 2118 00ba 08BD     		pop	{r3, pc}
+ 2119              	.L122:
+ 2120              		.align	2
+ 2121              	.L121:
+ 2122 00bc 00770100 		.word	96000
+ 2123              		.cfi_endproc
+ 2124              	.LFE10:
+ 2126              		.section	.text.wm8994_Reset,"ax",%progbits
+ 2127              		.align	1
+ 2128              		.global	wm8994_Reset
+ 2129              		.syntax unified
+ 2130              		.thumb
+ 2131              		.thumb_func
+ 2132              		.fpu fpv5-sp-d16
+ 2134              	wm8994_Reset:
+ 2135              	.LFB11:
+1027:Drivers/BSP/Components/wm8994/wm8994.c ****   uint32_t counter = 0;
+ 2136              		.loc 1 1027 0
+ 2137              		.cfi_startproc
+ 2138              		@ args = 0, pretend = 0, frame = 0
+ 2139              		@ frame_needed = 0, uses_anonymous_args = 0
+ 2140              	.LVL435:
+ 2141 0000 08B5     		push	{r3, lr}
+ 2142              	.LCFI10:
+ 2143              		.cfi_def_cfa_offset 8
+ 2144              		.cfi_offset 3, -8
+ 2145              		.cfi_offset 14, -4
+ 2146              	.LVL436:
+1031:Drivers/BSP/Components/wm8994/wm8994.c ****   outputEnabled = 0;
+ 2147              		.loc 1 1031 0
+ 2148 0002 0022     		movs	r2, #0
+ 2149 0004 1146     		mov	r1, r2
+ 2150 0006 C0B2     		uxtb	r0, r0
+ 2151              	.LVL437:
+ 2152 0008 FFF7FEFF 		bl	CODEC_IO_Write
+ 2153              	.LVL438:
+1032:Drivers/BSP/Components/wm8994/wm8994.c ****   inputEnabled=0;
+ 2154              		.loc 1 1032 0
+ 2155 000c 0023     		movs	r3, #0
+ 2156 000e 024A     		ldr	r2, .L125
+ 2157 0010 1360     		str	r3, [r2]
+1033:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 2158              		.loc 1 1033 0
+ 2159 0012 024A     		ldr	r2, .L125+4
+ 2160 0014 1360     		str	r3, [r2]
+1036:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 2161              		.loc 1 1036 0
+ 2162 0016 08BD     		pop	{r3, pc}
+ 2163              	.L126:
+ 2164              		.align	2
+ 2165              	.L125:
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 62
+
+
+ 2166 0018 00000000 		.word	.LANCHOR0
+ 2167 001c 00000000 		.word	.LANCHOR1
+ 2168              		.cfi_endproc
+ 2169              	.LFE11:
+ 2171              		.section	.text.wm8994_DeInit,"ax",%progbits
+ 2172              		.align	1
+ 2173              		.global	wm8994_DeInit
+ 2174              		.syntax unified
+ 2175              		.thumb
+ 2176              		.thumb_func
+ 2177              		.fpu fpv5-sp-d16
+ 2179              	wm8994_DeInit:
+ 2180              	.LFB1:
+ 639:Drivers/BSP/Components/wm8994/wm8994.c ****   /* Deinitialize Audio Codec interface */
+ 2181              		.loc 1 639 0
+ 2182              		.cfi_startproc
+ 2183              		@ args = 0, pretend = 0, frame = 0
+ 2184              		@ frame_needed = 0, uses_anonymous_args = 0
+ 2185 0000 08B5     		push	{r3, lr}
+ 2186              	.LCFI11:
+ 2187              		.cfi_def_cfa_offset 8
+ 2188              		.cfi_offset 3, -8
+ 2189              		.cfi_offset 14, -4
+ 641:Drivers/BSP/Components/wm8994/wm8994.c **** }
+ 2190              		.loc 1 641 0
+ 2191 0002 FFF7FEFF 		bl	AUDIO_IO_DeInit
+ 2192              	.LVL439:
+ 2193 0006 08BD     		pop	{r3, pc}
+ 2194              		.cfi_endproc
+ 2195              	.LFE1:
+ 2197              		.section	.text.wm8994_ReadID,"ax",%progbits
+ 2198              		.align	1
+ 2199              		.global	wm8994_ReadID
+ 2200              		.syntax unified
+ 2201              		.thumb
+ 2202              		.thumb_func
+ 2203              		.fpu fpv5-sp-d16
+ 2205              	wm8994_ReadID:
+ 2206              	.LFB2:
+ 650:Drivers/BSP/Components/wm8994/wm8994.c ****   /* Initialize the Control interface of the Audio Codec */
+ 2207              		.loc 1 650 0
+ 2208              		.cfi_startproc
+ 2209              		@ args = 0, pretend = 0, frame = 0
+ 2210              		@ frame_needed = 0, uses_anonymous_args = 0
+ 2211              	.LVL440:
+ 2212 0000 10B5     		push	{r4, lr}
+ 2213              	.LCFI12:
+ 2214              		.cfi_def_cfa_offset 8
+ 2215              		.cfi_offset 4, -8
+ 2216              		.cfi_offset 14, -4
+ 2217 0002 0446     		mov	r4, r0
+ 652:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 2218              		.loc 1 652 0
+ 2219 0004 FFF7FEFF 		bl	AUDIO_IO_Init
+ 2220              	.LVL441:
+ 654:Drivers/BSP/Components/wm8994/wm8994.c **** }
+ 2221              		.loc 1 654 0
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 63
+
+
+ 2222 0008 0021     		movs	r1, #0
+ 2223 000a E0B2     		uxtb	r0, r4
+ 2224 000c FFF7FEFF 		bl	AUDIO_IO_Read
+ 2225              	.LVL442:
+ 655:Drivers/BSP/Components/wm8994/wm8994.c **** 
+ 2226              		.loc 1 655 0
+ 2227 0010 10BD     		pop	{r4, pc}
+ 2228              		.cfi_endproc
+ 2229              	.LFE2:
+ 2231              		.global	wm8994_drv
+ 2232              		.section	.bss.inputEnabled,"aw",%nobits
+ 2233              		.align	2
+ 2234              		.set	.LANCHOR1,. + 0
+ 2237              	inputEnabled:
+ 2238 0000 00000000 		.space	4
+ 2239              		.section	.bss.outputEnabled,"aw",%nobits
+ 2240              		.align	2
+ 2241              		.set	.LANCHOR0,. + 0
+ 2244              	outputEnabled:
+ 2245 0000 00000000 		.space	4
+ 2246              		.section	.data.ColdStartup,"aw",%progbits
+ 2247              		.set	.LANCHOR2,. + 0
+ 2250              	ColdStartup:
+ 2251 0000 01       		.byte	1
+ 2252              		.section	.data.wm8994_drv,"aw",%progbits
+ 2253              		.align	2
+ 2256              	wm8994_drv:
+ 2257 0000 00000000 		.word	wm8994_Init
+ 2258 0004 00000000 		.word	wm8994_DeInit
+ 2259 0008 00000000 		.word	wm8994_ReadID
+ 2260 000c 00000000 		.word	wm8994_Play
+ 2261 0010 00000000 		.word	wm8994_Pause
+ 2262 0014 00000000 		.word	wm8994_Resume
+ 2263 0018 00000000 		.word	wm8994_Stop
+ 2264 001c 00000000 		.word	wm8994_SetFrequency
+ 2265 0020 00000000 		.word	wm8994_SetVolume
+ 2266 0024 00000000 		.word	wm8994_SetMute
+ 2267 0028 00000000 		.word	wm8994_SetOutputMode
+ 2268 002c 00000000 		.word	wm8994_Reset
+ 2269              		.text
+ 2270              	.Letext0:
+ 2271              		.file 2 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 2272              		.file 3 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 2273              		.file 4 "Drivers/BSP/Components/wm8994/../Common/audio.h"
+ 2274              		.file 5 "Drivers/BSP/Components/wm8994/wm8994.h"
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cc74i5wI.s 			page 64
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 wm8994.c
+C:\Users\Student\AppData\Local\Temp\cc74i5wI.s:18     .text.CODEC_IO_Write:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cc74i5wI.s:24     .text.CODEC_IO_Write:00000000 CODEC_IO_Write
+C:\Users\Student\AppData\Local\Temp\cc74i5wI.s:48     .text.wm8994_SetMute:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cc74i5wI.s:55     .text.wm8994_SetMute:00000000 wm8994_SetMute
+C:\Users\Student\AppData\Local\Temp\cc74i5wI.s:126    .text.wm8994_SetMute:00000054 $d
+C:\Users\Student\AppData\Local\Temp\cc74i5wI.s:131    .text.wm8994_Play:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cc74i5wI.s:138    .text.wm8994_Play:00000000 wm8994_Play
+C:\Users\Student\AppData\Local\Temp\cc74i5wI.s:162    .text.wm8994_Resume:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cc74i5wI.s:169    .text.wm8994_Resume:00000000 wm8994_Resume
+C:\Users\Student\AppData\Local\Temp\cc74i5wI.s:192    .text.wm8994_Pause:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cc74i5wI.s:199    .text.wm8994_Pause:00000000 wm8994_Pause
+C:\Users\Student\AppData\Local\Temp\cc74i5wI.s:236    .text.wm8994_Stop:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cc74i5wI.s:243    .text.wm8994_Stop:00000000 wm8994_Stop
+C:\Users\Student\AppData\Local\Temp\cc74i5wI.s:340    .text.wm8994_Stop:00000078 $d
+C:\Users\Student\AppData\Local\Temp\cc74i5wI.s:345    .text.wm8994_SetVolume:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cc74i5wI.s:352    .text.wm8994_SetVolume:00000000 wm8994_SetVolume
+C:\Users\Student\AppData\Local\Temp\cc74i5wI.s:564    .text.wm8994_SetVolume:0000012c $d
+C:\Users\Student\AppData\Local\Temp\cc74i5wI.s:571    .text.wm8994_Init:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cc74i5wI.s:578    .text.wm8994_Init:00000000 wm8994_Init
+C:\Users\Student\AppData\Local\Temp\cc74i5wI.s:1212   .text.wm8994_Init:00000410 $d
+C:\Users\Student\AppData\Local\Temp\cc74i5wI.s:1217   .text.wm8994_Init:0000041c $t
+C:\Users\Student\AppData\Local\Temp\cc74i5wI.s:1738   .text.wm8994_Init:00000784 $d
+C:\Users\Student\AppData\Local\Temp\cc74i5wI.s:1743   .text.wm8994_SetOutputMode:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cc74i5wI.s:1750   .text.wm8994_SetOutputMode:00000000 wm8994_SetOutputMode
+C:\Users\Student\AppData\Local\Temp\cc74i5wI.s:1966   .text.wm8994_SetFrequency:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cc74i5wI.s:1973   .text.wm8994_SetFrequency:00000000 wm8994_SetFrequency
+C:\Users\Student\AppData\Local\Temp\cc74i5wI.s:2122   .text.wm8994_SetFrequency:000000bc $d
+C:\Users\Student\AppData\Local\Temp\cc74i5wI.s:2127   .text.wm8994_Reset:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cc74i5wI.s:2134   .text.wm8994_Reset:00000000 wm8994_Reset
+C:\Users\Student\AppData\Local\Temp\cc74i5wI.s:2166   .text.wm8994_Reset:00000018 $d
+C:\Users\Student\AppData\Local\Temp\cc74i5wI.s:2172   .text.wm8994_DeInit:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cc74i5wI.s:2179   .text.wm8994_DeInit:00000000 wm8994_DeInit
+C:\Users\Student\AppData\Local\Temp\cc74i5wI.s:2198   .text.wm8994_ReadID:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cc74i5wI.s:2205   .text.wm8994_ReadID:00000000 wm8994_ReadID
+C:\Users\Student\AppData\Local\Temp\cc74i5wI.s:2256   .data.wm8994_drv:00000000 wm8994_drv
+C:\Users\Student\AppData\Local\Temp\cc74i5wI.s:2233   .bss.inputEnabled:00000000 $d
+C:\Users\Student\AppData\Local\Temp\cc74i5wI.s:2237   .bss.inputEnabled:00000000 inputEnabled
+C:\Users\Student\AppData\Local\Temp\cc74i5wI.s:2240   .bss.outputEnabled:00000000 $d
+C:\Users\Student\AppData\Local\Temp\cc74i5wI.s:2244   .bss.outputEnabled:00000000 outputEnabled
+C:\Users\Student\AppData\Local\Temp\cc74i5wI.s:2250   .data.ColdStartup:00000000 ColdStartup
+C:\Users\Student\AppData\Local\Temp\cc74i5wI.s:2253   .data.wm8994_drv:00000000 $d
+                     .debug_frame:00000010 $d
+
+UNDEFINED SYMBOLS
+AUDIO_IO_Write
+AUDIO_IO_Init
+AUDIO_IO_Delay
+AUDIO_IO_DeInit
+AUDIO_IO_Read

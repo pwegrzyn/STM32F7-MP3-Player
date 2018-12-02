@@ -1,0 +1,1033 @@
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccFkfcng.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"dbgu.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.debug_shdn,"ax",%progbits
+  18              		.align	1
+  19              		.global	debug_shdn
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  23              		.fpu fpv5-sp-d16
+  25              	debug_shdn:
+  26              	.LFB136:
+  27              		.file 1 "Src/dbgu.c"
+   1:Src/dbgu.c    **** /*
+   2:Src/dbgu.c    **** * The MIT License (MIT)
+   3:Src/dbgu.c    **** * Copyright (c) 2017 Robert Brzoza-Woch
+   4:Src/dbgu.c    **** * Permission is hereby granted, free of charge, to any person obtaining 
+   5:Src/dbgu.c    **** * a copy of this software and associated documentation files (the "Software"), 
+   6:Src/dbgu.c    **** * to deal in the Software without restriction, including without limitation
+   7:Src/dbgu.c    **** * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+   8:Src/dbgu.c    **** * and/or sell copies of the Software, and to permit persons to whom the
+   9:Src/dbgu.c    **** * Software is furnished to do so, subject to the following conditions:
+  10:Src/dbgu.c    **** * 
+  11:Src/dbgu.c    **** * The above copyright notice and this permission notice shall be
+  12:Src/dbgu.c    **** * included in all copies or substantial portions of the Software.
+  13:Src/dbgu.c    **** * 
+  14:Src/dbgu.c    **** * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+  15:Src/dbgu.c    **** * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+  16:Src/dbgu.c    **** * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+  17:Src/dbgu.c    **** * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+  18:Src/dbgu.c    **** * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+  19:Src/dbgu.c    **** * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR
+  20:Src/dbgu.c    **** * THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+  21:Src/dbgu.c    **** */
+  22:Src/dbgu.c    **** 
+  23:Src/dbgu.c    **** #include "dbgu.h"
+  24:Src/dbgu.c    **** #include "term_io.h"
+  25:Src/dbgu.c    **** #include "stm32f7xx_hal.h"
+  26:Src/dbgu.c    **** #include "stm32f7xx_hal_gpio.h"
+  27:Src/dbgu.c    **** #include "stm32f7xx_hal_uart.h"
+  28:Src/dbgu.c    **** 
+  29:Src/dbgu.c    **** #define USE_HAL		0
+  30:Src/dbgu.c    **** 
+  31:Src/dbgu.c    **** UART_HandleTypeDef* pUart = NULL;
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccFkfcng.s 			page 2
+
+
+  32:Src/dbgu.c    **** 
+  33:Src/dbgu.c    **** void debug_shdn(uint32_t shdn_on)
+  34:Src/dbgu.c    **** {
+  28              		.loc 1 34 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+  33              	.LVL0:
+  34 0000 7047     		bx	lr
+  35              		.cfi_endproc
+  36              	.LFE136:
+  38              		.section	.text.debug_init,"ax",%progbits
+  39              		.align	1
+  40              		.global	debug_init
+  41              		.syntax unified
+  42              		.thumb
+  43              		.thumb_func
+  44              		.fpu fpv5-sp-d16
+  46              	debug_init:
+  47              	.LFB137:
+  35:Src/dbgu.c    **** 	if(shdn_on)
+  36:Src/dbgu.c    **** 	{
+  37:Src/dbgu.c    **** 	}
+  38:Src/dbgu.c    **** 	else
+  39:Src/dbgu.c    **** 	{
+  40:Src/dbgu.c    **** 	}
+  41:Src/dbgu.c    **** 	
+  42:Src/dbgu.c    **** 	
+  43:Src/dbgu.c    **** }
+  44:Src/dbgu.c    **** 
+  45:Src/dbgu.c    **** void debug_init(UART_HandleTypeDef* handler)
+  46:Src/dbgu.c    **** {
+  48              		.loc 1 46 0
+  49              		.cfi_startproc
+  50              		@ args = 0, pretend = 0, frame = 0
+  51              		@ frame_needed = 0, uses_anonymous_args = 0
+  52              		@ link register save eliminated.
+  53              	.LVL1:
+  47:Src/dbgu.c    **** 	pUart = handler;
+  54              		.loc 1 47 0
+  55 0000 014B     		ldr	r3, .L3
+  56 0002 1860     		str	r0, [r3]
+  57 0004 7047     		bx	lr
+  58              	.L4:
+  59 0006 00BF     		.align	2
+  60              	.L3:
+  61 0008 00000000 		.word	.LANCHOR0
+  62              		.cfi_endproc
+  63              	.LFE137:
+  65              		.section	.text.debug_chr,"ax",%progbits
+  66              		.align	1
+  67              		.global	debug_chr
+  68              		.syntax unified
+  69              		.thumb
+  70              		.thumb_func
+  71              		.fpu fpv5-sp-d16
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccFkfcng.s 			page 3
+
+
+  73              	debug_chr:
+  74              	.LFB138:
+  48:Src/dbgu.c    **** }
+  49:Src/dbgu.c    **** 
+  50:Src/dbgu.c    **** //send chr via UART (platform dependent)
+  51:Src/dbgu.c    **** void debug_chr(char chr)
+  52:Src/dbgu.c    **** {
+  75              		.loc 1 52 0
+  76              		.cfi_startproc
+  77              		@ args = 0, pretend = 0, frame = 0
+  78              		@ frame_needed = 0, uses_anonymous_args = 0
+  79              		@ link register save eliminated.
+  80              	.LVL2:
+  81              	.L6:
+  53:Src/dbgu.c    **** 	#if USE_HAL
+  54:Src/dbgu.c    **** 	HAL_UART_Transmit(pUart,
+  55:Src/dbgu.c    **** 	(uint8_t*)&chr, 1, 1000);
+  56:Src/dbgu.c    **** 	#else
+  57:Src/dbgu.c    **** 	while(__HAL_UART_GET_FLAG(pUart, UART_FLAG_TXE) == RESET) { ; }
+  82              		.loc 1 57 0 discriminator 1
+  83 0000 044B     		ldr	r3, .L7
+  84 0002 1B68     		ldr	r3, [r3]
+  85 0004 1B68     		ldr	r3, [r3]
+  86 0006 DA69     		ldr	r2, [r3, #28]
+  87 0008 12F0800F 		tst	r2, #128
+  88 000c F8D0     		beq	.L6
+  58:Src/dbgu.c    **** 	pUart->Instance->TDR = (uint16_t)chr;
+  89              		.loc 1 58 0
+  90 000e 9862     		str	r0, [r3, #40]
+  91 0010 7047     		bx	lr
+  92              	.L8:
+  93 0012 00BF     		.align	2
+  94              	.L7:
+  95 0014 00000000 		.word	.LANCHOR0
+  96              		.cfi_endproc
+  97              	.LFE138:
+  99              		.section	.text.debug_inkey,"ax",%progbits
+ 100              		.align	1
+ 101              		.global	debug_inkey
+ 102              		.syntax unified
+ 103              		.thumb
+ 104              		.thumb_func
+ 105              		.fpu fpv5-sp-d16
+ 107              	debug_inkey:
+ 108              	.LFB139:
+  59:Src/dbgu.c    **** 	#endif
+  60:Src/dbgu.c    **** }
+  61:Src/dbgu.c    **** 
+  62:Src/dbgu.c    **** 
+  63:Src/dbgu.c    **** //returns ascii value of last char received
+  64:Src/dbgu.c    **** //returns 0 if no char was received since last debug_inkey call
+  65:Src/dbgu.c    **** //(platform dependent)
+  66:Src/dbgu.c    **** char debug_inkey(void)
+  67:Src/dbgu.c    **** {
+ 109              		.loc 1 67 0
+ 110              		.cfi_startproc
+ 111              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccFkfcng.s 			page 4
+
+
+ 112              		@ frame_needed = 0, uses_anonymous_args = 0
+ 113              		@ link register save eliminated.
+  68:Src/dbgu.c    **** 	uint32_t flags = pUart->Instance->ISR;
+ 114              		.loc 1 68 0
+ 115 0000 074B     		ldr	r3, .L12
+ 116 0002 1B68     		ldr	r3, [r3]
+ 117 0004 1A68     		ldr	r2, [r3]
+ 118 0006 D169     		ldr	r1, [r2, #28]
+ 119              	.LVL3:
+  69:Src/dbgu.c    **** 	
+  70:Src/dbgu.c    **** 	if((flags & UART_FLAG_RXNE) || (flags & UART_FLAG_ORE))
+ 120              		.loc 1 70 0
+ 121 0008 11F0280F 		tst	r1, #40
+ 122 000c 05D0     		beq	.L11
+  71:Src/dbgu.c    **** 	{
+  72:Src/dbgu.c    **** 		__HAL_UART_CLEAR_OREFLAG(pUart);
+ 123              		.loc 1 72 0
+ 124 000e 0821     		movs	r1, #8
+ 125              	.LVL4:
+ 126 0010 1162     		str	r1, [r2, #32]
+  73:Src/dbgu.c    **** 		return (pUart->Instance->RDR);
+ 127              		.loc 1 73 0
+ 128 0012 1B68     		ldr	r3, [r3]
+ 129 0014 586A     		ldr	r0, [r3, #36]
+ 130 0016 C0B2     		uxtb	r0, r0
+ 131 0018 7047     		bx	lr
+ 132              	.LVL5:
+ 133              	.L11:
+  74:Src/dbgu.c    **** 	}
+  75:Src/dbgu.c    **** 	else
+  76:Src/dbgu.c    **** 		return 0;
+ 134              		.loc 1 76 0
+ 135 001a 0020     		movs	r0, #0
+  77:Src/dbgu.c    **** }
+ 136              		.loc 1 77 0
+ 137 001c 7047     		bx	lr
+ 138              	.L13:
+ 139 001e 00BF     		.align	2
+ 140              	.L12:
+ 141 0020 00000000 		.word	.LANCHOR0
+ 142              		.cfi_endproc
+ 143              	.LFE139:
+ 145              		.section	.text.debug_waitkey,"ax",%progbits
+ 146              		.align	1
+ 147              		.global	debug_waitkey
+ 148              		.syntax unified
+ 149              		.thumb
+ 150              		.thumb_func
+ 151              		.fpu fpv5-sp-d16
+ 153              	debug_waitkey:
+ 154              	.LFB140:
+  78:Src/dbgu.c    **** 
+  79:Src/dbgu.c    **** //halts program/task execution until char is received
+  80:Src/dbgu.c    **** //(platform dependent)
+  81:Src/dbgu.c    **** char debug_waitkey(void)
+  82:Src/dbgu.c    **** {
+ 155              		.loc 1 82 0
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccFkfcng.s 			page 5
+
+
+ 156              		.cfi_startproc
+ 157              		@ args = 0, pretend = 0, frame = 8
+ 158              		@ frame_needed = 0, uses_anonymous_args = 0
+ 159 0000 00B5     		push	{lr}
+ 160              	.LCFI0:
+ 161              		.cfi_def_cfa_offset 4
+ 162              		.cfi_offset 14, -4
+ 163 0002 83B0     		sub	sp, sp, #12
+ 164              	.LCFI1:
+ 165              		.cfi_def_cfa_offset 16
+ 166              	.L15:
+  83:Src/dbgu.c    **** 	uint8_t rxed;
+  84:Src/dbgu.c    **** 	HAL_StatusTypeDef res;
+  85:Src/dbgu.c    **** 	
+  86:Src/dbgu.c    **** 	do
+  87:Src/dbgu.c    **** 	{
+  88:Src/dbgu.c    **** 		res = HAL_UART_Receive(pUart,&rxed,1,HAL_MAX_DELAY);
+ 167              		.loc 1 88 0 discriminator 1
+ 168 0004 4FF0FF33 		mov	r3, #-1
+ 169 0008 0122     		movs	r2, #1
+ 170 000a 0DF10701 		add	r1, sp, #7
+ 171 000e 0548     		ldr	r0, .L17
+ 172 0010 0068     		ldr	r0, [r0]
+ 173 0012 FFF7FEFF 		bl	HAL_UART_Receive
+ 174              	.LVL6:
+  89:Src/dbgu.c    **** 	}
+  90:Src/dbgu.c    **** 	while(res != HAL_OK);
+ 175              		.loc 1 90 0 discriminator 1
+ 176 0016 0028     		cmp	r0, #0
+ 177 0018 F4D1     		bne	.L15
+  91:Src/dbgu.c    **** 	return rxed;
+  92:Src/dbgu.c    **** }
+ 178              		.loc 1 92 0
+ 179 001a 9DF80700 		ldrb	r0, [sp, #7]	@ zero_extendqisi2
+ 180              	.LVL7:
+ 181 001e 03B0     		add	sp, sp, #12
+ 182              	.LCFI2:
+ 183              		.cfi_def_cfa_offset 4
+ 184              		@ sp needed
+ 185 0020 5DF804FB 		ldr	pc, [sp], #4
+ 186              	.L18:
+ 187              		.align	2
+ 188              	.L17:
+ 189 0024 00000000 		.word	.LANCHOR0
+ 190              		.cfi_endproc
+ 191              	.LFE140:
+ 193              		.section	.text.debug_txt,"ax",%progbits
+ 194              		.align	1
+ 195              		.global	debug_txt
+ 196              		.syntax unified
+ 197              		.thumb
+ 198              		.thumb_func
+ 199              		.fpu fpv5-sp-d16
+ 201              	debug_txt:
+ 202              	.LFB142:
+  93:Src/dbgu.c    **** 
+  94:Src/dbgu.c    **** 
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccFkfcng.s 			page 6
+
+
+  95:Src/dbgu.c    **** //platform independent funcs
+  96:Src/dbgu.c    **** 
+  97:Src/dbgu.c    **** 
+  98:Src/dbgu.c    **** //prints text starting at str
+  99:Src/dbgu.c    **** //adds new line at end
+ 100:Src/dbgu.c    **** void debug_msg(const char *str)
+ 101:Src/dbgu.c    **** {
+ 102:Src/dbgu.c    **** 	debug_txt(str);
+ 103:Src/dbgu.c    **** 	debug_chr('\r');
+ 104:Src/dbgu.c    **** 	debug_chr('\n');
+ 105:Src/dbgu.c    **** }
+ 106:Src/dbgu.c    **** 
+ 107:Src/dbgu.c    **** //prints text starting at str
+ 108:Src/dbgu.c    **** void debug_txt(const char *str)
+ 109:Src/dbgu.c    **** {
+ 203              		.loc 1 109 0
+ 204              		.cfi_startproc
+ 205              		@ args = 0, pretend = 0, frame = 0
+ 206              		@ frame_needed = 0, uses_anonymous_args = 0
+ 207              	.LVL8:
+ 208 0000 10B5     		push	{r4, lr}
+ 209              	.LCFI3:
+ 210              		.cfi_def_cfa_offset 8
+ 211              		.cfi_offset 4, -8
+ 212              		.cfi_offset 14, -4
+ 213 0002 0446     		mov	r4, r0
+ 110:Src/dbgu.c    **** 	while(*str) debug_chr(*str++);
+ 214              		.loc 1 110 0
+ 215 0004 02E0     		b	.L20
+ 216              	.LVL9:
+ 217              	.L21:
+ 218              		.loc 1 110 0 is_stmt 0 discriminator 2
+ 219 0006 0134     		adds	r4, r4, #1
+ 220              	.LVL10:
+ 221 0008 FFF7FEFF 		bl	debug_chr
+ 222              	.LVL11:
+ 223              	.L20:
+ 224              		.loc 1 110 0 discriminator 1
+ 225 000c 2078     		ldrb	r0, [r4]	@ zero_extendqisi2
+ 226 000e 0028     		cmp	r0, #0
+ 227 0010 F9D1     		bne	.L21
+ 111:Src/dbgu.c    **** }
+ 228              		.loc 1 111 0 is_stmt 1
+ 229 0012 10BD     		pop	{r4, pc}
+ 230              		.cfi_endproc
+ 231              	.LFE142:
+ 233              		.section	.text.debug_msg,"ax",%progbits
+ 234              		.align	1
+ 235              		.global	debug_msg
+ 236              		.syntax unified
+ 237              		.thumb
+ 238              		.thumb_func
+ 239              		.fpu fpv5-sp-d16
+ 241              	debug_msg:
+ 242              	.LFB141:
+ 101:Src/dbgu.c    **** 	debug_txt(str);
+ 243              		.loc 1 101 0
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccFkfcng.s 			page 7
+
+
+ 244              		.cfi_startproc
+ 245              		@ args = 0, pretend = 0, frame = 0
+ 246              		@ frame_needed = 0, uses_anonymous_args = 0
+ 247              	.LVL12:
+ 248 0000 08B5     		push	{r3, lr}
+ 249              	.LCFI4:
+ 250              		.cfi_def_cfa_offset 8
+ 251              		.cfi_offset 3, -8
+ 252              		.cfi_offset 14, -4
+ 102:Src/dbgu.c    **** 	debug_chr('\r');
+ 253              		.loc 1 102 0
+ 254 0002 FFF7FEFF 		bl	debug_txt
+ 255              	.LVL13:
+ 103:Src/dbgu.c    **** 	debug_chr('\n');
+ 256              		.loc 1 103 0
+ 257 0006 0D20     		movs	r0, #13
+ 258 0008 FFF7FEFF 		bl	debug_chr
+ 259              	.LVL14:
+ 104:Src/dbgu.c    **** }
+ 260              		.loc 1 104 0
+ 261 000c 0A20     		movs	r0, #10
+ 262 000e FFF7FEFF 		bl	debug_chr
+ 263              	.LVL15:
+ 264 0012 08BD     		pop	{r3, pc}
+ 265              		.cfi_endproc
+ 266              	.LFE141:
+ 268              		.section	.text.debug_ascii,"ax",%progbits
+ 269              		.align	1
+ 270              		.global	debug_ascii
+ 271              		.syntax unified
+ 272              		.thumb
+ 273              		.thumb_func
+ 274              		.fpu fpv5-sp-d16
+ 276              	debug_ascii:
+ 277              	.LFB144:
+ 112:Src/dbgu.c    **** 
+ 113:Src/dbgu.c    **** //prints text starting at str
+ 114:Src/dbgu.c    **** //prints exactly len chars
+ 115:Src/dbgu.c    **** void debug_txt_limit(const char *str, uint8_t len)
+ 116:Src/dbgu.c    **** {
+ 117:Src/dbgu.c    **** 	while(len)
+ 118:Src/dbgu.c    **** 	{
+ 119:Src/dbgu.c    **** 		debug_ascii(*str);
+ 120:Src/dbgu.c    **** 		str++;
+ 121:Src/dbgu.c    **** 		len--;
+ 122:Src/dbgu.c    **** 	}
+ 123:Src/dbgu.c    **** }
+ 124:Src/dbgu.c    **** 
+ 125:Src/dbgu.c    **** 
+ 126:Src/dbgu.c    **** //sends char b over pDbgu UART. Replaces values that can change cursor pos. on terminal
+ 127:Src/dbgu.c    **** void debug_ascii(uint8_t b)
+ 128:Src/dbgu.c    **** {
+ 278              		.loc 1 128 0
+ 279              		.cfi_startproc
+ 280              		@ args = 0, pretend = 0, frame = 0
+ 281              		@ frame_needed = 0, uses_anonymous_args = 0
+ 282              	.LVL16:
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccFkfcng.s 			page 8
+
+
+ 283 0000 08B5     		push	{r3, lr}
+ 284              	.LCFI5:
+ 285              		.cfi_def_cfa_offset 8
+ 286              		.cfi_offset 3, -8
+ 287              		.cfi_offset 14, -4
+ 129:Src/dbgu.c    **** 	switch(b)
+ 288              		.loc 1 129 0
+ 289 0002 0D28     		cmp	r0, #13
+ 290 0004 10D8     		bhi	.L26
+ 291 0006 DFE800F0 		tbb	[pc, r0]
+ 292              	.L28:
+ 293 000a 07       		.byte	(.L27-.L28)/2
+ 294 000b 0F       		.byte	(.L26-.L28)/2
+ 295 000c 0F       		.byte	(.L26-.L28)/2
+ 296 000d 0F       		.byte	(.L26-.L28)/2
+ 297 000e 0F       		.byte	(.L26-.L28)/2
+ 298 000f 0F       		.byte	(.L26-.L28)/2
+ 299 0010 0F       		.byte	(.L26-.L28)/2
+ 300 0011 0F       		.byte	(.L26-.L28)/2
+ 301 0012 0B       		.byte	(.L29-.L28)/2
+ 302 0013 0B       		.byte	(.L29-.L28)/2
+ 303 0014 0B       		.byte	(.L29-.L28)/2
+ 304 0015 0F       		.byte	(.L26-.L28)/2
+ 305 0016 0F       		.byte	(.L26-.L28)/2
+ 306 0017 0B       		.byte	(.L29-.L28)/2
+ 307              		.p2align 1
+ 308              	.L27:
+ 130:Src/dbgu.c    **** 	{
+ 131:Src/dbgu.c    **** 		case 0:
+ 132:Src/dbgu.c    **** 		{
+ 133:Src/dbgu.c    **** 			debug_chr('.');	//replace 0 with dot
+ 309              		.loc 1 133 0
+ 310 0018 2E20     		movs	r0, #46
+ 311              	.LVL17:
+ 312 001a FFF7FEFF 		bl	debug_chr
+ 313              	.LVL18:
+ 134:Src/dbgu.c    **** 			break;
+ 314              		.loc 1 134 0
+ 315 001e 08BD     		pop	{r3, pc}
+ 316              	.LVL19:
+ 317              	.L29:
+ 135:Src/dbgu.c    **** 		}
+ 136:Src/dbgu.c    **** 		case 8:
+ 137:Src/dbgu.c    **** 		case 9:
+ 138:Src/dbgu.c    **** 		case 10:
+ 139:Src/dbgu.c    **** 		case 13:
+ 140:Src/dbgu.c    **** 		{
+ 141:Src/dbgu.c    **** 			//avoid other chars that modify terminal cursor
+ 142:Src/dbgu.c    **** 			//replace them with space
+ 143:Src/dbgu.c    **** 			debug_chr(' ');
+ 318              		.loc 1 143 0
+ 319 0020 2020     		movs	r0, #32
+ 320              	.LVL20:
+ 321 0022 FFF7FEFF 		bl	debug_chr
+ 322              	.LVL21:
+ 144:Src/dbgu.c    **** 			break;
+ 323              		.loc 1 144 0
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccFkfcng.s 			page 9
+
+
+ 324 0026 08BD     		pop	{r3, pc}
+ 325              	.LVL22:
+ 326              	.L26:
+ 145:Src/dbgu.c    **** 		}
+ 146:Src/dbgu.c    **** 		default:
+ 147:Src/dbgu.c    **** 		{
+ 148:Src/dbgu.c    **** 			debug_chr(b);
+ 327              		.loc 1 148 0
+ 328 0028 FFF7FEFF 		bl	debug_chr
+ 329              	.LVL23:
+ 330 002c 08BD     		pop	{r3, pc}
+ 331              		.cfi_endproc
+ 332              	.LFE144:
+ 334              		.section	.text.debug_txt_limit,"ax",%progbits
+ 335              		.align	1
+ 336              		.global	debug_txt_limit
+ 337              		.syntax unified
+ 338              		.thumb
+ 339              		.thumb_func
+ 340              		.fpu fpv5-sp-d16
+ 342              	debug_txt_limit:
+ 343              	.LFB143:
+ 116:Src/dbgu.c    **** 	while(len)
+ 344              		.loc 1 116 0
+ 345              		.cfi_startproc
+ 346              		@ args = 0, pretend = 0, frame = 0
+ 347              		@ frame_needed = 0, uses_anonymous_args = 0
+ 348              	.LVL24:
+ 349 0000 38B5     		push	{r3, r4, r5, lr}
+ 350              	.LCFI6:
+ 351              		.cfi_def_cfa_offset 16
+ 352              		.cfi_offset 3, -16
+ 353              		.cfi_offset 4, -12
+ 354              		.cfi_offset 5, -8
+ 355              		.cfi_offset 14, -4
+ 356 0002 0546     		mov	r5, r0
+ 357 0004 0C46     		mov	r4, r1
+ 117:Src/dbgu.c    **** 	{
+ 358              		.loc 1 117 0
+ 359 0006 05E0     		b	.L33
+ 360              	.LVL25:
+ 361              	.L34:
+ 119:Src/dbgu.c    **** 		str++;
+ 362              		.loc 1 119 0
+ 363 0008 15F8010B 		ldrb	r0, [r5], #1	@ zero_extendqisi2
+ 364              	.LVL26:
+ 365 000c FFF7FEFF 		bl	debug_ascii
+ 366              	.LVL27:
+ 121:Src/dbgu.c    **** 	}
+ 367              		.loc 1 121 0
+ 368 0010 013C     		subs	r4, r4, #1
+ 369              	.LVL28:
+ 370 0012 E4B2     		uxtb	r4, r4
+ 371              	.LVL29:
+ 372              	.L33:
+ 117:Src/dbgu.c    **** 	{
+ 373              		.loc 1 117 0
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccFkfcng.s 			page 10
+
+
+ 374 0014 002C     		cmp	r4, #0
+ 375 0016 F7D1     		bne	.L34
+ 123:Src/dbgu.c    **** 
+ 376              		.loc 1 123 0
+ 377 0018 38BD     		pop	{r3, r4, r5, pc}
+ 378              		.cfi_endproc
+ 379              	.LFE143:
+ 381              		.section	.text.debug_dump,"ax",%progbits
+ 382              		.align	1
+ 383              		.global	debug_dump
+ 384              		.syntax unified
+ 385              		.thumb
+ 386              		.thumb_func
+ 387              		.fpu fpv5-sp-d16
+ 389              	debug_dump:
+ 390              	.LFB145:
+ 149:Src/dbgu.c    **** 		}
+ 150:Src/dbgu.c    **** 	}//switch(chr)
+ 151:Src/dbgu.c    **** }
+ 152:Src/dbgu.c    **** 
+ 153:Src/dbgu.c    **** 
+ 154:Src/dbgu.c    **** 
+ 155:Src/dbgu.c    **** 
+ 156:Src/dbgu.c    **** 
+ 157:Src/dbgu.c    **** void debug_dump(void *address, uint16_t len)
+ 158:Src/dbgu.c    **** {
+ 391              		.loc 1 158 0
+ 392              		.cfi_startproc
+ 393              		@ args = 0, pretend = 0, frame = 0
+ 394              		@ frame_needed = 0, uses_anonymous_args = 0
+ 395              	.LVL30:
+ 396 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 397              	.LCFI7:
+ 398              		.cfi_def_cfa_offset 24
+ 399              		.cfi_offset 3, -24
+ 400              		.cfi_offset 4, -20
+ 401              		.cfi_offset 5, -16
+ 402              		.cfi_offset 6, -12
+ 403              		.cfi_offset 7, -8
+ 404              		.cfi_offset 14, -4
+ 405 0002 0546     		mov	r5, r0
+ 406 0004 0F46     		mov	r7, r1
+ 407              	.LVL31:
+ 159:Src/dbgu.c    **** 	uint8_t *buf = address;
+ 160:Src/dbgu.c    **** 	const uint16_t bytesInLine = 16;
+ 161:Src/dbgu.c    **** 	const uint16_t spaceBetweenDumpAndASCII = 4;
+ 162:Src/dbgu.c    **** 	uint16_t i, counter=len;
+ 163:Src/dbgu.c    **** 	
+ 164:Src/dbgu.c    **** 	xprintf("Debug dump @ %08X\n",(unsigned int)address);
+ 408              		.loc 1 164 0
+ 409 0006 0146     		mov	r1, r0
+ 410              	.LVL32:
+ 411 0008 3948     		ldr	r0, .L64
+ 412              	.LVL33:
+ 413 000a FFF7FEFF 		bl	xprintf
+ 414              	.LVL34:
+ 162:Src/dbgu.c    **** 	
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccFkfcng.s 			page 11
+
+
+ 415              		.loc 1 162 0
+ 416 000e 3E46     		mov	r6, r7
+ 417 0010 65E0     		b	.L57
+ 418              	.LVL35:
+ 419              	.L63:
+ 165:Src/dbgu.c    **** 	
+ 166:Src/dbgu.c    **** 	while(1)
+ 167:Src/dbgu.c    **** 	{
+ 168:Src/dbgu.c    **** 		//insert last line (may be shorter than full line)
+ 169:Src/dbgu.c    **** 		if(counter < bytesInLine)
+ 170:Src/dbgu.c    **** 		{
+ 171:Src/dbgu.c    **** 			xprintf("%08X %04X: ",(unsigned int)buf,(unsigned int)(len-counter));
+ 420              		.loc 1 171 0
+ 421 0012 BA1B     		subs	r2, r7, r6
+ 422 0014 2946     		mov	r1, r5
+ 423 0016 3748     		ldr	r0, .L64+4
+ 424 0018 FFF7FEFF 		bl	xprintf
+ 425              	.LVL36:
+ 172:Src/dbgu.c    **** 			
+ 173:Src/dbgu.c    **** 			//contents in hex
+ 174:Src/dbgu.c    **** 			for(i=0;i<bytesInLine;i++)
+ 426              		.loc 1 174 0
+ 427 001c 0024     		movs	r4, #0
+ 428 001e 08E0     		b	.L38
+ 429              	.LVL37:
+ 430              	.L39:
+ 175:Src/dbgu.c    **** 			{
+ 176:Src/dbgu.c    **** 				if(i<counter)
+ 177:Src/dbgu.c    **** 				{
+ 178:Src/dbgu.c    **** 					xprintf("%02X ",(unsigned int)(buf[i]));
+ 179:Src/dbgu.c    **** 				}
+ 180:Src/dbgu.c    **** 				else
+ 181:Src/dbgu.c    **** 				{
+ 182:Src/dbgu.c    **** 					xprintf("   ");
+ 431              		.loc 1 182 0
+ 432 0020 3548     		ldr	r0, .L64+8
+ 433 0022 FFF7FEFF 		bl	xprintf
+ 434              	.LVL38:
+ 435              	.L40:
+ 183:Src/dbgu.c    **** 				}
+ 184:Src/dbgu.c    **** 				if(i%8==7) xprintf(" ");
+ 436              		.loc 1 184 0
+ 437 0026 04F00703 		and	r3, r4, #7
+ 438 002a 072B     		cmp	r3, #7
+ 439 002c 0AD0     		beq	.L59
+ 440              	.L41:
+ 174:Src/dbgu.c    **** 			{
+ 441              		.loc 1 174 0 discriminator 2
+ 442 002e 0134     		adds	r4, r4, #1
+ 443              	.LVL39:
+ 444 0030 A4B2     		uxth	r4, r4
+ 445              	.LVL40:
+ 446              	.L38:
+ 174:Src/dbgu.c    **** 			{
+ 447              		.loc 1 174 0 is_stmt 0 discriminator 1
+ 448 0032 0F2C     		cmp	r4, #15
+ 449 0034 0AD8     		bhi	.L60
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccFkfcng.s 			page 12
+
+
+ 176:Src/dbgu.c    **** 				{
+ 450              		.loc 1 176 0 is_stmt 1
+ 451 0036 B442     		cmp	r4, r6
+ 452 0038 F2D2     		bcs	.L39
+ 178:Src/dbgu.c    **** 				}
+ 453              		.loc 1 178 0
+ 454 003a 295D     		ldrb	r1, [r5, r4]	@ zero_extendqisi2
+ 455 003c 2F48     		ldr	r0, .L64+12
+ 456 003e FFF7FEFF 		bl	xprintf
+ 457              	.LVL41:
+ 458 0042 F0E7     		b	.L40
+ 459              	.L59:
+ 460              		.loc 1 184 0 discriminator 1
+ 461 0044 2E48     		ldr	r0, .L64+16
+ 462 0046 FFF7FEFF 		bl	xprintf
+ 463              	.LVL42:
+ 464 004a F0E7     		b	.L41
+ 465              	.L60:
+ 466 004c 0024     		movs	r4, #0
+ 467              	.LVL43:
+ 468 004e 04E0     		b	.L43
+ 469              	.LVL44:
+ 470              	.L44:
+ 185:Src/dbgu.c    **** 			}
+ 186:Src/dbgu.c    **** 			
+ 187:Src/dbgu.c    **** 			//space
+ 188:Src/dbgu.c    **** 			for(i=0;i<spaceBetweenDumpAndASCII;i++)
+ 189:Src/dbgu.c    **** 			{
+ 190:Src/dbgu.c    **** 				xprintf(" ");
+ 471              		.loc 1 190 0 discriminator 3
+ 472 0050 2B48     		ldr	r0, .L64+16
+ 473 0052 FFF7FEFF 		bl	xprintf
+ 474              	.LVL45:
+ 188:Src/dbgu.c    **** 			{
+ 475              		.loc 1 188 0 discriminator 3
+ 476 0056 0134     		adds	r4, r4, #1
+ 477              	.LVL46:
+ 478 0058 A4B2     		uxth	r4, r4
+ 479              	.LVL47:
+ 480              	.L43:
+ 188:Src/dbgu.c    **** 			{
+ 481              		.loc 1 188 0 is_stmt 0 discriminator 1
+ 482 005a 032C     		cmp	r4, #3
+ 483 005c F8D9     		bls	.L44
+ 484 005e 0024     		movs	r4, #0
+ 485              	.LVL48:
+ 486 0060 04E0     		b	.L45
+ 487              	.LVL49:
+ 488              	.L46:
+ 191:Src/dbgu.c    **** 			}
+ 192:Src/dbgu.c    **** 			
+ 193:Src/dbgu.c    **** 			//contents in ASCII
+ 194:Src/dbgu.c    **** 			for(i=0;i<bytesInLine;i++)
+ 195:Src/dbgu.c    **** 			{
+ 196:Src/dbgu.c    **** 				if(i<counter)
+ 197:Src/dbgu.c    **** 				{
+ 198:Src/dbgu.c    **** 					debug_ascii(buf[i]);
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccFkfcng.s 			page 13
+
+
+ 199:Src/dbgu.c    **** 				}
+ 200:Src/dbgu.c    **** 				else
+ 201:Src/dbgu.c    **** 				{
+ 202:Src/dbgu.c    **** 					debug_chr(' ');
+ 489              		.loc 1 202 0 is_stmt 1
+ 490 0062 2020     		movs	r0, #32
+ 491 0064 FFF7FEFF 		bl	debug_chr
+ 492              	.LVL50:
+ 493              	.L47:
+ 194:Src/dbgu.c    **** 			{
+ 494              		.loc 1 194 0 discriminator 2
+ 495 0068 0134     		adds	r4, r4, #1
+ 496              	.LVL51:
+ 497 006a A4B2     		uxth	r4, r4
+ 498              	.LVL52:
+ 499              	.L45:
+ 194:Src/dbgu.c    **** 			{
+ 500              		.loc 1 194 0 is_stmt 0 discriminator 1
+ 501 006c 0F2C     		cmp	r4, #15
+ 502 006e 05D8     		bhi	.L61
+ 196:Src/dbgu.c    **** 				{
+ 503              		.loc 1 196 0 is_stmt 1
+ 504 0070 B442     		cmp	r4, r6
+ 505 0072 F6D2     		bcs	.L46
+ 198:Src/dbgu.c    **** 				}
+ 506              		.loc 1 198 0
+ 507 0074 285D     		ldrb	r0, [r5, r4]	@ zero_extendqisi2
+ 508 0076 FFF7FEFF 		bl	debug_ascii
+ 509              	.LVL53:
+ 510 007a F5E7     		b	.L47
+ 511              	.L61:
+ 203:Src/dbgu.c    **** 				}
+ 204:Src/dbgu.c    **** 			}
+ 205:Src/dbgu.c    **** 			
+ 206:Src/dbgu.c    **** 			debug_chr('\n');
+ 512              		.loc 1 206 0
+ 513 007c 0A20     		movs	r0, #10
+ 514 007e FFF7FEFF 		bl	debug_chr
+ 515              	.LVL54:
+ 516              	.L49:
+ 207:Src/dbgu.c    **** 			
+ 208:Src/dbgu.c    **** 			break;
+ 209:Src/dbgu.c    **** 		}
+ 210:Src/dbgu.c    **** 		
+ 211:Src/dbgu.c    **** 		xprintf("%08X %04X:   ",(unsigned int)buf,(unsigned int)(len-counter));
+ 212:Src/dbgu.c    **** 		
+ 213:Src/dbgu.c    **** 		
+ 214:Src/dbgu.c    **** 		for(i=0;i<bytesInLine;i++)
+ 215:Src/dbgu.c    **** 		{
+ 216:Src/dbgu.c    **** 			xprintf("%02X ",(unsigned int)(buf[i]));
+ 217:Src/dbgu.c    **** 			if(i%8==7) debug_chr(' ');
+ 218:Src/dbgu.c    **** 		}
+ 219:Src/dbgu.c    **** 		
+ 220:Src/dbgu.c    **** 		//space
+ 221:Src/dbgu.c    **** 		for(i=0;i<spaceBetweenDumpAndASCII;i++)
+ 222:Src/dbgu.c    **** 		{
+ 223:Src/dbgu.c    **** 			debug_chr(' ');
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccFkfcng.s 			page 14
+
+
+ 224:Src/dbgu.c    **** 		}
+ 225:Src/dbgu.c    **** 		
+ 226:Src/dbgu.c    **** 		//contents in ASCII
+ 227:Src/dbgu.c    **** 		for(i=0;i<bytesInLine;i++)
+ 228:Src/dbgu.c    **** 		{
+ 229:Src/dbgu.c    **** 			debug_ascii(buf[i]);
+ 230:Src/dbgu.c    **** 		}
+ 231:Src/dbgu.c    **** 		
+ 232:Src/dbgu.c    **** 		buf += bytesInLine;
+ 233:Src/dbgu.c    **** 		if(counter >= bytesInLine)
+ 234:Src/dbgu.c    **** 		{
+ 235:Src/dbgu.c    **** 			counter -= bytesInLine;
+ 236:Src/dbgu.c    **** 		}
+ 237:Src/dbgu.c    **** 		
+ 238:Src/dbgu.c    **** 		debug_chr('\n');
+ 239:Src/dbgu.c    **** 			
+ 240:Src/dbgu.c    **** 		if(counter == 0) break;
+ 241:Src/dbgu.c    **** 		
+ 242:Src/dbgu.c    **** 	}	//while(counter)
+ 243:Src/dbgu.c    **** 	//footer
+ 244:Src/dbgu.c    **** 	xprintf("End of dump");
+ 517              		.loc 1 244 0
+ 518 0082 2048     		ldr	r0, .L64+20
+ 519 0084 FFF7FEFF 		bl	xprintf
+ 520              	.LVL55:
+ 521 0088 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 522              	.LVL56:
+ 523              	.L51:
+ 214:Src/dbgu.c    **** 		{
+ 524              		.loc 1 214 0 discriminator 2
+ 525 008a 0134     		adds	r4, r4, #1
+ 526              	.LVL57:
+ 527 008c A4B2     		uxth	r4, r4
+ 528              	.LVL58:
+ 529              	.L50:
+ 214:Src/dbgu.c    **** 		{
+ 530              		.loc 1 214 0 is_stmt 0 discriminator 1
+ 531 008e 0F2C     		cmp	r4, #15
+ 532 0090 0BD8     		bhi	.L62
+ 216:Src/dbgu.c    **** 			if(i%8==7) debug_chr(' ');
+ 533              		.loc 1 216 0 is_stmt 1
+ 534 0092 295D     		ldrb	r1, [r5, r4]	@ zero_extendqisi2
+ 535 0094 1948     		ldr	r0, .L64+12
+ 536 0096 FFF7FEFF 		bl	xprintf
+ 537              	.LVL59:
+ 217:Src/dbgu.c    **** 		}
+ 538              		.loc 1 217 0
+ 539 009a 04F00703 		and	r3, r4, #7
+ 540 009e 072B     		cmp	r3, #7
+ 541 00a0 F3D1     		bne	.L51
+ 217:Src/dbgu.c    **** 		}
+ 542              		.loc 1 217 0 is_stmt 0 discriminator 1
+ 543 00a2 2020     		movs	r0, #32
+ 544 00a4 FFF7FEFF 		bl	debug_chr
+ 545              	.LVL60:
+ 546 00a8 EFE7     		b	.L51
+ 547              	.L62:
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccFkfcng.s 			page 15
+
+
+ 548 00aa 0024     		movs	r4, #0
+ 549              	.LVL61:
+ 550 00ac 04E0     		b	.L53
+ 551              	.LVL62:
+ 552              	.L54:
+ 223:Src/dbgu.c    **** 		}
+ 553              		.loc 1 223 0 is_stmt 1 discriminator 3
+ 554 00ae 2020     		movs	r0, #32
+ 555 00b0 FFF7FEFF 		bl	debug_chr
+ 556              	.LVL63:
+ 221:Src/dbgu.c    **** 		{
+ 557              		.loc 1 221 0 discriminator 3
+ 558 00b4 0134     		adds	r4, r4, #1
+ 559              	.LVL64:
+ 560 00b6 A4B2     		uxth	r4, r4
+ 561              	.LVL65:
+ 562              	.L53:
+ 221:Src/dbgu.c    **** 		{
+ 563              		.loc 1 221 0 is_stmt 0 discriminator 1
+ 564 00b8 032C     		cmp	r4, #3
+ 565 00ba F8D9     		bls	.L54
+ 566 00bc 0024     		movs	r4, #0
+ 567              	.LVL66:
+ 568 00be 04E0     		b	.L55
+ 569              	.LVL67:
+ 570              	.L56:
+ 229:Src/dbgu.c    **** 		}
+ 571              		.loc 1 229 0 is_stmt 1 discriminator 3
+ 572 00c0 285D     		ldrb	r0, [r5, r4]	@ zero_extendqisi2
+ 573 00c2 FFF7FEFF 		bl	debug_ascii
+ 574              	.LVL68:
+ 227:Src/dbgu.c    **** 		{
+ 575              		.loc 1 227 0 discriminator 3
+ 576 00c6 0134     		adds	r4, r4, #1
+ 577              	.LVL69:
+ 578 00c8 A4B2     		uxth	r4, r4
+ 579              	.LVL70:
+ 580              	.L55:
+ 227:Src/dbgu.c    **** 		{
+ 581              		.loc 1 227 0 is_stmt 0 discriminator 1
+ 582 00ca 0F2C     		cmp	r4, #15
+ 583 00cc F8D9     		bls	.L56
+ 232:Src/dbgu.c    **** 		if(counter >= bytesInLine)
+ 584              		.loc 1 232 0 is_stmt 1
+ 585 00ce 1035     		adds	r5, r5, #16
+ 586              	.LVL71:
+ 235:Src/dbgu.c    **** 		}
+ 587              		.loc 1 235 0
+ 588 00d0 103E     		subs	r6, r6, #16
+ 589              	.LVL72:
+ 590 00d2 B6B2     		uxth	r6, r6
+ 591              	.LVL73:
+ 238:Src/dbgu.c    **** 			
+ 592              		.loc 1 238 0
+ 593 00d4 0A20     		movs	r0, #10
+ 594 00d6 FFF7FEFF 		bl	debug_chr
+ 595              	.LVL74:
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccFkfcng.s 			page 16
+
+
+ 240:Src/dbgu.c    **** 		
+ 596              		.loc 1 240 0
+ 597 00da 002E     		cmp	r6, #0
+ 598 00dc D1D0     		beq	.L49
+ 599              	.LVL75:
+ 600              	.L57:
+ 169:Src/dbgu.c    **** 		{
+ 601              		.loc 1 169 0
+ 602 00de 0F2E     		cmp	r6, #15
+ 603 00e0 97D9     		bls	.L63
+ 211:Src/dbgu.c    **** 		
+ 604              		.loc 1 211 0
+ 605 00e2 BA1B     		subs	r2, r7, r6
+ 606 00e4 2946     		mov	r1, r5
+ 607 00e6 0848     		ldr	r0, .L64+24
+ 608 00e8 FFF7FEFF 		bl	xprintf
+ 609              	.LVL76:
+ 214:Src/dbgu.c    **** 		{
+ 610              		.loc 1 214 0
+ 611 00ec 0024     		movs	r4, #0
+ 612 00ee CEE7     		b	.L50
+ 613              	.L65:
+ 614              		.align	2
+ 615              	.L64:
+ 616 00f0 00000000 		.word	.LC0
+ 617 00f4 14000000 		.word	.LC1
+ 618 00f8 28000000 		.word	.LC3
+ 619 00fc 20000000 		.word	.LC2
+ 620 0100 2C000000 		.word	.LC4
+ 621 0104 40000000 		.word	.LC6
+ 622 0108 30000000 		.word	.LC5
+ 623              		.cfi_endproc
+ 624              	.LFE145:
+ 626              		.global	pUart
+ 627              		.section	.bss.pUart,"aw",%nobits
+ 628              		.align	2
+ 629              		.set	.LANCHOR0,. + 0
+ 632              	pUart:
+ 633 0000 00000000 		.space	4
+ 634              		.section	.rodata.debug_dump.str1.4,"aMS",%progbits,1
+ 635              		.align	2
+ 636              	.LC0:
+ 637 0000 44656275 		.ascii	"Debug dump @ %08X\012\000"
+ 637      67206475 
+ 637      6D702040 
+ 637      20253038 
+ 637      580A00
+ 638 0013 00       		.space	1
+ 639              	.LC1:
+ 640 0014 25303858 		.ascii	"%08X %04X: \000"
+ 640      20253034 
+ 640      583A2000 
+ 641              	.LC2:
+ 642 0020 25303258 		.ascii	"%02X \000"
+ 642      2000
+ 643 0026 0000     		.space	2
+ 644              	.LC3:
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccFkfcng.s 			page 17
+
+
+ 645 0028 20202000 		.ascii	"   \000"
+ 646              	.LC4:
+ 647 002c 2000     		.ascii	" \000"
+ 648 002e 0000     		.space	2
+ 649              	.LC5:
+ 650 0030 25303858 		.ascii	"%08X %04X:   \000"
+ 650      20253034 
+ 650      583A2020 
+ 650      2000
+ 651 003e 0000     		.space	2
+ 652              	.LC6:
+ 653 0040 456E6420 		.ascii	"End of dump\000"
+ 653      6F662064 
+ 653      756D7000 
+ 654              		.text
+ 655              	.Letext0:
+ 656              		.file 2 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 657              		.file 3 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 658              		.file 4 "Drivers/CMSIS/Include/core_cm7.h"
+ 659              		.file 5 "Drivers/CMSIS/Device/ST/STM32F7xx/Include/system_stm32f7xx.h"
+ 660              		.file 6 "Drivers/CMSIS/Device/ST/STM32F7xx/Include/stm32f746xx.h"
+ 661              		.file 7 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\lock.h"
+ 662              		.file 8 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\_types.h"
+ 663              		.file 9 "c:\\gcc_toolchain\\6_2017-q1-update\\lib\\gcc\\arm-none-eabi\\6.3.1\\include\\stddef.h"
+ 664              		.file 10 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\reent.h"
+ 665              		.file 11 "Drivers/CMSIS/Device/ST/STM32F7xx/Include/stm32f7xx.h"
+ 666              		.file 12 "Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_def.h"
+ 667              		.file 13 "Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_dma.h"
+ 668              		.file 14 "Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h"
+ 669              		.file 15 "Inc/term_io.h"
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccFkfcng.s 			page 18
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 dbgu.c
+C:\Users\Student\AppData\Local\Temp\ccFkfcng.s:18     .text.debug_shdn:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccFkfcng.s:25     .text.debug_shdn:00000000 debug_shdn
+C:\Users\Student\AppData\Local\Temp\ccFkfcng.s:39     .text.debug_init:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccFkfcng.s:46     .text.debug_init:00000000 debug_init
+C:\Users\Student\AppData\Local\Temp\ccFkfcng.s:61     .text.debug_init:00000008 $d
+C:\Users\Student\AppData\Local\Temp\ccFkfcng.s:66     .text.debug_chr:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccFkfcng.s:73     .text.debug_chr:00000000 debug_chr
+C:\Users\Student\AppData\Local\Temp\ccFkfcng.s:95     .text.debug_chr:00000014 $d
+C:\Users\Student\AppData\Local\Temp\ccFkfcng.s:100    .text.debug_inkey:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccFkfcng.s:107    .text.debug_inkey:00000000 debug_inkey
+C:\Users\Student\AppData\Local\Temp\ccFkfcng.s:141    .text.debug_inkey:00000020 $d
+C:\Users\Student\AppData\Local\Temp\ccFkfcng.s:146    .text.debug_waitkey:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccFkfcng.s:153    .text.debug_waitkey:00000000 debug_waitkey
+C:\Users\Student\AppData\Local\Temp\ccFkfcng.s:189    .text.debug_waitkey:00000024 $d
+C:\Users\Student\AppData\Local\Temp\ccFkfcng.s:194    .text.debug_txt:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccFkfcng.s:201    .text.debug_txt:00000000 debug_txt
+C:\Users\Student\AppData\Local\Temp\ccFkfcng.s:234    .text.debug_msg:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccFkfcng.s:241    .text.debug_msg:00000000 debug_msg
+C:\Users\Student\AppData\Local\Temp\ccFkfcng.s:269    .text.debug_ascii:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccFkfcng.s:276    .text.debug_ascii:00000000 debug_ascii
+C:\Users\Student\AppData\Local\Temp\ccFkfcng.s:293    .text.debug_ascii:0000000a $d
+C:\Users\Student\AppData\Local\Temp\ccFkfcng.s:307    .text.debug_ascii:00000018 $t
+C:\Users\Student\AppData\Local\Temp\ccFkfcng.s:335    .text.debug_txt_limit:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccFkfcng.s:342    .text.debug_txt_limit:00000000 debug_txt_limit
+C:\Users\Student\AppData\Local\Temp\ccFkfcng.s:382    .text.debug_dump:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccFkfcng.s:389    .text.debug_dump:00000000 debug_dump
+C:\Users\Student\AppData\Local\Temp\ccFkfcng.s:616    .text.debug_dump:000000f0 $d
+C:\Users\Student\AppData\Local\Temp\ccFkfcng.s:632    .bss.pUart:00000000 pUart
+C:\Users\Student\AppData\Local\Temp\ccFkfcng.s:628    .bss.pUart:00000000 $d
+C:\Users\Student\AppData\Local\Temp\ccFkfcng.s:635    .rodata.debug_dump.str1.4:00000000 $d
+                     .debug_frame:00000010 $d
+
+UNDEFINED SYMBOLS
+HAL_UART_Receive
+xprintf

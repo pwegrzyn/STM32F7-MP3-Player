@@ -1,0 +1,3200 @@
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"stm32746g_discovery.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.I2Cx_MspInit,"ax",%progbits
+  18              		.align	1
+  19              		.syntax unified
+  20              		.thumb
+  21              		.thumb_func
+  22              		.fpu fpv5-sp-d16
+  24              	I2Cx_MspInit:
+  25              	.LFB147:
+  26              		.file 1 "Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c"
+   1:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /**
+   2:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   ******************************************************************************
+   3:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @file    stm32746g_discovery.c
+   4:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @author  MCD Application Team
+   5:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @brief   This file provides a set of firmware functions to manage LEDs, 
+   6:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   *          push-buttons and COM ports available on STM32746G-Discovery
+   7:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   *          board(MB1191) from STMicroelectronics.
+   8:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   ******************************************************************************
+   9:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @attention
+  10:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   *
+  11:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * <h2><center>&copy; COPYRIGHT(c) 2016 STMicroelectronics</center></h2>
+  12:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   *
+  13:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * Redistribution and use in source and binary forms, with or without modification,
+  14:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * are permitted provided that the following conditions are met:
+  15:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   *   1. Redistributions of source code must retain the above copyright notice,
+  16:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   *      this list of conditions and the following disclaimer.
+  17:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   *   2. Redistributions in binary form must reproduce the above copyright notice,
+  18:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   *      this list of conditions and the following disclaimer in the documentation
+  19:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   *      and/or other materials provided with the distribution.
+  20:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   *   3. Neither the name of STMicroelectronics nor the names of its contributors
+  21:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   *      may be used to endorse or promote products derived from this software
+  22:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   *      without specific prior written permission.
+  23:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   *
+  24:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  25:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  26:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+  27:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+  28:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+  29:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+  30:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+  31:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+  32:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s 			page 2
+
+
+  33:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  34:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   *
+  35:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   ******************************************************************************
+  36:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   */ 
+  37:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+  38:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /* Dependencies
+  39:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** - stm32f7xx_hal_cortex.c
+  40:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** - stm32f7xx_hal_gpio.c
+  41:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** - stm32f7xx_hal_uart.c
+  42:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** - stm32f7xx_hal_i2c.c
+  43:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** EndDependencies */
+  44:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+  45:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /* Includes ------------------------------------------------------------------*/
+  46:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** #include "stm32746g_discovery.h"
+  47:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+  48:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /** @addtogroup BSP
+  49:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @{
+  50:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   */ 
+  51:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+  52:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /** @addtogroup STM32746G_DISCOVERY
+  53:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @{
+  54:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   */
+  55:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+  56:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /** @defgroup STM32746G_DISCOVERY_LOW_LEVEL STM32746G_DISCOVERY_LOW_LEVEL
+  57:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @{
+  58:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   */
+  59:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+  60:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /** @defgroup STM32746G_DISCOVERY_LOW_LEVEL_Private_TypesDefinitions STM32746G_DISCOVERY_LOW_LEVEL 
+  61:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @{
+  62:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   */
+  63:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /**
+  64:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @}
+  65:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   */
+  66:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+  67:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /** @defgroup STM32746G_DISCOVERY_LOW_LEVEL_Private_Defines STM32746G_DISCOVERY_LOW_LEVEL Private D
+  68:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @{
+  69:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   */
+  70:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /**
+  71:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****  * @brief STM32746G DISCOVERY BSP Driver version number V2.0.2
+  72:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****    */
+  73:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** #define __STM32746G_DISCO_BSP_VERSION_MAIN   (0x02) /*!< [31:24] main version */
+  74:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** #define __STM32746G_DISCO_BSP_VERSION_SUB1   (0x00) /*!< [23:16] sub1 version */
+  75:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** #define __STM32746G_DISCO_BSP_VERSION_SUB2   (0x02) /*!< [15:8]  sub2 version */
+  76:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** #define __STM32746G_DISCO_BSP_VERSION_RC     (0x00) /*!< [7:0]  release candidate */
+  77:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** #define __STM32746G_DISCO_BSP_VERSION         ((__STM32746G_DISCO_BSP_VERSION_MAIN << 24)\
+  78:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****                                              |(__STM32746G_DISCO_BSP_VERSION_SUB1 << 16)\
+  79:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****                                              |(__STM32746G_DISCO_BSP_VERSION_SUB2 << 8 )\
+  80:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****                                              |(__STM32746G_DISCO_BSP_VERSION_RC))
+  81:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /**
+  82:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @}
+  83:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   */
+  84:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+  85:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /** @defgroup STM32746G_DISCOVERY_LOW_LEVEL_Private_Macros STM32746G_DISCOVERY_LOW_LEVEL Private Ma
+  86:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @{
+  87:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   */
+  88:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /**
+  89:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @}
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s 			page 3
+
+
+  90:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   */
+  91:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+  92:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /** @defgroup STM32746G_DISCOVERY_LOW_LEVEL_Private_Variables STM32746G_DISCOVERY_LOW_LEVEL Private
+  93:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @{
+  94:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   */
+  95:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+  96:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** const uint32_t GPIO_PIN[LEDn] = {LED1_PIN};
+  97:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+  98:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** GPIO_TypeDef* BUTTON_PORT[BUTTONn] = {WAKEUP_BUTTON_GPIO_PORT,
+  99:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****                                       TAMPER_BUTTON_GPIO_PORT,
+ 100:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****                                       KEY_BUTTON_GPIO_PORT};
+ 101:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 102:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** const uint16_t BUTTON_PIN[BUTTONn] = {WAKEUP_BUTTON_PIN,
+ 103:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****                                       TAMPER_BUTTON_PIN,
+ 104:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****                                       KEY_BUTTON_PIN};
+ 105:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 106:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** const uint16_t BUTTON_IRQn[BUTTONn] = {WAKEUP_BUTTON_EXTI_IRQn,
+ 107:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****                                        TAMPER_BUTTON_EXTI_IRQn,
+ 108:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****                                        KEY_BUTTON_EXTI_IRQn};
+ 109:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 110:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** USART_TypeDef* COM_USART[COMn] = {DISCOVERY_COM1};
+ 111:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 112:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** GPIO_TypeDef* COM_TX_PORT[COMn] = {DISCOVERY_COM1_TX_GPIO_PORT};
+ 113:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 114:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** GPIO_TypeDef* COM_RX_PORT[COMn] = {DISCOVERY_COM1_RX_GPIO_PORT};
+ 115:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 116:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** const uint16_t COM_TX_PIN[COMn] = {DISCOVERY_COM1_TX_PIN};
+ 117:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 118:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** const uint16_t COM_RX_PIN[COMn] = {DISCOVERY_COM1_RX_PIN};
+ 119:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 120:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** const uint16_t COM_TX_AF[COMn] = {DISCOVERY_COM1_TX_AF};
+ 121:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 122:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** const uint16_t COM_RX_AF[COMn] = {DISCOVERY_COM1_RX_AF};
+ 123:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 124:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** static I2C_HandleTypeDef hI2cAudioHandler = {0};
+ 125:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** static I2C_HandleTypeDef hI2cExtHandler = {0};
+ 126:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 127:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /**
+ 128:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @}
+ 129:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   */
+ 130:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 131:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /** @defgroup STM32746G_DISCOVERY_LOW_LEVEL_Private_FunctionPrototypes STM32746G_DISCOVERY_LOW_LEVE
+ 132:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @{
+ 133:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   */
+ 134:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** static void     I2Cx_MspInit(I2C_HandleTypeDef *i2c_handler);
+ 135:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** static void     I2Cx_Init(I2C_HandleTypeDef *i2c_handler);
+ 136:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 137:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** static HAL_StatusTypeDef I2Cx_ReadMultiple(I2C_HandleTypeDef *i2c_handler, uint8_t Addr, uint16_t R
+ 138:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** static HAL_StatusTypeDef I2Cx_WriteMultiple(I2C_HandleTypeDef *i2c_handler, uint8_t Addr, uint16_t 
+ 139:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** static HAL_StatusTypeDef I2Cx_IsDeviceReady(I2C_HandleTypeDef *i2c_handler, uint16_t DevAddress, ui
+ 140:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** static void              I2Cx_Error(I2C_HandleTypeDef *i2c_handler, uint8_t Addr);
+ 141:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 142:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /* AUDIO IO functions */
+ 143:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** void            AUDIO_IO_Init(void);
+ 144:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** void            AUDIO_IO_DeInit(void);
+ 145:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** void            AUDIO_IO_Write(uint8_t Addr, uint16_t Reg, uint16_t Value);
+ 146:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** uint16_t        AUDIO_IO_Read(uint8_t Addr, uint16_t Reg);
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s 			page 4
+
+
+ 147:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** void            AUDIO_IO_Delay(uint32_t Delay);
+ 148:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 149:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /* TOUCHSCREEN IO functions */
+ 150:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** void            TS_IO_Init(void);
+ 151:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** void            TS_IO_Write(uint8_t Addr, uint8_t Reg, uint8_t Value);
+ 152:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** uint8_t         TS_IO_Read(uint8_t Addr, uint8_t Reg);
+ 153:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** void            TS_IO_Delay(uint32_t Delay);
+ 154:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 155:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /* CAMERA IO functions */
+ 156:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** void            CAMERA_IO_Init(void);
+ 157:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** void            CAMERA_Delay(uint32_t Delay);
+ 158:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** void            CAMERA_IO_Write(uint8_t Addr, uint8_t Reg, uint8_t Value);
+ 159:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** uint8_t         CAMERA_IO_Read(uint8_t Addr, uint8_t Reg);
+ 160:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 161:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /* I2C EEPROM IO function */
+ 162:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** void                EEPROM_IO_Init(void);
+ 163:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** HAL_StatusTypeDef   EEPROM_IO_WriteData(uint16_t DevAddress, uint16_t MemAddress, uint8_t* pBuffer,
+ 164:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** HAL_StatusTypeDef   EEPROM_IO_ReadData(uint16_t DevAddress, uint16_t MemAddress, uint8_t* pBuffer, 
+ 165:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** HAL_StatusTypeDef   EEPROM_IO_IsDeviceReady(uint16_t DevAddress, uint32_t Trials);
+ 166:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /**
+ 167:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @}
+ 168:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   */
+ 169:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 170:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /** @defgroup STM32746G_DISCOVERY_LOW_LEVEL_Exported_Functions STM32746G_DISCOVERY_LOW_LEVELSTM3274
+ 171:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @{
+ 172:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   */ 
+ 173:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 174:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   /**
+ 175:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @brief  This method returns the STM32746G DISCOVERY BSP Driver revision
+ 176:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @retval version: 0xXYZR (8bits for each decimal, R for RC)
+ 177:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   */
+ 178:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** uint32_t BSP_GetVersion(void)
+ 179:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** {
+ 180:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   return __STM32746G_DISCO_BSP_VERSION;
+ 181:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** }
+ 182:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 183:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /**
+ 184:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @brief  Configures LED on GPIO.
+ 185:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @param  Led: LED to be configured. 
+ 186:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   *          This parameter can be one of the following values:
+ 187:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   *            @arg  LED1
+ 188:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @retval None
+ 189:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   */
+ 190:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** void BSP_LED_Init(Led_TypeDef Led)
+ 191:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** {
+ 192:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   GPIO_InitTypeDef  gpio_init_structure;
+ 193:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   GPIO_TypeDef*     gpio_led;
+ 194:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 195:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   if (Led == LED1)
+ 196:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   {
+ 197:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     gpio_led = LED1_GPIO_PORT;
+ 198:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     /* Enable the GPIO_LED clock */
+ 199:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     LED1_GPIO_CLK_ENABLE();
+ 200:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 201:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     /* Configure the GPIO_LED pin */
+ 202:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     gpio_init_structure.Pin = GPIO_PIN[Led];
+ 203:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     gpio_init_structure.Mode = GPIO_MODE_OUTPUT_PP;
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s 			page 5
+
+
+ 204:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     gpio_init_structure.Pull = GPIO_PULLUP;
+ 205:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     gpio_init_structure.Speed = GPIO_SPEED_HIGH;
+ 206:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   
+ 207:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     HAL_GPIO_Init(gpio_led, &gpio_init_structure);
+ 208:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     
+ 209:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     /* By default, turn off LED */
+ 210:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     HAL_GPIO_WritePin(gpio_led, GPIO_PIN[Led], GPIO_PIN_RESET);
+ 211:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   }
+ 212:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** }
+ 213:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 214:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /**
+ 215:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @brief  DeInit LEDs.
+ 216:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @param  Led: LED to be configured. 
+ 217:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   *          This parameter can be one of the following values:
+ 218:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   *            @arg  LED1
+ 219:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @note Led DeInit does not disable the GPIO clock
+ 220:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @retval None
+ 221:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   */
+ 222:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** void BSP_LED_DeInit(Led_TypeDef Led)
+ 223:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** {
+ 224:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   GPIO_InitTypeDef  gpio_init_structure;
+ 225:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   GPIO_TypeDef*     gpio_led;
+ 226:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 227:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   if (Led == LED1)
+ 228:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   {
+ 229:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     gpio_led = LED1_GPIO_PORT;
+ 230:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     /* Turn off LED */
+ 231:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     HAL_GPIO_WritePin(gpio_led, GPIO_PIN[Led], GPIO_PIN_RESET);
+ 232:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     /* Configure the GPIO_LED pin */
+ 233:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     gpio_init_structure.Pin = GPIO_PIN[Led];
+ 234:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     HAL_GPIO_DeInit(gpio_led, gpio_init_structure.Pin);
+ 235:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   }
+ 236:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** }
+ 237:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 238:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /**
+ 239:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @brief  Turns selected LED On.
+ 240:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @param  Led: LED to be set on 
+ 241:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   *          This parameter can be one of the following values:
+ 242:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   *            @arg  LED1
+ 243:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @retval None
+ 244:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   */
+ 245:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** void BSP_LED_On(Led_TypeDef Led)
+ 246:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** {
+ 247:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   GPIO_TypeDef*     gpio_led;
+ 248:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 249:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   if (Led == LED1)	/* Switch On LED connected to GPIO */
+ 250:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   {
+ 251:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     gpio_led = LED1_GPIO_PORT;
+ 252:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     HAL_GPIO_WritePin(gpio_led, GPIO_PIN[Led], GPIO_PIN_SET);
+ 253:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   }
+ 254:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** }
+ 255:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 256:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /**
+ 257:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @brief  Turns selected LED Off. 
+ 258:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @param  Led: LED to be set off
+ 259:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   *          This parameter can be one of the following values:
+ 260:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   *            @arg  LED1
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s 			page 6
+
+
+ 261:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @retval None
+ 262:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   */
+ 263:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** void BSP_LED_Off(Led_TypeDef Led)
+ 264:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** {
+ 265:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   GPIO_TypeDef*     gpio_led;
+ 266:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 267:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   if (Led == LED1) /* Switch Off LED connected to GPIO */
+ 268:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   {
+ 269:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     gpio_led = LED1_GPIO_PORT;
+ 270:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     HAL_GPIO_WritePin(gpio_led, GPIO_PIN[Led], GPIO_PIN_RESET);
+ 271:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   }
+ 272:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** }
+ 273:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 274:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /**
+ 275:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @brief  Toggles the selected LED.
+ 276:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @param  Led: LED to be toggled
+ 277:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   *          This parameter can be one of the following values:
+ 278:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   *            @arg  LED1
+ 279:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @retval None
+ 280:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   */
+ 281:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** void BSP_LED_Toggle(Led_TypeDef Led)
+ 282:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** {
+ 283:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   GPIO_TypeDef*     gpio_led;
+ 284:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 285:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   if (Led == LED1)	/* Toggle LED connected to GPIO */
+ 286:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   {
+ 287:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     gpio_led = LED1_GPIO_PORT;
+ 288:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     HAL_GPIO_TogglePin(gpio_led, GPIO_PIN[Led]);
+ 289:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   }
+ 290:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** }
+ 291:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 292:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /**
+ 293:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @brief  Configures button GPIO and EXTI Line.
+ 294:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @param  Button: Button to be configured
+ 295:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   *          This parameter can be one of the following values:
+ 296:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   *            @arg  BUTTON_WAKEUP: Wakeup Push Button 
+ 297:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   *            @arg  BUTTON_TAMPER: Tamper Push Button  
+ 298:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   *            @arg  BUTTON_KEY: Key Push Button
+ 299:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @param  ButtonMode: Button mode
+ 300:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   *          This parameter can be one of the following values:
+ 301:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   *            @arg  BUTTON_MODE_GPIO: Button will be used as simple IO
+ 302:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   *            @arg  BUTTON_MODE_EXTI: Button will be connected to EXTI line 
+ 303:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   *                                    with interrupt generation capability
+ 304:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @note On STM32746G-Discovery board, the three buttons (Wakeup, Tamper and key buttons)
+ 305:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   *       are mapped on the same push button named "User"
+ 306:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   *       on the board serigraphy.
+ 307:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @retval None
+ 308:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   */
+ 309:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** void BSP_PB_Init(Button_TypeDef Button, ButtonMode_TypeDef ButtonMode)
+ 310:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** {
+ 311:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   GPIO_InitTypeDef gpio_init_structure;
+ 312:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   
+ 313:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   /* Enable the BUTTON clock */
+ 314:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   BUTTONx_GPIO_CLK_ENABLE(Button);
+ 315:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   
+ 316:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   if(ButtonMode == BUTTON_MODE_GPIO)
+ 317:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   {
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s 			page 7
+
+
+ 318:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     /* Configure Button pin as input */
+ 319:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     gpio_init_structure.Pin = BUTTON_PIN[Button];
+ 320:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     gpio_init_structure.Mode = GPIO_MODE_INPUT;
+ 321:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     gpio_init_structure.Pull = GPIO_NOPULL;
+ 322:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     gpio_init_structure.Speed = GPIO_SPEED_FAST;
+ 323:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     HAL_GPIO_Init(BUTTON_PORT[Button], &gpio_init_structure);
+ 324:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   }
+ 325:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   
+ 326:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   if(ButtonMode == BUTTON_MODE_EXTI)
+ 327:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   {
+ 328:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     /* Configure Button pin as input with External interrupt */
+ 329:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     gpio_init_structure.Pin = BUTTON_PIN[Button];
+ 330:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     gpio_init_structure.Pull = GPIO_NOPULL;
+ 331:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     gpio_init_structure.Speed = GPIO_SPEED_FAST;
+ 332:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     
+ 333:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     if(Button != BUTTON_WAKEUP)
+ 334:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     {
+ 335:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****       gpio_init_structure.Mode = GPIO_MODE_IT_FALLING; 
+ 336:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     }
+ 337:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     else
+ 338:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     {
+ 339:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****       gpio_init_structure.Mode = GPIO_MODE_IT_RISING;
+ 340:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     }
+ 341:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     
+ 342:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     HAL_GPIO_Init(BUTTON_PORT[Button], &gpio_init_structure);
+ 343:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     
+ 344:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     /* Enable and set Button EXTI Interrupt to the lowest priority */
+ 345:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     HAL_NVIC_SetPriority((IRQn_Type)(BUTTON_IRQn[Button]), 0x0F, 0x00);
+ 346:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     HAL_NVIC_EnableIRQ((IRQn_Type)(BUTTON_IRQn[Button]));
+ 347:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   }
+ 348:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** }
+ 349:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 350:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /**
+ 351:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @brief  Push Button DeInit.
+ 352:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @param  Button: Button to be configured
+ 353:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   *          This parameter can be one of the following values:
+ 354:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   *            @arg  BUTTON_WAKEUP: Wakeup Push Button 
+ 355:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   *            @arg  BUTTON_TAMPER: Tamper Push Button  
+ 356:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   *            @arg  BUTTON_KEY: Key Push Button
+ 357:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @note On STM32746G-Discovery board, the three buttons (Wakeup, Tamper and key buttons) 
+ 358:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   *       are mapped on the same push button named "User"
+ 359:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   *       on the board serigraphy.
+ 360:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @note PB DeInit does not disable the GPIO clock
+ 361:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @retval None
+ 362:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   */
+ 363:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** void BSP_PB_DeInit(Button_TypeDef Button)
+ 364:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** {
+ 365:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     GPIO_InitTypeDef gpio_init_structure;
+ 366:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 367:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     gpio_init_structure.Pin = BUTTON_PIN[Button];
+ 368:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     HAL_NVIC_DisableIRQ((IRQn_Type)(BUTTON_IRQn[Button]));
+ 369:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     HAL_GPIO_DeInit(BUTTON_PORT[Button], gpio_init_structure.Pin);
+ 370:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** }
+ 371:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 372:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 373:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /**
+ 374:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @brief  Returns the selected button state.
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s 			page 8
+
+
+ 375:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @param  Button: Button to be checked
+ 376:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   *          This parameter can be one of the following values:
+ 377:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   *            @arg  BUTTON_WAKEUP: Wakeup Push Button 
+ 378:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   *            @arg  BUTTON_TAMPER: Tamper Push Button 
+ 379:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   *            @arg  BUTTON_KEY: Key Push Button
+ 380:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @note On STM32746G-Discovery board, the three buttons (Wakeup, Tamper and key buttons) 
+ 381:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   *       are mapped on the same push button named "User"
+ 382:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   *       on the board serigraphy.
+ 383:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @retval The Button GPIO pin value
+ 384:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   */
+ 385:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** uint32_t BSP_PB_GetState(Button_TypeDef Button)
+ 386:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** {
+ 387:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   return HAL_GPIO_ReadPin(BUTTON_PORT[Button], BUTTON_PIN[Button]);
+ 388:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** }
+ 389:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 390:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /**
+ 391:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @brief  Configures COM port.
+ 392:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @param  COM: COM port to be configured.
+ 393:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   *          This parameter can be one of the following values:
+ 394:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   *            @arg  COM1 
+ 395:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   *            @arg  COM2 
+ 396:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @param  huart: Pointer to a UART_HandleTypeDef structure that contains the
+ 397:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   *                configuration information for the specified USART peripheral.
+ 398:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @retval None
+ 399:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   */
+ 400:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** void BSP_COM_Init(COM_TypeDef COM, UART_HandleTypeDef *huart)
+ 401:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** {
+ 402:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   GPIO_InitTypeDef gpio_init_structure;
+ 403:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 404:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   /* Enable GPIO clock */
+ 405:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   DISCOVERY_COMx_TX_GPIO_CLK_ENABLE(COM);
+ 406:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   DISCOVERY_COMx_RX_GPIO_CLK_ENABLE(COM);
+ 407:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 408:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   /* Enable USART clock */
+ 409:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   DISCOVERY_COMx_CLK_ENABLE(COM);
+ 410:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 411:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   /* Configure USART Tx as alternate function */
+ 412:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   gpio_init_structure.Pin = COM_TX_PIN[COM];
+ 413:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   gpio_init_structure.Mode = GPIO_MODE_AF_PP;
+ 414:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   gpio_init_structure.Speed = GPIO_SPEED_FAST;
+ 415:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   gpio_init_structure.Pull = GPIO_PULLUP;
+ 416:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   gpio_init_structure.Alternate = COM_TX_AF[COM];
+ 417:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   HAL_GPIO_Init(COM_TX_PORT[COM], &gpio_init_structure);
+ 418:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 419:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   /* Configure USART Rx as alternate function */
+ 420:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   gpio_init_structure.Pin = COM_RX_PIN[COM];
+ 421:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   gpio_init_structure.Mode = GPIO_MODE_AF_PP;
+ 422:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   gpio_init_structure.Alternate = COM_RX_AF[COM];
+ 423:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   HAL_GPIO_Init(COM_RX_PORT[COM], &gpio_init_structure);
+ 424:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 425:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   /* USART configuration */
+ 426:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   huart->Instance = COM_USART[COM];
+ 427:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   HAL_UART_Init(huart);
+ 428:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** }
+ 429:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 430:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /**
+ 431:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @brief  DeInit COM port.
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s 			page 9
+
+
+ 432:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @param  COM: COM port to be configured.
+ 433:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   *          This parameter can be one of the following values:
+ 434:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   *            @arg  COM1 
+ 435:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   *            @arg  COM2 
+ 436:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @param  huart: Pointer to a UART_HandleTypeDef structure that contains the
+ 437:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   *                configuration information for the specified USART peripheral.
+ 438:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @retval None
+ 439:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   */
+ 440:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** void BSP_COM_DeInit(COM_TypeDef COM, UART_HandleTypeDef *huart)
+ 441:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** {
+ 442:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   /* USART configuration */
+ 443:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   huart->Instance = COM_USART[COM];
+ 444:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   HAL_UART_DeInit(huart);
+ 445:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 446:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   /* Enable USART clock */
+ 447:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   DISCOVERY_COMx_CLK_DISABLE(COM);
+ 448:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 449:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   /* DeInit GPIO pins can be done in the application 
+ 450:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****      (by surcharging this __weak function) */
+ 451:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 452:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   /* GPIO pins clock, DMA clock can be shut down in the application 
+ 453:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****      by surcharging this __weak function */
+ 454:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** }
+ 455:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 456:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /*******************************************************************************
+ 457:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****                             BUS OPERATIONS
+ 458:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** *******************************************************************************/
+ 459:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 460:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /******************************* I2C Routines *********************************/
+ 461:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /**
+ 462:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @brief  Initializes I2C MSP.
+ 463:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @param  i2c_handler : I2C handler
+ 464:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @retval None
+ 465:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   */
+ 466:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** static void I2Cx_MspInit(I2C_HandleTypeDef *i2c_handler)
+ 467:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** {
+  27              		.loc 1 467 0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 40
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31              	.LVL0:
+  32 0000 70B5     		push	{r4, r5, r6, lr}
+  33              	.LCFI0:
+  34              		.cfi_def_cfa_offset 16
+  35              		.cfi_offset 4, -16
+  36              		.cfi_offset 5, -12
+  37              		.cfi_offset 6, -8
+  38              		.cfi_offset 14, -4
+  39 0002 8AB0     		sub	sp, sp, #40
+  40              	.LCFI1:
+  41              		.cfi_def_cfa_offset 56
+ 468:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   GPIO_InitTypeDef  gpio_init_structure;
+ 469:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   
+ 470:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   if (i2c_handler == (I2C_HandleTypeDef*)(&hI2cAudioHandler))
+  42              		.loc 1 470 0
+  43 0004 444B     		ldr	r3, .L6
+  44 0006 8342     		cmp	r3, r0
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s 			page 10
+
+
+  45 0008 43D0     		beq	.L5
+  46              	.LBB2:
+ 471:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   {
+ 472:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     /* AUDIO and LCD I2C MSP init */
+ 473:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 474:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     /*** Configure the GPIOs ***/
+ 475:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     /* Enable GPIO clock */
+ 476:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     DISCOVERY_AUDIO_I2Cx_SCL_SDA_GPIO_CLK_ENABLE();
+ 477:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 478:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     /* Configure I2C Tx as alternate function */
+ 479:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     gpio_init_structure.Pin = DISCOVERY_AUDIO_I2Cx_SCL_PIN;
+ 480:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     gpio_init_structure.Mode = GPIO_MODE_AF_OD;
+ 481:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     gpio_init_structure.Pull = GPIO_NOPULL;
+ 482:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     gpio_init_structure.Speed = GPIO_SPEED_FAST;
+ 483:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     gpio_init_structure.Alternate = DISCOVERY_AUDIO_I2Cx_SCL_SDA_AF;
+ 484:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     HAL_GPIO_Init(DISCOVERY_AUDIO_I2Cx_SCL_SDA_GPIO_PORT, &gpio_init_structure);
+ 485:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 486:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     /* Configure I2C Rx as alternate function */
+ 487:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     gpio_init_structure.Pin = DISCOVERY_AUDIO_I2Cx_SDA_PIN;
+ 488:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     HAL_GPIO_Init(DISCOVERY_AUDIO_I2Cx_SCL_SDA_GPIO_PORT, &gpio_init_structure);
+ 489:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 490:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     /*** Configure the I2C peripheral ***/
+ 491:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     /* Enable I2C clock */
+ 492:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     DISCOVERY_AUDIO_I2Cx_CLK_ENABLE();
+ 493:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 494:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     /* Force the I2C peripheral clock reset */
+ 495:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     DISCOVERY_AUDIO_I2Cx_FORCE_RESET();
+ 496:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 497:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     /* Release the I2C peripheral clock reset */
+ 498:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     DISCOVERY_AUDIO_I2Cx_RELEASE_RESET();
+ 499:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 500:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     /* Enable and set I2Cx Interrupt to a lower priority */
+ 501:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     HAL_NVIC_SetPriority(DISCOVERY_AUDIO_I2Cx_EV_IRQn, 0x0F, 0);
+ 502:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     HAL_NVIC_EnableIRQ(DISCOVERY_AUDIO_I2Cx_EV_IRQn);
+ 503:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 504:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     /* Enable and set I2Cx Interrupt to a lower priority */
+ 505:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     HAL_NVIC_SetPriority(DISCOVERY_AUDIO_I2Cx_ER_IRQn, 0x0F, 0);
+ 506:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     HAL_NVIC_EnableIRQ(DISCOVERY_AUDIO_I2Cx_ER_IRQn);
+ 507:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   }
+ 508:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   else
+ 509:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   {
+ 510:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     /* External, camera and Arduino connector I2C MSP init */
+ 511:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 512:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     /*** Configure the GPIOs ***/
+ 513:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     /* Enable GPIO clock */
+ 514:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     DISCOVERY_EXT_I2Cx_SCL_SDA_GPIO_CLK_ENABLE();
+  47              		.loc 1 514 0
+  48 000a 444C     		ldr	r4, .L6+4
+  49 000c 236B     		ldr	r3, [r4, #48]
+  50 000e 43F00203 		orr	r3, r3, #2
+  51 0012 2363     		str	r3, [r4, #48]
+  52 0014 236B     		ldr	r3, [r4, #48]
+  53 0016 03F00203 		and	r3, r3, #2
+  54 001a 0393     		str	r3, [sp, #12]
+  55 001c 039B     		ldr	r3, [sp, #12]
+  56              	.LBE2:
+ 515:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s 			page 11
+
+
+ 516:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     /* Configure I2C Tx as alternate function */
+ 517:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     gpio_init_structure.Pin = DISCOVERY_EXT_I2Cx_SCL_PIN;
+  57              		.loc 1 517 0
+  58 001e 4FF48073 		mov	r3, #256
+  59 0022 0593     		str	r3, [sp, #20]
+ 518:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     gpio_init_structure.Mode = GPIO_MODE_AF_OD;
+  60              		.loc 1 518 0
+  61 0024 1223     		movs	r3, #18
+  62 0026 0693     		str	r3, [sp, #24]
+ 519:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     gpio_init_structure.Pull = GPIO_NOPULL;
+  63              		.loc 1 519 0
+  64 0028 0025     		movs	r5, #0
+  65 002a 0795     		str	r5, [sp, #28]
+ 520:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     gpio_init_structure.Speed = GPIO_SPEED_FAST;
+  66              		.loc 1 520 0
+  67 002c 0223     		movs	r3, #2
+  68 002e 0893     		str	r3, [sp, #32]
+ 521:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     gpio_init_structure.Alternate = DISCOVERY_EXT_I2Cx_SCL_SDA_AF;
+  69              		.loc 1 521 0
+  70 0030 0423     		movs	r3, #4
+  71 0032 0993     		str	r3, [sp, #36]
+ 522:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     HAL_GPIO_Init(DISCOVERY_EXT_I2Cx_SCL_SDA_GPIO_PORT, &gpio_init_structure);
+  72              		.loc 1 522 0
+  73 0034 3A4E     		ldr	r6, .L6+8
+  74 0036 05A9     		add	r1, sp, #20
+  75 0038 3046     		mov	r0, r6
+  76              	.LVL1:
+  77 003a FFF7FEFF 		bl	HAL_GPIO_Init
+  78              	.LVL2:
+ 523:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 524:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     /* Configure I2C Rx as alternate function */
+ 525:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     gpio_init_structure.Pin = DISCOVERY_EXT_I2Cx_SDA_PIN;
+  79              		.loc 1 525 0
+  80 003e 4FF40073 		mov	r3, #512
+  81 0042 0593     		str	r3, [sp, #20]
+ 526:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     HAL_GPIO_Init(DISCOVERY_EXT_I2Cx_SCL_SDA_GPIO_PORT, &gpio_init_structure);
+  82              		.loc 1 526 0
+  83 0044 05A9     		add	r1, sp, #20
+  84 0046 3046     		mov	r0, r6
+  85 0048 FFF7FEFF 		bl	HAL_GPIO_Init
+  86              	.LVL3:
+  87              	.LBB3:
+ 527:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 528:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     /*** Configure the I2C peripheral ***/
+ 529:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     /* Enable I2C clock */
+ 530:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     DISCOVERY_EXT_I2Cx_CLK_ENABLE();
+  88              		.loc 1 530 0
+  89 004c 236C     		ldr	r3, [r4, #64]
+  90 004e 43F40013 		orr	r3, r3, #2097152
+  91 0052 2364     		str	r3, [r4, #64]
+  92 0054 236C     		ldr	r3, [r4, #64]
+  93 0056 03F40013 		and	r3, r3, #2097152
+  94 005a 0493     		str	r3, [sp, #16]
+  95 005c 049B     		ldr	r3, [sp, #16]
+  96              	.LBE3:
+ 531:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 532:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     /* Force the I2C peripheral clock reset */
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s 			page 12
+
+
+ 533:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     DISCOVERY_EXT_I2Cx_FORCE_RESET();
+  97              		.loc 1 533 0
+  98 005e 236A     		ldr	r3, [r4, #32]
+  99 0060 43F40013 		orr	r3, r3, #2097152
+ 100 0064 2362     		str	r3, [r4, #32]
+ 534:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 535:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     /* Release the I2C peripheral clock reset */
+ 536:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     DISCOVERY_EXT_I2Cx_RELEASE_RESET();
+ 101              		.loc 1 536 0
+ 102 0066 236A     		ldr	r3, [r4, #32]
+ 103 0068 23F40013 		bic	r3, r3, #2097152
+ 104 006c 2362     		str	r3, [r4, #32]
+ 537:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 538:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     /* Enable and set I2Cx Interrupt to a lower priority */
+ 539:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     HAL_NVIC_SetPriority(DISCOVERY_EXT_I2Cx_EV_IRQn, 0x0F, 0);
+ 105              		.loc 1 539 0
+ 106 006e 2A46     		mov	r2, r5
+ 107 0070 0F21     		movs	r1, #15
+ 108 0072 1F20     		movs	r0, #31
+ 109 0074 FFF7FEFF 		bl	HAL_NVIC_SetPriority
+ 110              	.LVL4:
+ 540:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     HAL_NVIC_EnableIRQ(DISCOVERY_EXT_I2Cx_EV_IRQn);
+ 111              		.loc 1 540 0
+ 112 0078 1F20     		movs	r0, #31
+ 113 007a FFF7FEFF 		bl	HAL_NVIC_EnableIRQ
+ 114              	.LVL5:
+ 541:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 542:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     /* Enable and set I2Cx Interrupt to a lower priority */
+ 543:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     HAL_NVIC_SetPriority(DISCOVERY_EXT_I2Cx_ER_IRQn, 0x0F, 0);
+ 115              		.loc 1 543 0
+ 116 007e 2A46     		mov	r2, r5
+ 117 0080 0F21     		movs	r1, #15
+ 118 0082 2020     		movs	r0, #32
+ 119 0084 FFF7FEFF 		bl	HAL_NVIC_SetPriority
+ 120              	.LVL6:
+ 544:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     HAL_NVIC_EnableIRQ(DISCOVERY_EXT_I2Cx_ER_IRQn);
+ 121              		.loc 1 544 0
+ 122 0088 2020     		movs	r0, #32
+ 123 008a FFF7FEFF 		bl	HAL_NVIC_EnableIRQ
+ 124              	.LVL7:
+ 125              	.L1:
+ 545:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   }
+ 546:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** }
+ 126              		.loc 1 546 0
+ 127 008e 0AB0     		add	sp, sp, #40
+ 128              	.LCFI2:
+ 129              		.cfi_remember_state
+ 130              		.cfi_def_cfa_offset 16
+ 131              		@ sp needed
+ 132 0090 70BD     		pop	{r4, r5, r6, pc}
+ 133              	.LVL8:
+ 134              	.L5:
+ 135              	.LCFI3:
+ 136              		.cfi_restore_state
+ 137              	.LBB4:
+ 476:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 138              		.loc 1 476 0
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s 			page 13
+
+
+ 139 0092 224C     		ldr	r4, .L6+4
+ 140 0094 236B     		ldr	r3, [r4, #48]
+ 141 0096 43F08003 		orr	r3, r3, #128
+ 142 009a 2363     		str	r3, [r4, #48]
+ 143 009c 236B     		ldr	r3, [r4, #48]
+ 144 009e 03F08003 		and	r3, r3, #128
+ 145 00a2 0193     		str	r3, [sp, #4]
+ 146 00a4 019B     		ldr	r3, [sp, #4]
+ 147              	.LBE4:
+ 479:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     gpio_init_structure.Mode = GPIO_MODE_AF_OD;
+ 148              		.loc 1 479 0
+ 149 00a6 8023     		movs	r3, #128
+ 150 00a8 0593     		str	r3, [sp, #20]
+ 480:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     gpio_init_structure.Pull = GPIO_NOPULL;
+ 151              		.loc 1 480 0
+ 152 00aa 1223     		movs	r3, #18
+ 153 00ac 0693     		str	r3, [sp, #24]
+ 481:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     gpio_init_structure.Speed = GPIO_SPEED_FAST;
+ 154              		.loc 1 481 0
+ 155 00ae 0025     		movs	r5, #0
+ 156 00b0 0795     		str	r5, [sp, #28]
+ 482:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     gpio_init_structure.Alternate = DISCOVERY_AUDIO_I2Cx_SCL_SDA_AF;
+ 157              		.loc 1 482 0
+ 158 00b2 0223     		movs	r3, #2
+ 159 00b4 0893     		str	r3, [sp, #32]
+ 483:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     HAL_GPIO_Init(DISCOVERY_AUDIO_I2Cx_SCL_SDA_GPIO_PORT, &gpio_init_structure);
+ 160              		.loc 1 483 0
+ 161 00b6 0423     		movs	r3, #4
+ 162 00b8 0993     		str	r3, [sp, #36]
+ 484:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 163              		.loc 1 484 0
+ 164 00ba 1A4E     		ldr	r6, .L6+12
+ 165 00bc 05A9     		add	r1, sp, #20
+ 166 00be 3046     		mov	r0, r6
+ 167              	.LVL9:
+ 168 00c0 FFF7FEFF 		bl	HAL_GPIO_Init
+ 169              	.LVL10:
+ 487:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     HAL_GPIO_Init(DISCOVERY_AUDIO_I2Cx_SCL_SDA_GPIO_PORT, &gpio_init_structure);
+ 170              		.loc 1 487 0
+ 171 00c4 4FF48073 		mov	r3, #256
+ 172 00c8 0593     		str	r3, [sp, #20]
+ 488:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 173              		.loc 1 488 0
+ 174 00ca 05A9     		add	r1, sp, #20
+ 175 00cc 3046     		mov	r0, r6
+ 176 00ce FFF7FEFF 		bl	HAL_GPIO_Init
+ 177              	.LVL11:
+ 178              	.LBB5:
+ 492:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 179              		.loc 1 492 0
+ 180 00d2 236C     		ldr	r3, [r4, #64]
+ 181 00d4 43F40003 		orr	r3, r3, #8388608
+ 182 00d8 2364     		str	r3, [r4, #64]
+ 183 00da 236C     		ldr	r3, [r4, #64]
+ 184 00dc 03F40003 		and	r3, r3, #8388608
+ 185 00e0 0293     		str	r3, [sp, #8]
+ 186 00e2 029B     		ldr	r3, [sp, #8]
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s 			page 14
+
+
+ 187              	.LBE5:
+ 495:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 188              		.loc 1 495 0
+ 189 00e4 236A     		ldr	r3, [r4, #32]
+ 190 00e6 43F40003 		orr	r3, r3, #8388608
+ 191 00ea 2362     		str	r3, [r4, #32]
+ 498:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 192              		.loc 1 498 0
+ 193 00ec 236A     		ldr	r3, [r4, #32]
+ 194 00ee 23F40003 		bic	r3, r3, #8388608
+ 195 00f2 2362     		str	r3, [r4, #32]
+ 501:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     HAL_NVIC_EnableIRQ(DISCOVERY_AUDIO_I2Cx_EV_IRQn);
+ 196              		.loc 1 501 0
+ 197 00f4 2A46     		mov	r2, r5
+ 198 00f6 0F21     		movs	r1, #15
+ 199 00f8 4820     		movs	r0, #72
+ 200 00fa FFF7FEFF 		bl	HAL_NVIC_SetPriority
+ 201              	.LVL12:
+ 502:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 202              		.loc 1 502 0
+ 203 00fe 4820     		movs	r0, #72
+ 204 0100 FFF7FEFF 		bl	HAL_NVIC_EnableIRQ
+ 205              	.LVL13:
+ 505:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     HAL_NVIC_EnableIRQ(DISCOVERY_AUDIO_I2Cx_ER_IRQn);
+ 206              		.loc 1 505 0
+ 207 0104 2A46     		mov	r2, r5
+ 208 0106 0F21     		movs	r1, #15
+ 209 0108 4920     		movs	r0, #73
+ 210 010a FFF7FEFF 		bl	HAL_NVIC_SetPriority
+ 211              	.LVL14:
+ 506:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   }
+ 212              		.loc 1 506 0
+ 213 010e 4920     		movs	r0, #73
+ 214 0110 FFF7FEFF 		bl	HAL_NVIC_EnableIRQ
+ 215              	.LVL15:
+ 216 0114 BBE7     		b	.L1
+ 217              	.L7:
+ 218 0116 00BF     		.align	2
+ 219              	.L6:
+ 220 0118 00000000 		.word	.LANCHOR0
+ 221 011c 00380240 		.word	1073887232
+ 222 0120 00040240 		.word	1073873920
+ 223 0124 001C0240 		.word	1073880064
+ 224              		.cfi_endproc
+ 225              	.LFE147:
+ 227              		.section	.text.I2Cx_Init,"ax",%progbits
+ 228              		.align	1
+ 229              		.syntax unified
+ 230              		.thumb
+ 231              		.thumb_func
+ 232              		.fpu fpv5-sp-d16
+ 234              	I2Cx_Init:
+ 235              	.LFB148:
+ 547:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 548:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /**
+ 549:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @brief  Initializes I2C HAL.
+ 550:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @param  i2c_handler : I2C handler
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s 			page 15
+
+
+ 551:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @retval None
+ 552:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   */
+ 553:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** static void I2Cx_Init(I2C_HandleTypeDef *i2c_handler)
+ 554:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** {
+ 236              		.loc 1 554 0
+ 237              		.cfi_startproc
+ 238              		@ args = 0, pretend = 0, frame = 0
+ 239              		@ frame_needed = 0, uses_anonymous_args = 0
+ 240              	.LVL16:
+ 241 0000 10B5     		push	{r4, lr}
+ 242              	.LCFI4:
+ 243              		.cfi_def_cfa_offset 8
+ 244              		.cfi_offset 4, -8
+ 245              		.cfi_offset 14, -4
+ 246 0002 0446     		mov	r4, r0
+ 555:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   if(HAL_I2C_GetState(i2c_handler) == HAL_I2C_STATE_RESET)
+ 247              		.loc 1 555 0
+ 248 0004 FFF7FEFF 		bl	HAL_I2C_GetState
+ 249              	.LVL17:
+ 250 0008 A0B9     		cbnz	r0, .L8
+ 556:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   {
+ 557:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     if (i2c_handler == (I2C_HandleTypeDef*)(&hI2cAudioHandler))
+ 251              		.loc 1 557 0
+ 252 000a 0C4B     		ldr	r3, .L14
+ 253 000c 9C42     		cmp	r4, r3
+ 254 000e 12D0     		beq	.L13
+ 558:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     {
+ 559:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****       /* Audio and LCD I2C configuration */
+ 560:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****       i2c_handler->Instance = DISCOVERY_AUDIO_I2Cx;
+ 561:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     }
+ 562:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     else
+ 563:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     {
+ 564:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****       /* External, camera and Arduino connector  I2C configuration */
+ 565:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****       i2c_handler->Instance = DISCOVERY_EXT_I2Cx;
+ 255              		.loc 1 565 0
+ 256 0010 0B4B     		ldr	r3, .L14+4
+ 257 0012 2360     		str	r3, [r4]
+ 258              	.L11:
+ 566:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     }
+ 567:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     i2c_handler->Init.Timing           = DISCOVERY_I2Cx_TIMING;
+ 259              		.loc 1 567 0
+ 260 0014 0B4B     		ldr	r3, .L14+8
+ 261 0016 6360     		str	r3, [r4, #4]
+ 568:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     i2c_handler->Init.OwnAddress1      = 0;
+ 262              		.loc 1 568 0
+ 263 0018 0023     		movs	r3, #0
+ 264 001a A360     		str	r3, [r4, #8]
+ 569:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     i2c_handler->Init.AddressingMode   = I2C_ADDRESSINGMODE_7BIT;
+ 265              		.loc 1 569 0
+ 266 001c 0122     		movs	r2, #1
+ 267 001e E260     		str	r2, [r4, #12]
+ 570:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     i2c_handler->Init.DualAddressMode  = I2C_DUALADDRESS_DISABLE;
+ 268              		.loc 1 570 0
+ 269 0020 2361     		str	r3, [r4, #16]
+ 571:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     i2c_handler->Init.OwnAddress2      = 0;
+ 270              		.loc 1 571 0
+ 271 0022 6361     		str	r3, [r4, #20]
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s 			page 16
+
+
+ 572:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     i2c_handler->Init.GeneralCallMode  = I2C_GENERALCALL_DISABLE;
+ 272              		.loc 1 572 0
+ 273 0024 E361     		str	r3, [r4, #28]
+ 573:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     i2c_handler->Init.NoStretchMode    = I2C_NOSTRETCH_DISABLE;
+ 274              		.loc 1 573 0
+ 275 0026 2362     		str	r3, [r4, #32]
+ 574:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 575:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     /* Init the I2C */
+ 576:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     I2Cx_MspInit(i2c_handler);
+ 276              		.loc 1 576 0
+ 277 0028 2046     		mov	r0, r4
+ 278 002a FFF7FEFF 		bl	I2Cx_MspInit
+ 279              	.LVL18:
+ 577:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     HAL_I2C_Init(i2c_handler);
+ 280              		.loc 1 577 0
+ 281 002e 2046     		mov	r0, r4
+ 282 0030 FFF7FEFF 		bl	HAL_I2C_Init
+ 283              	.LVL19:
+ 284              	.L8:
+ 285 0034 10BD     		pop	{r4, pc}
+ 286              	.LVL20:
+ 287              	.L13:
+ 560:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     }
+ 288              		.loc 1 560 0
+ 289 0036 044B     		ldr	r3, .L14+12
+ 290 0038 2360     		str	r3, [r4]
+ 291 003a EBE7     		b	.L11
+ 292              	.L15:
+ 293              		.align	2
+ 294              	.L14:
+ 295 003c 00000000 		.word	.LANCHOR0
+ 296 0040 00540040 		.word	1073763328
+ 297 0044 32279140 		.word	1083254578
+ 298 0048 005C0040 		.word	1073765376
+ 299              		.cfi_endproc
+ 300              	.LFE148:
+ 302              		.section	.text.I2Cx_Error,"ax",%progbits
+ 303              		.align	1
+ 304              		.syntax unified
+ 305              		.thumb
+ 306              		.thumb_func
+ 307              		.fpu fpv5-sp-d16
+ 309              	I2Cx_Error:
+ 310              	.LFB152:
+ 578:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   }
+ 579:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** }
+ 580:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 581:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /**
+ 582:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @brief  Reads multiple data.
+ 583:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @param  i2c_handler : I2C handler
+ 584:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @param  Addr: I2C address
+ 585:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @param  Reg: Reg address 
+ 586:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @param  MemAddress: Memory address 
+ 587:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @param  Buffer: Pointer to data buffer
+ 588:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @param  Length: Length of the data
+ 589:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @retval Number of read data
+ 590:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   */
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s 			page 17
+
+
+ 591:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** static HAL_StatusTypeDef I2Cx_ReadMultiple(I2C_HandleTypeDef *i2c_handler,
+ 592:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****                                            uint8_t Addr,
+ 593:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****                                            uint16_t Reg,
+ 594:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****                                            uint16_t MemAddress,
+ 595:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****                                            uint8_t *Buffer,
+ 596:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****                                            uint16_t Length)
+ 597:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** {
+ 598:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   HAL_StatusTypeDef status = HAL_OK;
+ 599:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 600:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   status = HAL_I2C_Mem_Read(i2c_handler, Addr, (uint16_t)Reg, MemAddress, Buffer, Length, 1000);
+ 601:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 602:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   /* Check the communication status */
+ 603:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   if(status != HAL_OK)
+ 604:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   {
+ 605:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     /* I2C error occurred */
+ 606:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     I2Cx_Error(i2c_handler, Addr);
+ 607:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   }
+ 608:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   return status;    
+ 609:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** }
+ 610:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 611:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /**
+ 612:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @brief  Writes a value in a register of the device through BUS in using DMA mode.
+ 613:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @param  i2c_handler : I2C handler
+ 614:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @param  Addr: Device address on BUS Bus.  
+ 615:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @param  Reg: The target register address to write
+ 616:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @param  MemAddress: Memory address 
+ 617:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @param  Buffer: The target register value to be written 
+ 618:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @param  Length: buffer size to be written
+ 619:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @retval HAL status
+ 620:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   */
+ 621:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** static HAL_StatusTypeDef I2Cx_WriteMultiple(I2C_HandleTypeDef *i2c_handler,
+ 622:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****                                             uint8_t Addr,
+ 623:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****                                             uint16_t Reg,
+ 624:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****                                             uint16_t MemAddress,
+ 625:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****                                             uint8_t *Buffer,
+ 626:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****                                             uint16_t Length)
+ 627:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** {
+ 628:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   HAL_StatusTypeDef status = HAL_OK;
+ 629:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   
+ 630:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   status = HAL_I2C_Mem_Write(i2c_handler, Addr, (uint16_t)Reg, MemAddress, Buffer, Length, 1000);
+ 631:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   
+ 632:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   /* Check the communication status */
+ 633:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   if(status != HAL_OK)
+ 634:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   {
+ 635:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     /* Re-Initiaize the I2C Bus */
+ 636:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     I2Cx_Error(i2c_handler, Addr);
+ 637:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   }
+ 638:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   return status;
+ 639:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** }
+ 640:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 641:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /**
+ 642:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @brief  Checks if target device is ready for communication. 
+ 643:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @note   This function is used with Memory devices
+ 644:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @param  i2c_handler : I2C handler
+ 645:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @param  DevAddress: Target device address
+ 646:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @param  Trials: Number of trials
+ 647:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @retval HAL status
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s 			page 18
+
+
+ 648:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   */
+ 649:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** static HAL_StatusTypeDef I2Cx_IsDeviceReady(I2C_HandleTypeDef *i2c_handler, uint16_t DevAddress, ui
+ 650:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** { 
+ 651:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   return (HAL_I2C_IsDeviceReady(i2c_handler, DevAddress, Trials, 1000));
+ 652:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** }
+ 653:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 654:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /**
+ 655:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @brief  Manages error callback by re-initializing I2C.
+ 656:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @param  i2c_handler : I2C handler
+ 657:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @param  Addr: I2C Address
+ 658:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @retval None
+ 659:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   */
+ 660:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** static void I2Cx_Error(I2C_HandleTypeDef *i2c_handler, uint8_t Addr)
+ 661:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** {
+ 311              		.loc 1 661 0
+ 312              		.cfi_startproc
+ 313              		@ args = 0, pretend = 0, frame = 0
+ 314              		@ frame_needed = 0, uses_anonymous_args = 0
+ 315              	.LVL21:
+ 316 0000 10B5     		push	{r4, lr}
+ 317              	.LCFI5:
+ 318              		.cfi_def_cfa_offset 8
+ 319              		.cfi_offset 4, -8
+ 320              		.cfi_offset 14, -4
+ 321 0002 0446     		mov	r4, r0
+ 662:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   /* De-initialize the I2C communication bus */
+ 663:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   HAL_I2C_DeInit(i2c_handler);
+ 322              		.loc 1 663 0
+ 323 0004 FFF7FEFF 		bl	HAL_I2C_DeInit
+ 324              	.LVL22:
+ 664:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   
+ 665:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   /* Re-Initialize the I2C communication bus */
+ 666:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   I2Cx_Init(i2c_handler);
+ 325              		.loc 1 666 0
+ 326 0008 2046     		mov	r0, r4
+ 327 000a FFF7FEFF 		bl	I2Cx_Init
+ 328              	.LVL23:
+ 329 000e 10BD     		pop	{r4, pc}
+ 330              		.cfi_endproc
+ 331              	.LFE152:
+ 333              		.section	.text.I2Cx_WriteMultiple,"ax",%progbits
+ 334              		.align	1
+ 335              		.syntax unified
+ 336              		.thumb
+ 337              		.thumb_func
+ 338              		.fpu fpv5-sp-d16
+ 340              	I2Cx_WriteMultiple:
+ 341              	.LFB150:
+ 627:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   HAL_StatusTypeDef status = HAL_OK;
+ 342              		.loc 1 627 0
+ 343              		.cfi_startproc
+ 344              		@ args = 8, pretend = 0, frame = 0
+ 345              		@ frame_needed = 0, uses_anonymous_args = 0
+ 346              	.LVL24:
+ 347 0000 70B5     		push	{r4, r5, r6, lr}
+ 348              	.LCFI6:
+ 349              		.cfi_def_cfa_offset 16
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s 			page 19
+
+
+ 350              		.cfi_offset 4, -16
+ 351              		.cfi_offset 5, -12
+ 352              		.cfi_offset 6, -8
+ 353              		.cfi_offset 14, -4
+ 354 0002 84B0     		sub	sp, sp, #16
+ 355              	.LCFI7:
+ 356              		.cfi_def_cfa_offset 32
+ 357 0004 0646     		mov	r6, r0
+ 358 0006 0C46     		mov	r4, r1
+ 359              	.LVL25:
+ 630:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   
+ 360              		.loc 1 630 0
+ 361 0008 4FF47A71 		mov	r1, #1000
+ 362              	.LVL26:
+ 363 000c 0291     		str	r1, [sp, #8]
+ 364 000e BDF82410 		ldrh	r1, [sp, #36]
+ 365 0012 0191     		str	r1, [sp, #4]
+ 366 0014 0899     		ldr	r1, [sp, #32]
+ 367 0016 0091     		str	r1, [sp]
+ 368 0018 2146     		mov	r1, r4
+ 369 001a FFF7FEFF 		bl	HAL_I2C_Mem_Write
+ 370              	.LVL27:
+ 633:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   {
+ 371              		.loc 1 633 0
+ 372 001e 0546     		mov	r5, r0
+ 373 0020 10B9     		cbnz	r0, .L21
+ 374              	.LVL28:
+ 375              	.L19:
+ 639:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 376              		.loc 1 639 0
+ 377 0022 2846     		mov	r0, r5
+ 378 0024 04B0     		add	sp, sp, #16
+ 379              	.LCFI8:
+ 380              		.cfi_remember_state
+ 381              		.cfi_def_cfa_offset 16
+ 382              		@ sp needed
+ 383 0026 70BD     		pop	{r4, r5, r6, pc}
+ 384              	.LVL29:
+ 385              	.L21:
+ 386              	.LCFI9:
+ 387              		.cfi_restore_state
+ 636:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   }
+ 388              		.loc 1 636 0
+ 389 0028 2146     		mov	r1, r4
+ 390 002a 3046     		mov	r0, r6
+ 391              	.LVL30:
+ 392 002c FFF7FEFF 		bl	I2Cx_Error
+ 393              	.LVL31:
+ 394 0030 F7E7     		b	.L19
+ 395              		.cfi_endproc
+ 396              	.LFE150:
+ 398              		.section	.text.I2Cx_ReadMultiple,"ax",%progbits
+ 399              		.align	1
+ 400              		.syntax unified
+ 401              		.thumb
+ 402              		.thumb_func
+ 403              		.fpu fpv5-sp-d16
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s 			page 20
+
+
+ 405              	I2Cx_ReadMultiple:
+ 406              	.LFB149:
+ 597:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   HAL_StatusTypeDef status = HAL_OK;
+ 407              		.loc 1 597 0
+ 408              		.cfi_startproc
+ 409              		@ args = 8, pretend = 0, frame = 0
+ 410              		@ frame_needed = 0, uses_anonymous_args = 0
+ 411              	.LVL32:
+ 412 0000 70B5     		push	{r4, r5, r6, lr}
+ 413              	.LCFI10:
+ 414              		.cfi_def_cfa_offset 16
+ 415              		.cfi_offset 4, -16
+ 416              		.cfi_offset 5, -12
+ 417              		.cfi_offset 6, -8
+ 418              		.cfi_offset 14, -4
+ 419 0002 84B0     		sub	sp, sp, #16
+ 420              	.LCFI11:
+ 421              		.cfi_def_cfa_offset 32
+ 422 0004 0646     		mov	r6, r0
+ 423 0006 0C46     		mov	r4, r1
+ 424              	.LVL33:
+ 600:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 425              		.loc 1 600 0
+ 426 0008 4FF47A71 		mov	r1, #1000
+ 427              	.LVL34:
+ 428 000c 0291     		str	r1, [sp, #8]
+ 429 000e BDF82410 		ldrh	r1, [sp, #36]
+ 430 0012 0191     		str	r1, [sp, #4]
+ 431 0014 0899     		ldr	r1, [sp, #32]
+ 432 0016 0091     		str	r1, [sp]
+ 433 0018 2146     		mov	r1, r4
+ 434 001a FFF7FEFF 		bl	HAL_I2C_Mem_Read
+ 435              	.LVL35:
+ 603:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   {
+ 436              		.loc 1 603 0
+ 437 001e 0546     		mov	r5, r0
+ 438 0020 10B9     		cbnz	r0, .L25
+ 439              	.LVL36:
+ 440              	.L23:
+ 609:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 441              		.loc 1 609 0
+ 442 0022 2846     		mov	r0, r5
+ 443 0024 04B0     		add	sp, sp, #16
+ 444              	.LCFI12:
+ 445              		.cfi_remember_state
+ 446              		.cfi_def_cfa_offset 16
+ 447              		@ sp needed
+ 448 0026 70BD     		pop	{r4, r5, r6, pc}
+ 449              	.LVL37:
+ 450              	.L25:
+ 451              	.LCFI13:
+ 452              		.cfi_restore_state
+ 606:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   }
+ 453              		.loc 1 606 0
+ 454 0028 2146     		mov	r1, r4
+ 455 002a 3046     		mov	r0, r6
+ 456              	.LVL38:
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s 			page 21
+
+
+ 457 002c FFF7FEFF 		bl	I2Cx_Error
+ 458              	.LVL39:
+ 459 0030 F7E7     		b	.L23
+ 460              		.cfi_endproc
+ 461              	.LFE149:
+ 463              		.section	.text.I2Cx_IsDeviceReady,"ax",%progbits
+ 464              		.align	1
+ 465              		.syntax unified
+ 466              		.thumb
+ 467              		.thumb_func
+ 468              		.fpu fpv5-sp-d16
+ 470              	I2Cx_IsDeviceReady:
+ 471              	.LFB151:
+ 650:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   return (HAL_I2C_IsDeviceReady(i2c_handler, DevAddress, Trials, 1000));
+ 472              		.loc 1 650 0
+ 473              		.cfi_startproc
+ 474              		@ args = 0, pretend = 0, frame = 0
+ 475              		@ frame_needed = 0, uses_anonymous_args = 0
+ 476              	.LVL40:
+ 477 0000 08B5     		push	{r3, lr}
+ 478              	.LCFI14:
+ 479              		.cfi_def_cfa_offset 8
+ 480              		.cfi_offset 3, -8
+ 481              		.cfi_offset 14, -4
+ 651:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** }
+ 482              		.loc 1 651 0
+ 483 0002 4FF47A73 		mov	r3, #1000
+ 484 0006 FFF7FEFF 		bl	HAL_I2C_IsDeviceReady
+ 485              	.LVL41:
+ 652:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 486              		.loc 1 652 0
+ 487 000a 08BD     		pop	{r3, pc}
+ 488              		.cfi_endproc
+ 489              	.LFE151:
+ 491              		.section	.text.BSP_GetVersion,"ax",%progbits
+ 492              		.align	1
+ 493              		.global	BSP_GetVersion
+ 494              		.syntax unified
+ 495              		.thumb
+ 496              		.thumb_func
+ 497              		.fpu fpv5-sp-d16
+ 499              	BSP_GetVersion:
+ 500              	.LFB136:
+ 179:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   return __STM32746G_DISCO_BSP_VERSION;
+ 501              		.loc 1 179 0
+ 502              		.cfi_startproc
+ 503              		@ args = 0, pretend = 0, frame = 0
+ 504              		@ frame_needed = 0, uses_anonymous_args = 0
+ 505              		@ link register save eliminated.
+ 181:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 506              		.loc 1 181 0
+ 507 0000 4FF00220 		mov	r0, #33554944
+ 508 0004 7047     		bx	lr
+ 509              		.cfi_endproc
+ 510              	.LFE136:
+ 512              		.section	.text.BSP_LED_Init,"ax",%progbits
+ 513              		.align	1
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s 			page 22
+
+
+ 514              		.global	BSP_LED_Init
+ 515              		.syntax unified
+ 516              		.thumb
+ 517              		.thumb_func
+ 518              		.fpu fpv5-sp-d16
+ 520              	BSP_LED_Init:
+ 521              	.LFB137:
+ 191:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   GPIO_InitTypeDef  gpio_init_structure;
+ 522              		.loc 1 191 0
+ 523              		.cfi_startproc
+ 524              		@ args = 0, pretend = 0, frame = 24
+ 525              		@ frame_needed = 0, uses_anonymous_args = 0
+ 526              	.LVL42:
+ 195:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   {
+ 527              		.loc 1 195 0
+ 528 0000 00B1     		cbz	r0, .L35
+ 529 0002 7047     		bx	lr
+ 530              	.L35:
+ 191:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   GPIO_InitTypeDef  gpio_init_structure;
+ 531              		.loc 1 191 0
+ 532 0004 30B5     		push	{r4, r5, lr}
+ 533              	.LCFI15:
+ 534              		.cfi_def_cfa_offset 12
+ 535              		.cfi_offset 4, -12
+ 536              		.cfi_offset 5, -8
+ 537              		.cfi_offset 14, -4
+ 538 0006 87B0     		sub	sp, sp, #28
+ 539              	.LCFI16:
+ 540              		.cfi_def_cfa_offset 40
+ 541              	.LVL43:
+ 542              	.LBB6:
+ 199:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 543              		.loc 1 199 0
+ 544 0008 0E4B     		ldr	r3, .L36
+ 545 000a 1A6B     		ldr	r2, [r3, #48]
+ 546 000c 42F48072 		orr	r2, r2, #256
+ 547 0010 1A63     		str	r2, [r3, #48]
+ 548 0012 1B6B     		ldr	r3, [r3, #48]
+ 549 0014 03F48073 		and	r3, r3, #256
+ 550 0018 0093     		str	r3, [sp]
+ 551 001a 009B     		ldr	r3, [sp]
+ 552              	.LBE6:
+ 202:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     gpio_init_structure.Mode = GPIO_MODE_OUTPUT_PP;
+ 553              		.loc 1 202 0
+ 554 001c 0225     		movs	r5, #2
+ 555 001e 0195     		str	r5, [sp, #4]
+ 203:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     gpio_init_structure.Pull = GPIO_PULLUP;
+ 556              		.loc 1 203 0
+ 557 0020 0123     		movs	r3, #1
+ 558 0022 0293     		str	r3, [sp, #8]
+ 204:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     gpio_init_structure.Speed = GPIO_SPEED_HIGH;
+ 559              		.loc 1 204 0
+ 560 0024 0393     		str	r3, [sp, #12]
+ 205:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   
+ 561              		.loc 1 205 0
+ 562 0026 0323     		movs	r3, #3
+ 563 0028 0493     		str	r3, [sp, #16]
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s 			page 23
+
+
+ 207:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     
+ 564              		.loc 1 207 0
+ 565 002a 074C     		ldr	r4, .L36+4
+ 566 002c 01A9     		add	r1, sp, #4
+ 567 002e 2046     		mov	r0, r4
+ 568              	.LVL44:
+ 569 0030 FFF7FEFF 		bl	HAL_GPIO_Init
+ 570              	.LVL45:
+ 210:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   }
+ 571              		.loc 1 210 0
+ 572 0034 0022     		movs	r2, #0
+ 573 0036 2946     		mov	r1, r5
+ 574 0038 2046     		mov	r0, r4
+ 575 003a FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 576              	.LVL46:
+ 212:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 577              		.loc 1 212 0
+ 578 003e 07B0     		add	sp, sp, #28
+ 579              	.LCFI17:
+ 580              		.cfi_def_cfa_offset 12
+ 581              		@ sp needed
+ 582 0040 30BD     		pop	{r4, r5, pc}
+ 583              	.L37:
+ 584 0042 00BF     		.align	2
+ 585              	.L36:
+ 586 0044 00380240 		.word	1073887232
+ 587 0048 00200240 		.word	1073881088
+ 588              		.cfi_endproc
+ 589              	.LFE137:
+ 591              		.section	.text.BSP_LED_DeInit,"ax",%progbits
+ 592              		.align	1
+ 593              		.global	BSP_LED_DeInit
+ 594              		.syntax unified
+ 595              		.thumb
+ 596              		.thumb_func
+ 597              		.fpu fpv5-sp-d16
+ 599              	BSP_LED_DeInit:
+ 600              	.LFB138:
+ 223:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   GPIO_InitTypeDef  gpio_init_structure;
+ 601              		.loc 1 223 0
+ 602              		.cfi_startproc
+ 603              		@ args = 0, pretend = 0, frame = 0
+ 604              		@ frame_needed = 0, uses_anonymous_args = 0
+ 605              	.LVL47:
+ 227:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   {
+ 606              		.loc 1 227 0
+ 607 0000 00B1     		cbz	r0, .L44
+ 608 0002 7047     		bx	lr
+ 609              	.L44:
+ 223:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   GPIO_InitTypeDef  gpio_init_structure;
+ 610              		.loc 1 223 0
+ 611 0004 10B5     		push	{r4, lr}
+ 612              	.LCFI18:
+ 613              		.cfi_def_cfa_offset 8
+ 614              		.cfi_offset 4, -8
+ 615              		.cfi_offset 14, -4
+ 616              	.LVL48:
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s 			page 24
+
+
+ 231:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     /* Configure the GPIO_LED pin */
+ 617              		.loc 1 231 0
+ 618 0006 054C     		ldr	r4, .L45
+ 619 0008 0022     		movs	r2, #0
+ 620 000a 0221     		movs	r1, #2
+ 621 000c 2046     		mov	r0, r4
+ 622              	.LVL49:
+ 623 000e FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 624              	.LVL50:
+ 234:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   }
+ 625              		.loc 1 234 0
+ 626 0012 0221     		movs	r1, #2
+ 627 0014 2046     		mov	r0, r4
+ 628 0016 FFF7FEFF 		bl	HAL_GPIO_DeInit
+ 629              	.LVL51:
+ 630 001a 10BD     		pop	{r4, pc}
+ 631              	.L46:
+ 632              		.align	2
+ 633              	.L45:
+ 634 001c 00200240 		.word	1073881088
+ 635              		.cfi_endproc
+ 636              	.LFE138:
+ 638              		.section	.text.BSP_LED_On,"ax",%progbits
+ 639              		.align	1
+ 640              		.global	BSP_LED_On
+ 641              		.syntax unified
+ 642              		.thumb
+ 643              		.thumb_func
+ 644              		.fpu fpv5-sp-d16
+ 646              	BSP_LED_On:
+ 647              	.LFB139:
+ 246:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   GPIO_TypeDef*     gpio_led;
+ 648              		.loc 1 246 0
+ 649              		.cfi_startproc
+ 650              		@ args = 0, pretend = 0, frame = 0
+ 651              		@ frame_needed = 0, uses_anonymous_args = 0
+ 652              	.LVL52:
+ 249:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   {
+ 653              		.loc 1 249 0
+ 654 0000 00B1     		cbz	r0, .L53
+ 655 0002 7047     		bx	lr
+ 656              	.L53:
+ 246:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   GPIO_TypeDef*     gpio_led;
+ 657              		.loc 1 246 0
+ 658 0004 08B5     		push	{r3, lr}
+ 659              	.LCFI19:
+ 660              		.cfi_def_cfa_offset 8
+ 661              		.cfi_offset 3, -8
+ 662              		.cfi_offset 14, -4
+ 663              	.LVL53:
+ 252:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   }
+ 664              		.loc 1 252 0
+ 665 0006 0122     		movs	r2, #1
+ 666 0008 0221     		movs	r1, #2
+ 667 000a 0248     		ldr	r0, .L54
+ 668              	.LVL54:
+ 669 000c FFF7FEFF 		bl	HAL_GPIO_WritePin
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s 			page 25
+
+
+ 670              	.LVL55:
+ 671 0010 08BD     		pop	{r3, pc}
+ 672              	.L55:
+ 673 0012 00BF     		.align	2
+ 674              	.L54:
+ 675 0014 00200240 		.word	1073881088
+ 676              		.cfi_endproc
+ 677              	.LFE139:
+ 679              		.section	.text.BSP_LED_Off,"ax",%progbits
+ 680              		.align	1
+ 681              		.global	BSP_LED_Off
+ 682              		.syntax unified
+ 683              		.thumb
+ 684              		.thumb_func
+ 685              		.fpu fpv5-sp-d16
+ 687              	BSP_LED_Off:
+ 688              	.LFB140:
+ 264:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   GPIO_TypeDef*     gpio_led;
+ 689              		.loc 1 264 0
+ 690              		.cfi_startproc
+ 691              		@ args = 0, pretend = 0, frame = 0
+ 692              		@ frame_needed = 0, uses_anonymous_args = 0
+ 693              	.LVL56:
+ 267:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   {
+ 694              		.loc 1 267 0
+ 695 0000 00B1     		cbz	r0, .L62
+ 696 0002 7047     		bx	lr
+ 697              	.L62:
+ 264:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   GPIO_TypeDef*     gpio_led;
+ 698              		.loc 1 264 0
+ 699 0004 08B5     		push	{r3, lr}
+ 700              	.LCFI20:
+ 701              		.cfi_def_cfa_offset 8
+ 702              		.cfi_offset 3, -8
+ 703              		.cfi_offset 14, -4
+ 704              	.LVL57:
+ 270:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   }
+ 705              		.loc 1 270 0
+ 706 0006 0022     		movs	r2, #0
+ 707 0008 0221     		movs	r1, #2
+ 708 000a 0248     		ldr	r0, .L63
+ 709              	.LVL58:
+ 710 000c FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 711              	.LVL59:
+ 712 0010 08BD     		pop	{r3, pc}
+ 713              	.L64:
+ 714 0012 00BF     		.align	2
+ 715              	.L63:
+ 716 0014 00200240 		.word	1073881088
+ 717              		.cfi_endproc
+ 718              	.LFE140:
+ 720              		.section	.text.BSP_LED_Toggle,"ax",%progbits
+ 721              		.align	1
+ 722              		.global	BSP_LED_Toggle
+ 723              		.syntax unified
+ 724              		.thumb
+ 725              		.thumb_func
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s 			page 26
+
+
+ 726              		.fpu fpv5-sp-d16
+ 728              	BSP_LED_Toggle:
+ 729              	.LFB141:
+ 282:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   GPIO_TypeDef*     gpio_led;
+ 730              		.loc 1 282 0
+ 731              		.cfi_startproc
+ 732              		@ args = 0, pretend = 0, frame = 0
+ 733              		@ frame_needed = 0, uses_anonymous_args = 0
+ 734              	.LVL60:
+ 285:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   {
+ 735              		.loc 1 285 0
+ 736 0000 00B1     		cbz	r0, .L71
+ 737 0002 7047     		bx	lr
+ 738              	.L71:
+ 282:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   GPIO_TypeDef*     gpio_led;
+ 739              		.loc 1 282 0
+ 740 0004 08B5     		push	{r3, lr}
+ 741              	.LCFI21:
+ 742              		.cfi_def_cfa_offset 8
+ 743              		.cfi_offset 3, -8
+ 744              		.cfi_offset 14, -4
+ 745              	.LVL61:
+ 288:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   }
+ 746              		.loc 1 288 0
+ 747 0006 0221     		movs	r1, #2
+ 748 0008 0148     		ldr	r0, .L72
+ 749              	.LVL62:
+ 750 000a FFF7FEFF 		bl	HAL_GPIO_TogglePin
+ 751              	.LVL63:
+ 752 000e 08BD     		pop	{r3, pc}
+ 753              	.L73:
+ 754              		.align	2
+ 755              	.L72:
+ 756 0010 00200240 		.word	1073881088
+ 757              		.cfi_endproc
+ 758              	.LFE141:
+ 760              		.section	.text.BSP_PB_Init,"ax",%progbits
+ 761              		.align	1
+ 762              		.global	BSP_PB_Init
+ 763              		.syntax unified
+ 764              		.thumb
+ 765              		.thumb_func
+ 766              		.fpu fpv5-sp-d16
+ 768              	BSP_PB_Init:
+ 769              	.LFB142:
+ 310:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   GPIO_InitTypeDef gpio_init_structure;
+ 770              		.loc 1 310 0
+ 771              		.cfi_startproc
+ 772              		@ args = 0, pretend = 0, frame = 32
+ 773              		@ frame_needed = 0, uses_anonymous_args = 0
+ 774              	.LVL64:
+ 775 0000 30B5     		push	{r4, r5, lr}
+ 776              	.LCFI22:
+ 777              		.cfi_def_cfa_offset 12
+ 778              		.cfi_offset 4, -12
+ 779              		.cfi_offset 5, -8
+ 780              		.cfi_offset 14, -4
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s 			page 27
+
+
+ 781 0002 89B0     		sub	sp, sp, #36
+ 782              	.LCFI23:
+ 783              		.cfi_def_cfa_offset 48
+ 784 0004 0D46     		mov	r5, r1
+ 314:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   
+ 785              		.loc 1 314 0
+ 786 0006 0446     		mov	r4, r0
+ 787 0008 70B9     		cbnz	r0, .L75
+ 788              	.LBB7:
+ 314:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   
+ 789              		.loc 1 314 0 is_stmt 0 discriminator 1
+ 790 000a 2B4B     		ldr	r3, .L86
+ 791 000c 1A6B     		ldr	r2, [r3, #48]
+ 792 000e 42F48072 		orr	r2, r2, #256
+ 793 0012 1A63     		str	r2, [r3, #48]
+ 794 0014 1B6B     		ldr	r3, [r3, #48]
+ 795 0016 03F48073 		and	r3, r3, #256
+ 796 001a 0093     		str	r3, [sp]
+ 797 001c 009B     		ldr	r3, [sp]
+ 798              	.L76:
+ 799              	.LBE7:
+ 316:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   {
+ 800              		.loc 1 316 0 is_stmt 1
+ 801 001e DDB1     		cbz	r5, .L83
+ 802              	.LVL65:
+ 803              	.L78:
+ 326:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   {
+ 804              		.loc 1 326 0
+ 805 0020 012D     		cmp	r5, #1
+ 806 0022 29D0     		beq	.L84
+ 807              	.L74:
+ 348:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 808              		.loc 1 348 0
+ 809 0024 09B0     		add	sp, sp, #36
+ 810              	.LCFI24:
+ 811              		.cfi_remember_state
+ 812              		.cfi_def_cfa_offset 12
+ 813              		@ sp needed
+ 814 0026 30BD     		pop	{r4, r5, pc}
+ 815              	.LVL66:
+ 816              	.L75:
+ 817              	.LCFI25:
+ 818              		.cfi_restore_state
+ 314:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   
+ 819              		.loc 1 314 0 discriminator 2
+ 820 0028 0128     		cmp	r0, #1
+ 821 002a 0AD0     		beq	.L85
+ 822              	.LBB8:
+ 314:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   
+ 823              		.loc 1 314 0 is_stmt 0 discriminator 4
+ 824 002c 224B     		ldr	r3, .L86
+ 825 002e 1A6B     		ldr	r2, [r3, #48]
+ 826 0030 42F48072 		orr	r2, r2, #256
+ 827 0034 1A63     		str	r2, [r3, #48]
+ 828 0036 1B6B     		ldr	r3, [r3, #48]
+ 829 0038 03F48073 		and	r3, r3, #256
+ 830 003c 0293     		str	r3, [sp, #8]
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s 			page 28
+
+
+ 831 003e 029B     		ldr	r3, [sp, #8]
+ 832 0040 EDE7     		b	.L76
+ 833              	.L85:
+ 834              	.LBE8:
+ 835              	.LBB9:
+ 314:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   
+ 836              		.loc 1 314 0 discriminator 3
+ 837 0042 1D4B     		ldr	r3, .L86
+ 838 0044 1A6B     		ldr	r2, [r3, #48]
+ 839 0046 42F48072 		orr	r2, r2, #256
+ 840 004a 1A63     		str	r2, [r3, #48]
+ 841 004c 1B6B     		ldr	r3, [r3, #48]
+ 842 004e 03F48073 		and	r3, r3, #256
+ 843 0052 0193     		str	r3, [sp, #4]
+ 844 0054 019B     		ldr	r3, [sp, #4]
+ 845              	.LBE9:
+ 846 0056 E2E7     		b	.L76
+ 847              	.L83:
+ 319:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     gpio_init_structure.Mode = GPIO_MODE_INPUT;
+ 848              		.loc 1 319 0 is_stmt 1
+ 849 0058 184B     		ldr	r3, .L86+4
+ 850 005a 33F81430 		ldrh	r3, [r3, r4, lsl #1]
+ 851 005e 0393     		str	r3, [sp, #12]
+ 320:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     gpio_init_structure.Pull = GPIO_NOPULL;
+ 852              		.loc 1 320 0
+ 853 0060 0023     		movs	r3, #0
+ 854 0062 0493     		str	r3, [sp, #16]
+ 321:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     gpio_init_structure.Speed = GPIO_SPEED_FAST;
+ 855              		.loc 1 321 0
+ 856 0064 0593     		str	r3, [sp, #20]
+ 322:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     HAL_GPIO_Init(BUTTON_PORT[Button], &gpio_init_structure);
+ 857              		.loc 1 322 0
+ 858 0066 0223     		movs	r3, #2
+ 859 0068 0693     		str	r3, [sp, #24]
+ 323:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   }
+ 860              		.loc 1 323 0
+ 861 006a 03A9     		add	r1, sp, #12
+ 862              	.LVL67:
+ 863 006c 144B     		ldr	r3, .L86+8
+ 864 006e 53F82400 		ldr	r0, [r3, r4, lsl #2]
+ 865              	.LVL68:
+ 866 0072 FFF7FEFF 		bl	HAL_GPIO_Init
+ 867              	.LVL69:
+ 868 0076 D3E7     		b	.L78
+ 869              	.L84:
+ 329:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     gpio_init_structure.Pull = GPIO_NOPULL;
+ 870              		.loc 1 329 0
+ 871 0078 104B     		ldr	r3, .L86+4
+ 872 007a 33F81430 		ldrh	r3, [r3, r4, lsl #1]
+ 873 007e 0393     		str	r3, [sp, #12]
+ 330:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     gpio_init_structure.Speed = GPIO_SPEED_FAST;
+ 874              		.loc 1 330 0
+ 875 0080 0023     		movs	r3, #0
+ 876 0082 0593     		str	r3, [sp, #20]
+ 331:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     
+ 877              		.loc 1 331 0
+ 878 0084 0223     		movs	r3, #2
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s 			page 29
+
+
+ 879 0086 0693     		str	r3, [sp, #24]
+ 333:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     {
+ 880              		.loc 1 333 0
+ 881 0088 9CB1     		cbz	r4, .L80
+ 335:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     }
+ 882              		.loc 1 335 0
+ 883 008a 0E4B     		ldr	r3, .L86+12
+ 884 008c 0493     		str	r3, [sp, #16]
+ 885              	.L81:
+ 342:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     
+ 886              		.loc 1 342 0
+ 887 008e 03A9     		add	r1, sp, #12
+ 888 0090 0B4B     		ldr	r3, .L86+8
+ 889 0092 53F82400 		ldr	r0, [r3, r4, lsl #2]
+ 890 0096 FFF7FEFF 		bl	HAL_GPIO_Init
+ 891              	.LVL70:
+ 345:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     HAL_NVIC_EnableIRQ((IRQn_Type)(BUTTON_IRQn[Button]));
+ 892              		.loc 1 345 0
+ 893 009a 0B4B     		ldr	r3, .L86+16
+ 894 009c 13F91440 		ldrsb	r4, [r3, r4, lsl #1]
+ 895 00a0 0022     		movs	r2, #0
+ 896 00a2 0F21     		movs	r1, #15
+ 897 00a4 2046     		mov	r0, r4
+ 898 00a6 FFF7FEFF 		bl	HAL_NVIC_SetPriority
+ 899              	.LVL71:
+ 346:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   }
+ 900              		.loc 1 346 0
+ 901 00aa 2046     		mov	r0, r4
+ 902 00ac FFF7FEFF 		bl	HAL_NVIC_EnableIRQ
+ 903              	.LVL72:
+ 348:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 904              		.loc 1 348 0
+ 905 00b0 B8E7     		b	.L74
+ 906              	.L80:
+ 339:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     }
+ 907              		.loc 1 339 0
+ 908 00b2 064B     		ldr	r3, .L86+20
+ 909 00b4 0493     		str	r3, [sp, #16]
+ 910 00b6 EAE7     		b	.L81
+ 911              	.L87:
+ 912              		.align	2
+ 913              	.L86:
+ 914 00b8 00380240 		.word	1073887232
+ 915 00bc 00000000 		.word	.LANCHOR1
+ 916 00c0 00000000 		.word	.LANCHOR2
+ 917 00c4 00002110 		.word	270598144
+ 918 00c8 00000000 		.word	.LANCHOR3
+ 919 00cc 00001110 		.word	269549568
+ 920              		.cfi_endproc
+ 921              	.LFE142:
+ 923              		.section	.text.BSP_PB_DeInit,"ax",%progbits
+ 924              		.align	1
+ 925              		.global	BSP_PB_DeInit
+ 926              		.syntax unified
+ 927              		.thumb
+ 928              		.thumb_func
+ 929              		.fpu fpv5-sp-d16
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s 			page 30
+
+
+ 931              	BSP_PB_DeInit:
+ 932              	.LFB143:
+ 364:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     GPIO_InitTypeDef gpio_init_structure;
+ 933              		.loc 1 364 0
+ 934              		.cfi_startproc
+ 935              		@ args = 0, pretend = 0, frame = 0
+ 936              		@ frame_needed = 0, uses_anonymous_args = 0
+ 937              	.LVL73:
+ 938 0000 38B5     		push	{r3, r4, r5, lr}
+ 939              	.LCFI26:
+ 940              		.cfi_def_cfa_offset 16
+ 941              		.cfi_offset 3, -16
+ 942              		.cfi_offset 4, -12
+ 943              		.cfi_offset 5, -8
+ 944              		.cfi_offset 14, -4
+ 945 0002 0446     		mov	r4, r0
+ 367:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     HAL_NVIC_DisableIRQ((IRQn_Type)(BUTTON_IRQn[Button]));
+ 946              		.loc 1 367 0
+ 947 0004 074B     		ldr	r3, .L90
+ 948 0006 33F81050 		ldrh	r5, [r3, r0, lsl #1]
+ 368:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****     HAL_GPIO_DeInit(BUTTON_PORT[Button], gpio_init_structure.Pin);
+ 949              		.loc 1 368 0
+ 950 000a 074B     		ldr	r3, .L90+4
+ 951 000c 13F91000 		ldrsb	r0, [r3, r0, lsl #1]
+ 952              	.LVL74:
+ 953 0010 FFF7FEFF 		bl	HAL_NVIC_DisableIRQ
+ 954              	.LVL75:
+ 369:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** }
+ 955              		.loc 1 369 0
+ 956 0014 2946     		mov	r1, r5
+ 957 0016 054B     		ldr	r3, .L90+8
+ 958 0018 53F82400 		ldr	r0, [r3, r4, lsl #2]
+ 959 001c FFF7FEFF 		bl	HAL_GPIO_DeInit
+ 960              	.LVL76:
+ 961 0020 38BD     		pop	{r3, r4, r5, pc}
+ 962              	.L91:
+ 963 0022 00BF     		.align	2
+ 964              	.L90:
+ 965 0024 00000000 		.word	.LANCHOR1
+ 966 0028 00000000 		.word	.LANCHOR3
+ 967 002c 00000000 		.word	.LANCHOR2
+ 968              		.cfi_endproc
+ 969              	.LFE143:
+ 971              		.section	.text.BSP_PB_GetState,"ax",%progbits
+ 972              		.align	1
+ 973              		.global	BSP_PB_GetState
+ 974              		.syntax unified
+ 975              		.thumb
+ 976              		.thumb_func
+ 977              		.fpu fpv5-sp-d16
+ 979              	BSP_PB_GetState:
+ 980              	.LFB144:
+ 386:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   return HAL_GPIO_ReadPin(BUTTON_PORT[Button], BUTTON_PIN[Button]);
+ 981              		.loc 1 386 0
+ 982              		.cfi_startproc
+ 983              		@ args = 0, pretend = 0, frame = 0
+ 984              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s 			page 31
+
+
+ 985              	.LVL77:
+ 986 0000 08B5     		push	{r3, lr}
+ 987              	.LCFI27:
+ 988              		.cfi_def_cfa_offset 8
+ 989              		.cfi_offset 3, -8
+ 990              		.cfi_offset 14, -4
+ 387:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** }
+ 991              		.loc 1 387 0
+ 992 0002 044B     		ldr	r3, .L94
+ 993 0004 33F81010 		ldrh	r1, [r3, r0, lsl #1]
+ 994 0008 034B     		ldr	r3, .L94+4
+ 995 000a 53F82000 		ldr	r0, [r3, r0, lsl #2]
+ 996              	.LVL78:
+ 997 000e FFF7FEFF 		bl	HAL_GPIO_ReadPin
+ 998              	.LVL79:
+ 388:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 999              		.loc 1 388 0
+ 1000 0012 08BD     		pop	{r3, pc}
+ 1001              	.L95:
+ 1002              		.align	2
+ 1003              	.L94:
+ 1004 0014 00000000 		.word	.LANCHOR1
+ 1005 0018 00000000 		.word	.LANCHOR2
+ 1006              		.cfi_endproc
+ 1007              	.LFE144:
+ 1009              		.section	.text.BSP_COM_Init,"ax",%progbits
+ 1010              		.align	1
+ 1011              		.global	BSP_COM_Init
+ 1012              		.syntax unified
+ 1013              		.thumb
+ 1014              		.thumb_func
+ 1015              		.fpu fpv5-sp-d16
+ 1017              	BSP_COM_Init:
+ 1018              	.LFB145:
+ 401:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   GPIO_InitTypeDef gpio_init_structure;
+ 1019              		.loc 1 401 0
+ 1020              		.cfi_startproc
+ 1021              		@ args = 0, pretend = 0, frame = 32
+ 1022              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1023              	.LVL80:
+ 1024 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 1025              	.LCFI28:
+ 1026              		.cfi_def_cfa_offset 20
+ 1027              		.cfi_offset 4, -20
+ 1028              		.cfi_offset 5, -16
+ 1029              		.cfi_offset 6, -12
+ 1030              		.cfi_offset 7, -8
+ 1031              		.cfi_offset 14, -4
+ 1032 0002 89B0     		sub	sp, sp, #36
+ 1033              	.LCFI29:
+ 1034              		.cfi_def_cfa_offset 56
+ 1035 0004 0E46     		mov	r6, r1
+ 405:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   DISCOVERY_COMx_RX_GPIO_CLK_ENABLE(COM);
+ 1036              		.loc 1 405 0
+ 1037 0006 0446     		mov	r4, r0
+ 1038 0008 48B9     		cbnz	r0, .L97
+ 1039              	.LBB10:
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s 			page 32
+
+
+ 405:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   DISCOVERY_COMx_RX_GPIO_CLK_ENABLE(COM);
+ 1040              		.loc 1 405 0 is_stmt 0 discriminator 1
+ 1041 000a 214B     		ldr	r3, .L101
+ 1042 000c 1A6B     		ldr	r2, [r3, #48]
+ 1043 000e 42F00102 		orr	r2, r2, #1
+ 1044 0012 1A63     		str	r2, [r3, #48]
+ 1045 0014 1B6B     		ldr	r3, [r3, #48]
+ 1046 0016 03F00103 		and	r3, r3, #1
+ 1047 001a 0093     		str	r3, [sp]
+ 1048 001c 009B     		ldr	r3, [sp]
+ 1049              	.L97:
+ 1050              	.LBE10:
+ 406:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 1051              		.loc 1 406 0 is_stmt 1
+ 1052 001e 4CB9     		cbnz	r4, .L98
+ 1053              	.LBB11:
+ 406:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 1054              		.loc 1 406 0 is_stmt 0 discriminator 1
+ 1055 0020 1B4B     		ldr	r3, .L101
+ 1056 0022 1A6B     		ldr	r2, [r3, #48]
+ 1057 0024 42F00202 		orr	r2, r2, #2
+ 1058 0028 1A63     		str	r2, [r3, #48]
+ 1059 002a 1B6B     		ldr	r3, [r3, #48]
+ 1060 002c 03F00203 		and	r3, r3, #2
+ 1061 0030 0193     		str	r3, [sp, #4]
+ 1062 0032 019B     		ldr	r3, [sp, #4]
+ 1063              	.L98:
+ 1064              	.LBE11:
+ 409:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 1065              		.loc 1 409 0 is_stmt 1
+ 1066 0034 4CB9     		cbnz	r4, .L99
+ 1067              	.LBB12:
+ 409:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 1068              		.loc 1 409 0 is_stmt 0 discriminator 1
+ 1069 0036 164B     		ldr	r3, .L101
+ 1070 0038 5A6C     		ldr	r2, [r3, #68]
+ 1071 003a 42F01002 		orr	r2, r2, #16
+ 1072 003e 5A64     		str	r2, [r3, #68]
+ 1073 0040 5B6C     		ldr	r3, [r3, #68]
+ 1074 0042 03F01003 		and	r3, r3, #16
+ 1075 0046 0293     		str	r3, [sp, #8]
+ 1076 0048 029B     		ldr	r3, [sp, #8]
+ 1077              	.L99:
+ 1078              	.LBE12:
+ 412:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   gpio_init_structure.Mode = GPIO_MODE_AF_PP;
+ 1079              		.loc 1 412 0 is_stmt 1
+ 1080 004a 4FF40073 		mov	r3, #512
+ 1081 004e 0393     		str	r3, [sp, #12]
+ 413:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   gpio_init_structure.Speed = GPIO_SPEED_FAST;
+ 1082              		.loc 1 413 0
+ 1083 0050 0225     		movs	r5, #2
+ 1084 0052 0495     		str	r5, [sp, #16]
+ 414:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   gpio_init_structure.Pull = GPIO_PULLUP;
+ 1085              		.loc 1 414 0
+ 1086 0054 0695     		str	r5, [sp, #24]
+ 415:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   gpio_init_structure.Alternate = COM_TX_AF[COM];
+ 1087              		.loc 1 415 0
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s 			page 33
+
+
+ 1088 0056 0123     		movs	r3, #1
+ 1089 0058 0593     		str	r3, [sp, #20]
+ 416:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   HAL_GPIO_Init(COM_TX_PORT[COM], &gpio_init_structure);
+ 1090              		.loc 1 416 0
+ 1091 005a 0727     		movs	r7, #7
+ 1092 005c 0797     		str	r7, [sp, #28]
+ 417:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 1093              		.loc 1 417 0
+ 1094 005e 03A9     		add	r1, sp, #12
+ 1095              	.LVL81:
+ 1096 0060 0C4B     		ldr	r3, .L101+4
+ 1097 0062 53F82400 		ldr	r0, [r3, r4, lsl #2]
+ 1098              	.LVL82:
+ 1099 0066 FFF7FEFF 		bl	HAL_GPIO_Init
+ 1100              	.LVL83:
+ 420:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   gpio_init_structure.Mode = GPIO_MODE_AF_PP;
+ 1101              		.loc 1 420 0
+ 1102 006a 8023     		movs	r3, #128
+ 1103 006c 0393     		str	r3, [sp, #12]
+ 421:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   gpio_init_structure.Alternate = COM_RX_AF[COM];
+ 1104              		.loc 1 421 0
+ 1105 006e 0495     		str	r5, [sp, #16]
+ 422:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   HAL_GPIO_Init(COM_RX_PORT[COM], &gpio_init_structure);
+ 1106              		.loc 1 422 0
+ 1107 0070 0797     		str	r7, [sp, #28]
+ 423:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 1108              		.loc 1 423 0
+ 1109 0072 03A9     		add	r1, sp, #12
+ 1110 0074 084B     		ldr	r3, .L101+8
+ 1111 0076 53F82400 		ldr	r0, [r3, r4, lsl #2]
+ 1112 007a FFF7FEFF 		bl	HAL_GPIO_Init
+ 1113              	.LVL84:
+ 426:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   HAL_UART_Init(huart);
+ 1114              		.loc 1 426 0
+ 1115 007e 074B     		ldr	r3, .L101+12
+ 1116 0080 53F82430 		ldr	r3, [r3, r4, lsl #2]
+ 1117 0084 3360     		str	r3, [r6]
+ 427:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** }
+ 1118              		.loc 1 427 0
+ 1119 0086 3046     		mov	r0, r6
+ 1120 0088 FFF7FEFF 		bl	HAL_UART_Init
+ 1121              	.LVL85:
+ 428:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 1122              		.loc 1 428 0
+ 1123 008c 09B0     		add	sp, sp, #36
+ 1124              	.LCFI30:
+ 1125              		.cfi_def_cfa_offset 20
+ 1126              		@ sp needed
+ 1127 008e F0BD     		pop	{r4, r5, r6, r7, pc}
+ 1128              	.LVL86:
+ 1129              	.L102:
+ 1130              		.align	2
+ 1131              	.L101:
+ 1132 0090 00380240 		.word	1073887232
+ 1133 0094 00000000 		.word	.LANCHOR4
+ 1134 0098 00000000 		.word	.LANCHOR5
+ 1135 009c 00000000 		.word	.LANCHOR6
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s 			page 34
+
+
+ 1136              		.cfi_endproc
+ 1137              	.LFE145:
+ 1139              		.section	.text.BSP_COM_DeInit,"ax",%progbits
+ 1140              		.align	1
+ 1141              		.global	BSP_COM_DeInit
+ 1142              		.syntax unified
+ 1143              		.thumb
+ 1144              		.thumb_func
+ 1145              		.fpu fpv5-sp-d16
+ 1147              	BSP_COM_DeInit:
+ 1148              	.LFB146:
+ 441:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   /* USART configuration */
+ 1149              		.loc 1 441 0
+ 1150              		.cfi_startproc
+ 1151              		@ args = 0, pretend = 0, frame = 0
+ 1152              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1153              	.LVL87:
+ 1154 0000 10B5     		push	{r4, lr}
+ 1155              	.LCFI31:
+ 1156              		.cfi_def_cfa_offset 8
+ 1157              		.cfi_offset 4, -8
+ 1158              		.cfi_offset 14, -4
+ 1159 0002 0446     		mov	r4, r0
+ 443:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   HAL_UART_DeInit(huart);
+ 1160              		.loc 1 443 0
+ 1161 0004 064B     		ldr	r3, .L106
+ 1162 0006 53F82030 		ldr	r3, [r3, r0, lsl #2]
+ 1163 000a 0B60     		str	r3, [r1]
+ 444:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 1164              		.loc 1 444 0
+ 1165 000c 0846     		mov	r0, r1
+ 1166              	.LVL88:
+ 1167 000e FFF7FEFF 		bl	HAL_UART_DeInit
+ 1168              	.LVL89:
+ 447:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 1169              		.loc 1 447 0
+ 1170 0012 24B9     		cbnz	r4, .L103
+ 447:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 1171              		.loc 1 447 0 is_stmt 0 discriminator 1
+ 1172 0014 034A     		ldr	r2, .L106+4
+ 1173 0016 536C     		ldr	r3, [r2, #68]
+ 1174 0018 23F01003 		bic	r3, r3, #16
+ 1175 001c 5364     		str	r3, [r2, #68]
+ 1176              	.L103:
+ 1177 001e 10BD     		pop	{r4, pc}
+ 1178              	.L107:
+ 1179              		.align	2
+ 1180              	.L106:
+ 1181 0020 00000000 		.word	.LANCHOR6
+ 1182 0024 00380240 		.word	1073887232
+ 1183              		.cfi_endproc
+ 1184              	.LFE146:
+ 1186              		.section	.text.AUDIO_IO_Init,"ax",%progbits
+ 1187              		.align	1
+ 1188              		.global	AUDIO_IO_Init
+ 1189              		.syntax unified
+ 1190              		.thumb
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s 			page 35
+
+
+ 1191              		.thumb_func
+ 1192              		.fpu fpv5-sp-d16
+ 1194              	AUDIO_IO_Init:
+ 1195              	.LFB153:
+ 667:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** }
+ 668:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 669:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /*******************************************************************************
+ 670:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****                             LINK OPERATIONS
+ 671:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** *******************************************************************************/
+ 672:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 673:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /********************************* LINK AUDIO *********************************/
+ 674:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 675:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /**
+ 676:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @brief  Initializes Audio low level.
+ 677:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @retval None
+ 678:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   */
+ 679:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** void AUDIO_IO_Init(void) 
+ 680:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** {
+ 1196              		.loc 1 680 0 is_stmt 1
+ 1197              		.cfi_startproc
+ 1198              		@ args = 0, pretend = 0, frame = 0
+ 1199              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1200 0000 08B5     		push	{r3, lr}
+ 1201              	.LCFI32:
+ 1202              		.cfi_def_cfa_offset 8
+ 1203              		.cfi_offset 3, -8
+ 1204              		.cfi_offset 14, -4
+ 681:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   I2Cx_Init(&hI2cAudioHandler);
+ 1205              		.loc 1 681 0
+ 1206 0002 0248     		ldr	r0, .L110
+ 1207 0004 FFF7FEFF 		bl	I2Cx_Init
+ 1208              	.LVL90:
+ 1209 0008 08BD     		pop	{r3, pc}
+ 1210              	.L111:
+ 1211 000a 00BF     		.align	2
+ 1212              	.L110:
+ 1213 000c 00000000 		.word	.LANCHOR0
+ 1214              		.cfi_endproc
+ 1215              	.LFE153:
+ 1217              		.section	.text.AUDIO_IO_DeInit,"ax",%progbits
+ 1218              		.align	1
+ 1219              		.global	AUDIO_IO_DeInit
+ 1220              		.syntax unified
+ 1221              		.thumb
+ 1222              		.thumb_func
+ 1223              		.fpu fpv5-sp-d16
+ 1225              	AUDIO_IO_DeInit:
+ 1226              	.LFB154:
+ 682:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** }
+ 683:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 684:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /**
+ 685:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @brief  Deinitializes Audio low level.
+ 686:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @retval None
+ 687:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   */
+ 688:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** void AUDIO_IO_DeInit(void)
+ 689:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** {
+ 1227              		.loc 1 689 0
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s 			page 36
+
+
+ 1228              		.cfi_startproc
+ 1229              		@ args = 0, pretend = 0, frame = 0
+ 1230              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1231              		@ link register save eliminated.
+ 1232 0000 7047     		bx	lr
+ 1233              		.cfi_endproc
+ 1234              	.LFE154:
+ 1236              		.section	.text.AUDIO_IO_Write,"ax",%progbits
+ 1237              		.align	1
+ 1238              		.global	AUDIO_IO_Write
+ 1239              		.syntax unified
+ 1240              		.thumb
+ 1241              		.thumb_func
+ 1242              		.fpu fpv5-sp-d16
+ 1244              	AUDIO_IO_Write:
+ 1245              	.LFB155:
+ 690:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** }
+ 691:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 692:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /**
+ 693:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @brief  Writes a single data.
+ 694:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @param  Addr: I2C address
+ 695:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @param  Reg: Reg address 
+ 696:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @param  Value: Data to be written
+ 697:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @retval None
+ 698:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   */
+ 699:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** void AUDIO_IO_Write(uint8_t Addr, uint16_t Reg, uint16_t Value)
+ 700:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** {
+ 1246              		.loc 1 700 0
+ 1247              		.cfi_startproc
+ 1248              		@ args = 0, pretend = 0, frame = 8
+ 1249              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1250              	.LVL91:
+ 1251              		.loc 1 700 0
+ 1252 0000 10B5     		push	{r4, lr}
+ 1253              	.LCFI33:
+ 1254              		.cfi_def_cfa_offset 8
+ 1255              		.cfi_offset 4, -8
+ 1256              		.cfi_offset 14, -4
+ 1257 0002 84B0     		sub	sp, sp, #16
+ 1258              	.LCFI34:
+ 1259              		.cfi_def_cfa_offset 24
+ 1260              	.LVL92:
+ 701:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   uint16_t tmp = Value;
+ 702:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   
+ 703:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   Value = ((uint16_t)(tmp >> 8) & 0x00FF);
+ 704:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   
+ 705:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   Value |= ((uint16_t)(tmp << 8)& 0xFF00);
+ 1261              		.loc 1 705 0
+ 1262 0004 1302     		lsls	r3, r2, #8
+ 1263 0006 1BB2     		sxth	r3, r3
+ 1264 0008 43EA1222 		orr	r2, r3, r2, lsr #8
+ 1265              	.LVL93:
+ 1266 000c 04AC     		add	r4, sp, #16
+ 1267 000e 24F8022D 		strh	r2, [r4, #-2]!	@ movhi
+ 706:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   
+ 707:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   I2Cx_WriteMultiple(&hI2cAudioHandler, Addr, Reg, I2C_MEMADD_SIZE_16BIT,(uint8_t*)&Value, 2);
+ 1268              		.loc 1 707 0
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s 			page 37
+
+
+ 1269 0012 0223     		movs	r3, #2
+ 1270 0014 0193     		str	r3, [sp, #4]
+ 1271 0016 0094     		str	r4, [sp]
+ 1272 0018 0A46     		mov	r2, r1
+ 1273 001a 0146     		mov	r1, r0
+ 1274              	.LVL94:
+ 1275 001c 0248     		ldr	r0, .L115
+ 1276              	.LVL95:
+ 1277 001e FFF7FEFF 		bl	I2Cx_WriteMultiple
+ 1278              	.LVL96:
+ 708:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** }
+ 1279              		.loc 1 708 0
+ 1280 0022 04B0     		add	sp, sp, #16
+ 1281              	.LCFI35:
+ 1282              		.cfi_def_cfa_offset 8
+ 1283              		@ sp needed
+ 1284 0024 10BD     		pop	{r4, pc}
+ 1285              	.L116:
+ 1286 0026 00BF     		.align	2
+ 1287              	.L115:
+ 1288 0028 00000000 		.word	.LANCHOR0
+ 1289              		.cfi_endproc
+ 1290              	.LFE155:
+ 1292              		.section	.text.AUDIO_IO_Read,"ax",%progbits
+ 1293              		.align	1
+ 1294              		.global	AUDIO_IO_Read
+ 1295              		.syntax unified
+ 1296              		.thumb
+ 1297              		.thumb_func
+ 1298              		.fpu fpv5-sp-d16
+ 1300              	AUDIO_IO_Read:
+ 1301              	.LFB156:
+ 709:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 710:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /**
+ 711:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @brief  Reads a single data.
+ 712:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @param  Addr: I2C address
+ 713:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @param  Reg: Reg address 
+ 714:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @retval Data to be read
+ 715:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   */
+ 716:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** uint16_t AUDIO_IO_Read(uint8_t Addr, uint16_t Reg)
+ 717:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** {
+ 1302              		.loc 1 717 0
+ 1303              		.cfi_startproc
+ 1304              		@ args = 0, pretend = 0, frame = 8
+ 1305              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1306              	.LVL97:
+ 1307 0000 00B5     		push	{lr}
+ 1308              	.LCFI36:
+ 1309              		.cfi_def_cfa_offset 4
+ 1310              		.cfi_offset 14, -4
+ 1311 0002 85B0     		sub	sp, sp, #20
+ 1312              	.LCFI37:
+ 1313              		.cfi_def_cfa_offset 24
+ 718:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   uint16_t read_value = 0, tmp = 0;
+ 1314              		.loc 1 718 0
+ 1315 0004 04AA     		add	r2, sp, #16
+ 1316 0006 0023     		movs	r3, #0
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s 			page 38
+
+
+ 1317 0008 22F8023D 		strh	r3, [r2, #-2]!	@ movhi
+ 1318              	.LVL98:
+ 719:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   
+ 720:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   I2Cx_ReadMultiple(&hI2cAudioHandler, Addr, Reg, I2C_MEMADD_SIZE_16BIT, (uint8_t*)&read_value, 2);
+ 1319              		.loc 1 720 0
+ 1320 000c 0223     		movs	r3, #2
+ 1321 000e 0193     		str	r3, [sp, #4]
+ 1322 0010 0092     		str	r2, [sp]
+ 1323 0012 0A46     		mov	r2, r1
+ 1324 0014 0146     		mov	r1, r0
+ 1325              	.LVL99:
+ 1326 0016 0648     		ldr	r0, .L119
+ 1327              	.LVL100:
+ 1328 0018 FFF7FEFF 		bl	I2Cx_ReadMultiple
+ 1329              	.LVL101:
+ 721:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   
+ 722:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   tmp = ((uint16_t)(read_value >> 8) & 0x00FF);
+ 1330              		.loc 1 722 0
+ 1331 001c BDF80E30 		ldrh	r3, [sp, #14]
+ 1332              	.LVL102:
+ 723:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   
+ 724:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   tmp |= ((uint16_t)(read_value << 8)& 0xFF00);
+ 1333              		.loc 1 724 0
+ 1334 0020 1802     		lsls	r0, r3, #8
+ 1335 0022 00B2     		sxth	r0, r0
+ 1336 0024 40EA1320 		orr	r0, r0, r3, lsr #8
+ 1337              	.LVL103:
+ 725:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   
+ 726:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   read_value = tmp;
+ 727:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   
+ 728:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   return read_value;
+ 729:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** }
+ 1338              		.loc 1 729 0
+ 1339 0028 80B2     		uxth	r0, r0
+ 1340 002a 05B0     		add	sp, sp, #20
+ 1341              	.LCFI38:
+ 1342              		.cfi_def_cfa_offset 4
+ 1343              		@ sp needed
+ 1344 002c 5DF804FB 		ldr	pc, [sp], #4
+ 1345              	.L120:
+ 1346              		.align	2
+ 1347              	.L119:
+ 1348 0030 00000000 		.word	.LANCHOR0
+ 1349              		.cfi_endproc
+ 1350              	.LFE156:
+ 1352              		.section	.text.AUDIO_IO_Delay,"ax",%progbits
+ 1353              		.align	1
+ 1354              		.global	AUDIO_IO_Delay
+ 1355              		.syntax unified
+ 1356              		.thumb
+ 1357              		.thumb_func
+ 1358              		.fpu fpv5-sp-d16
+ 1360              	AUDIO_IO_Delay:
+ 1361              	.LFB157:
+ 730:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 731:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /**
+ 732:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @brief  AUDIO Codec delay 
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s 			page 39
+
+
+ 733:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @param  Delay: Delay in ms
+ 734:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @retval None
+ 735:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   */
+ 736:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** void AUDIO_IO_Delay(uint32_t Delay)
+ 737:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** {
+ 1362              		.loc 1 737 0
+ 1363              		.cfi_startproc
+ 1364              		@ args = 0, pretend = 0, frame = 0
+ 1365              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1366              	.LVL104:
+ 1367 0000 08B5     		push	{r3, lr}
+ 1368              	.LCFI39:
+ 1369              		.cfi_def_cfa_offset 8
+ 1370              		.cfi_offset 3, -8
+ 1371              		.cfi_offset 14, -4
+ 738:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   HAL_Delay(Delay);
+ 1372              		.loc 1 738 0
+ 1373 0002 FFF7FEFF 		bl	HAL_Delay
+ 1374              	.LVL105:
+ 1375 0006 08BD     		pop	{r3, pc}
+ 1376              		.cfi_endproc
+ 1377              	.LFE157:
+ 1379              		.section	.text.CAMERA_IO_Init,"ax",%progbits
+ 1380              		.align	1
+ 1381              		.global	CAMERA_IO_Init
+ 1382              		.syntax unified
+ 1383              		.thumb
+ 1384              		.thumb_func
+ 1385              		.fpu fpv5-sp-d16
+ 1387              	CAMERA_IO_Init:
+ 1388              	.LFB158:
+ 739:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** }
+ 740:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 741:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /********************************* LINK CAMERA ********************************/
+ 742:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 743:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /**
+ 744:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @brief  Initializes Camera low level.
+ 745:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @retval None
+ 746:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   */
+ 747:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** void CAMERA_IO_Init(void) 
+ 748:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** {
+ 1389              		.loc 1 748 0
+ 1390              		.cfi_startproc
+ 1391              		@ args = 0, pretend = 0, frame = 0
+ 1392              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1393 0000 08B5     		push	{r3, lr}
+ 1394              	.LCFI40:
+ 1395              		.cfi_def_cfa_offset 8
+ 1396              		.cfi_offset 3, -8
+ 1397              		.cfi_offset 14, -4
+ 749:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   I2Cx_Init(&hI2cExtHandler);
+ 1398              		.loc 1 749 0
+ 1399 0002 0248     		ldr	r0, .L125
+ 1400 0004 FFF7FEFF 		bl	I2Cx_Init
+ 1401              	.LVL106:
+ 1402 0008 08BD     		pop	{r3, pc}
+ 1403              	.L126:
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s 			page 40
+
+
+ 1404 000a 00BF     		.align	2
+ 1405              	.L125:
+ 1406 000c 00000000 		.word	.LANCHOR7
+ 1407              		.cfi_endproc
+ 1408              	.LFE158:
+ 1410              		.section	.text.CAMERA_IO_Write,"ax",%progbits
+ 1411              		.align	1
+ 1412              		.global	CAMERA_IO_Write
+ 1413              		.syntax unified
+ 1414              		.thumb
+ 1415              		.thumb_func
+ 1416              		.fpu fpv5-sp-d16
+ 1418              	CAMERA_IO_Write:
+ 1419              	.LFB159:
+ 750:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** }
+ 751:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 752:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /**
+ 753:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @brief  Camera writes single data.
+ 754:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @param  Addr: I2C address
+ 755:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @param  Reg: Register address 
+ 756:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @param  Value: Data to be written
+ 757:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @retval None
+ 758:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   */
+ 759:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** void CAMERA_IO_Write(uint8_t Addr, uint8_t Reg, uint8_t Value)
+ 760:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** {
+ 1420              		.loc 1 760 0
+ 1421              		.cfi_startproc
+ 1422              		@ args = 0, pretend = 0, frame = 8
+ 1423              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1424              	.LVL107:
+ 1425 0000 10B5     		push	{r4, lr}
+ 1426              	.LCFI41:
+ 1427              		.cfi_def_cfa_offset 8
+ 1428              		.cfi_offset 4, -8
+ 1429              		.cfi_offset 14, -4
+ 1430 0002 84B0     		sub	sp, sp, #16
+ 1431              	.LCFI42:
+ 1432              		.cfi_def_cfa_offset 24
+ 1433 0004 04AC     		add	r4, sp, #16
+ 1434 0006 04F8012D 		strb	r2, [r4, #-1]!
+ 761:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   I2Cx_WriteMultiple(&hI2cExtHandler, Addr, (uint16_t)Reg, I2C_MEMADD_SIZE_8BIT,(uint8_t*)&Value, 1
+ 1435              		.loc 1 761 0
+ 1436 000a 0123     		movs	r3, #1
+ 1437 000c 0193     		str	r3, [sp, #4]
+ 1438 000e 0094     		str	r4, [sp]
+ 1439 0010 0A46     		mov	r2, r1
+ 1440              	.LVL108:
+ 1441 0012 0146     		mov	r1, r0
+ 1442              	.LVL109:
+ 1443 0014 0248     		ldr	r0, .L129
+ 1444              	.LVL110:
+ 1445 0016 FFF7FEFF 		bl	I2Cx_WriteMultiple
+ 1446              	.LVL111:
+ 762:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** }
+ 1447              		.loc 1 762 0
+ 1448 001a 04B0     		add	sp, sp, #16
+ 1449              	.LCFI43:
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s 			page 41
+
+
+ 1450              		.cfi_def_cfa_offset 8
+ 1451              		@ sp needed
+ 1452 001c 10BD     		pop	{r4, pc}
+ 1453              	.L130:
+ 1454 001e 00BF     		.align	2
+ 1455              	.L129:
+ 1456 0020 00000000 		.word	.LANCHOR7
+ 1457              		.cfi_endproc
+ 1458              	.LFE159:
+ 1460              		.section	.text.CAMERA_IO_Read,"ax",%progbits
+ 1461              		.align	1
+ 1462              		.global	CAMERA_IO_Read
+ 1463              		.syntax unified
+ 1464              		.thumb
+ 1465              		.thumb_func
+ 1466              		.fpu fpv5-sp-d16
+ 1468              	CAMERA_IO_Read:
+ 1469              	.LFB160:
+ 763:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 764:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /**
+ 765:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @brief  Camera reads single data.
+ 766:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @param  Addr: I2C address
+ 767:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @param  Reg: Register address 
+ 768:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @retval Read data
+ 769:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   */
+ 770:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** uint8_t CAMERA_IO_Read(uint8_t Addr, uint8_t Reg)
+ 771:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** {
+ 1470              		.loc 1 771 0
+ 1471              		.cfi_startproc
+ 1472              		@ args = 0, pretend = 0, frame = 8
+ 1473              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1474              	.LVL112:
+ 1475 0000 00B5     		push	{lr}
+ 1476              	.LCFI44:
+ 1477              		.cfi_def_cfa_offset 4
+ 1478              		.cfi_offset 14, -4
+ 1479 0002 85B0     		sub	sp, sp, #20
+ 1480              	.LCFI45:
+ 1481              		.cfi_def_cfa_offset 24
+ 772:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   uint8_t read_value = 0;
+ 1482              		.loc 1 772 0
+ 1483 0004 04AA     		add	r2, sp, #16
+ 1484 0006 0023     		movs	r3, #0
+ 1485 0008 02F8013D 		strb	r3, [r2, #-1]!
+ 773:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 774:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   I2Cx_ReadMultiple(&hI2cExtHandler, Addr, Reg, I2C_MEMADD_SIZE_8BIT, (uint8_t*)&read_value, 1);
+ 1486              		.loc 1 774 0
+ 1487 000c 0123     		movs	r3, #1
+ 1488 000e 0193     		str	r3, [sp, #4]
+ 1489 0010 0092     		str	r2, [sp]
+ 1490 0012 0A46     		mov	r2, r1
+ 1491 0014 0146     		mov	r1, r0
+ 1492              	.LVL113:
+ 1493 0016 0448     		ldr	r0, .L133
+ 1494              	.LVL114:
+ 1495 0018 FFF7FEFF 		bl	I2Cx_ReadMultiple
+ 1496              	.LVL115:
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s 			page 42
+
+
+ 775:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 776:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   return read_value;
+ 777:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** }
+ 1497              		.loc 1 777 0
+ 1498 001c 9DF80F00 		ldrb	r0, [sp, #15]	@ zero_extendqisi2
+ 1499 0020 05B0     		add	sp, sp, #20
+ 1500              	.LCFI46:
+ 1501              		.cfi_def_cfa_offset 4
+ 1502              		@ sp needed
+ 1503 0022 5DF804FB 		ldr	pc, [sp], #4
+ 1504              	.L134:
+ 1505 0026 00BF     		.align	2
+ 1506              	.L133:
+ 1507 0028 00000000 		.word	.LANCHOR7
+ 1508              		.cfi_endproc
+ 1509              	.LFE160:
+ 1511              		.section	.text.CAMERA_Delay,"ax",%progbits
+ 1512              		.align	1
+ 1513              		.global	CAMERA_Delay
+ 1514              		.syntax unified
+ 1515              		.thumb
+ 1516              		.thumb_func
+ 1517              		.fpu fpv5-sp-d16
+ 1519              	CAMERA_Delay:
+ 1520              	.LFB161:
+ 778:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 779:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /**
+ 780:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @brief  Camera delay 
+ 781:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @param  Delay: Delay in ms
+ 782:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @retval None
+ 783:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   */
+ 784:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** void CAMERA_Delay(uint32_t Delay)
+ 785:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** {
+ 1521              		.loc 1 785 0
+ 1522              		.cfi_startproc
+ 1523              		@ args = 0, pretend = 0, frame = 0
+ 1524              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1525              	.LVL116:
+ 1526 0000 08B5     		push	{r3, lr}
+ 1527              	.LCFI47:
+ 1528              		.cfi_def_cfa_offset 8
+ 1529              		.cfi_offset 3, -8
+ 1530              		.cfi_offset 14, -4
+ 786:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   HAL_Delay(Delay);
+ 1531              		.loc 1 786 0
+ 1532 0002 FFF7FEFF 		bl	HAL_Delay
+ 1533              	.LVL117:
+ 1534 0006 08BD     		pop	{r3, pc}
+ 1535              		.cfi_endproc
+ 1536              	.LFE161:
+ 1538              		.section	.text.EEPROM_IO_Init,"ax",%progbits
+ 1539              		.align	1
+ 1540              		.global	EEPROM_IO_Init
+ 1541              		.syntax unified
+ 1542              		.thumb
+ 1543              		.thumb_func
+ 1544              		.fpu fpv5-sp-d16
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s 			page 43
+
+
+ 1546              	EEPROM_IO_Init:
+ 1547              	.LFB162:
+ 787:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** }
+ 788:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 789:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /******************************** LINK I2C EEPROM *****************************/
+ 790:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 791:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /**
+ 792:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @brief  Initializes peripherals used by the I2C EEPROM driver.
+ 793:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @retval None
+ 794:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   */
+ 795:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** void EEPROM_IO_Init(void)
+ 796:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** {
+ 1548              		.loc 1 796 0
+ 1549              		.cfi_startproc
+ 1550              		@ args = 0, pretend = 0, frame = 0
+ 1551              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1552 0000 08B5     		push	{r3, lr}
+ 1553              	.LCFI48:
+ 1554              		.cfi_def_cfa_offset 8
+ 1555              		.cfi_offset 3, -8
+ 1556              		.cfi_offset 14, -4
+ 797:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   I2Cx_Init(&hI2cExtHandler);
+ 1557              		.loc 1 797 0
+ 1558 0002 0248     		ldr	r0, .L139
+ 1559 0004 FFF7FEFF 		bl	I2Cx_Init
+ 1560              	.LVL118:
+ 1561 0008 08BD     		pop	{r3, pc}
+ 1562              	.L140:
+ 1563 000a 00BF     		.align	2
+ 1564              	.L139:
+ 1565 000c 00000000 		.word	.LANCHOR7
+ 1566              		.cfi_endproc
+ 1567              	.LFE162:
+ 1569              		.section	.text.EEPROM_IO_WriteData,"ax",%progbits
+ 1570              		.align	1
+ 1571              		.global	EEPROM_IO_WriteData
+ 1572              		.syntax unified
+ 1573              		.thumb
+ 1574              		.thumb_func
+ 1575              		.fpu fpv5-sp-d16
+ 1577              	EEPROM_IO_WriteData:
+ 1578              	.LFB163:
+ 798:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** }
+ 799:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 800:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /**
+ 801:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @brief  Write data to I2C EEPROM driver in using DMA channel.
+ 802:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @param  DevAddress: Target device address
+ 803:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @param  MemAddress: Internal memory address
+ 804:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @param  pBuffer: Pointer to data buffer
+ 805:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @param  BufferSize: Amount of data to be sent
+ 806:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @retval HAL status
+ 807:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   */
+ 808:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** HAL_StatusTypeDef EEPROM_IO_WriteData(uint16_t DevAddress, uint16_t MemAddress, uint8_t* pBuffer, u
+ 809:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** {
+ 1579              		.loc 1 809 0
+ 1580              		.cfi_startproc
+ 1581              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s 			page 44
+
+
+ 1582              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1583              	.LVL119:
+ 1584 0000 00B5     		push	{lr}
+ 1585              	.LCFI49:
+ 1586              		.cfi_def_cfa_offset 4
+ 1587              		.cfi_offset 14, -4
+ 1588 0002 83B0     		sub	sp, sp, #12
+ 1589              	.LCFI50:
+ 1590              		.cfi_def_cfa_offset 16
+ 810:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   return (I2Cx_WriteMultiple(&hI2cExtHandler, DevAddress, MemAddress, I2C_MEMADD_SIZE_16BIT, pBuffe
+ 1591              		.loc 1 810 0
+ 1592 0004 9BB2     		uxth	r3, r3
+ 1593              	.LVL120:
+ 1594 0006 0193     		str	r3, [sp, #4]
+ 1595 0008 0092     		str	r2, [sp]
+ 1596 000a 0223     		movs	r3, #2
+ 1597 000c 0A46     		mov	r2, r1
+ 1598              	.LVL121:
+ 1599 000e C1B2     		uxtb	r1, r0
+ 1600              	.LVL122:
+ 1601 0010 0248     		ldr	r0, .L143
+ 1602              	.LVL123:
+ 1603 0012 FFF7FEFF 		bl	I2Cx_WriteMultiple
+ 1604              	.LVL124:
+ 811:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** }
+ 1605              		.loc 1 811 0
+ 1606 0016 03B0     		add	sp, sp, #12
+ 1607              	.LCFI51:
+ 1608              		.cfi_def_cfa_offset 4
+ 1609              		@ sp needed
+ 1610 0018 5DF804FB 		ldr	pc, [sp], #4
+ 1611              	.L144:
+ 1612              		.align	2
+ 1613              	.L143:
+ 1614 001c 00000000 		.word	.LANCHOR7
+ 1615              		.cfi_endproc
+ 1616              	.LFE163:
+ 1618              		.section	.text.EEPROM_IO_ReadData,"ax",%progbits
+ 1619              		.align	1
+ 1620              		.global	EEPROM_IO_ReadData
+ 1621              		.syntax unified
+ 1622              		.thumb
+ 1623              		.thumb_func
+ 1624              		.fpu fpv5-sp-d16
+ 1626              	EEPROM_IO_ReadData:
+ 1627              	.LFB164:
+ 812:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 813:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /**
+ 814:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @brief  Read data from I2C EEPROM driver in using DMA channel.
+ 815:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @param  DevAddress: Target device address
+ 816:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @param  MemAddress: Internal memory address
+ 817:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @param  pBuffer: Pointer to data buffer
+ 818:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @param  BufferSize: Amount of data to be read
+ 819:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @retval HAL status
+ 820:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   */
+ 821:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** HAL_StatusTypeDef EEPROM_IO_ReadData(uint16_t DevAddress, uint16_t MemAddress, uint8_t* pBuffer, ui
+ 822:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** {
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s 			page 45
+
+
+ 1628              		.loc 1 822 0
+ 1629              		.cfi_startproc
+ 1630              		@ args = 0, pretend = 0, frame = 0
+ 1631              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1632              	.LVL125:
+ 1633 0000 00B5     		push	{lr}
+ 1634              	.LCFI52:
+ 1635              		.cfi_def_cfa_offset 4
+ 1636              		.cfi_offset 14, -4
+ 1637 0002 83B0     		sub	sp, sp, #12
+ 1638              	.LCFI53:
+ 1639              		.cfi_def_cfa_offset 16
+ 823:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   return (I2Cx_ReadMultiple(&hI2cExtHandler, DevAddress, MemAddress, I2C_MEMADD_SIZE_16BIT, pBuffer
+ 1640              		.loc 1 823 0
+ 1641 0004 9BB2     		uxth	r3, r3
+ 1642              	.LVL126:
+ 1643 0006 0193     		str	r3, [sp, #4]
+ 1644 0008 0092     		str	r2, [sp]
+ 1645 000a 0223     		movs	r3, #2
+ 1646 000c 0A46     		mov	r2, r1
+ 1647              	.LVL127:
+ 1648 000e C1B2     		uxtb	r1, r0
+ 1649              	.LVL128:
+ 1650 0010 0248     		ldr	r0, .L147
+ 1651              	.LVL129:
+ 1652 0012 FFF7FEFF 		bl	I2Cx_ReadMultiple
+ 1653              	.LVL130:
+ 824:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** }
+ 1654              		.loc 1 824 0
+ 1655 0016 03B0     		add	sp, sp, #12
+ 1656              	.LCFI54:
+ 1657              		.cfi_def_cfa_offset 4
+ 1658              		@ sp needed
+ 1659 0018 5DF804FB 		ldr	pc, [sp], #4
+ 1660              	.L148:
+ 1661              		.align	2
+ 1662              	.L147:
+ 1663 001c 00000000 		.word	.LANCHOR7
+ 1664              		.cfi_endproc
+ 1665              	.LFE164:
+ 1667              		.section	.text.EEPROM_IO_IsDeviceReady,"ax",%progbits
+ 1668              		.align	1
+ 1669              		.global	EEPROM_IO_IsDeviceReady
+ 1670              		.syntax unified
+ 1671              		.thumb
+ 1672              		.thumb_func
+ 1673              		.fpu fpv5-sp-d16
+ 1675              	EEPROM_IO_IsDeviceReady:
+ 1676              	.LFB165:
+ 825:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 826:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /**
+ 827:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @brief  Checks if target device is ready for communication. 
+ 828:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @note   This function is used with Memory devices
+ 829:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @param  DevAddress: Target device address
+ 830:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @param  Trials: Number of trials
+ 831:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @retval HAL status
+ 832:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   */
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s 			page 46
+
+
+ 833:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** HAL_StatusTypeDef EEPROM_IO_IsDeviceReady(uint16_t DevAddress, uint32_t Trials)
+ 834:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** { 
+ 1677              		.loc 1 834 0
+ 1678              		.cfi_startproc
+ 1679              		@ args = 0, pretend = 0, frame = 0
+ 1680              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1681              	.LVL131:
+ 1682 0000 08B5     		push	{r3, lr}
+ 1683              	.LCFI55:
+ 1684              		.cfi_def_cfa_offset 8
+ 1685              		.cfi_offset 3, -8
+ 1686              		.cfi_offset 14, -4
+ 835:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   return (I2Cx_IsDeviceReady(&hI2cExtHandler, DevAddress, Trials));
+ 1687              		.loc 1 835 0
+ 1688 0002 0A46     		mov	r2, r1
+ 1689 0004 0146     		mov	r1, r0
+ 1690              	.LVL132:
+ 1691 0006 0248     		ldr	r0, .L151
+ 1692              	.LVL133:
+ 1693 0008 FFF7FEFF 		bl	I2Cx_IsDeviceReady
+ 1694              	.LVL134:
+ 836:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** }
+ 1695              		.loc 1 836 0
+ 1696 000c 08BD     		pop	{r3, pc}
+ 1697              	.L152:
+ 1698 000e 00BF     		.align	2
+ 1699              	.L151:
+ 1700 0010 00000000 		.word	.LANCHOR7
+ 1701              		.cfi_endproc
+ 1702              	.LFE165:
+ 1704              		.section	.text.TS_IO_Init,"ax",%progbits
+ 1705              		.align	1
+ 1706              		.global	TS_IO_Init
+ 1707              		.syntax unified
+ 1708              		.thumb
+ 1709              		.thumb_func
+ 1710              		.fpu fpv5-sp-d16
+ 1712              	TS_IO_Init:
+ 1713              	.LFB166:
+ 837:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 838:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /********************************* LINK TOUCHSCREEN *********************************/
+ 839:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 840:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /**
+ 841:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @brief  Initializes Touchscreen low level.
+ 842:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @retval None
+ 843:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   */
+ 844:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** void TS_IO_Init(void)
+ 845:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** {
+ 1714              		.loc 1 845 0
+ 1715              		.cfi_startproc
+ 1716              		@ args = 0, pretend = 0, frame = 0
+ 1717              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1718 0000 08B5     		push	{r3, lr}
+ 1719              	.LCFI56:
+ 1720              		.cfi_def_cfa_offset 8
+ 1721              		.cfi_offset 3, -8
+ 1722              		.cfi_offset 14, -4
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s 			page 47
+
+
+ 846:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   I2Cx_Init(&hI2cAudioHandler);
+ 1723              		.loc 1 846 0
+ 1724 0002 0248     		ldr	r0, .L155
+ 1725 0004 FFF7FEFF 		bl	I2Cx_Init
+ 1726              	.LVL135:
+ 1727 0008 08BD     		pop	{r3, pc}
+ 1728              	.L156:
+ 1729 000a 00BF     		.align	2
+ 1730              	.L155:
+ 1731 000c 00000000 		.word	.LANCHOR0
+ 1732              		.cfi_endproc
+ 1733              	.LFE166:
+ 1735              		.section	.text.TS_IO_Write,"ax",%progbits
+ 1736              		.align	1
+ 1737              		.global	TS_IO_Write
+ 1738              		.syntax unified
+ 1739              		.thumb
+ 1740              		.thumb_func
+ 1741              		.fpu fpv5-sp-d16
+ 1743              	TS_IO_Write:
+ 1744              	.LFB167:
+ 847:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** }
+ 848:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 849:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /**
+ 850:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @brief  Writes a single data.
+ 851:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @param  Addr: I2C address
+ 852:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @param  Reg: Reg address
+ 853:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @param  Value: Data to be written
+ 854:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @retval None
+ 855:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   */
+ 856:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** void TS_IO_Write(uint8_t Addr, uint8_t Reg, uint8_t Value)
+ 857:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** {
+ 1745              		.loc 1 857 0
+ 1746              		.cfi_startproc
+ 1747              		@ args = 0, pretend = 0, frame = 8
+ 1748              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1749              	.LVL136:
+ 1750 0000 10B5     		push	{r4, lr}
+ 1751              	.LCFI57:
+ 1752              		.cfi_def_cfa_offset 8
+ 1753              		.cfi_offset 4, -8
+ 1754              		.cfi_offset 14, -4
+ 1755 0002 84B0     		sub	sp, sp, #16
+ 1756              	.LCFI58:
+ 1757              		.cfi_def_cfa_offset 24
+ 1758 0004 04AC     		add	r4, sp, #16
+ 1759 0006 04F8012D 		strb	r2, [r4, #-1]!
+ 858:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   I2Cx_WriteMultiple(&hI2cAudioHandler, Addr, (uint16_t)Reg, I2C_MEMADD_SIZE_8BIT,(uint8_t*)&Value,
+ 1760              		.loc 1 858 0
+ 1761 000a 0123     		movs	r3, #1
+ 1762 000c 0193     		str	r3, [sp, #4]
+ 1763 000e 0094     		str	r4, [sp]
+ 1764 0010 0A46     		mov	r2, r1
+ 1765              	.LVL137:
+ 1766 0012 0146     		mov	r1, r0
+ 1767              	.LVL138:
+ 1768 0014 0248     		ldr	r0, .L159
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s 			page 48
+
+
+ 1769              	.LVL139:
+ 1770 0016 FFF7FEFF 		bl	I2Cx_WriteMultiple
+ 1771              	.LVL140:
+ 859:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** }
+ 1772              		.loc 1 859 0
+ 1773 001a 04B0     		add	sp, sp, #16
+ 1774              	.LCFI59:
+ 1775              		.cfi_def_cfa_offset 8
+ 1776              		@ sp needed
+ 1777 001c 10BD     		pop	{r4, pc}
+ 1778              	.L160:
+ 1779 001e 00BF     		.align	2
+ 1780              	.L159:
+ 1781 0020 00000000 		.word	.LANCHOR0
+ 1782              		.cfi_endproc
+ 1783              	.LFE167:
+ 1785              		.section	.text.TS_IO_Read,"ax",%progbits
+ 1786              		.align	1
+ 1787              		.global	TS_IO_Read
+ 1788              		.syntax unified
+ 1789              		.thumb
+ 1790              		.thumb_func
+ 1791              		.fpu fpv5-sp-d16
+ 1793              	TS_IO_Read:
+ 1794              	.LFB168:
+ 860:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 861:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /**
+ 862:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @brief  Reads a single data.
+ 863:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @param  Addr: I2C address
+ 864:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @param  Reg: Reg address
+ 865:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @retval Data to be read
+ 866:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   */
+ 867:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** uint8_t TS_IO_Read(uint8_t Addr, uint8_t Reg)
+ 868:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** {
+ 1795              		.loc 1 868 0
+ 1796              		.cfi_startproc
+ 1797              		@ args = 0, pretend = 0, frame = 8
+ 1798              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1799              	.LVL141:
+ 1800 0000 00B5     		push	{lr}
+ 1801              	.LCFI60:
+ 1802              		.cfi_def_cfa_offset 4
+ 1803              		.cfi_offset 14, -4
+ 1804 0002 85B0     		sub	sp, sp, #20
+ 1805              	.LCFI61:
+ 1806              		.cfi_def_cfa_offset 24
+ 869:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   uint8_t read_value = 0;
+ 1807              		.loc 1 869 0
+ 1808 0004 04AA     		add	r2, sp, #16
+ 1809 0006 0023     		movs	r3, #0
+ 1810 0008 02F8013D 		strb	r3, [r2, #-1]!
+ 870:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 871:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   I2Cx_ReadMultiple(&hI2cAudioHandler, Addr, Reg, I2C_MEMADD_SIZE_8BIT, (uint8_t*)&read_value, 1);
+ 1811              		.loc 1 871 0
+ 1812 000c 0123     		movs	r3, #1
+ 1813 000e 0193     		str	r3, [sp, #4]
+ 1814 0010 0092     		str	r2, [sp]
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s 			page 49
+
+
+ 1815 0012 0A46     		mov	r2, r1
+ 1816 0014 0146     		mov	r1, r0
+ 1817              	.LVL142:
+ 1818 0016 0448     		ldr	r0, .L163
+ 1819              	.LVL143:
+ 1820 0018 FFF7FEFF 		bl	I2Cx_ReadMultiple
+ 1821              	.LVL144:
+ 872:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 873:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   return read_value;
+ 874:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** }
+ 1822              		.loc 1 874 0
+ 1823 001c 9DF80F00 		ldrb	r0, [sp, #15]	@ zero_extendqisi2
+ 1824 0020 05B0     		add	sp, sp, #20
+ 1825              	.LCFI62:
+ 1826              		.cfi_def_cfa_offset 4
+ 1827              		@ sp needed
+ 1828 0022 5DF804FB 		ldr	pc, [sp], #4
+ 1829              	.L164:
+ 1830 0026 00BF     		.align	2
+ 1831              	.L163:
+ 1832 0028 00000000 		.word	.LANCHOR0
+ 1833              		.cfi_endproc
+ 1834              	.LFE168:
+ 1836              		.section	.text.TS_IO_Delay,"ax",%progbits
+ 1837              		.align	1
+ 1838              		.global	TS_IO_Delay
+ 1839              		.syntax unified
+ 1840              		.thumb
+ 1841              		.thumb_func
+ 1842              		.fpu fpv5-sp-d16
+ 1844              	TS_IO_Delay:
+ 1845              	.LFB169:
+ 875:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** 
+ 876:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** /**
+ 877:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @brief  TS delay
+ 878:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @param  Delay: Delay in ms
+ 879:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   * @retval None
+ 880:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   */
+ 881:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** void TS_IO_Delay(uint32_t Delay)
+ 882:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c **** {
+ 1846              		.loc 1 882 0
+ 1847              		.cfi_startproc
+ 1848              		@ args = 0, pretend = 0, frame = 0
+ 1849              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1850              	.LVL145:
+ 1851 0000 08B5     		push	{r3, lr}
+ 1852              	.LCFI63:
+ 1853              		.cfi_def_cfa_offset 8
+ 1854              		.cfi_offset 3, -8
+ 1855              		.cfi_offset 14, -4
+ 883:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c ****   HAL_Delay(Delay);
+ 1856              		.loc 1 883 0
+ 1857 0002 FFF7FEFF 		bl	HAL_Delay
+ 1858              	.LVL146:
+ 1859 0006 08BD     		pop	{r3, pc}
+ 1860              		.cfi_endproc
+ 1861              	.LFE169:
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s 			page 50
+
+
+ 1863              		.global	COM_RX_AF
+ 1864              		.global	COM_TX_AF
+ 1865              		.global	COM_RX_PIN
+ 1866              		.global	COM_TX_PIN
+ 1867              		.global	COM_RX_PORT
+ 1868              		.global	COM_TX_PORT
+ 1869              		.global	COM_USART
+ 1870              		.global	BUTTON_IRQn
+ 1871              		.global	BUTTON_PIN
+ 1872              		.global	BUTTON_PORT
+ 1873              		.global	GPIO_PIN
+ 1874              		.section	.bss.hI2cAudioHandler,"aw",%nobits
+ 1875              		.align	2
+ 1876              		.set	.LANCHOR0,. + 0
+ 1879              	hI2cAudioHandler:
+ 1880 0000 00000000 		.space	76
+ 1880      00000000 
+ 1880      00000000 
+ 1880      00000000 
+ 1880      00000000 
+ 1881              		.section	.bss.hI2cExtHandler,"aw",%nobits
+ 1882              		.align	2
+ 1883              		.set	.LANCHOR7,. + 0
+ 1886              	hI2cExtHandler:
+ 1887 0000 00000000 		.space	76
+ 1887      00000000 
+ 1887      00000000 
+ 1887      00000000 
+ 1887      00000000 
+ 1888              		.section	.data.BUTTON_PORT,"aw",%progbits
+ 1889              		.align	2
+ 1890              		.set	.LANCHOR2,. + 0
+ 1893              	BUTTON_PORT:
+ 1894 0000 00200240 		.word	1073881088
+ 1895 0004 00200240 		.word	1073881088
+ 1896 0008 00200240 		.word	1073881088
+ 1897              		.section	.data.COM_RX_PORT,"aw",%progbits
+ 1898              		.align	2
+ 1899              		.set	.LANCHOR5,. + 0
+ 1902              	COM_RX_PORT:
+ 1903 0000 00040240 		.word	1073873920
+ 1904              		.section	.data.COM_TX_PORT,"aw",%progbits
+ 1905              		.align	2
+ 1906              		.set	.LANCHOR4,. + 0
+ 1909              	COM_TX_PORT:
+ 1910 0000 00000240 		.word	1073872896
+ 1911              		.section	.data.COM_USART,"aw",%progbits
+ 1912              		.align	2
+ 1913              		.set	.LANCHOR6,. + 0
+ 1916              	COM_USART:
+ 1917 0000 00100140 		.word	1073811456
+ 1918              		.section	.rodata.BUTTON_IRQn,"a",%progbits
+ 1919              		.align	2
+ 1920              		.set	.LANCHOR3,. + 0
+ 1923              	BUTTON_IRQn:
+ 1924 0000 2800     		.short	40
+ 1925 0002 2800     		.short	40
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s 			page 51
+
+
+ 1926 0004 2800     		.short	40
+ 1927              		.section	.rodata.BUTTON_PIN,"a",%progbits
+ 1928              		.align	2
+ 1929              		.set	.LANCHOR1,. + 0
+ 1932              	BUTTON_PIN:
+ 1933 0000 0008     		.short	2048
+ 1934 0002 0008     		.short	2048
+ 1935 0004 0008     		.short	2048
+ 1936              		.section	.rodata.COM_RX_AF,"a",%progbits
+ 1937              		.align	2
+ 1940              	COM_RX_AF:
+ 1941 0000 0700     		.short	7
+ 1942              		.section	.rodata.COM_RX_PIN,"a",%progbits
+ 1943              		.align	2
+ 1946              	COM_RX_PIN:
+ 1947 0000 8000     		.short	128
+ 1948              		.section	.rodata.COM_TX_AF,"a",%progbits
+ 1949              		.align	2
+ 1952              	COM_TX_AF:
+ 1953 0000 0700     		.short	7
+ 1954              		.section	.rodata.COM_TX_PIN,"a",%progbits
+ 1955              		.align	2
+ 1958              	COM_TX_PIN:
+ 1959 0000 0002     		.short	512
+ 1960              		.section	.rodata.GPIO_PIN,"a",%progbits
+ 1961              		.align	2
+ 1964              	GPIO_PIN:
+ 1965 0000 02000000 		.word	2
+ 1966              		.text
+ 1967              	.Letext0:
+ 1968              		.file 2 "Drivers/CMSIS/Device/ST/STM32F7xx/Include/stm32f746xx.h"
+ 1969              		.file 3 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 1970              		.file 4 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 1971              		.file 5 "Drivers/CMSIS/Include/core_cm7.h"
+ 1972              		.file 6 "Drivers/CMSIS/Device/ST/STM32F7xx/Include/system_stm32f7xx.h"
+ 1973              		.file 7 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\lock.h"
+ 1974              		.file 8 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\_types.h"
+ 1975              		.file 9 "c:\\gcc_toolchain\\6_2017-q1-update\\lib\\gcc\\arm-none-eabi\\6.3.1\\include\\stddef.h"
+ 1976              		.file 10 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\reent.h"
+ 1977              		.file 11 "Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_def.h"
+ 1978              		.file 12 "Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_gpio.h"
+ 1979              		.file 13 "Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_dma.h"
+ 1980              		.file 14 "Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_i2c.h"
+ 1981              		.file 15 "Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h"
+ 1982              		.file 16 "Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.h"
+ 1983              		.file 17 "Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal.h"
+ 1984              		.file 18 "Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_cortex.h"
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s 			page 52
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 stm32746g_discovery.c
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:18     .text.I2Cx_MspInit:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:24     .text.I2Cx_MspInit:00000000 I2Cx_MspInit
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:220    .text.I2Cx_MspInit:00000118 $d
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:228    .text.I2Cx_Init:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:234    .text.I2Cx_Init:00000000 I2Cx_Init
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:295    .text.I2Cx_Init:0000003c $d
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:303    .text.I2Cx_Error:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:309    .text.I2Cx_Error:00000000 I2Cx_Error
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:334    .text.I2Cx_WriteMultiple:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:340    .text.I2Cx_WriteMultiple:00000000 I2Cx_WriteMultiple
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:399    .text.I2Cx_ReadMultiple:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:405    .text.I2Cx_ReadMultiple:00000000 I2Cx_ReadMultiple
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:464    .text.I2Cx_IsDeviceReady:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:470    .text.I2Cx_IsDeviceReady:00000000 I2Cx_IsDeviceReady
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:492    .text.BSP_GetVersion:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:499    .text.BSP_GetVersion:00000000 BSP_GetVersion
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:513    .text.BSP_LED_Init:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:520    .text.BSP_LED_Init:00000000 BSP_LED_Init
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:586    .text.BSP_LED_Init:00000044 $d
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:592    .text.BSP_LED_DeInit:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:599    .text.BSP_LED_DeInit:00000000 BSP_LED_DeInit
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:634    .text.BSP_LED_DeInit:0000001c $d
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:639    .text.BSP_LED_On:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:646    .text.BSP_LED_On:00000000 BSP_LED_On
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:675    .text.BSP_LED_On:00000014 $d
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:680    .text.BSP_LED_Off:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:687    .text.BSP_LED_Off:00000000 BSP_LED_Off
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:716    .text.BSP_LED_Off:00000014 $d
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:721    .text.BSP_LED_Toggle:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:728    .text.BSP_LED_Toggle:00000000 BSP_LED_Toggle
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:756    .text.BSP_LED_Toggle:00000010 $d
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:761    .text.BSP_PB_Init:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:768    .text.BSP_PB_Init:00000000 BSP_PB_Init
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:914    .text.BSP_PB_Init:000000b8 $d
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:924    .text.BSP_PB_DeInit:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:931    .text.BSP_PB_DeInit:00000000 BSP_PB_DeInit
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:965    .text.BSP_PB_DeInit:00000024 $d
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:972    .text.BSP_PB_GetState:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:979    .text.BSP_PB_GetState:00000000 BSP_PB_GetState
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1004   .text.BSP_PB_GetState:00000014 $d
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1010   .text.BSP_COM_Init:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1017   .text.BSP_COM_Init:00000000 BSP_COM_Init
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1132   .text.BSP_COM_Init:00000090 $d
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1140   .text.BSP_COM_DeInit:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1147   .text.BSP_COM_DeInit:00000000 BSP_COM_DeInit
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1181   .text.BSP_COM_DeInit:00000020 $d
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1187   .text.AUDIO_IO_Init:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1194   .text.AUDIO_IO_Init:00000000 AUDIO_IO_Init
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1213   .text.AUDIO_IO_Init:0000000c $d
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1218   .text.AUDIO_IO_DeInit:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1225   .text.AUDIO_IO_DeInit:00000000 AUDIO_IO_DeInit
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1237   .text.AUDIO_IO_Write:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1244   .text.AUDIO_IO_Write:00000000 AUDIO_IO_Write
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1288   .text.AUDIO_IO_Write:00000028 $d
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1293   .text.AUDIO_IO_Read:00000000 $t
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s 			page 53
+
+
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1300   .text.AUDIO_IO_Read:00000000 AUDIO_IO_Read
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1348   .text.AUDIO_IO_Read:00000030 $d
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1353   .text.AUDIO_IO_Delay:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1360   .text.AUDIO_IO_Delay:00000000 AUDIO_IO_Delay
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1380   .text.CAMERA_IO_Init:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1387   .text.CAMERA_IO_Init:00000000 CAMERA_IO_Init
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1406   .text.CAMERA_IO_Init:0000000c $d
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1411   .text.CAMERA_IO_Write:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1418   .text.CAMERA_IO_Write:00000000 CAMERA_IO_Write
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1456   .text.CAMERA_IO_Write:00000020 $d
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1461   .text.CAMERA_IO_Read:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1468   .text.CAMERA_IO_Read:00000000 CAMERA_IO_Read
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1507   .text.CAMERA_IO_Read:00000028 $d
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1512   .text.CAMERA_Delay:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1519   .text.CAMERA_Delay:00000000 CAMERA_Delay
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1539   .text.EEPROM_IO_Init:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1546   .text.EEPROM_IO_Init:00000000 EEPROM_IO_Init
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1565   .text.EEPROM_IO_Init:0000000c $d
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1570   .text.EEPROM_IO_WriteData:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1577   .text.EEPROM_IO_WriteData:00000000 EEPROM_IO_WriteData
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1614   .text.EEPROM_IO_WriteData:0000001c $d
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1619   .text.EEPROM_IO_ReadData:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1626   .text.EEPROM_IO_ReadData:00000000 EEPROM_IO_ReadData
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1663   .text.EEPROM_IO_ReadData:0000001c $d
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1668   .text.EEPROM_IO_IsDeviceReady:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1675   .text.EEPROM_IO_IsDeviceReady:00000000 EEPROM_IO_IsDeviceReady
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1700   .text.EEPROM_IO_IsDeviceReady:00000010 $d
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1705   .text.TS_IO_Init:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1712   .text.TS_IO_Init:00000000 TS_IO_Init
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1731   .text.TS_IO_Init:0000000c $d
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1736   .text.TS_IO_Write:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1743   .text.TS_IO_Write:00000000 TS_IO_Write
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1781   .text.TS_IO_Write:00000020 $d
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1786   .text.TS_IO_Read:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1793   .text.TS_IO_Read:00000000 TS_IO_Read
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1832   .text.TS_IO_Read:00000028 $d
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1837   .text.TS_IO_Delay:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1844   .text.TS_IO_Delay:00000000 TS_IO_Delay
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1940   .rodata.COM_RX_AF:00000000 COM_RX_AF
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1952   .rodata.COM_TX_AF:00000000 COM_TX_AF
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1946   .rodata.COM_RX_PIN:00000000 COM_RX_PIN
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1958   .rodata.COM_TX_PIN:00000000 COM_TX_PIN
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1902   .data.COM_RX_PORT:00000000 COM_RX_PORT
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1909   .data.COM_TX_PORT:00000000 COM_TX_PORT
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1916   .data.COM_USART:00000000 COM_USART
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1923   .rodata.BUTTON_IRQn:00000000 BUTTON_IRQn
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1932   .rodata.BUTTON_PIN:00000000 BUTTON_PIN
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1893   .data.BUTTON_PORT:00000000 BUTTON_PORT
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1964   .rodata.GPIO_PIN:00000000 GPIO_PIN
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1875   .bss.hI2cAudioHandler:00000000 $d
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1879   .bss.hI2cAudioHandler:00000000 hI2cAudioHandler
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1882   .bss.hI2cExtHandler:00000000 $d
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1886   .bss.hI2cExtHandler:00000000 hI2cExtHandler
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1889   .data.BUTTON_PORT:00000000 $d
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1898   .data.COM_RX_PORT:00000000 $d
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1905   .data.COM_TX_PORT:00000000 $d
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1912   .data.COM_USART:00000000 $d
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s 			page 54
+
+
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1919   .rodata.BUTTON_IRQn:00000000 $d
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1928   .rodata.BUTTON_PIN:00000000 $d
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1937   .rodata.COM_RX_AF:00000000 $d
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1943   .rodata.COM_RX_PIN:00000000 $d
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1949   .rodata.COM_TX_AF:00000000 $d
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1955   .rodata.COM_TX_PIN:00000000 $d
+C:\Users\Student\AppData\Local\Temp\ccLzzQUc.s:1961   .rodata.GPIO_PIN:00000000 $d
+                     .debug_frame:00000010 $d
+
+UNDEFINED SYMBOLS
+HAL_GPIO_Init
+HAL_NVIC_SetPriority
+HAL_NVIC_EnableIRQ
+HAL_I2C_GetState
+HAL_I2C_Init
+HAL_I2C_DeInit
+HAL_I2C_Mem_Write
+HAL_I2C_Mem_Read
+HAL_I2C_IsDeviceReady
+HAL_GPIO_WritePin
+HAL_GPIO_DeInit
+HAL_GPIO_TogglePin
+HAL_NVIC_DisableIRQ
+HAL_GPIO_ReadPin
+HAL_UART_Init
+HAL_UART_DeInit
+HAL_Delay

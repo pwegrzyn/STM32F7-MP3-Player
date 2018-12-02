@@ -1,0 +1,2990 @@
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"udp.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.udp_new_port,"ax",%progbits
+  18              		.align	1
+  19              		.syntax unified
+  20              		.thumb
+  21              		.thumb_func
+  22              		.fpu fpv5-sp-d16
+  24              	udp_new_port:
+  25              	.LFB153:
+  26              		.file 1 "Middlewares/Third_Party/LwIP/src/core/udp.c"
+   1:Middlewares/Third_Party/LwIP/src/core/udp.c **** /**
+   2:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * @file
+   3:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * User Datagram Protocol module\n
+   4:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * The code for the User Datagram Protocol UDP & UDPLite (RFC 3828).\n
+   5:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * See also @ref udp_raw
+   6:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * 
+   7:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * @defgroup udp_raw UDP
+   8:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * @ingroup callbackstyle_api
+   9:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * User Datagram Protocol module\n
+  10:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * @see @ref raw_api and @ref netconn
+  11:Middlewares/Third_Party/LwIP/src/core/udp.c ****  */
+  12:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+  13:Middlewares/Third_Party/LwIP/src/core/udp.c **** /*
+  14:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * Copyright (c) 2001-2004 Swedish Institute of Computer Science.
+  15:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * All rights reserved.
+  16:Middlewares/Third_Party/LwIP/src/core/udp.c ****  *
+  17:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * Redistribution and use in source and binary forms, with or without modification,
+  18:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * are permitted provided that the following conditions are met:
+  19:Middlewares/Third_Party/LwIP/src/core/udp.c ****  *
+  20:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * 1. Redistributions of source code must retain the above copyright notice,
+  21:Middlewares/Third_Party/LwIP/src/core/udp.c ****  *    this list of conditions and the following disclaimer.
+  22:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * 2. Redistributions in binary form must reproduce the above copyright notice,
+  23:Middlewares/Third_Party/LwIP/src/core/udp.c ****  *    this list of conditions and the following disclaimer in the documentation
+  24:Middlewares/Third_Party/LwIP/src/core/udp.c ****  *    and/or other materials provided with the distribution.
+  25:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * 3. The name of the author may not be used to endorse or promote products
+  26:Middlewares/Third_Party/LwIP/src/core/udp.c ****  *    derived from this software without specific prior written permission.
+  27:Middlewares/Third_Party/LwIP/src/core/udp.c ****  *
+  28:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+  29:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+  30:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
+  31:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+  32:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s 			page 2
+
+
+  33:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  34:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  35:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+  36:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
+  37:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * OF SUCH DAMAGE.
+  38:Middlewares/Third_Party/LwIP/src/core/udp.c ****  *
+  39:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * This file is part of the lwIP TCP/IP stack.
+  40:Middlewares/Third_Party/LwIP/src/core/udp.c ****  *
+  41:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * Author: Adam Dunkels <adam@sics.se>
+  42:Middlewares/Third_Party/LwIP/src/core/udp.c ****  *
+  43:Middlewares/Third_Party/LwIP/src/core/udp.c ****  */
+  44:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+  45:Middlewares/Third_Party/LwIP/src/core/udp.c **** /* @todo Check the use of '(struct udp_pcb).chksum_len_rx'!
+  46:Middlewares/Third_Party/LwIP/src/core/udp.c ****  */
+  47:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+  48:Middlewares/Third_Party/LwIP/src/core/udp.c **** #include "lwip/opt.h"
+  49:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+  50:Middlewares/Third_Party/LwIP/src/core/udp.c **** #if LWIP_UDP /* don't build if not configured for use in lwipopts.h */
+  51:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+  52:Middlewares/Third_Party/LwIP/src/core/udp.c **** #include "lwip/udp.h"
+  53:Middlewares/Third_Party/LwIP/src/core/udp.c **** #include "lwip/def.h"
+  54:Middlewares/Third_Party/LwIP/src/core/udp.c **** #include "lwip/memp.h"
+  55:Middlewares/Third_Party/LwIP/src/core/udp.c **** #include "lwip/inet_chksum.h"
+  56:Middlewares/Third_Party/LwIP/src/core/udp.c **** #include "lwip/ip_addr.h"
+  57:Middlewares/Third_Party/LwIP/src/core/udp.c **** #include "lwip/ip6.h"
+  58:Middlewares/Third_Party/LwIP/src/core/udp.c **** #include "lwip/ip6_addr.h"
+  59:Middlewares/Third_Party/LwIP/src/core/udp.c **** #include "lwip/netif.h"
+  60:Middlewares/Third_Party/LwIP/src/core/udp.c **** #include "lwip/icmp.h"
+  61:Middlewares/Third_Party/LwIP/src/core/udp.c **** #include "lwip/icmp6.h"
+  62:Middlewares/Third_Party/LwIP/src/core/udp.c **** #include "lwip/stats.h"
+  63:Middlewares/Third_Party/LwIP/src/core/udp.c **** #include "lwip/snmp.h"
+  64:Middlewares/Third_Party/LwIP/src/core/udp.c **** #include "lwip/dhcp.h"
+  65:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+  66:Middlewares/Third_Party/LwIP/src/core/udp.c **** #include <string.h>
+  67:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+  68:Middlewares/Third_Party/LwIP/src/core/udp.c **** #ifndef UDP_LOCAL_PORT_RANGE_START
+  69:Middlewares/Third_Party/LwIP/src/core/udp.c **** /* From http://www.iana.org/assignments/port-numbers:
+  70:Middlewares/Third_Party/LwIP/src/core/udp.c ****    "The Dynamic and/or Private Ports are those from 49152 through 65535" */
+  71:Middlewares/Third_Party/LwIP/src/core/udp.c **** #define UDP_LOCAL_PORT_RANGE_START  0xc000
+  72:Middlewares/Third_Party/LwIP/src/core/udp.c **** #define UDP_LOCAL_PORT_RANGE_END    0xffff
+  73:Middlewares/Third_Party/LwIP/src/core/udp.c **** #define UDP_ENSURE_LOCAL_PORT_RANGE(port) ((u16_t)(((port) & ~UDP_LOCAL_PORT_RANGE_START) + UDP_LOC
+  74:Middlewares/Third_Party/LwIP/src/core/udp.c **** #endif
+  75:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+  76:Middlewares/Third_Party/LwIP/src/core/udp.c **** /* last local UDP port */
+  77:Middlewares/Third_Party/LwIP/src/core/udp.c **** static u16_t udp_port = UDP_LOCAL_PORT_RANGE_START;
+  78:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+  79:Middlewares/Third_Party/LwIP/src/core/udp.c **** /* The list of UDP PCBs */
+  80:Middlewares/Third_Party/LwIP/src/core/udp.c **** /* exported in udp.h (was static) */
+  81:Middlewares/Third_Party/LwIP/src/core/udp.c **** struct udp_pcb *udp_pcbs;
+  82:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+  83:Middlewares/Third_Party/LwIP/src/core/udp.c **** /**
+  84:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * Initialize this module.
+  85:Middlewares/Third_Party/LwIP/src/core/udp.c ****  */
+  86:Middlewares/Third_Party/LwIP/src/core/udp.c **** void
+  87:Middlewares/Third_Party/LwIP/src/core/udp.c **** udp_init(void)
+  88:Middlewares/Third_Party/LwIP/src/core/udp.c **** {
+  89:Middlewares/Third_Party/LwIP/src/core/udp.c **** #if LWIP_RANDOMIZE_INITIAL_LOCAL_PORTS && defined(LWIP_RAND)
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s 			page 3
+
+
+  90:Middlewares/Third_Party/LwIP/src/core/udp.c ****   udp_port = UDP_ENSURE_LOCAL_PORT_RANGE(LWIP_RAND());
+  91:Middlewares/Third_Party/LwIP/src/core/udp.c **** #endif /* LWIP_RANDOMIZE_INITIAL_LOCAL_PORTS && defined(LWIP_RAND) */
+  92:Middlewares/Third_Party/LwIP/src/core/udp.c **** }
+  93:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+  94:Middlewares/Third_Party/LwIP/src/core/udp.c **** /**
+  95:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * Allocate a new local UDP port.
+  96:Middlewares/Third_Party/LwIP/src/core/udp.c ****  *
+  97:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * @return a new (free) local UDP port number
+  98:Middlewares/Third_Party/LwIP/src/core/udp.c ****  */
+  99:Middlewares/Third_Party/LwIP/src/core/udp.c **** static u16_t
+ 100:Middlewares/Third_Party/LwIP/src/core/udp.c **** udp_new_port(void)
+ 101:Middlewares/Third_Party/LwIP/src/core/udp.c **** {
+  27              		.loc 1 101 0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 0
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31              		@ link register save eliminated.
+  32              	.LVL0:
+ 102:Middlewares/Third_Party/LwIP/src/core/udp.c ****   u16_t n = 0;
+  33              		.loc 1 102 0
+  34 0000 0020     		movs	r0, #0
+  35              	.LVL1:
+  36              	.L2:
+ 103:Middlewares/Third_Party/LwIP/src/core/udp.c ****   struct udp_pcb *pcb;
+ 104:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 105:Middlewares/Third_Party/LwIP/src/core/udp.c **** again:
+ 106:Middlewares/Third_Party/LwIP/src/core/udp.c ****   if (udp_port++ == UDP_LOCAL_PORT_RANGE_END) {
+  37              		.loc 1 106 0
+  38 0002 104A     		ldr	r2, .L12
+  39 0004 1388     		ldrh	r3, [r2]
+  40 0006 591C     		adds	r1, r3, #1
+  41 0008 1180     		strh	r1, [r2]	@ movhi
+  42 000a 4FF6FF72 		movw	r2, #65535
+  43 000e 9342     		cmp	r3, r2
+  44 0010 09D0     		beq	.L9
+  45              	.L3:
+ 107:Middlewares/Third_Party/LwIP/src/core/udp.c ****     udp_port = UDP_LOCAL_PORT_RANGE_START;
+ 108:Middlewares/Third_Party/LwIP/src/core/udp.c ****   }
+ 109:Middlewares/Third_Party/LwIP/src/core/udp.c ****   /* Check all PCBs. */
+ 110:Middlewares/Third_Party/LwIP/src/core/udp.c ****   for (pcb = udp_pcbs; pcb != NULL; pcb = pcb->next) {
+  46              		.loc 1 110 0
+  47 0012 0D4B     		ldr	r3, .L12+4
+  48 0014 1B68     		ldr	r3, [r3]
+  49              	.LVL2:
+  50              	.L4:
+  51              		.loc 1 110 0 is_stmt 0 discriminator 1
+  52 0016 93B1     		cbz	r3, .L10
+ 111:Middlewares/Third_Party/LwIP/src/core/udp.c ****     if (pcb->local_port == udp_port) {
+  53              		.loc 1 111 0 is_stmt 1
+  54 0018 598A     		ldrh	r1, [r3, #18]
+  55 001a 0A4A     		ldr	r2, .L12
+  56 001c 1288     		ldrh	r2, [r2]
+  57 001e 9142     		cmp	r1, r2
+  58 0020 06D0     		beq	.L11
+ 110:Middlewares/Third_Party/LwIP/src/core/udp.c ****     if (pcb->local_port == udp_port) {
+  59              		.loc 1 110 0 discriminator 2
+  60 0022 DB68     		ldr	r3, [r3, #12]
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s 			page 4
+
+
+  61              	.LVL3:
+  62 0024 F7E7     		b	.L4
+  63              	.LVL4:
+  64              	.L9:
+ 107:Middlewares/Third_Party/LwIP/src/core/udp.c ****     udp_port = UDP_LOCAL_PORT_RANGE_START;
+  65              		.loc 1 107 0
+  66 0026 4FF44042 		mov	r2, #49152
+  67 002a 064B     		ldr	r3, .L12
+  68 002c 1A80     		strh	r2, [r3]	@ movhi
+  69 002e F0E7     		b	.L3
+  70              	.LVL5:
+  71              	.L11:
+ 112:Middlewares/Third_Party/LwIP/src/core/udp.c ****       if (++n > (UDP_LOCAL_PORT_RANGE_END - UDP_LOCAL_PORT_RANGE_START)) {
+  72              		.loc 1 112 0
+  73 0030 0130     		adds	r0, r0, #1
+  74              	.LVL6:
+  75 0032 80B2     		uxth	r0, r0
+  76              	.LVL7:
+  77 0034 B0F5804F 		cmp	r0, #16384
+  78 0038 E3D3     		bcc	.L2
+ 113:Middlewares/Third_Party/LwIP/src/core/udp.c ****         return 0;
+  79              		.loc 1 113 0
+  80 003a 0020     		movs	r0, #0
+  81              	.LVL8:
+ 114:Middlewares/Third_Party/LwIP/src/core/udp.c ****       }
+ 115:Middlewares/Third_Party/LwIP/src/core/udp.c ****       goto again;
+ 116:Middlewares/Third_Party/LwIP/src/core/udp.c ****     }
+ 117:Middlewares/Third_Party/LwIP/src/core/udp.c ****   }
+ 118:Middlewares/Third_Party/LwIP/src/core/udp.c ****   return udp_port;
+ 119:Middlewares/Third_Party/LwIP/src/core/udp.c **** }
+  82              		.loc 1 119 0
+  83 003c 7047     		bx	lr
+  84              	.LVL9:
+  85              	.L10:
+ 118:Middlewares/Third_Party/LwIP/src/core/udp.c **** }
+  86              		.loc 1 118 0
+  87 003e 014B     		ldr	r3, .L12
+  88              	.LVL10:
+  89 0040 1888     		ldrh	r0, [r3]
+  90              	.LVL11:
+  91 0042 7047     		bx	lr
+  92              	.L13:
+  93              		.align	2
+  94              	.L12:
+  95 0044 00000000 		.word	.LANCHOR0
+  96 0048 00000000 		.word	udp_pcbs
+  97              		.cfi_endproc
+  98              	.LFE153:
+ 100              		.section	.text.udp_input_local_match,"ax",%progbits
+ 101              		.align	1
+ 102              		.syntax unified
+ 103              		.thumb
+ 104              		.thumb_func
+ 105              		.fpu fpv5-sp-d16
+ 107              	udp_input_local_match:
+ 108              	.LFB154:
+ 120:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s 			page 5
+
+
+ 121:Middlewares/Third_Party/LwIP/src/core/udp.c **** /** Common code to see if the current input packet matches the pcb
+ 122:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * (current input packet is accessed via ip(4/6)_current_* macros)
+ 123:Middlewares/Third_Party/LwIP/src/core/udp.c ****  *
+ 124:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * @param pcb pcb to check
+ 125:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * @param inp network interface on which the datagram was received (only used for IPv4)
+ 126:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * @param broadcast 1 if his is an IPv4 broadcast (global or subnet-only), 0 otherwise (only used f
+ 127:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * @return 1 on match, 0 otherwise
+ 128:Middlewares/Third_Party/LwIP/src/core/udp.c ****  */
+ 129:Middlewares/Third_Party/LwIP/src/core/udp.c **** static u8_t
+ 130:Middlewares/Third_Party/LwIP/src/core/udp.c **** udp_input_local_match(struct udp_pcb *pcb, struct netif *inp, u8_t broadcast)
+ 131:Middlewares/Third_Party/LwIP/src/core/udp.c **** {
+ 109              		.loc 1 131 0
+ 110              		.cfi_startproc
+ 111              		@ args = 0, pretend = 0, frame = 0
+ 112              		@ frame_needed = 0, uses_anonymous_args = 0
+ 113              		@ link register save eliminated.
+ 114              	.LVL12:
+ 132:Middlewares/Third_Party/LwIP/src/core/udp.c ****   LWIP_UNUSED_ARG(inp);       /* in IPv6 only case */
+ 133:Middlewares/Third_Party/LwIP/src/core/udp.c ****   LWIP_UNUSED_ARG(broadcast); /* in IPv6 only case */
+ 134:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 135:Middlewares/Third_Party/LwIP/src/core/udp.c ****   /* Dual-stack: PCBs listening to any IP type also listen to any IP address */
+ 136:Middlewares/Third_Party/LwIP/src/core/udp.c ****   if (IP_IS_ANY_TYPE_VAL(pcb->local_ip)) {
+ 137:Middlewares/Third_Party/LwIP/src/core/udp.c **** #if LWIP_IPV4 && IP_SOF_BROADCAST_RECV
+ 138:Middlewares/Third_Party/LwIP/src/core/udp.c ****     if ((broadcast != 0) && !ip_get_option(pcb, SOF_BROADCAST)) {
+ 139:Middlewares/Third_Party/LwIP/src/core/udp.c ****       return 0;
+ 140:Middlewares/Third_Party/LwIP/src/core/udp.c ****     }
+ 141:Middlewares/Third_Party/LwIP/src/core/udp.c **** #endif /* LWIP_IPV4 && IP_SOF_BROADCAST_RECV */
+ 142:Middlewares/Third_Party/LwIP/src/core/udp.c ****     return 1;
+ 143:Middlewares/Third_Party/LwIP/src/core/udp.c ****   }
+ 144:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 145:Middlewares/Third_Party/LwIP/src/core/udp.c ****   /* Only need to check PCB if incoming IP version matches PCB IP version */
+ 146:Middlewares/Third_Party/LwIP/src/core/udp.c ****   if (IP_ADDR_PCB_VERSION_MATCH_EXACT(pcb, ip_current_dest_addr())) {
+ 147:Middlewares/Third_Party/LwIP/src/core/udp.c **** #if LWIP_IPV4
+ 148:Middlewares/Third_Party/LwIP/src/core/udp.c ****     /* Special case: IPv4 broadcast: all or broadcasts in my subnet
+ 149:Middlewares/Third_Party/LwIP/src/core/udp.c ****      * Note: broadcast variable can only be 1 if it is an IPv4 broadcast */
+ 150:Middlewares/Third_Party/LwIP/src/core/udp.c ****     if (broadcast != 0) {
+ 115              		.loc 1 150 0
+ 116 0000 6AB1     		cbz	r2, .L15
+ 151:Middlewares/Third_Party/LwIP/src/core/udp.c **** #if IP_SOF_BROADCAST_RECV
+ 152:Middlewares/Third_Party/LwIP/src/core/udp.c ****       if (ip_get_option(pcb, SOF_BROADCAST))
+ 153:Middlewares/Third_Party/LwIP/src/core/udp.c **** #endif /* IP_SOF_BROADCAST_RECV */
+ 154:Middlewares/Third_Party/LwIP/src/core/udp.c ****       {
+ 155:Middlewares/Third_Party/LwIP/src/core/udp.c ****         if (ip4_addr_isany(ip_2_ip4(&pcb->local_ip)) ||
+ 117              		.loc 1 155 0
+ 118 0002 A8B1     		cbz	r0, .L17
+ 119              		.loc 1 155 0 is_stmt 0 discriminator 1
+ 120 0004 0368     		ldr	r3, [r0]
+ 121 0006 ABB1     		cbz	r3, .L18
+ 156:Middlewares/Third_Party/LwIP/src/core/udp.c ****           ((ip4_current_dest_addr()->addr == IPADDR_BROADCAST)) ||
+ 122              		.loc 1 156 0 is_stmt 1 discriminator 2
+ 123 0008 104A     		ldr	r2, .L24
+ 124              	.LVL13:
+ 125 000a 5269     		ldr	r2, [r2, #20]
+ 155:Middlewares/Third_Party/LwIP/src/core/udp.c ****           ((ip4_current_dest_addr()->addr == IPADDR_BROADCAST)) ||
+ 126              		.loc 1 155 0 discriminator 2
+ 127 000c B2F1FF3F 		cmp	r2, #-1
+ 128 0010 12D0     		beq	.L19
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s 			page 6
+
+
+ 157:Middlewares/Third_Party/LwIP/src/core/udp.c ****            ip4_addr_netcmp(ip_2_ip4(&pcb->local_ip), ip4_current_dest_addr(), netif_ip4_netmask(inp
+ 129              		.loc 1 157 0
+ 130 0012 8968     		ldr	r1, [r1, #8]
+ 131              	.LVL14:
+ 132 0014 5340     		eors	r3, r3, r2
+ 156:Middlewares/Third_Party/LwIP/src/core/udp.c ****           ((ip4_current_dest_addr()->addr == IPADDR_BROADCAST)) ||
+ 133              		.loc 1 156 0
+ 134 0016 0B42     		tst	r3, r1
+ 135 0018 10D0     		beq	.L20
+ 158:Middlewares/Third_Party/LwIP/src/core/udp.c ****           return 1;
+ 159:Middlewares/Third_Party/LwIP/src/core/udp.c ****         }
+ 160:Middlewares/Third_Party/LwIP/src/core/udp.c ****       }
+ 161:Middlewares/Third_Party/LwIP/src/core/udp.c ****     } else
+ 162:Middlewares/Third_Party/LwIP/src/core/udp.c **** #endif /* LWIP_IPV4 */
+ 163:Middlewares/Third_Party/LwIP/src/core/udp.c ****     /* Handle IPv4 and IPv6: all or exact match */
+ 164:Middlewares/Third_Party/LwIP/src/core/udp.c ****     if (ip_addr_isany(&pcb->local_ip) || ip_addr_cmp(&pcb->local_ip, ip_current_dest_addr())) {
+ 165:Middlewares/Third_Party/LwIP/src/core/udp.c ****       return 1;
+ 166:Middlewares/Third_Party/LwIP/src/core/udp.c ****     }
+ 167:Middlewares/Third_Party/LwIP/src/core/udp.c ****   }
+ 168:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 169:Middlewares/Third_Party/LwIP/src/core/udp.c ****   return 0;
+ 136              		.loc 1 169 0
+ 137 001a 0020     		movs	r0, #0
+ 138              	.LVL15:
+ 139 001c 7047     		bx	lr
+ 140              	.LVL16:
+ 141              	.L15:
+ 164:Middlewares/Third_Party/LwIP/src/core/udp.c ****       return 1;
+ 142              		.loc 1 164 0
+ 143 001e 78B1     		cbz	r0, .L21
+ 164:Middlewares/Third_Party/LwIP/src/core/udp.c ****       return 1;
+ 144              		.loc 1 164 0 is_stmt 0 discriminator 1
+ 145 0020 0368     		ldr	r3, [r0]
+ 146 0022 7BB1     		cbz	r3, .L22
+ 164:Middlewares/Third_Party/LwIP/src/core/udp.c ****       return 1;
+ 147              		.loc 1 164 0 discriminator 2
+ 148 0024 094A     		ldr	r2, .L24
+ 149              	.LVL17:
+ 150 0026 5269     		ldr	r2, [r2, #20]
+ 151 0028 9342     		cmp	r3, r2
+ 152 002a 0DD0     		beq	.L23
+ 153              		.loc 1 169 0 is_stmt 1
+ 154 002c 0020     		movs	r0, #0
+ 155              	.LVL18:
+ 156 002e 7047     		bx	lr
+ 157              	.LVL19:
+ 158              	.L17:
+ 158:Middlewares/Third_Party/LwIP/src/core/udp.c ****           return 1;
+ 159              		.loc 1 158 0
+ 160 0030 0120     		movs	r0, #1
+ 161              	.LVL20:
+ 162 0032 7047     		bx	lr
+ 163              	.LVL21:
+ 164              	.L18:
+ 165 0034 0120     		movs	r0, #1
+ 166              	.LVL22:
+ 167 0036 7047     		bx	lr
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s 			page 7
+
+
+ 168              	.LVL23:
+ 169              	.L19:
+ 170 0038 0120     		movs	r0, #1
+ 171              	.LVL24:
+ 172 003a 7047     		bx	lr
+ 173              	.LVL25:
+ 174              	.L20:
+ 175 003c 0120     		movs	r0, #1
+ 176              	.LVL26:
+ 177 003e 7047     		bx	lr
+ 178              	.LVL27:
+ 179              	.L21:
+ 165:Middlewares/Third_Party/LwIP/src/core/udp.c ****     }
+ 180              		.loc 1 165 0
+ 181 0040 0120     		movs	r0, #1
+ 182              	.LVL28:
+ 183 0042 7047     		bx	lr
+ 184              	.LVL29:
+ 185              	.L22:
+ 186 0044 0120     		movs	r0, #1
+ 187              	.LVL30:
+ 188 0046 7047     		bx	lr
+ 189              	.LVL31:
+ 190              	.L23:
+ 191 0048 0120     		movs	r0, #1
+ 192              	.LVL32:
+ 170:Middlewares/Third_Party/LwIP/src/core/udp.c **** }
+ 193              		.loc 1 170 0
+ 194 004a 7047     		bx	lr
+ 195              	.L25:
+ 196              		.align	2
+ 197              	.L24:
+ 198 004c 00000000 		.word	ip_data
+ 199              		.cfi_endproc
+ 200              	.LFE154:
+ 202              		.section	.text.udp_init,"ax",%progbits
+ 203              		.align	1
+ 204              		.global	udp_init
+ 205              		.syntax unified
+ 206              		.thumb
+ 207              		.thumb_func
+ 208              		.fpu fpv5-sp-d16
+ 210              	udp_init:
+ 211              	.LFB152:
+  88:Middlewares/Third_Party/LwIP/src/core/udp.c **** #if LWIP_RANDOMIZE_INITIAL_LOCAL_PORTS && defined(LWIP_RAND)
+ 212              		.loc 1 88 0
+ 213              		.cfi_startproc
+ 214              		@ args = 0, pretend = 0, frame = 0
+ 215              		@ frame_needed = 0, uses_anonymous_args = 0
+ 216              		@ link register save eliminated.
+ 217 0000 7047     		bx	lr
+ 218              		.cfi_endproc
+ 219              	.LFE152:
+ 221              		.section	.text.udp_input,"ax",%progbits
+ 222              		.align	1
+ 223              		.global	udp_input
+ 224              		.syntax unified
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s 			page 8
+
+
+ 225              		.thumb
+ 226              		.thumb_func
+ 227              		.fpu fpv5-sp-d16
+ 229              	udp_input:
+ 230              	.LFB155:
+ 171:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 172:Middlewares/Third_Party/LwIP/src/core/udp.c **** /**
+ 173:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * Process an incoming UDP datagram.
+ 174:Middlewares/Third_Party/LwIP/src/core/udp.c ****  *
+ 175:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * Given an incoming UDP datagram (as a chain of pbufs) this function
+ 176:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * finds a corresponding UDP PCB and hands over the pbuf to the pcbs
+ 177:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * recv function. If no pcb is found or the datagram is incorrect, the
+ 178:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * pbuf is freed.
+ 179:Middlewares/Third_Party/LwIP/src/core/udp.c ****  *
+ 180:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * @param p pbuf to be demultiplexed to a UDP PCB (p->payload pointing to the UDP header)
+ 181:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * @param inp network interface on which the datagram was received.
+ 182:Middlewares/Third_Party/LwIP/src/core/udp.c ****  *
+ 183:Middlewares/Third_Party/LwIP/src/core/udp.c ****  */
+ 184:Middlewares/Third_Party/LwIP/src/core/udp.c **** void
+ 185:Middlewares/Third_Party/LwIP/src/core/udp.c **** udp_input(struct pbuf *p, struct netif *inp)
+ 186:Middlewares/Third_Party/LwIP/src/core/udp.c **** {
+ 231              		.loc 1 186 0
+ 232              		.cfi_startproc
+ 233              		@ args = 0, pretend = 0, frame = 8
+ 234              		@ frame_needed = 0, uses_anonymous_args = 0
+ 235              	.LVL33:
+ 236              		.loc 1 186 0
+ 237 0000 2DE9F04F 		push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
+ 238              	.LCFI0:
+ 239              		.cfi_def_cfa_offset 36
+ 240              		.cfi_offset 4, -36
+ 241              		.cfi_offset 5, -32
+ 242              		.cfi_offset 6, -28
+ 243              		.cfi_offset 7, -24
+ 244              		.cfi_offset 8, -20
+ 245              		.cfi_offset 9, -16
+ 246              		.cfi_offset 10, -12
+ 247              		.cfi_offset 11, -8
+ 248              		.cfi_offset 14, -4
+ 249 0004 85B0     		sub	sp, sp, #20
+ 250              	.LCFI1:
+ 251              		.cfi_def_cfa_offset 56
+ 252 0006 8146     		mov	r9, r0
+ 253              	.LVL34:
+ 187:Middlewares/Third_Party/LwIP/src/core/udp.c ****   struct udp_hdr *udphdr;
+ 188:Middlewares/Third_Party/LwIP/src/core/udp.c ****   struct udp_pcb *pcb, *prev;
+ 189:Middlewares/Third_Party/LwIP/src/core/udp.c ****   struct udp_pcb *uncon_pcb;
+ 190:Middlewares/Third_Party/LwIP/src/core/udp.c ****   u16_t src, dest;
+ 191:Middlewares/Third_Party/LwIP/src/core/udp.c ****   u8_t broadcast;
+ 192:Middlewares/Third_Party/LwIP/src/core/udp.c ****   u8_t for_us = 0;
+ 193:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 194:Middlewares/Third_Party/LwIP/src/core/udp.c ****   LWIP_UNUSED_ARG(inp);
+ 195:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 196:Middlewares/Third_Party/LwIP/src/core/udp.c ****   PERF_START;
+ 197:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 198:Middlewares/Third_Party/LwIP/src/core/udp.c ****   UDP_STATS_INC(udp.recv);
+ 199:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s 			page 9
+
+
+ 200:Middlewares/Third_Party/LwIP/src/core/udp.c ****   /* Check minimum length (UDP header) */
+ 201:Middlewares/Third_Party/LwIP/src/core/udp.c ****   if (p->len < UDP_HLEN) {
+ 254              		.loc 1 201 0
+ 255 0008 4389     		ldrh	r3, [r0, #10]
+ 256 000a 072B     		cmp	r3, #7
+ 257 000c 17D9     		bls	.L47
+ 258 000e 0F46     		mov	r7, r1
+ 202:Middlewares/Third_Party/LwIP/src/core/udp.c ****     /* drop short packets */
+ 203:Middlewares/Third_Party/LwIP/src/core/udp.c ****     LWIP_DEBUGF(UDP_DEBUG,
+ 204:Middlewares/Third_Party/LwIP/src/core/udp.c ****                 ("udp_input: short UDP datagram (%"U16_F" bytes) discarded\n", p->tot_len));
+ 205:Middlewares/Third_Party/LwIP/src/core/udp.c ****     UDP_STATS_INC(udp.lenerr);
+ 206:Middlewares/Third_Party/LwIP/src/core/udp.c ****     UDP_STATS_INC(udp.drop);
+ 207:Middlewares/Third_Party/LwIP/src/core/udp.c ****     MIB2_STATS_INC(mib2.udpinerrors);
+ 208:Middlewares/Third_Party/LwIP/src/core/udp.c ****     pbuf_free(p);
+ 209:Middlewares/Third_Party/LwIP/src/core/udp.c ****     goto end;
+ 210:Middlewares/Third_Party/LwIP/src/core/udp.c ****   }
+ 211:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 212:Middlewares/Third_Party/LwIP/src/core/udp.c ****   udphdr = (struct udp_hdr *)p->payload;
+ 259              		.loc 1 212 0
+ 260 0010 4468     		ldr	r4, [r0, #4]
+ 261              	.LVL35:
+ 213:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 214:Middlewares/Third_Party/LwIP/src/core/udp.c ****   /* is broadcast packet ? */
+ 215:Middlewares/Third_Party/LwIP/src/core/udp.c ****   broadcast = ip_addr_isbroadcast(ip_current_dest_addr(), ip_current_netif());
+ 262              		.loc 1 215 0
+ 263 0012 464B     		ldr	r3, .L52
+ 264 0014 1968     		ldr	r1, [r3]
+ 265              	.LVL36:
+ 266 0016 5869     		ldr	r0, [r3, #20]
+ 267              	.LVL37:
+ 268 0018 FFF7FEFF 		bl	ip4_addr_isbroadcast_u32
+ 269              	.LVL38:
+ 270 001c 8046     		mov	r8, r0
+ 271              	.LVL39:
+ 216:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 217:Middlewares/Third_Party/LwIP/src/core/udp.c ****   LWIP_DEBUGF(UDP_DEBUG, ("udp_input: received datagram of length %"U16_F"\n", p->tot_len));
+ 218:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 219:Middlewares/Third_Party/LwIP/src/core/udp.c ****   /* convert src and dest ports to host byte order */
+ 220:Middlewares/Third_Party/LwIP/src/core/udp.c ****   src = lwip_ntohs(udphdr->src);
+ 272              		.loc 1 220 0
+ 273 001e 2088     		ldrh	r0, [r4]	@ unaligned
+ 274 0020 FFF7FEFF 		bl	lwip_htons
+ 275              	.LVL40:
+ 276 0024 8246     		mov	r10, r0
+ 277              	.LVL41:
+ 221:Middlewares/Third_Party/LwIP/src/core/udp.c ****   dest = lwip_ntohs(udphdr->dest);
+ 278              		.loc 1 221 0
+ 279 0026 6088     		ldrh	r0, [r4, #2]	@ unaligned
+ 280 0028 FFF7FEFF 		bl	lwip_htons
+ 281              	.LVL42:
+ 282 002c 0646     		mov	r6, r0
+ 283              	.LVL43:
+ 222:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 223:Middlewares/Third_Party/LwIP/src/core/udp.c ****   udp_debug_print(udphdr);
+ 224:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 225:Middlewares/Third_Party/LwIP/src/core/udp.c ****   /* print the UDP source and destination */
+ 226:Middlewares/Third_Party/LwIP/src/core/udp.c ****   LWIP_DEBUGF(UDP_DEBUG, ("udp ("));
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s 			page 10
+
+
+ 227:Middlewares/Third_Party/LwIP/src/core/udp.c ****   ip_addr_debug_print(UDP_DEBUG, ip_current_dest_addr());
+ 228:Middlewares/Third_Party/LwIP/src/core/udp.c ****   LWIP_DEBUGF(UDP_DEBUG, (", %"U16_F") <-- (", lwip_ntohs(udphdr->dest)));
+ 229:Middlewares/Third_Party/LwIP/src/core/udp.c ****   ip_addr_debug_print(UDP_DEBUG, ip_current_src_addr());
+ 230:Middlewares/Third_Party/LwIP/src/core/udp.c ****   LWIP_DEBUGF(UDP_DEBUG, (", %"U16_F")\n", lwip_ntohs(udphdr->src)));
+ 231:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 232:Middlewares/Third_Party/LwIP/src/core/udp.c ****   pcb = NULL;
+ 233:Middlewares/Third_Party/LwIP/src/core/udp.c ****   prev = NULL;
+ 234:Middlewares/Third_Party/LwIP/src/core/udp.c ****   uncon_pcb = NULL;
+ 235:Middlewares/Third_Party/LwIP/src/core/udp.c ****   /* Iterate through the UDP pcb list for a matching pcb.
+ 236:Middlewares/Third_Party/LwIP/src/core/udp.c ****    * 'Perfect match' pcbs (connected to the remote port & ip address) are
+ 237:Middlewares/Third_Party/LwIP/src/core/udp.c ****    * preferred. If no perfect match is found, the first unconnected pcb that
+ 238:Middlewares/Third_Party/LwIP/src/core/udp.c ****    * matches the local port and ip address gets the datagram. */
+ 239:Middlewares/Third_Party/LwIP/src/core/udp.c ****   for (pcb = udp_pcbs; pcb != NULL; pcb = pcb->next) {
+ 284              		.loc 1 239 0
+ 285 002e 404B     		ldr	r3, .L52+4
+ 286 0030 1B68     		ldr	r3, [r3]
+ 287 0032 0393     		str	r3, [sp, #12]
+ 288              	.LVL44:
+ 289 0034 1C46     		mov	r4, r3
+ 290              	.LVL45:
+ 234:Middlewares/Third_Party/LwIP/src/core/udp.c ****   /* Iterate through the UDP pcb list for a matching pcb.
+ 291              		.loc 1 234 0
+ 292 0036 4FF0000B 		mov	fp, #0
+ 233:Middlewares/Third_Party/LwIP/src/core/udp.c ****   uncon_pcb = NULL;
+ 293              		.loc 1 233 0
+ 294 003a 5D46     		mov	r5, fp
+ 295              		.loc 1 239 0
+ 296 003c 09E0     		b	.L30
+ 297              	.LVL46:
+ 298              	.L47:
+ 208:Middlewares/Third_Party/LwIP/src/core/udp.c ****     goto end;
+ 299              		.loc 1 208 0
+ 300 003e FFF7FEFF 		bl	pbuf_free
+ 301              	.LVL47:
+ 302              	.L29:
+ 303              	.L27:
+ 240:Middlewares/Third_Party/LwIP/src/core/udp.c ****     /* print the PCB local and remote address */
+ 241:Middlewares/Third_Party/LwIP/src/core/udp.c ****     LWIP_DEBUGF(UDP_DEBUG, ("pcb ("));
+ 242:Middlewares/Third_Party/LwIP/src/core/udp.c ****     ip_addr_debug_print(UDP_DEBUG, &pcb->local_ip);
+ 243:Middlewares/Third_Party/LwIP/src/core/udp.c ****     LWIP_DEBUGF(UDP_DEBUG, (", %"U16_F") <-- (", pcb->local_port));
+ 244:Middlewares/Third_Party/LwIP/src/core/udp.c ****     ip_addr_debug_print(UDP_DEBUG, &pcb->remote_ip);
+ 245:Middlewares/Third_Party/LwIP/src/core/udp.c ****     LWIP_DEBUGF(UDP_DEBUG, (", %"U16_F")\n", pcb->remote_port));
+ 246:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 247:Middlewares/Third_Party/LwIP/src/core/udp.c ****     /* compare PCB local addr+port to UDP destination addr+port */
+ 248:Middlewares/Third_Party/LwIP/src/core/udp.c ****     if ((pcb->local_port == dest) &&
+ 249:Middlewares/Third_Party/LwIP/src/core/udp.c ****         (udp_input_local_match(pcb, inp, broadcast) != 0)) {
+ 250:Middlewares/Third_Party/LwIP/src/core/udp.c ****       if (((pcb->flags & UDP_FLAGS_CONNECTED) == 0) &&
+ 251:Middlewares/Third_Party/LwIP/src/core/udp.c ****           ((uncon_pcb == NULL)
+ 252:Middlewares/Third_Party/LwIP/src/core/udp.c **** #if SO_REUSE
+ 253:Middlewares/Third_Party/LwIP/src/core/udp.c ****           /* prefer specific IPs over cath-all */
+ 254:Middlewares/Third_Party/LwIP/src/core/udp.c ****           || !ip_addr_isany(&pcb->local_ip)
+ 255:Middlewares/Third_Party/LwIP/src/core/udp.c **** #endif /* SO_REUSE */
+ 256:Middlewares/Third_Party/LwIP/src/core/udp.c ****           )) {
+ 257:Middlewares/Third_Party/LwIP/src/core/udp.c ****         /* the first unconnected matching PCB */
+ 258:Middlewares/Third_Party/LwIP/src/core/udp.c ****         uncon_pcb = pcb;
+ 259:Middlewares/Third_Party/LwIP/src/core/udp.c ****       }
+ 260:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s 			page 11
+
+
+ 261:Middlewares/Third_Party/LwIP/src/core/udp.c ****       /* compare PCB remote addr+port to UDP source addr+port */
+ 262:Middlewares/Third_Party/LwIP/src/core/udp.c ****       if ((pcb->remote_port == src) &&
+ 263:Middlewares/Third_Party/LwIP/src/core/udp.c ****           (ip_addr_isany_val(pcb->remote_ip) ||
+ 264:Middlewares/Third_Party/LwIP/src/core/udp.c ****           ip_addr_cmp(&pcb->remote_ip, ip_current_src_addr()))) {
+ 265:Middlewares/Third_Party/LwIP/src/core/udp.c ****         /* the first fully matching PCB */
+ 266:Middlewares/Third_Party/LwIP/src/core/udp.c ****         if (prev != NULL) {
+ 267:Middlewares/Third_Party/LwIP/src/core/udp.c ****           /* move the pcb to the front of udp_pcbs so that is
+ 268:Middlewares/Third_Party/LwIP/src/core/udp.c ****              found faster next time */
+ 269:Middlewares/Third_Party/LwIP/src/core/udp.c ****           prev->next = pcb->next;
+ 270:Middlewares/Third_Party/LwIP/src/core/udp.c ****           pcb->next = udp_pcbs;
+ 271:Middlewares/Third_Party/LwIP/src/core/udp.c ****           udp_pcbs = pcb;
+ 272:Middlewares/Third_Party/LwIP/src/core/udp.c ****         } else {
+ 273:Middlewares/Third_Party/LwIP/src/core/udp.c ****           UDP_STATS_INC(udp.cachehit);
+ 274:Middlewares/Third_Party/LwIP/src/core/udp.c ****         }
+ 275:Middlewares/Third_Party/LwIP/src/core/udp.c ****         break;
+ 276:Middlewares/Third_Party/LwIP/src/core/udp.c ****       }
+ 277:Middlewares/Third_Party/LwIP/src/core/udp.c ****     }
+ 278:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 279:Middlewares/Third_Party/LwIP/src/core/udp.c ****     prev = pcb;
+ 280:Middlewares/Third_Party/LwIP/src/core/udp.c ****   }
+ 281:Middlewares/Third_Party/LwIP/src/core/udp.c ****   /* no fully matching pcb found? then look for an unconnected pcb */
+ 282:Middlewares/Third_Party/LwIP/src/core/udp.c ****   if (pcb == NULL) {
+ 283:Middlewares/Third_Party/LwIP/src/core/udp.c ****     pcb = uncon_pcb;
+ 284:Middlewares/Third_Party/LwIP/src/core/udp.c ****   }
+ 285:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 286:Middlewares/Third_Party/LwIP/src/core/udp.c ****   /* Check checksum if this is a match or if it was directed at us. */
+ 287:Middlewares/Third_Party/LwIP/src/core/udp.c ****   if (pcb != NULL) {
+ 288:Middlewares/Third_Party/LwIP/src/core/udp.c ****     for_us = 1;
+ 289:Middlewares/Third_Party/LwIP/src/core/udp.c ****   } else {
+ 290:Middlewares/Third_Party/LwIP/src/core/udp.c **** #if LWIP_IPV6
+ 291:Middlewares/Third_Party/LwIP/src/core/udp.c ****     if (ip_current_is_v6()) {
+ 292:Middlewares/Third_Party/LwIP/src/core/udp.c ****       for_us = netif_get_ip6_addr_match(inp, ip6_current_dest_addr()) >= 0;
+ 293:Middlewares/Third_Party/LwIP/src/core/udp.c ****     }
+ 294:Middlewares/Third_Party/LwIP/src/core/udp.c **** #endif /* LWIP_IPV6 */
+ 295:Middlewares/Third_Party/LwIP/src/core/udp.c **** #if LWIP_IPV4
+ 296:Middlewares/Third_Party/LwIP/src/core/udp.c ****     if (!ip_current_is_v6()) {
+ 297:Middlewares/Third_Party/LwIP/src/core/udp.c ****       for_us = ip4_addr_cmp(netif_ip4_addr(inp), ip4_current_dest_addr());
+ 298:Middlewares/Third_Party/LwIP/src/core/udp.c ****     }
+ 299:Middlewares/Third_Party/LwIP/src/core/udp.c **** #endif /* LWIP_IPV4 */
+ 300:Middlewares/Third_Party/LwIP/src/core/udp.c ****   }
+ 301:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 302:Middlewares/Third_Party/LwIP/src/core/udp.c ****   if (for_us) {
+ 303:Middlewares/Third_Party/LwIP/src/core/udp.c ****     LWIP_DEBUGF(UDP_DEBUG | LWIP_DBG_TRACE, ("udp_input: calculating checksum\n"));
+ 304:Middlewares/Third_Party/LwIP/src/core/udp.c **** #if CHECKSUM_CHECK_UDP
+ 305:Middlewares/Third_Party/LwIP/src/core/udp.c ****     IF__NETIF_CHECKSUM_ENABLED(inp, CHECKSUM_CHECK_UDP) {
+ 306:Middlewares/Third_Party/LwIP/src/core/udp.c **** #if LWIP_UDPLITE
+ 307:Middlewares/Third_Party/LwIP/src/core/udp.c ****       if (ip_current_header_proto() == IP_PROTO_UDPLITE) {
+ 308:Middlewares/Third_Party/LwIP/src/core/udp.c ****         /* Do the UDP Lite checksum */
+ 309:Middlewares/Third_Party/LwIP/src/core/udp.c ****         u16_t chklen = lwip_ntohs(udphdr->len);
+ 310:Middlewares/Third_Party/LwIP/src/core/udp.c ****         if (chklen < sizeof(struct udp_hdr)) {
+ 311:Middlewares/Third_Party/LwIP/src/core/udp.c ****           if (chklen == 0) {
+ 312:Middlewares/Third_Party/LwIP/src/core/udp.c ****             /* For UDP-Lite, checksum length of 0 means checksum
+ 313:Middlewares/Third_Party/LwIP/src/core/udp.c ****                over the complete packet (See RFC 3828 chap. 3.1) */
+ 314:Middlewares/Third_Party/LwIP/src/core/udp.c ****             chklen = p->tot_len;
+ 315:Middlewares/Third_Party/LwIP/src/core/udp.c ****           } else {
+ 316:Middlewares/Third_Party/LwIP/src/core/udp.c ****             /* At least the UDP-Lite header must be covered by the
+ 317:Middlewares/Third_Party/LwIP/src/core/udp.c ****                checksum! (Again, see RFC 3828 chap. 3.1) */
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s 			page 12
+
+
+ 318:Middlewares/Third_Party/LwIP/src/core/udp.c ****             goto chkerr;
+ 319:Middlewares/Third_Party/LwIP/src/core/udp.c ****           }
+ 320:Middlewares/Third_Party/LwIP/src/core/udp.c ****         }
+ 321:Middlewares/Third_Party/LwIP/src/core/udp.c ****         if (ip_chksum_pseudo_partial(p, IP_PROTO_UDPLITE,
+ 322:Middlewares/Third_Party/LwIP/src/core/udp.c ****                      p->tot_len, chklen,
+ 323:Middlewares/Third_Party/LwIP/src/core/udp.c ****                      ip_current_src_addr(), ip_current_dest_addr()) != 0) {
+ 324:Middlewares/Third_Party/LwIP/src/core/udp.c ****           goto chkerr;
+ 325:Middlewares/Third_Party/LwIP/src/core/udp.c ****         }
+ 326:Middlewares/Third_Party/LwIP/src/core/udp.c ****       } else
+ 327:Middlewares/Third_Party/LwIP/src/core/udp.c **** #endif /* LWIP_UDPLITE */
+ 328:Middlewares/Third_Party/LwIP/src/core/udp.c ****       {
+ 329:Middlewares/Third_Party/LwIP/src/core/udp.c ****         if (udphdr->chksum != 0) {
+ 330:Middlewares/Third_Party/LwIP/src/core/udp.c ****           if (ip_chksum_pseudo(p, IP_PROTO_UDP, p->tot_len,
+ 331:Middlewares/Third_Party/LwIP/src/core/udp.c ****                                ip_current_src_addr(),
+ 332:Middlewares/Third_Party/LwIP/src/core/udp.c ****                                ip_current_dest_addr()) != 0) {
+ 333:Middlewares/Third_Party/LwIP/src/core/udp.c ****             goto chkerr;
+ 334:Middlewares/Third_Party/LwIP/src/core/udp.c ****           }
+ 335:Middlewares/Third_Party/LwIP/src/core/udp.c ****         }
+ 336:Middlewares/Third_Party/LwIP/src/core/udp.c ****       }
+ 337:Middlewares/Third_Party/LwIP/src/core/udp.c ****     }
+ 338:Middlewares/Third_Party/LwIP/src/core/udp.c **** #endif /* CHECKSUM_CHECK_UDP */
+ 339:Middlewares/Third_Party/LwIP/src/core/udp.c ****     if (pbuf_header(p, -UDP_HLEN)) {
+ 340:Middlewares/Third_Party/LwIP/src/core/udp.c ****       /* Can we cope with this failing? Just assert for now */
+ 341:Middlewares/Third_Party/LwIP/src/core/udp.c ****       LWIP_ASSERT("pbuf_header failed\n", 0);
+ 342:Middlewares/Third_Party/LwIP/src/core/udp.c ****       UDP_STATS_INC(udp.drop);
+ 343:Middlewares/Third_Party/LwIP/src/core/udp.c ****       MIB2_STATS_INC(mib2.udpinerrors);
+ 344:Middlewares/Third_Party/LwIP/src/core/udp.c ****       pbuf_free(p);
+ 345:Middlewares/Third_Party/LwIP/src/core/udp.c ****       goto end;
+ 346:Middlewares/Third_Party/LwIP/src/core/udp.c ****     }
+ 347:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 348:Middlewares/Third_Party/LwIP/src/core/udp.c ****     if (pcb != NULL) {
+ 349:Middlewares/Third_Party/LwIP/src/core/udp.c ****       MIB2_STATS_INC(mib2.udpindatagrams);
+ 350:Middlewares/Third_Party/LwIP/src/core/udp.c **** #if SO_REUSE && SO_REUSE_RXTOALL
+ 351:Middlewares/Third_Party/LwIP/src/core/udp.c ****       if (ip_get_option(pcb, SOF_REUSEADDR) &&
+ 352:Middlewares/Third_Party/LwIP/src/core/udp.c ****           (broadcast || ip_addr_ismulticast(ip_current_dest_addr()))) {
+ 353:Middlewares/Third_Party/LwIP/src/core/udp.c ****         /* pass broadcast- or multicast packets to all multicast pcbs
+ 354:Middlewares/Third_Party/LwIP/src/core/udp.c ****            if SOF_REUSEADDR is set on the first match */
+ 355:Middlewares/Third_Party/LwIP/src/core/udp.c ****         struct udp_pcb *mpcb;
+ 356:Middlewares/Third_Party/LwIP/src/core/udp.c ****         u8_t p_header_changed = 0;
+ 357:Middlewares/Third_Party/LwIP/src/core/udp.c ****         s16_t hdrs_len = (s16_t)(ip_current_header_tot_len() + UDP_HLEN);
+ 358:Middlewares/Third_Party/LwIP/src/core/udp.c ****         for (mpcb = udp_pcbs; mpcb != NULL; mpcb = mpcb->next) {
+ 359:Middlewares/Third_Party/LwIP/src/core/udp.c ****           if (mpcb != pcb) {
+ 360:Middlewares/Third_Party/LwIP/src/core/udp.c ****             /* compare PCB local addr+port to UDP destination addr+port */
+ 361:Middlewares/Third_Party/LwIP/src/core/udp.c ****             if ((mpcb->local_port == dest) &&
+ 362:Middlewares/Third_Party/LwIP/src/core/udp.c ****                 (udp_input_local_match(mpcb, inp, broadcast) != 0)) {
+ 363:Middlewares/Third_Party/LwIP/src/core/udp.c ****               /* pass a copy of the packet to all local matches */
+ 364:Middlewares/Third_Party/LwIP/src/core/udp.c ****               if (mpcb->recv != NULL) {
+ 365:Middlewares/Third_Party/LwIP/src/core/udp.c ****                 struct pbuf *q;
+ 366:Middlewares/Third_Party/LwIP/src/core/udp.c ****                 /* for that, move payload to IP header again */
+ 367:Middlewares/Third_Party/LwIP/src/core/udp.c ****                 if (p_header_changed == 0) {
+ 368:Middlewares/Third_Party/LwIP/src/core/udp.c ****                   pbuf_header_force(p, hdrs_len);
+ 369:Middlewares/Third_Party/LwIP/src/core/udp.c ****                   p_header_changed = 1;
+ 370:Middlewares/Third_Party/LwIP/src/core/udp.c ****                 }
+ 371:Middlewares/Third_Party/LwIP/src/core/udp.c ****                 q = pbuf_alloc(PBUF_RAW, p->tot_len, PBUF_RAM);
+ 372:Middlewares/Third_Party/LwIP/src/core/udp.c ****                 if (q != NULL) {
+ 373:Middlewares/Third_Party/LwIP/src/core/udp.c ****                   err_t err = pbuf_copy(q, p);
+ 374:Middlewares/Third_Party/LwIP/src/core/udp.c ****                   if (err == ERR_OK) {
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s 			page 13
+
+
+ 375:Middlewares/Third_Party/LwIP/src/core/udp.c ****                     /* move payload to UDP data */
+ 376:Middlewares/Third_Party/LwIP/src/core/udp.c ****                     pbuf_header(q, -hdrs_len);
+ 377:Middlewares/Third_Party/LwIP/src/core/udp.c ****                     mpcb->recv(mpcb->recv_arg, mpcb, q, ip_current_src_addr(), src);
+ 378:Middlewares/Third_Party/LwIP/src/core/udp.c ****                   }
+ 379:Middlewares/Third_Party/LwIP/src/core/udp.c ****                 }
+ 380:Middlewares/Third_Party/LwIP/src/core/udp.c ****               }
+ 381:Middlewares/Third_Party/LwIP/src/core/udp.c ****             }
+ 382:Middlewares/Third_Party/LwIP/src/core/udp.c ****           }
+ 383:Middlewares/Third_Party/LwIP/src/core/udp.c ****         }
+ 384:Middlewares/Third_Party/LwIP/src/core/udp.c ****         if (p_header_changed) {
+ 385:Middlewares/Third_Party/LwIP/src/core/udp.c ****           /* and move payload to UDP data again */
+ 386:Middlewares/Third_Party/LwIP/src/core/udp.c ****           pbuf_header(p, -hdrs_len);
+ 387:Middlewares/Third_Party/LwIP/src/core/udp.c ****         }
+ 388:Middlewares/Third_Party/LwIP/src/core/udp.c ****       }
+ 389:Middlewares/Third_Party/LwIP/src/core/udp.c **** #endif /* SO_REUSE && SO_REUSE_RXTOALL */
+ 390:Middlewares/Third_Party/LwIP/src/core/udp.c ****       /* callback */
+ 391:Middlewares/Third_Party/LwIP/src/core/udp.c ****       if (pcb->recv != NULL) {
+ 392:Middlewares/Third_Party/LwIP/src/core/udp.c ****         /* now the recv function is responsible for freeing p */
+ 393:Middlewares/Third_Party/LwIP/src/core/udp.c ****         pcb->recv(pcb->recv_arg, pcb, p, ip_current_src_addr(), src);
+ 394:Middlewares/Third_Party/LwIP/src/core/udp.c ****       } else {
+ 395:Middlewares/Third_Party/LwIP/src/core/udp.c ****         /* no recv function registered? then we have to free the pbuf! */
+ 396:Middlewares/Third_Party/LwIP/src/core/udp.c ****         pbuf_free(p);
+ 397:Middlewares/Third_Party/LwIP/src/core/udp.c ****         goto end;
+ 398:Middlewares/Third_Party/LwIP/src/core/udp.c ****       }
+ 399:Middlewares/Third_Party/LwIP/src/core/udp.c ****     } else {
+ 400:Middlewares/Third_Party/LwIP/src/core/udp.c ****       LWIP_DEBUGF(UDP_DEBUG | LWIP_DBG_TRACE, ("udp_input: not for us.\n"));
+ 401:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 402:Middlewares/Third_Party/LwIP/src/core/udp.c **** #if LWIP_ICMP || LWIP_ICMP6
+ 403:Middlewares/Third_Party/LwIP/src/core/udp.c ****       /* No match was found, send ICMP destination port unreachable unless
+ 404:Middlewares/Third_Party/LwIP/src/core/udp.c ****          destination address was broadcast/multicast. */
+ 405:Middlewares/Third_Party/LwIP/src/core/udp.c ****       if (!broadcast && !ip_addr_ismulticast(ip_current_dest_addr())) {
+ 406:Middlewares/Third_Party/LwIP/src/core/udp.c ****         /* move payload pointer back to ip header */
+ 407:Middlewares/Third_Party/LwIP/src/core/udp.c ****         pbuf_header_force(p, (s16_t)(ip_current_header_tot_len() + UDP_HLEN));
+ 408:Middlewares/Third_Party/LwIP/src/core/udp.c ****         icmp_port_unreach(ip_current_is_v6(), p);
+ 409:Middlewares/Third_Party/LwIP/src/core/udp.c ****       }
+ 410:Middlewares/Third_Party/LwIP/src/core/udp.c **** #endif /* LWIP_ICMP || LWIP_ICMP6 */
+ 411:Middlewares/Third_Party/LwIP/src/core/udp.c ****       UDP_STATS_INC(udp.proterr);
+ 412:Middlewares/Third_Party/LwIP/src/core/udp.c ****       UDP_STATS_INC(udp.drop);
+ 413:Middlewares/Third_Party/LwIP/src/core/udp.c ****       MIB2_STATS_INC(mib2.udpnoports);
+ 414:Middlewares/Third_Party/LwIP/src/core/udp.c ****       pbuf_free(p);
+ 415:Middlewares/Third_Party/LwIP/src/core/udp.c ****     }
+ 416:Middlewares/Third_Party/LwIP/src/core/udp.c ****   } else {
+ 417:Middlewares/Third_Party/LwIP/src/core/udp.c ****     pbuf_free(p);
+ 418:Middlewares/Third_Party/LwIP/src/core/udp.c ****   }
+ 419:Middlewares/Third_Party/LwIP/src/core/udp.c **** end:
+ 420:Middlewares/Third_Party/LwIP/src/core/udp.c ****   PERF_STOP("udp_input");
+ 421:Middlewares/Third_Party/LwIP/src/core/udp.c ****   return;
+ 422:Middlewares/Third_Party/LwIP/src/core/udp.c **** #if CHECKSUM_CHECK_UDP
+ 423:Middlewares/Third_Party/LwIP/src/core/udp.c **** chkerr:
+ 424:Middlewares/Third_Party/LwIP/src/core/udp.c ****   LWIP_DEBUGF(UDP_DEBUG | LWIP_DBG_LEVEL_SERIOUS,
+ 425:Middlewares/Third_Party/LwIP/src/core/udp.c ****               ("udp_input: UDP (or UDP Lite) datagram discarded due to failing checksum\n"));
+ 426:Middlewares/Third_Party/LwIP/src/core/udp.c ****   UDP_STATS_INC(udp.chkerr);
+ 427:Middlewares/Third_Party/LwIP/src/core/udp.c ****   UDP_STATS_INC(udp.drop);
+ 428:Middlewares/Third_Party/LwIP/src/core/udp.c ****   MIB2_STATS_INC(mib2.udpinerrors);
+ 429:Middlewares/Third_Party/LwIP/src/core/udp.c ****   pbuf_free(p);
+ 430:Middlewares/Third_Party/LwIP/src/core/udp.c ****   PERF_STOP("udp_input");
+ 431:Middlewares/Third_Party/LwIP/src/core/udp.c **** #endif /* CHECKSUM_CHECK_UDP */
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s 			page 14
+
+
+ 432:Middlewares/Third_Party/LwIP/src/core/udp.c **** }
+ 304              		.loc 1 432 0
+ 305 0042 05B0     		add	sp, sp, #20
+ 306              	.LCFI2:
+ 307              		.cfi_remember_state
+ 308              		.cfi_def_cfa_offset 36
+ 309              		@ sp needed
+ 310 0044 BDE8F08F 		pop	{r4, r5, r6, r7, r8, r9, r10, fp, pc}
+ 311              	.LVL48:
+ 312              	.L32:
+ 313              	.LCFI3:
+ 314              		.cfi_restore_state
+ 262:Middlewares/Third_Party/LwIP/src/core/udp.c ****           (ip_addr_isany_val(pcb->remote_ip) ||
+ 315              		.loc 1 262 0
+ 316 0048 A38A     		ldrh	r3, [r4, #20]
+ 317 004a 9A45     		cmp	r10, r3
+ 318 004c 15D0     		beq	.L48
+ 319              	.L31:
+ 320              	.LVL49:
+ 279:Middlewares/Third_Party/LwIP/src/core/udp.c ****   }
+ 321              		.loc 1 279 0 discriminator 2
+ 322 004e 2546     		mov	r5, r4
+ 239:Middlewares/Third_Party/LwIP/src/core/udp.c ****     /* print the PCB local and remote address */
+ 323              		.loc 1 239 0 discriminator 2
+ 324 0050 E468     		ldr	r4, [r4, #12]
+ 325              	.LVL50:
+ 326              	.L30:
+ 239:Middlewares/Third_Party/LwIP/src/core/udp.c ****     /* print the PCB local and remote address */
+ 327              		.loc 1 239 0 is_stmt 0 discriminator 1
+ 328 0052 FCB1     		cbz	r4, .L34
+ 248:Middlewares/Third_Party/LwIP/src/core/udp.c ****         (udp_input_local_match(pcb, inp, broadcast) != 0)) {
+ 329              		.loc 1 248 0 is_stmt 1
+ 330 0054 638A     		ldrh	r3, [r4, #18]
+ 331 0056 9E42     		cmp	r6, r3
+ 332 0058 F9D1     		bne	.L31
+ 249:Middlewares/Third_Party/LwIP/src/core/udp.c ****       if (((pcb->flags & UDP_FLAGS_CONNECTED) == 0) &&
+ 333              		.loc 1 249 0 discriminator 1
+ 334 005a 4246     		mov	r2, r8
+ 335 005c 3946     		mov	r1, r7
+ 336 005e 2046     		mov	r0, r4
+ 337 0060 FFF7FEFF 		bl	udp_input_local_match
+ 338              	.LVL51:
+ 248:Middlewares/Third_Party/LwIP/src/core/udp.c ****         (udp_input_local_match(pcb, inp, broadcast) != 0)) {
+ 339              		.loc 1 248 0 discriminator 1
+ 340 0064 0028     		cmp	r0, #0
+ 341 0066 F2D0     		beq	.L31
+ 250:Middlewares/Third_Party/LwIP/src/core/udp.c ****           ((uncon_pcb == NULL)
+ 342              		.loc 1 250 0
+ 343 0068 237C     		ldrb	r3, [r4, #16]	@ zero_extendqisi2
+ 344 006a 13F0040F 		tst	r3, #4
+ 345 006e EBD1     		bne	.L32
+ 250:Middlewares/Third_Party/LwIP/src/core/udp.c ****           ((uncon_pcb == NULL)
+ 346              		.loc 1 250 0 is_stmt 0 discriminator 1
+ 347 0070 BBF1000F 		cmp	fp, #0
+ 348 0074 E8D1     		bne	.L32
+ 258:Middlewares/Third_Party/LwIP/src/core/udp.c ****       }
+ 349              		.loc 1 258 0 is_stmt 1
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s 			page 15
+
+
+ 350 0076 A346     		mov	fp, r4
+ 351              	.LVL52:
+ 352 0078 E6E7     		b	.L32
+ 353              	.LVL53:
+ 354              	.L48:
+ 263:Middlewares/Third_Party/LwIP/src/core/udp.c ****           ip_addr_cmp(&pcb->remote_ip, ip_current_src_addr()))) {
+ 355              		.loc 1 263 0 discriminator 1
+ 356 007a 6368     		ldr	r3, [r4, #4]
+ 262:Middlewares/Third_Party/LwIP/src/core/udp.c ****           (ip_addr_isany_val(pcb->remote_ip) ||
+ 357              		.loc 1 262 0 discriminator 1
+ 358 007c 1BB1     		cbz	r3, .L33
+ 264:Middlewares/Third_Party/LwIP/src/core/udp.c ****         /* the first fully matching PCB */
+ 359              		.loc 1 264 0
+ 360 007e 2B4A     		ldr	r2, .L52
+ 361 0080 1269     		ldr	r2, [r2, #16]
+ 263:Middlewares/Third_Party/LwIP/src/core/udp.c ****           ip_addr_cmp(&pcb->remote_ip, ip_current_src_addr()))) {
+ 362              		.loc 1 263 0
+ 363 0082 9342     		cmp	r3, r2
+ 364 0084 E3D1     		bne	.L31
+ 365              	.L33:
+ 266:Middlewares/Third_Party/LwIP/src/core/udp.c ****           /* move the pcb to the front of udp_pcbs so that is
+ 366              		.loc 1 266 0
+ 367 0086 2DB1     		cbz	r5, .L34
+ 269:Middlewares/Third_Party/LwIP/src/core/udp.c ****           pcb->next = udp_pcbs;
+ 368              		.loc 1 269 0
+ 369 0088 E368     		ldr	r3, [r4, #12]
+ 370 008a EB60     		str	r3, [r5, #12]
+ 270:Middlewares/Third_Party/LwIP/src/core/udp.c ****           udp_pcbs = pcb;
+ 371              		.loc 1 270 0
+ 372 008c 039B     		ldr	r3, [sp, #12]
+ 373 008e E360     		str	r3, [r4, #12]
+ 271:Middlewares/Third_Party/LwIP/src/core/udp.c ****         } else {
+ 374              		.loc 1 271 0
+ 375 0090 274B     		ldr	r3, .L52+4
+ 376 0092 1C60     		str	r4, [r3]
+ 377              	.L34:
+ 282:Middlewares/Third_Party/LwIP/src/core/udp.c ****     pcb = uncon_pcb;
+ 378              		.loc 1 282 0
+ 379 0094 A4B1     		cbz	r4, .L49
+ 380              	.LVL54:
+ 381              	.L36:
+ 287:Middlewares/Third_Party/LwIP/src/core/udp.c ****     for_us = 1;
+ 382              		.loc 1 287 0
+ 383 0096 ACB1     		cbz	r4, .L50
+ 288:Middlewares/Third_Party/LwIP/src/core/udp.c ****   } else {
+ 384              		.loc 1 288 0
+ 385 0098 0123     		movs	r3, #1
+ 386              	.LVL55:
+ 387              	.L37:
+ 302:Middlewares/Third_Party/LwIP/src/core/udp.c ****     LWIP_DEBUGF(UDP_DEBUG | LWIP_DBG_TRACE, ("udp_input: calculating checksum\n"));
+ 388              		.loc 1 302 0
+ 389 009a 002B     		cmp	r3, #0
+ 390 009c 41D0     		beq	.L38
+ 339:Middlewares/Third_Party/LwIP/src/core/udp.c ****       /* Can we cope with this failing? Just assert for now */
+ 391              		.loc 1 339 0
+ 392 009e 6FF00701 		mvn	r1, #7
+ 393 00a2 4846     		mov	r0, r9
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s 			page 16
+
+
+ 394 00a4 FFF7FEFF 		bl	pbuf_header
+ 395              	.LVL56:
+ 396 00a8 A0B9     		cbnz	r0, .L51
+ 348:Middlewares/Third_Party/LwIP/src/core/udp.c ****       MIB2_STATS_INC(mib2.udpindatagrams);
+ 397              		.loc 1 348 0
+ 398 00aa 14B3     		cbz	r4, .L40
+ 391:Middlewares/Third_Party/LwIP/src/core/udp.c ****         /* now the recv function is responsible for freeing p */
+ 399              		.loc 1 391 0
+ 400 00ac A569     		ldr	r5, [r4, #24]
+ 401              	.LVL57:
+ 402 00ae E5B1     		cbz	r5, .L41
+ 393:Middlewares/Third_Party/LwIP/src/core/udp.c ****       } else {
+ 403              		.loc 1 393 0
+ 404 00b0 E069     		ldr	r0, [r4, #28]
+ 405 00b2 CDF800A0 		str	r10, [sp]
+ 406 00b6 1F4B     		ldr	r3, .L52+8
+ 407 00b8 4A46     		mov	r2, r9
+ 408 00ba 2146     		mov	r1, r4
+ 409 00bc A847     		blx	r5
+ 410              	.LVL58:
+ 411 00be C0E7     		b	.L27
+ 412              	.LVL59:
+ 413              	.L49:
+ 283:Middlewares/Third_Party/LwIP/src/core/udp.c ****   }
+ 414              		.loc 1 283 0
+ 415 00c0 5C46     		mov	r4, fp
+ 416              	.LVL60:
+ 417 00c2 E8E7     		b	.L36
+ 418              	.LVL61:
+ 419              	.L50:
+ 297:Middlewares/Third_Party/LwIP/src/core/udp.c ****     }
+ 420              		.loc 1 297 0
+ 421 00c4 7B68     		ldr	r3, [r7, #4]
+ 422 00c6 194A     		ldr	r2, .L52
+ 423 00c8 5269     		ldr	r2, [r2, #20]
+ 424 00ca 9342     		cmp	r3, r2
+ 425 00cc 14BF     		ite	ne
+ 426 00ce 0023     		movne	r3, #0
+ 427 00d0 0123     		moveq	r3, #1
+ 428              	.LVL62:
+ 429 00d2 E2E7     		b	.L37
+ 430              	.LVL63:
+ 431              	.L51:
+ 341:Middlewares/Third_Party/LwIP/src/core/udp.c ****       UDP_STATS_INC(udp.drop);
+ 432              		.loc 1 341 0 discriminator 1
+ 433 00d4 184B     		ldr	r3, .L52+12
+ 434 00d6 40F25512 		movw	r2, #341
+ 435 00da 1849     		ldr	r1, .L52+16
+ 436 00dc 1848     		ldr	r0, .L52+20
+ 437 00de FFF7FEFF 		bl	printf
+ 438              	.LVL64:
+ 344:Middlewares/Third_Party/LwIP/src/core/udp.c ****       goto end;
+ 439              		.loc 1 344 0 discriminator 1
+ 440 00e2 4846     		mov	r0, r9
+ 441 00e4 FFF7FEFF 		bl	pbuf_free
+ 442              	.LVL65:
+ 345:Middlewares/Third_Party/LwIP/src/core/udp.c ****     }
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s 			page 17
+
+
+ 443              		.loc 1 345 0 discriminator 1
+ 444 00e8 ABE7     		b	.L27
+ 445              	.LVL66:
+ 446              	.L41:
+ 396:Middlewares/Third_Party/LwIP/src/core/udp.c ****         goto end;
+ 447              		.loc 1 396 0
+ 448 00ea 4846     		mov	r0, r9
+ 449 00ec FFF7FEFF 		bl	pbuf_free
+ 450              	.LVL67:
+ 397:Middlewares/Third_Party/LwIP/src/core/udp.c ****       }
+ 451              		.loc 1 397 0
+ 452 00f0 A7E7     		b	.L27
+ 453              	.LVL68:
+ 454              	.L40:
+ 405:Middlewares/Third_Party/LwIP/src/core/udp.c ****         /* move payload pointer back to ip header */
+ 455              		.loc 1 405 0
+ 456 00f2 B8F1000F 		cmp	r8, #0
+ 457 00f6 10D1     		bne	.L42
+ 405:Middlewares/Third_Party/LwIP/src/core/udp.c ****         /* move payload pointer back to ip header */
+ 458              		.loc 1 405 0 is_stmt 0 discriminator 1
+ 459 00f8 0C4B     		ldr	r3, .L52
+ 460 00fa 5B69     		ldr	r3, [r3, #20]
+ 461 00fc 03F0F003 		and	r3, r3, #240
+ 462 0100 E02B     		cmp	r3, #224
+ 463 0102 0AD0     		beq	.L42
+ 407:Middlewares/Third_Party/LwIP/src/core/udp.c ****         icmp_port_unreach(ip_current_is_v6(), p);
+ 464              		.loc 1 407 0 is_stmt 1
+ 465 0104 094B     		ldr	r3, .L52
+ 466 0106 9989     		ldrh	r1, [r3, #12]
+ 467 0108 0831     		adds	r1, r1, #8
+ 468 010a 09B2     		sxth	r1, r1
+ 469 010c 4846     		mov	r0, r9
+ 470 010e FFF7FEFF 		bl	pbuf_header_force
+ 471              	.LVL69:
+ 408:Middlewares/Third_Party/LwIP/src/core/udp.c ****       }
+ 472              		.loc 1 408 0
+ 473 0112 0321     		movs	r1, #3
+ 474 0114 4846     		mov	r0, r9
+ 475 0116 FFF7FEFF 		bl	icmp_dest_unreach
+ 476              	.LVL70:
+ 477              	.L42:
+ 414:Middlewares/Third_Party/LwIP/src/core/udp.c ****     }
+ 478              		.loc 1 414 0
+ 479 011a 4846     		mov	r0, r9
+ 480 011c FFF7FEFF 		bl	pbuf_free
+ 481              	.LVL71:
+ 482 0120 8FE7     		b	.L27
+ 483              	.LVL72:
+ 484              	.L38:
+ 417:Middlewares/Third_Party/LwIP/src/core/udp.c ****   }
+ 485              		.loc 1 417 0
+ 486 0122 4846     		mov	r0, r9
+ 487 0124 FFF7FEFF 		bl	pbuf_free
+ 488              	.LVL73:
+ 421:Middlewares/Third_Party/LwIP/src/core/udp.c **** #if CHECKSUM_CHECK_UDP
+ 489              		.loc 1 421 0
+ 490 0128 8BE7     		b	.L27
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s 			page 18
+
+
+ 491              	.L53:
+ 492 012a 00BF     		.align	2
+ 493              	.L52:
+ 494 012c 00000000 		.word	ip_data
+ 495 0130 00000000 		.word	udp_pcbs
+ 496 0134 10000000 		.word	ip_data+16
+ 497 0138 00000000 		.word	.LC0
+ 498 013c 2C000000 		.word	.LC1
+ 499 0140 40000000 		.word	.LC2
+ 500              		.cfi_endproc
+ 501              	.LFE155:
+ 503              		.section	.text.udp_bind,"ax",%progbits
+ 504              		.align	1
+ 505              		.global	udp_bind
+ 506              		.syntax unified
+ 507              		.thumb
+ 508              		.thumb_func
+ 509              		.fpu fpv5-sp-d16
+ 511              	udp_bind:
+ 512              	.LFB160:
+ 433:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 434:Middlewares/Third_Party/LwIP/src/core/udp.c **** /**
+ 435:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * @ingroup udp_raw
+ 436:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * Send data using UDP.
+ 437:Middlewares/Third_Party/LwIP/src/core/udp.c ****  *
+ 438:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * @param pcb UDP PCB used to send the data.
+ 439:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * @param p chain of pbuf's to be sent.
+ 440:Middlewares/Third_Party/LwIP/src/core/udp.c ****  *
+ 441:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * The datagram will be sent to the current remote_ip & remote_port
+ 442:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * stored in pcb. If the pcb is not bound to a port, it will
+ 443:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * automatically be bound to a random port.
+ 444:Middlewares/Third_Party/LwIP/src/core/udp.c ****  *
+ 445:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * @return lwIP error code.
+ 446:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * - ERR_OK. Successful. No error occurred.
+ 447:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * - ERR_MEM. Out of memory.
+ 448:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * - ERR_RTE. Could not find route to destination address.
+ 449:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * - ERR_VAL. No PCB or PCB is dual-stack
+ 450:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * - More errors could be returned by lower protocol layers.
+ 451:Middlewares/Third_Party/LwIP/src/core/udp.c ****  *
+ 452:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * @see udp_disconnect() udp_sendto()
+ 453:Middlewares/Third_Party/LwIP/src/core/udp.c ****  */
+ 454:Middlewares/Third_Party/LwIP/src/core/udp.c **** err_t
+ 455:Middlewares/Third_Party/LwIP/src/core/udp.c **** udp_send(struct udp_pcb *pcb, struct pbuf *p)
+ 456:Middlewares/Third_Party/LwIP/src/core/udp.c **** {
+ 457:Middlewares/Third_Party/LwIP/src/core/udp.c ****   if ((pcb == NULL) || IP_IS_ANY_TYPE_VAL(pcb->remote_ip)) {
+ 458:Middlewares/Third_Party/LwIP/src/core/udp.c ****     return ERR_VAL;
+ 459:Middlewares/Third_Party/LwIP/src/core/udp.c ****   }
+ 460:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 461:Middlewares/Third_Party/LwIP/src/core/udp.c ****   /* send to the packet using remote ip and port stored in the pcb */
+ 462:Middlewares/Third_Party/LwIP/src/core/udp.c ****   return udp_sendto(pcb, p, &pcb->remote_ip, pcb->remote_port);
+ 463:Middlewares/Third_Party/LwIP/src/core/udp.c **** }
+ 464:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 465:Middlewares/Third_Party/LwIP/src/core/udp.c **** #if LWIP_CHECKSUM_ON_COPY && CHECKSUM_GEN_UDP
+ 466:Middlewares/Third_Party/LwIP/src/core/udp.c **** /** @ingroup udp_raw
+ 467:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * Same as udp_send() but with checksum
+ 468:Middlewares/Third_Party/LwIP/src/core/udp.c ****  */
+ 469:Middlewares/Third_Party/LwIP/src/core/udp.c **** err_t
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s 			page 19
+
+
+ 470:Middlewares/Third_Party/LwIP/src/core/udp.c **** udp_send_chksum(struct udp_pcb *pcb, struct pbuf *p,
+ 471:Middlewares/Third_Party/LwIP/src/core/udp.c ****                 u8_t have_chksum, u16_t chksum)
+ 472:Middlewares/Third_Party/LwIP/src/core/udp.c **** {
+ 473:Middlewares/Third_Party/LwIP/src/core/udp.c ****   if ((pcb == NULL) || IP_IS_ANY_TYPE_VAL(pcb->remote_ip)) {
+ 474:Middlewares/Third_Party/LwIP/src/core/udp.c ****     return ERR_VAL;
+ 475:Middlewares/Third_Party/LwIP/src/core/udp.c ****   }
+ 476:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 477:Middlewares/Third_Party/LwIP/src/core/udp.c ****   /* send to the packet using remote ip and port stored in the pcb */
+ 478:Middlewares/Third_Party/LwIP/src/core/udp.c ****   return udp_sendto_chksum(pcb, p, &pcb->remote_ip, pcb->remote_port,
+ 479:Middlewares/Third_Party/LwIP/src/core/udp.c ****     have_chksum, chksum);
+ 480:Middlewares/Third_Party/LwIP/src/core/udp.c **** }
+ 481:Middlewares/Third_Party/LwIP/src/core/udp.c **** #endif /* LWIP_CHECKSUM_ON_COPY && CHECKSUM_GEN_UDP */
+ 482:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 483:Middlewares/Third_Party/LwIP/src/core/udp.c **** /**
+ 484:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * @ingroup udp_raw
+ 485:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * Send data to a specified address using UDP.
+ 486:Middlewares/Third_Party/LwIP/src/core/udp.c ****  *
+ 487:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * @param pcb UDP PCB used to send the data.
+ 488:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * @param p chain of pbuf's to be sent.
+ 489:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * @param dst_ip Destination IP address.
+ 490:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * @param dst_port Destination UDP port.
+ 491:Middlewares/Third_Party/LwIP/src/core/udp.c ****  *
+ 492:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * dst_ip & dst_port are expected to be in the same byte order as in the pcb.
+ 493:Middlewares/Third_Party/LwIP/src/core/udp.c ****  *
+ 494:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * If the PCB already has a remote address association, it will
+ 495:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * be restored after the data is sent.
+ 496:Middlewares/Third_Party/LwIP/src/core/udp.c ****  *
+ 497:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * @return lwIP error code (@see udp_send for possible error codes)
+ 498:Middlewares/Third_Party/LwIP/src/core/udp.c ****  *
+ 499:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * @see udp_disconnect() udp_send()
+ 500:Middlewares/Third_Party/LwIP/src/core/udp.c ****  */
+ 501:Middlewares/Third_Party/LwIP/src/core/udp.c **** err_t
+ 502:Middlewares/Third_Party/LwIP/src/core/udp.c **** udp_sendto(struct udp_pcb *pcb, struct pbuf *p,
+ 503:Middlewares/Third_Party/LwIP/src/core/udp.c ****   const ip_addr_t *dst_ip, u16_t dst_port)
+ 504:Middlewares/Third_Party/LwIP/src/core/udp.c **** {
+ 505:Middlewares/Third_Party/LwIP/src/core/udp.c **** #if LWIP_CHECKSUM_ON_COPY && CHECKSUM_GEN_UDP
+ 506:Middlewares/Third_Party/LwIP/src/core/udp.c ****   return udp_sendto_chksum(pcb, p, dst_ip, dst_port, 0, 0);
+ 507:Middlewares/Third_Party/LwIP/src/core/udp.c **** }
+ 508:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 509:Middlewares/Third_Party/LwIP/src/core/udp.c **** /** @ingroup udp_raw
+ 510:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * Same as udp_sendto(), but with checksum */
+ 511:Middlewares/Third_Party/LwIP/src/core/udp.c **** err_t
+ 512:Middlewares/Third_Party/LwIP/src/core/udp.c **** udp_sendto_chksum(struct udp_pcb *pcb, struct pbuf *p, const ip_addr_t *dst_ip,
+ 513:Middlewares/Third_Party/LwIP/src/core/udp.c ****                   u16_t dst_port, u8_t have_chksum, u16_t chksum)
+ 514:Middlewares/Third_Party/LwIP/src/core/udp.c **** {
+ 515:Middlewares/Third_Party/LwIP/src/core/udp.c **** #endif /* LWIP_CHECKSUM_ON_COPY && CHECKSUM_GEN_UDP */
+ 516:Middlewares/Third_Party/LwIP/src/core/udp.c ****   struct netif *netif;
+ 517:Middlewares/Third_Party/LwIP/src/core/udp.c ****   const ip_addr_t *dst_ip_route = dst_ip;
+ 518:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 519:Middlewares/Third_Party/LwIP/src/core/udp.c ****   if ((pcb == NULL) || (dst_ip == NULL) || !IP_ADDR_PCB_VERSION_MATCH(pcb, dst_ip)) {
+ 520:Middlewares/Third_Party/LwIP/src/core/udp.c ****     return ERR_VAL;
+ 521:Middlewares/Third_Party/LwIP/src/core/udp.c ****   }
+ 522:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 523:Middlewares/Third_Party/LwIP/src/core/udp.c ****   LWIP_DEBUGF(UDP_DEBUG | LWIP_DBG_TRACE, ("udp_send\n"));
+ 524:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 525:Middlewares/Third_Party/LwIP/src/core/udp.c **** #if LWIP_IPV6 || (LWIP_IPV4 && LWIP_MULTICAST_TX_OPTIONS)
+ 526:Middlewares/Third_Party/LwIP/src/core/udp.c ****   if (ip_addr_ismulticast(dst_ip_route)) {
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s 			page 20
+
+
+ 527:Middlewares/Third_Party/LwIP/src/core/udp.c **** #if LWIP_IPV6
+ 528:Middlewares/Third_Party/LwIP/src/core/udp.c ****     if (IP_IS_V6(dst_ip)) {
+ 529:Middlewares/Third_Party/LwIP/src/core/udp.c ****       /* For multicast, find a netif based on source address. */
+ 530:Middlewares/Third_Party/LwIP/src/core/udp.c ****       dst_ip_route = &pcb->local_ip;
+ 531:Middlewares/Third_Party/LwIP/src/core/udp.c ****     } else
+ 532:Middlewares/Third_Party/LwIP/src/core/udp.c **** #endif /* LWIP_IPV6 */
+ 533:Middlewares/Third_Party/LwIP/src/core/udp.c ****     {
+ 534:Middlewares/Third_Party/LwIP/src/core/udp.c **** #if LWIP_IPV4 && LWIP_MULTICAST_TX_OPTIONS
+ 535:Middlewares/Third_Party/LwIP/src/core/udp.c ****       /* IPv4 does not use source-based routing by default, so we use an
+ 536:Middlewares/Third_Party/LwIP/src/core/udp.c ****          administratively selected interface for multicast by default.
+ 537:Middlewares/Third_Party/LwIP/src/core/udp.c ****          However, this can be overridden by setting an interface address
+ 538:Middlewares/Third_Party/LwIP/src/core/udp.c ****          in pcb->multicast_ip that is used for routing. */
+ 539:Middlewares/Third_Party/LwIP/src/core/udp.c ****       if (!ip_addr_isany_val(pcb->multicast_ip) &&
+ 540:Middlewares/Third_Party/LwIP/src/core/udp.c ****           !ip4_addr_cmp(ip_2_ip4(&pcb->multicast_ip), IP4_ADDR_BROADCAST)) {
+ 541:Middlewares/Third_Party/LwIP/src/core/udp.c ****         dst_ip_route = &pcb->multicast_ip;
+ 542:Middlewares/Third_Party/LwIP/src/core/udp.c ****       }
+ 543:Middlewares/Third_Party/LwIP/src/core/udp.c **** #endif /* LWIP_IPV4 && LWIP_MULTICAST_TX_OPTIONS */
+ 544:Middlewares/Third_Party/LwIP/src/core/udp.c ****     }
+ 545:Middlewares/Third_Party/LwIP/src/core/udp.c ****   }
+ 546:Middlewares/Third_Party/LwIP/src/core/udp.c **** #endif /* LWIP_IPV6 || (LWIP_IPV4 && LWIP_MULTICAST_TX_OPTIONS) */
+ 547:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 548:Middlewares/Third_Party/LwIP/src/core/udp.c ****   /* find the outgoing network interface for this packet */
+ 549:Middlewares/Third_Party/LwIP/src/core/udp.c ****   if(IP_IS_ANY_TYPE_VAL(pcb->local_ip)) {
+ 550:Middlewares/Third_Party/LwIP/src/core/udp.c ****     /* Don't call ip_route() with IP_ANY_TYPE */
+ 551:Middlewares/Third_Party/LwIP/src/core/udp.c ****     netif = ip_route(IP46_ADDR_ANY(IP_GET_TYPE(dst_ip_route)), dst_ip_route);
+ 552:Middlewares/Third_Party/LwIP/src/core/udp.c ****   } else {
+ 553:Middlewares/Third_Party/LwIP/src/core/udp.c ****     netif = ip_route(&pcb->local_ip, dst_ip_route);
+ 554:Middlewares/Third_Party/LwIP/src/core/udp.c ****   }
+ 555:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 556:Middlewares/Third_Party/LwIP/src/core/udp.c ****   /* no outgoing network interface could be found? */
+ 557:Middlewares/Third_Party/LwIP/src/core/udp.c ****   if (netif == NULL) {
+ 558:Middlewares/Third_Party/LwIP/src/core/udp.c ****     LWIP_DEBUGF(UDP_DEBUG | LWIP_DBG_LEVEL_SERIOUS, ("udp_send: No route to "));
+ 559:Middlewares/Third_Party/LwIP/src/core/udp.c ****     ip_addr_debug_print(UDP_DEBUG | LWIP_DBG_LEVEL_SERIOUS, dst_ip);
+ 560:Middlewares/Third_Party/LwIP/src/core/udp.c ****     LWIP_DEBUGF(UDP_DEBUG, ("\n"));
+ 561:Middlewares/Third_Party/LwIP/src/core/udp.c ****     UDP_STATS_INC(udp.rterr);
+ 562:Middlewares/Third_Party/LwIP/src/core/udp.c ****     return ERR_RTE;
+ 563:Middlewares/Third_Party/LwIP/src/core/udp.c ****   }
+ 564:Middlewares/Third_Party/LwIP/src/core/udp.c **** #if LWIP_CHECKSUM_ON_COPY && CHECKSUM_GEN_UDP
+ 565:Middlewares/Third_Party/LwIP/src/core/udp.c ****   return udp_sendto_if_chksum(pcb, p, dst_ip, dst_port, netif, have_chksum, chksum);
+ 566:Middlewares/Third_Party/LwIP/src/core/udp.c **** #else /* LWIP_CHECKSUM_ON_COPY && CHECKSUM_GEN_UDP */
+ 567:Middlewares/Third_Party/LwIP/src/core/udp.c ****   return udp_sendto_if(pcb, p, dst_ip, dst_port, netif);
+ 568:Middlewares/Third_Party/LwIP/src/core/udp.c **** #endif /* LWIP_CHECKSUM_ON_COPY && CHECKSUM_GEN_UDP */
+ 569:Middlewares/Third_Party/LwIP/src/core/udp.c **** }
+ 570:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 571:Middlewares/Third_Party/LwIP/src/core/udp.c **** /**
+ 572:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * @ingroup udp_raw
+ 573:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * Send data to a specified address using UDP.
+ 574:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * The netif used for sending can be specified.
+ 575:Middlewares/Third_Party/LwIP/src/core/udp.c ****  *
+ 576:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * This function exists mainly for DHCP, to be able to send UDP packets
+ 577:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * on a netif that is still down.
+ 578:Middlewares/Third_Party/LwIP/src/core/udp.c ****  *
+ 579:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * @param pcb UDP PCB used to send the data.
+ 580:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * @param p chain of pbuf's to be sent.
+ 581:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * @param dst_ip Destination IP address.
+ 582:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * @param dst_port Destination UDP port.
+ 583:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * @param netif the netif used for sending.
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s 			page 21
+
+
+ 584:Middlewares/Third_Party/LwIP/src/core/udp.c ****  *
+ 585:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * dst_ip & dst_port are expected to be in the same byte order as in the pcb.
+ 586:Middlewares/Third_Party/LwIP/src/core/udp.c ****  *
+ 587:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * @return lwIP error code (@see udp_send for possible error codes)
+ 588:Middlewares/Third_Party/LwIP/src/core/udp.c ****  *
+ 589:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * @see udp_disconnect() udp_send()
+ 590:Middlewares/Third_Party/LwIP/src/core/udp.c ****  */
+ 591:Middlewares/Third_Party/LwIP/src/core/udp.c **** err_t
+ 592:Middlewares/Third_Party/LwIP/src/core/udp.c **** udp_sendto_if(struct udp_pcb *pcb, struct pbuf *p,
+ 593:Middlewares/Third_Party/LwIP/src/core/udp.c ****   const ip_addr_t *dst_ip, u16_t dst_port, struct netif *netif)
+ 594:Middlewares/Third_Party/LwIP/src/core/udp.c **** {
+ 595:Middlewares/Third_Party/LwIP/src/core/udp.c **** #if LWIP_CHECKSUM_ON_COPY && CHECKSUM_GEN_UDP
+ 596:Middlewares/Third_Party/LwIP/src/core/udp.c ****   return udp_sendto_if_chksum(pcb, p, dst_ip, dst_port, netif, 0, 0);
+ 597:Middlewares/Third_Party/LwIP/src/core/udp.c **** }
+ 598:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 599:Middlewares/Third_Party/LwIP/src/core/udp.c **** /** Same as udp_sendto_if(), but with checksum */
+ 600:Middlewares/Third_Party/LwIP/src/core/udp.c **** err_t
+ 601:Middlewares/Third_Party/LwIP/src/core/udp.c **** udp_sendto_if_chksum(struct udp_pcb *pcb, struct pbuf *p, const ip_addr_t *dst_ip,
+ 602:Middlewares/Third_Party/LwIP/src/core/udp.c ****                      u16_t dst_port, struct netif *netif, u8_t have_chksum,
+ 603:Middlewares/Third_Party/LwIP/src/core/udp.c ****                      u16_t chksum)
+ 604:Middlewares/Third_Party/LwIP/src/core/udp.c **** {
+ 605:Middlewares/Third_Party/LwIP/src/core/udp.c **** #endif /* LWIP_CHECKSUM_ON_COPY && CHECKSUM_GEN_UDP */
+ 606:Middlewares/Third_Party/LwIP/src/core/udp.c ****   const ip_addr_t *src_ip;
+ 607:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 608:Middlewares/Third_Party/LwIP/src/core/udp.c ****   if ((pcb == NULL) || (dst_ip == NULL) || !IP_ADDR_PCB_VERSION_MATCH(pcb, dst_ip)) {
+ 609:Middlewares/Third_Party/LwIP/src/core/udp.c ****     return ERR_VAL;
+ 610:Middlewares/Third_Party/LwIP/src/core/udp.c ****   }
+ 611:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 612:Middlewares/Third_Party/LwIP/src/core/udp.c ****   /* PCB local address is IP_ANY_ADDR? */
+ 613:Middlewares/Third_Party/LwIP/src/core/udp.c **** #if LWIP_IPV6
+ 614:Middlewares/Third_Party/LwIP/src/core/udp.c ****   if (IP_IS_V6(dst_ip)) {
+ 615:Middlewares/Third_Party/LwIP/src/core/udp.c ****     if (ip6_addr_isany(ip_2_ip6(&pcb->local_ip))) {
+ 616:Middlewares/Third_Party/LwIP/src/core/udp.c ****       src_ip = ip6_select_source_address(netif, ip_2_ip6(dst_ip));
+ 617:Middlewares/Third_Party/LwIP/src/core/udp.c ****       if (src_ip == NULL) {
+ 618:Middlewares/Third_Party/LwIP/src/core/udp.c ****         /* No suitable source address was found. */
+ 619:Middlewares/Third_Party/LwIP/src/core/udp.c ****         return ERR_RTE;
+ 620:Middlewares/Third_Party/LwIP/src/core/udp.c ****       }
+ 621:Middlewares/Third_Party/LwIP/src/core/udp.c ****     } else {
+ 622:Middlewares/Third_Party/LwIP/src/core/udp.c ****       /* use UDP PCB local IPv6 address as source address, if still valid. */
+ 623:Middlewares/Third_Party/LwIP/src/core/udp.c ****       if (netif_get_ip6_addr_match(netif, ip_2_ip6(&pcb->local_ip)) < 0) {
+ 624:Middlewares/Third_Party/LwIP/src/core/udp.c ****         /* Address isn't valid anymore. */
+ 625:Middlewares/Third_Party/LwIP/src/core/udp.c ****         return ERR_RTE;
+ 626:Middlewares/Third_Party/LwIP/src/core/udp.c ****       }
+ 627:Middlewares/Third_Party/LwIP/src/core/udp.c ****       src_ip = &pcb->local_ip;
+ 628:Middlewares/Third_Party/LwIP/src/core/udp.c ****     }
+ 629:Middlewares/Third_Party/LwIP/src/core/udp.c ****   }
+ 630:Middlewares/Third_Party/LwIP/src/core/udp.c **** #endif /* LWIP_IPV6 */
+ 631:Middlewares/Third_Party/LwIP/src/core/udp.c **** #if LWIP_IPV4 && LWIP_IPV6
+ 632:Middlewares/Third_Party/LwIP/src/core/udp.c ****   else
+ 633:Middlewares/Third_Party/LwIP/src/core/udp.c **** #endif /* LWIP_IPV4 && LWIP_IPV6 */
+ 634:Middlewares/Third_Party/LwIP/src/core/udp.c **** #if LWIP_IPV4
+ 635:Middlewares/Third_Party/LwIP/src/core/udp.c ****   if (ip4_addr_isany(ip_2_ip4(&pcb->local_ip)) ||
+ 636:Middlewares/Third_Party/LwIP/src/core/udp.c ****       ip4_addr_ismulticast(ip_2_ip4(&pcb->local_ip))) {
+ 637:Middlewares/Third_Party/LwIP/src/core/udp.c ****     /* if the local_ip is any or multicast
+ 638:Middlewares/Third_Party/LwIP/src/core/udp.c ****      * use the outgoing network interface IP address as source address */
+ 639:Middlewares/Third_Party/LwIP/src/core/udp.c ****     src_ip = netif_ip_addr4(netif);
+ 640:Middlewares/Third_Party/LwIP/src/core/udp.c ****   } else {
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s 			page 22
+
+
+ 641:Middlewares/Third_Party/LwIP/src/core/udp.c ****     /* check if UDP PCB local IP address is correct
+ 642:Middlewares/Third_Party/LwIP/src/core/udp.c ****      * this could be an old address if netif->ip_addr has changed */
+ 643:Middlewares/Third_Party/LwIP/src/core/udp.c ****     if (!ip4_addr_cmp(ip_2_ip4(&(pcb->local_ip)), netif_ip4_addr(netif))) {
+ 644:Middlewares/Third_Party/LwIP/src/core/udp.c ****       /* local_ip doesn't match, drop the packet */
+ 645:Middlewares/Third_Party/LwIP/src/core/udp.c ****       return ERR_RTE;
+ 646:Middlewares/Third_Party/LwIP/src/core/udp.c ****     }
+ 647:Middlewares/Third_Party/LwIP/src/core/udp.c ****     /* use UDP PCB local IP address as source address */
+ 648:Middlewares/Third_Party/LwIP/src/core/udp.c ****     src_ip = &pcb->local_ip;
+ 649:Middlewares/Third_Party/LwIP/src/core/udp.c ****   }
+ 650:Middlewares/Third_Party/LwIP/src/core/udp.c **** #endif /* LWIP_IPV4 */
+ 651:Middlewares/Third_Party/LwIP/src/core/udp.c **** #if LWIP_CHECKSUM_ON_COPY && CHECKSUM_GEN_UDP
+ 652:Middlewares/Third_Party/LwIP/src/core/udp.c ****   return udp_sendto_if_src_chksum(pcb, p, dst_ip, dst_port, netif, have_chksum, chksum, src_ip);
+ 653:Middlewares/Third_Party/LwIP/src/core/udp.c **** #else /* LWIP_CHECKSUM_ON_COPY && CHECKSUM_GEN_UDP */
+ 654:Middlewares/Third_Party/LwIP/src/core/udp.c ****   return udp_sendto_if_src(pcb, p, dst_ip, dst_port, netif, src_ip);
+ 655:Middlewares/Third_Party/LwIP/src/core/udp.c **** #endif /* LWIP_CHECKSUM_ON_COPY && CHECKSUM_GEN_UDP */
+ 656:Middlewares/Third_Party/LwIP/src/core/udp.c **** }
+ 657:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 658:Middlewares/Third_Party/LwIP/src/core/udp.c **** /** @ingroup udp_raw
+ 659:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * Same as @ref udp_sendto_if, but with source address */
+ 660:Middlewares/Third_Party/LwIP/src/core/udp.c **** err_t
+ 661:Middlewares/Third_Party/LwIP/src/core/udp.c **** udp_sendto_if_src(struct udp_pcb *pcb, struct pbuf *p,
+ 662:Middlewares/Third_Party/LwIP/src/core/udp.c ****   const ip_addr_t *dst_ip, u16_t dst_port, struct netif *netif, const ip_addr_t *src_ip)
+ 663:Middlewares/Third_Party/LwIP/src/core/udp.c **** {
+ 664:Middlewares/Third_Party/LwIP/src/core/udp.c **** #if LWIP_CHECKSUM_ON_COPY && CHECKSUM_GEN_UDP
+ 665:Middlewares/Third_Party/LwIP/src/core/udp.c ****   return udp_sendto_if_src_chksum(pcb, p, dst_ip, dst_port, netif, 0, 0, src_ip);
+ 666:Middlewares/Third_Party/LwIP/src/core/udp.c **** }
+ 667:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 668:Middlewares/Third_Party/LwIP/src/core/udp.c **** /** Same as udp_sendto_if_src(), but with checksum */
+ 669:Middlewares/Third_Party/LwIP/src/core/udp.c **** err_t
+ 670:Middlewares/Third_Party/LwIP/src/core/udp.c **** udp_sendto_if_src_chksum(struct udp_pcb *pcb, struct pbuf *p, const ip_addr_t *dst_ip,
+ 671:Middlewares/Third_Party/LwIP/src/core/udp.c ****                      u16_t dst_port, struct netif *netif, u8_t have_chksum,
+ 672:Middlewares/Third_Party/LwIP/src/core/udp.c ****                      u16_t chksum, const ip_addr_t *src_ip)
+ 673:Middlewares/Third_Party/LwIP/src/core/udp.c **** {
+ 674:Middlewares/Third_Party/LwIP/src/core/udp.c **** #endif /* LWIP_CHECKSUM_ON_COPY && CHECKSUM_GEN_UDP */
+ 675:Middlewares/Third_Party/LwIP/src/core/udp.c ****   struct udp_hdr *udphdr;
+ 676:Middlewares/Third_Party/LwIP/src/core/udp.c ****   err_t err;
+ 677:Middlewares/Third_Party/LwIP/src/core/udp.c ****   struct pbuf *q; /* q will be sent down the stack */
+ 678:Middlewares/Third_Party/LwIP/src/core/udp.c ****   u8_t ip_proto;
+ 679:Middlewares/Third_Party/LwIP/src/core/udp.c ****   u8_t ttl;
+ 680:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 681:Middlewares/Third_Party/LwIP/src/core/udp.c ****   if ((pcb == NULL) || (dst_ip == NULL) || !IP_ADDR_PCB_VERSION_MATCH(pcb, src_ip) ||
+ 682:Middlewares/Third_Party/LwIP/src/core/udp.c ****       !IP_ADDR_PCB_VERSION_MATCH(pcb, dst_ip)) {
+ 683:Middlewares/Third_Party/LwIP/src/core/udp.c ****     return ERR_VAL;
+ 684:Middlewares/Third_Party/LwIP/src/core/udp.c ****   }
+ 685:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 686:Middlewares/Third_Party/LwIP/src/core/udp.c **** #if LWIP_IPV4 && IP_SOF_BROADCAST
+ 687:Middlewares/Third_Party/LwIP/src/core/udp.c ****   /* broadcast filter? */
+ 688:Middlewares/Third_Party/LwIP/src/core/udp.c ****   if (!ip_get_option(pcb, SOF_BROADCAST) &&
+ 689:Middlewares/Third_Party/LwIP/src/core/udp.c **** #if LWIP_IPV6
+ 690:Middlewares/Third_Party/LwIP/src/core/udp.c ****       IP_IS_V4(dst_ip) &&
+ 691:Middlewares/Third_Party/LwIP/src/core/udp.c **** #endif /* LWIP_IPV6 */
+ 692:Middlewares/Third_Party/LwIP/src/core/udp.c ****       ip_addr_isbroadcast(dst_ip, netif)) {
+ 693:Middlewares/Third_Party/LwIP/src/core/udp.c ****     LWIP_DEBUGF(UDP_DEBUG | LWIP_DBG_LEVEL_SERIOUS,
+ 694:Middlewares/Third_Party/LwIP/src/core/udp.c ****       ("udp_sendto_if: SOF_BROADCAST not enabled on pcb %p\n", (void *)pcb));
+ 695:Middlewares/Third_Party/LwIP/src/core/udp.c ****     return ERR_VAL;
+ 696:Middlewares/Third_Party/LwIP/src/core/udp.c ****   }
+ 697:Middlewares/Third_Party/LwIP/src/core/udp.c **** #endif /* LWIP_IPV4 && IP_SOF_BROADCAST */
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s 			page 23
+
+
+ 698:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 699:Middlewares/Third_Party/LwIP/src/core/udp.c ****   /* if the PCB is not yet bound to a port, bind it here */
+ 700:Middlewares/Third_Party/LwIP/src/core/udp.c ****   if (pcb->local_port == 0) {
+ 701:Middlewares/Third_Party/LwIP/src/core/udp.c ****     LWIP_DEBUGF(UDP_DEBUG | LWIP_DBG_TRACE, ("udp_send: not yet bound to a port, binding now\n"));
+ 702:Middlewares/Third_Party/LwIP/src/core/udp.c ****     err = udp_bind(pcb, &pcb->local_ip, pcb->local_port);
+ 703:Middlewares/Third_Party/LwIP/src/core/udp.c ****     if (err != ERR_OK) {
+ 704:Middlewares/Third_Party/LwIP/src/core/udp.c ****       LWIP_DEBUGF(UDP_DEBUG | LWIP_DBG_TRACE | LWIP_DBG_LEVEL_SERIOUS, ("udp_send: forced port bind
+ 705:Middlewares/Third_Party/LwIP/src/core/udp.c ****       return err;
+ 706:Middlewares/Third_Party/LwIP/src/core/udp.c ****     }
+ 707:Middlewares/Third_Party/LwIP/src/core/udp.c ****   }
+ 708:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 709:Middlewares/Third_Party/LwIP/src/core/udp.c ****   /* not enough space to add an UDP header to first pbuf in given p chain? */
+ 710:Middlewares/Third_Party/LwIP/src/core/udp.c ****   if (pbuf_header(p, UDP_HLEN)) {
+ 711:Middlewares/Third_Party/LwIP/src/core/udp.c ****     /* allocate header in a separate new pbuf */
+ 712:Middlewares/Third_Party/LwIP/src/core/udp.c ****     q = pbuf_alloc(PBUF_IP, UDP_HLEN, PBUF_RAM);
+ 713:Middlewares/Third_Party/LwIP/src/core/udp.c ****     /* new header pbuf could not be allocated? */
+ 714:Middlewares/Third_Party/LwIP/src/core/udp.c ****     if (q == NULL) {
+ 715:Middlewares/Third_Party/LwIP/src/core/udp.c ****       LWIP_DEBUGF(UDP_DEBUG | LWIP_DBG_TRACE | LWIP_DBG_LEVEL_SERIOUS, ("udp_send: could not alloca
+ 716:Middlewares/Third_Party/LwIP/src/core/udp.c ****       return ERR_MEM;
+ 717:Middlewares/Third_Party/LwIP/src/core/udp.c ****     }
+ 718:Middlewares/Third_Party/LwIP/src/core/udp.c ****     if (p->tot_len != 0) {
+ 719:Middlewares/Third_Party/LwIP/src/core/udp.c ****       /* chain header q in front of given pbuf p (only if p contains data) */
+ 720:Middlewares/Third_Party/LwIP/src/core/udp.c ****       pbuf_chain(q, p);
+ 721:Middlewares/Third_Party/LwIP/src/core/udp.c ****     }
+ 722:Middlewares/Third_Party/LwIP/src/core/udp.c ****     /* first pbuf q points to header pbuf */
+ 723:Middlewares/Third_Party/LwIP/src/core/udp.c ****     LWIP_DEBUGF(UDP_DEBUG,
+ 724:Middlewares/Third_Party/LwIP/src/core/udp.c ****                 ("udp_send: added header pbuf %p before given pbuf %p\n", (void *)q, (void *)p));
+ 725:Middlewares/Third_Party/LwIP/src/core/udp.c ****   } else {
+ 726:Middlewares/Third_Party/LwIP/src/core/udp.c ****     /* adding space for header within p succeeded */
+ 727:Middlewares/Third_Party/LwIP/src/core/udp.c ****     /* first pbuf q equals given pbuf */
+ 728:Middlewares/Third_Party/LwIP/src/core/udp.c ****     q = p;
+ 729:Middlewares/Third_Party/LwIP/src/core/udp.c ****     LWIP_DEBUGF(UDP_DEBUG, ("udp_send: added header in given pbuf %p\n", (void *)p));
+ 730:Middlewares/Third_Party/LwIP/src/core/udp.c ****   }
+ 731:Middlewares/Third_Party/LwIP/src/core/udp.c ****   LWIP_ASSERT("check that first pbuf can hold struct udp_hdr",
+ 732:Middlewares/Third_Party/LwIP/src/core/udp.c ****               (q->len >= sizeof(struct udp_hdr)));
+ 733:Middlewares/Third_Party/LwIP/src/core/udp.c ****   /* q now represents the packet to be sent */
+ 734:Middlewares/Third_Party/LwIP/src/core/udp.c ****   udphdr = (struct udp_hdr *)q->payload;
+ 735:Middlewares/Third_Party/LwIP/src/core/udp.c ****   udphdr->src = lwip_htons(pcb->local_port);
+ 736:Middlewares/Third_Party/LwIP/src/core/udp.c ****   udphdr->dest = lwip_htons(dst_port);
+ 737:Middlewares/Third_Party/LwIP/src/core/udp.c ****   /* in UDP, 0 checksum means 'no checksum' */
+ 738:Middlewares/Third_Party/LwIP/src/core/udp.c ****   udphdr->chksum = 0x0000;
+ 739:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 740:Middlewares/Third_Party/LwIP/src/core/udp.c ****   /* Multicast Loop? */
+ 741:Middlewares/Third_Party/LwIP/src/core/udp.c **** #if (LWIP_IPV4 && LWIP_MULTICAST_TX_OPTIONS) || (LWIP_IPV6 && LWIP_IPV6_MLD)
+ 742:Middlewares/Third_Party/LwIP/src/core/udp.c ****   if (((pcb->flags & UDP_FLAGS_MULTICAST_LOOP) != 0) && ip_addr_ismulticast(dst_ip)) {
+ 743:Middlewares/Third_Party/LwIP/src/core/udp.c ****     q->flags |= PBUF_FLAG_MCASTLOOP;
+ 744:Middlewares/Third_Party/LwIP/src/core/udp.c ****   }
+ 745:Middlewares/Third_Party/LwIP/src/core/udp.c **** #endif /* (LWIP_IPV4 && LWIP_MULTICAST_TX_OPTIONS) || (LWIP_IPV6 && LWIP_IPV6_MLD) */
+ 746:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 747:Middlewares/Third_Party/LwIP/src/core/udp.c ****   LWIP_DEBUGF(UDP_DEBUG, ("udp_send: sending datagram of length %"U16_F"\n", q->tot_len));
+ 748:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 749:Middlewares/Third_Party/LwIP/src/core/udp.c **** #if LWIP_UDPLITE
+ 750:Middlewares/Third_Party/LwIP/src/core/udp.c ****   /* UDP Lite protocol? */
+ 751:Middlewares/Third_Party/LwIP/src/core/udp.c ****   if (pcb->flags & UDP_FLAGS_UDPLITE) {
+ 752:Middlewares/Third_Party/LwIP/src/core/udp.c ****     u16_t chklen, chklen_hdr;
+ 753:Middlewares/Third_Party/LwIP/src/core/udp.c ****     LWIP_DEBUGF(UDP_DEBUG, ("udp_send: UDP LITE packet length %"U16_F"\n", q->tot_len));
+ 754:Middlewares/Third_Party/LwIP/src/core/udp.c ****     /* set UDP message length in UDP header */
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s 			page 24
+
+
+ 755:Middlewares/Third_Party/LwIP/src/core/udp.c ****     chklen_hdr = chklen = pcb->chksum_len_tx;
+ 756:Middlewares/Third_Party/LwIP/src/core/udp.c ****     if ((chklen < sizeof(struct udp_hdr)) || (chklen > q->tot_len)) {
+ 757:Middlewares/Third_Party/LwIP/src/core/udp.c ****       if (chklen != 0) {
+ 758:Middlewares/Third_Party/LwIP/src/core/udp.c ****         LWIP_DEBUGF(UDP_DEBUG, ("udp_send: UDP LITE pcb->chksum_len is illegal: %"U16_F"\n", chklen
+ 759:Middlewares/Third_Party/LwIP/src/core/udp.c ****       }
+ 760:Middlewares/Third_Party/LwIP/src/core/udp.c ****       /* For UDP-Lite, checksum length of 0 means checksum
+ 761:Middlewares/Third_Party/LwIP/src/core/udp.c ****          over the complete packet. (See RFC 3828 chap. 3.1)
+ 762:Middlewares/Third_Party/LwIP/src/core/udp.c ****          At least the UDP-Lite header must be covered by the
+ 763:Middlewares/Third_Party/LwIP/src/core/udp.c ****          checksum, therefore, if chksum_len has an illegal
+ 764:Middlewares/Third_Party/LwIP/src/core/udp.c ****          value, we generate the checksum over the complete
+ 765:Middlewares/Third_Party/LwIP/src/core/udp.c ****          packet to be safe. */
+ 766:Middlewares/Third_Party/LwIP/src/core/udp.c ****       chklen_hdr = 0;
+ 767:Middlewares/Third_Party/LwIP/src/core/udp.c ****       chklen = q->tot_len;
+ 768:Middlewares/Third_Party/LwIP/src/core/udp.c ****     }
+ 769:Middlewares/Third_Party/LwIP/src/core/udp.c ****     udphdr->len = lwip_htons(chklen_hdr);
+ 770:Middlewares/Third_Party/LwIP/src/core/udp.c ****     /* calculate checksum */
+ 771:Middlewares/Third_Party/LwIP/src/core/udp.c **** #if CHECKSUM_GEN_UDP
+ 772:Middlewares/Third_Party/LwIP/src/core/udp.c ****     IF__NETIF_CHECKSUM_ENABLED(netif, NETIF_CHECKSUM_GEN_UDP) {
+ 773:Middlewares/Third_Party/LwIP/src/core/udp.c **** #if LWIP_CHECKSUM_ON_COPY
+ 774:Middlewares/Third_Party/LwIP/src/core/udp.c ****       if (have_chksum) {
+ 775:Middlewares/Third_Party/LwIP/src/core/udp.c ****         chklen = UDP_HLEN;
+ 776:Middlewares/Third_Party/LwIP/src/core/udp.c ****       }
+ 777:Middlewares/Third_Party/LwIP/src/core/udp.c **** #endif /* LWIP_CHECKSUM_ON_COPY */
+ 778:Middlewares/Third_Party/LwIP/src/core/udp.c ****       udphdr->chksum = ip_chksum_pseudo_partial(q, IP_PROTO_UDPLITE,
+ 779:Middlewares/Third_Party/LwIP/src/core/udp.c ****         q->tot_len, chklen, src_ip, dst_ip);
+ 780:Middlewares/Third_Party/LwIP/src/core/udp.c **** #if LWIP_CHECKSUM_ON_COPY
+ 781:Middlewares/Third_Party/LwIP/src/core/udp.c ****       if (have_chksum) {
+ 782:Middlewares/Third_Party/LwIP/src/core/udp.c ****         u32_t acc;
+ 783:Middlewares/Third_Party/LwIP/src/core/udp.c ****         acc = udphdr->chksum + (u16_t)~(chksum);
+ 784:Middlewares/Third_Party/LwIP/src/core/udp.c ****         udphdr->chksum = FOLD_U32T(acc);
+ 785:Middlewares/Third_Party/LwIP/src/core/udp.c ****       }
+ 786:Middlewares/Third_Party/LwIP/src/core/udp.c **** #endif /* LWIP_CHECKSUM_ON_COPY */
+ 787:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 788:Middlewares/Third_Party/LwIP/src/core/udp.c ****       /* chksum zero must become 0xffff, as zero means 'no checksum' */
+ 789:Middlewares/Third_Party/LwIP/src/core/udp.c ****       if (udphdr->chksum == 0x0000) {
+ 790:Middlewares/Third_Party/LwIP/src/core/udp.c ****         udphdr->chksum = 0xffff;
+ 791:Middlewares/Third_Party/LwIP/src/core/udp.c ****       }
+ 792:Middlewares/Third_Party/LwIP/src/core/udp.c ****     }
+ 793:Middlewares/Third_Party/LwIP/src/core/udp.c **** #endif /* CHECKSUM_GEN_UDP */
+ 794:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 795:Middlewares/Third_Party/LwIP/src/core/udp.c ****     ip_proto = IP_PROTO_UDPLITE;
+ 796:Middlewares/Third_Party/LwIP/src/core/udp.c ****   } else
+ 797:Middlewares/Third_Party/LwIP/src/core/udp.c **** #endif /* LWIP_UDPLITE */
+ 798:Middlewares/Third_Party/LwIP/src/core/udp.c ****   {      /* UDP */
+ 799:Middlewares/Third_Party/LwIP/src/core/udp.c ****     LWIP_DEBUGF(UDP_DEBUG, ("udp_send: UDP packet length %"U16_F"\n", q->tot_len));
+ 800:Middlewares/Third_Party/LwIP/src/core/udp.c ****     udphdr->len = lwip_htons(q->tot_len);
+ 801:Middlewares/Third_Party/LwIP/src/core/udp.c ****     /* calculate checksum */
+ 802:Middlewares/Third_Party/LwIP/src/core/udp.c **** #if CHECKSUM_GEN_UDP
+ 803:Middlewares/Third_Party/LwIP/src/core/udp.c ****     IF__NETIF_CHECKSUM_ENABLED(netif, NETIF_CHECKSUM_GEN_UDP) {
+ 804:Middlewares/Third_Party/LwIP/src/core/udp.c ****       /* Checksum is mandatory over IPv6. */
+ 805:Middlewares/Third_Party/LwIP/src/core/udp.c ****       if (IP_IS_V6(dst_ip) || (pcb->flags & UDP_FLAGS_NOCHKSUM) == 0) {
+ 806:Middlewares/Third_Party/LwIP/src/core/udp.c ****         u16_t udpchksum;
+ 807:Middlewares/Third_Party/LwIP/src/core/udp.c **** #if LWIP_CHECKSUM_ON_COPY
+ 808:Middlewares/Third_Party/LwIP/src/core/udp.c ****         if (have_chksum) {
+ 809:Middlewares/Third_Party/LwIP/src/core/udp.c ****           u32_t acc;
+ 810:Middlewares/Third_Party/LwIP/src/core/udp.c ****           udpchksum = ip_chksum_pseudo_partial(q, IP_PROTO_UDP,
+ 811:Middlewares/Third_Party/LwIP/src/core/udp.c ****             q->tot_len, UDP_HLEN, src_ip, dst_ip);
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s 			page 25
+
+
+ 812:Middlewares/Third_Party/LwIP/src/core/udp.c ****           acc = udpchksum + (u16_t)~(chksum);
+ 813:Middlewares/Third_Party/LwIP/src/core/udp.c ****           udpchksum = FOLD_U32T(acc);
+ 814:Middlewares/Third_Party/LwIP/src/core/udp.c ****         } else
+ 815:Middlewares/Third_Party/LwIP/src/core/udp.c **** #endif /* LWIP_CHECKSUM_ON_COPY */
+ 816:Middlewares/Third_Party/LwIP/src/core/udp.c ****         {
+ 817:Middlewares/Third_Party/LwIP/src/core/udp.c ****           udpchksum = ip_chksum_pseudo(q, IP_PROTO_UDP, q->tot_len,
+ 818:Middlewares/Third_Party/LwIP/src/core/udp.c ****             src_ip, dst_ip);
+ 819:Middlewares/Third_Party/LwIP/src/core/udp.c ****         }
+ 820:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 821:Middlewares/Third_Party/LwIP/src/core/udp.c ****         /* chksum zero must become 0xffff, as zero means 'no checksum' */
+ 822:Middlewares/Third_Party/LwIP/src/core/udp.c ****         if (udpchksum == 0x0000) {
+ 823:Middlewares/Third_Party/LwIP/src/core/udp.c ****           udpchksum = 0xffff;
+ 824:Middlewares/Third_Party/LwIP/src/core/udp.c ****         }
+ 825:Middlewares/Third_Party/LwIP/src/core/udp.c ****         udphdr->chksum = udpchksum;
+ 826:Middlewares/Third_Party/LwIP/src/core/udp.c ****       }
+ 827:Middlewares/Third_Party/LwIP/src/core/udp.c ****     }
+ 828:Middlewares/Third_Party/LwIP/src/core/udp.c **** #endif /* CHECKSUM_GEN_UDP */
+ 829:Middlewares/Third_Party/LwIP/src/core/udp.c ****     ip_proto = IP_PROTO_UDP;
+ 830:Middlewares/Third_Party/LwIP/src/core/udp.c ****   }
+ 831:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 832:Middlewares/Third_Party/LwIP/src/core/udp.c ****   /* Determine TTL to use */
+ 833:Middlewares/Third_Party/LwIP/src/core/udp.c **** #if LWIP_MULTICAST_TX_OPTIONS
+ 834:Middlewares/Third_Party/LwIP/src/core/udp.c ****   ttl = (ip_addr_ismulticast(dst_ip) ? udp_get_multicast_ttl(pcb) : pcb->ttl);
+ 835:Middlewares/Third_Party/LwIP/src/core/udp.c **** #else /* LWIP_MULTICAST_TX_OPTIONS */
+ 836:Middlewares/Third_Party/LwIP/src/core/udp.c ****   ttl = pcb->ttl;
+ 837:Middlewares/Third_Party/LwIP/src/core/udp.c **** #endif /* LWIP_MULTICAST_TX_OPTIONS */
+ 838:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 839:Middlewares/Third_Party/LwIP/src/core/udp.c ****   LWIP_DEBUGF(UDP_DEBUG, ("udp_send: UDP checksum 0x%04"X16_F"\n", udphdr->chksum));
+ 840:Middlewares/Third_Party/LwIP/src/core/udp.c ****   LWIP_DEBUGF(UDP_DEBUG, ("udp_send: ip_output_if (,,,,0x%02"X16_F",)\n", (u16_t)ip_proto));
+ 841:Middlewares/Third_Party/LwIP/src/core/udp.c ****   /* output to IP */
+ 842:Middlewares/Third_Party/LwIP/src/core/udp.c ****   NETIF_SET_HWADDRHINT(netif, &(pcb->addr_hint));
+ 843:Middlewares/Third_Party/LwIP/src/core/udp.c ****   err = ip_output_if_src(q, src_ip, dst_ip, ttl, pcb->tos, ip_proto, netif);
+ 844:Middlewares/Third_Party/LwIP/src/core/udp.c ****   NETIF_SET_HWADDRHINT(netif, NULL);
+ 845:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 846:Middlewares/Third_Party/LwIP/src/core/udp.c ****   /* @todo: must this be increased even if error occurred? */
+ 847:Middlewares/Third_Party/LwIP/src/core/udp.c ****   MIB2_STATS_INC(mib2.udpoutdatagrams);
+ 848:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 849:Middlewares/Third_Party/LwIP/src/core/udp.c ****   /* did we chain a separate header pbuf earlier? */
+ 850:Middlewares/Third_Party/LwIP/src/core/udp.c ****   if (q != p) {
+ 851:Middlewares/Third_Party/LwIP/src/core/udp.c ****     /* free the header pbuf */
+ 852:Middlewares/Third_Party/LwIP/src/core/udp.c ****     pbuf_free(q);
+ 853:Middlewares/Third_Party/LwIP/src/core/udp.c ****     q = NULL;
+ 854:Middlewares/Third_Party/LwIP/src/core/udp.c ****     /* p is still referenced by the caller, and will live on */
+ 855:Middlewares/Third_Party/LwIP/src/core/udp.c ****   }
+ 856:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 857:Middlewares/Third_Party/LwIP/src/core/udp.c ****   UDP_STATS_INC(udp.xmit);
+ 858:Middlewares/Third_Party/LwIP/src/core/udp.c ****   return err;
+ 859:Middlewares/Third_Party/LwIP/src/core/udp.c **** }
+ 860:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 861:Middlewares/Third_Party/LwIP/src/core/udp.c **** /**
+ 862:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * @ingroup udp_raw
+ 863:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * Bind an UDP PCB.
+ 864:Middlewares/Third_Party/LwIP/src/core/udp.c ****  *
+ 865:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * @param pcb UDP PCB to be bound with a local address ipaddr and port.
+ 866:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * @param ipaddr local IP address to bind with. Use IP4_ADDR_ANY to
+ 867:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * bind to all local interfaces.
+ 868:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * @param port local UDP port to bind with. Use 0 to automatically bind
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s 			page 26
+
+
+ 869:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * to a random port between UDP_LOCAL_PORT_RANGE_START and
+ 870:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * UDP_LOCAL_PORT_RANGE_END.
+ 871:Middlewares/Third_Party/LwIP/src/core/udp.c ****  *
+ 872:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * ipaddr & port are expected to be in the same byte order as in the pcb.
+ 873:Middlewares/Third_Party/LwIP/src/core/udp.c ****  *
+ 874:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * @return lwIP error code.
+ 875:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * - ERR_OK. Successful. No error occurred.
+ 876:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * - ERR_USE. The specified ipaddr and port are already bound to by
+ 877:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * another UDP PCB.
+ 878:Middlewares/Third_Party/LwIP/src/core/udp.c ****  *
+ 879:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * @see udp_disconnect()
+ 880:Middlewares/Third_Party/LwIP/src/core/udp.c ****  */
+ 881:Middlewares/Third_Party/LwIP/src/core/udp.c **** err_t
+ 882:Middlewares/Third_Party/LwIP/src/core/udp.c **** udp_bind(struct udp_pcb *pcb, const ip_addr_t *ipaddr, u16_t port)
+ 883:Middlewares/Third_Party/LwIP/src/core/udp.c **** {
+ 513              		.loc 1 883 0
+ 514              		.cfi_startproc
+ 515              		@ args = 0, pretend = 0, frame = 0
+ 516              		@ frame_needed = 0, uses_anonymous_args = 0
+ 517              	.LVL74:
+ 518 0000 70B5     		push	{r4, r5, r6, lr}
+ 519              	.LCFI4:
+ 520              		.cfi_def_cfa_offset 16
+ 521              		.cfi_offset 4, -16
+ 522              		.cfi_offset 5, -12
+ 523              		.cfi_offset 6, -8
+ 524              		.cfi_offset 14, -4
+ 525 0002 0446     		mov	r4, r0
+ 884:Middlewares/Third_Party/LwIP/src/core/udp.c ****   struct udp_pcb *ipcb;
+ 885:Middlewares/Third_Party/LwIP/src/core/udp.c ****   u8_t rebind;
+ 886:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 887:Middlewares/Third_Party/LwIP/src/core/udp.c **** #if LWIP_IPV4
+ 888:Middlewares/Third_Party/LwIP/src/core/udp.c ****   /* Don't propagate NULL pointer (IPv4 ANY) to subsequent functions */
+ 889:Middlewares/Third_Party/LwIP/src/core/udp.c ****   if (ipaddr == NULL) {
+ 526              		.loc 1 889 0
+ 527 0004 0D46     		mov	r5, r1
+ 528 0006 59B1     		cbz	r1, .L73
+ 529              	.L55:
+ 530              	.LVL75:
+ 890:Middlewares/Third_Party/LwIP/src/core/udp.c ****     ipaddr = IP4_ADDR_ANY;
+ 891:Middlewares/Third_Party/LwIP/src/core/udp.c ****   }
+ 892:Middlewares/Third_Party/LwIP/src/core/udp.c **** #endif /* LWIP_IPV4 */
+ 893:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 894:Middlewares/Third_Party/LwIP/src/core/udp.c ****   /* still need to check for ipaddr == NULL in IPv6 only case */
+ 895:Middlewares/Third_Party/LwIP/src/core/udp.c ****   if ((pcb == NULL) || (ipaddr == NULL)) {
+ 531              		.loc 1 895 0
+ 532 0008 002D     		cmp	r5, #0
+ 533 000a 18BF     		it	ne
+ 534 000c 002C     		cmpne	r4, #0
+ 535 000e 2DD0     		beq	.L66
+ 536              	.LVL76:
+ 896:Middlewares/Third_Party/LwIP/src/core/udp.c ****     return ERR_VAL;
+ 897:Middlewares/Third_Party/LwIP/src/core/udp.c ****   }
+ 898:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 899:Middlewares/Third_Party/LwIP/src/core/udp.c ****   LWIP_DEBUGF(UDP_DEBUG | LWIP_DBG_TRACE, ("udp_bind(ipaddr = "));
+ 900:Middlewares/Third_Party/LwIP/src/core/udp.c ****   ip_addr_debug_print(UDP_DEBUG | LWIP_DBG_TRACE, ipaddr);
+ 901:Middlewares/Third_Party/LwIP/src/core/udp.c ****   LWIP_DEBUGF(UDP_DEBUG | LWIP_DBG_TRACE, (", port = %"U16_F")\n", port));
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s 			page 27
+
+
+ 902:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 903:Middlewares/Third_Party/LwIP/src/core/udp.c ****   rebind = 0;
+ 904:Middlewares/Third_Party/LwIP/src/core/udp.c ****   /* Check for double bind and rebind of the same pcb */
+ 905:Middlewares/Third_Party/LwIP/src/core/udp.c ****   for (ipcb = udp_pcbs; ipcb != NULL; ipcb = ipcb->next) {
+ 537              		.loc 1 905 0
+ 538 0010 1A4B     		ldr	r3, .L76
+ 539 0012 1B68     		ldr	r3, [r3]
+ 540              	.LVL77:
+ 541 0014 1946     		mov	r1, r3
+ 542              	.LVL78:
+ 543              	.L57:
+ 544              		.loc 1 905 0 is_stmt 0 discriminator 1
+ 545 0016 29B1     		cbz	r1, .L74
+ 906:Middlewares/Third_Party/LwIP/src/core/udp.c ****     /* is this UDP PCB already on active list? */
+ 907:Middlewares/Third_Party/LwIP/src/core/udp.c ****     if (pcb == ipcb) {
+ 546              		.loc 1 907 0 is_stmt 1
+ 547 0018 A142     		cmp	r1, r4
+ 548 001a 14D0     		beq	.L67
+ 905:Middlewares/Third_Party/LwIP/src/core/udp.c ****     /* is this UDP PCB already on active list? */
+ 549              		.loc 1 905 0 discriminator 2
+ 550 001c C968     		ldr	r1, [r1, #12]
+ 551              	.LVL79:
+ 552 001e FAE7     		b	.L57
+ 553              	.LVL80:
+ 554              	.L73:
+ 890:Middlewares/Third_Party/LwIP/src/core/udp.c ****   }
+ 555              		.loc 1 890 0
+ 556 0020 174D     		ldr	r5, .L76+4
+ 557 0022 F1E7     		b	.L55
+ 558              	.LVL81:
+ 559              	.L74:
+ 903:Middlewares/Third_Party/LwIP/src/core/udp.c ****   /* Check for double bind and rebind of the same pcb */
+ 560              		.loc 1 903 0
+ 561 0024 0026     		movs	r6, #0
+ 562              	.L58:
+ 563              	.LVL82:
+ 908:Middlewares/Third_Party/LwIP/src/core/udp.c ****       rebind = 1;
+ 909:Middlewares/Third_Party/LwIP/src/core/udp.c ****       break;
+ 910:Middlewares/Third_Party/LwIP/src/core/udp.c ****     }
+ 911:Middlewares/Third_Party/LwIP/src/core/udp.c ****   }
+ 912:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 913:Middlewares/Third_Party/LwIP/src/core/udp.c ****   /* no port specified? */
+ 914:Middlewares/Third_Party/LwIP/src/core/udp.c ****   if (port == 0) {
+ 564              		.loc 1 914 0
+ 565 0026 8AB9     		cbnz	r2, .L60
+ 915:Middlewares/Third_Party/LwIP/src/core/udp.c ****     port = udp_new_port();
+ 566              		.loc 1 915 0
+ 567 0028 FFF7FEFF 		bl	udp_new_port
+ 568              	.LVL83:
+ 916:Middlewares/Third_Party/LwIP/src/core/udp.c ****     if (port == 0) {
+ 569              		.loc 1 916 0
+ 570 002c 0246     		mov	r2, r0
+ 571 002e 00B3     		cbz	r0, .L75
+ 572              	.LVL84:
+ 573              	.L61:
+ 917:Middlewares/Third_Party/LwIP/src/core/udp.c ****       /* no more ports available in local range */
+ 918:Middlewares/Third_Party/LwIP/src/core/udp.c ****       LWIP_DEBUGF(UDP_DEBUG, ("udp_bind: out of free UDP ports\n"));
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s 			page 28
+
+
+ 919:Middlewares/Third_Party/LwIP/src/core/udp.c ****       return ERR_USE;
+ 920:Middlewares/Third_Party/LwIP/src/core/udp.c ****     }
+ 921:Middlewares/Third_Party/LwIP/src/core/udp.c ****   } else {
+ 922:Middlewares/Third_Party/LwIP/src/core/udp.c ****     for (ipcb = udp_pcbs; ipcb != NULL; ipcb = ipcb->next) {
+ 923:Middlewares/Third_Party/LwIP/src/core/udp.c ****       if (pcb != ipcb) {
+ 924:Middlewares/Third_Party/LwIP/src/core/udp.c ****       /* By default, we don't allow to bind to a port that any other udp
+ 925:Middlewares/Third_Party/LwIP/src/core/udp.c ****          PCB is already bound to, unless *all* PCBs with that port have tha
+ 926:Middlewares/Third_Party/LwIP/src/core/udp.c ****          REUSEADDR flag set. */
+ 927:Middlewares/Third_Party/LwIP/src/core/udp.c **** #if SO_REUSE
+ 928:Middlewares/Third_Party/LwIP/src/core/udp.c ****         if (!ip_get_option(pcb, SOF_REUSEADDR) ||
+ 929:Middlewares/Third_Party/LwIP/src/core/udp.c ****             !ip_get_option(ipcb, SOF_REUSEADDR))
+ 930:Middlewares/Third_Party/LwIP/src/core/udp.c **** #endif /* SO_REUSE */
+ 931:Middlewares/Third_Party/LwIP/src/core/udp.c ****         {
+ 932:Middlewares/Third_Party/LwIP/src/core/udp.c ****           /* port matches that of PCB in list and REUSEADDR not set -> reject */
+ 933:Middlewares/Third_Party/LwIP/src/core/udp.c ****           if ((ipcb->local_port == port) &&
+ 934:Middlewares/Third_Party/LwIP/src/core/udp.c ****               /* IP address matches? */
+ 935:Middlewares/Third_Party/LwIP/src/core/udp.c ****               ip_addr_cmp(&ipcb->local_ip, ipaddr)) {
+ 936:Middlewares/Third_Party/LwIP/src/core/udp.c ****             /* other PCB already binds to this local IP and port */
+ 937:Middlewares/Third_Party/LwIP/src/core/udp.c ****             LWIP_DEBUGF(UDP_DEBUG,
+ 938:Middlewares/Third_Party/LwIP/src/core/udp.c ****                         ("udp_bind: local port %"U16_F" already bound by another pcb\n", port));
+ 939:Middlewares/Third_Party/LwIP/src/core/udp.c ****             return ERR_USE;
+ 940:Middlewares/Third_Party/LwIP/src/core/udp.c ****           }
+ 941:Middlewares/Third_Party/LwIP/src/core/udp.c ****         }
+ 942:Middlewares/Third_Party/LwIP/src/core/udp.c ****       }
+ 943:Middlewares/Third_Party/LwIP/src/core/udp.c ****     }
+ 944:Middlewares/Third_Party/LwIP/src/core/udp.c ****   }
+ 945:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 946:Middlewares/Third_Party/LwIP/src/core/udp.c ****   ip_addr_set_ipaddr(&pcb->local_ip, ipaddr);
+ 574              		.loc 1 946 0
+ 575 0030 D5B1     		cbz	r5, .L70
+ 576              		.loc 1 946 0 is_stmt 0 discriminator 1
+ 577 0032 2B68     		ldr	r3, [r5]
+ 578              	.L64:
+ 579              		.loc 1 946 0 discriminator 4
+ 580 0034 2360     		str	r3, [r4]
+ 947:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 948:Middlewares/Third_Party/LwIP/src/core/udp.c ****   pcb->local_port = port;
+ 581              		.loc 1 948 0 is_stmt 1 discriminator 4
+ 582 0036 6282     		strh	r2, [r4, #18]	@ movhi
+ 949:Middlewares/Third_Party/LwIP/src/core/udp.c ****   mib2_udp_bind(pcb);
+ 950:Middlewares/Third_Party/LwIP/src/core/udp.c ****   /* pcb not active yet? */
+ 951:Middlewares/Third_Party/LwIP/src/core/udp.c ****   if (rebind == 0) {
+ 583              		.loc 1 951 0 discriminator 4
+ 584 0038 F6B9     		cbnz	r6, .L71
+ 952:Middlewares/Third_Party/LwIP/src/core/udp.c ****     /* place the PCB on the active list if not already there */
+ 953:Middlewares/Third_Party/LwIP/src/core/udp.c ****     pcb->next = udp_pcbs;
+ 585              		.loc 1 953 0
+ 586 003a 104B     		ldr	r3, .L76
+ 587 003c 1A68     		ldr	r2, [r3]
+ 588              	.LVL85:
+ 589 003e E260     		str	r2, [r4, #12]
+ 954:Middlewares/Third_Party/LwIP/src/core/udp.c ****     udp_pcbs = pcb;
+ 590              		.loc 1 954 0
+ 591 0040 1C60     		str	r4, [r3]
+ 955:Middlewares/Third_Party/LwIP/src/core/udp.c ****   }
+ 956:Middlewares/Third_Party/LwIP/src/core/udp.c ****   LWIP_DEBUGF(UDP_DEBUG | LWIP_DBG_TRACE | LWIP_DBG_STATE, ("udp_bind: bound to "));
+ 957:Middlewares/Third_Party/LwIP/src/core/udp.c ****   ip_addr_debug_print(UDP_DEBUG | LWIP_DBG_TRACE | LWIP_DBG_STATE, &pcb->local_ip);
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s 			page 29
+
+
+ 958:Middlewares/Third_Party/LwIP/src/core/udp.c ****   LWIP_DEBUGF(UDP_DEBUG | LWIP_DBG_TRACE | LWIP_DBG_STATE, (", port %"U16_F")\n", pcb->local_port))
+ 959:Middlewares/Third_Party/LwIP/src/core/udp.c ****   return ERR_OK;
+ 592              		.loc 1 959 0
+ 593 0042 0020     		movs	r0, #0
+ 594 0044 70BD     		pop	{r4, r5, r6, pc}
+ 595              	.LVL86:
+ 596              	.L67:
+ 908:Middlewares/Third_Party/LwIP/src/core/udp.c ****       break;
+ 597              		.loc 1 908 0
+ 598 0046 0126     		movs	r6, #1
+ 599 0048 EDE7     		b	.L58
+ 600              	.LVL87:
+ 601              	.L62:
+ 922:Middlewares/Third_Party/LwIP/src/core/udp.c ****       if (pcb != ipcb) {
+ 602              		.loc 1 922 0 discriminator 2
+ 603 004a DB68     		ldr	r3, [r3, #12]
+ 604              	.LVL88:
+ 605              	.L60:
+ 922:Middlewares/Third_Party/LwIP/src/core/udp.c ****       if (pcb != ipcb) {
+ 606              		.loc 1 922 0 is_stmt 0 discriminator 1
+ 607 004c 002B     		cmp	r3, #0
+ 608 004e EFD0     		beq	.L61
+ 923:Middlewares/Third_Party/LwIP/src/core/udp.c ****       /* By default, we don't allow to bind to a port that any other udp
+ 609              		.loc 1 923 0 is_stmt 1
+ 610 0050 A342     		cmp	r3, r4
+ 611 0052 FAD0     		beq	.L62
+ 933:Middlewares/Third_Party/LwIP/src/core/udp.c ****               /* IP address matches? */
+ 612              		.loc 1 933 0
+ 613 0054 598A     		ldrh	r1, [r3, #18]
+ 614 0056 8A42     		cmp	r2, r1
+ 615 0058 F7D1     		bne	.L62
+ 935:Middlewares/Third_Party/LwIP/src/core/udp.c ****             /* other PCB already binds to this local IP and port */
+ 616              		.loc 1 935 0 discriminator 1
+ 617 005a 1868     		ldr	r0, [r3]
+ 618 005c 2968     		ldr	r1, [r5]
+ 933:Middlewares/Third_Party/LwIP/src/core/udp.c ****               /* IP address matches? */
+ 619              		.loc 1 933 0 discriminator 1
+ 620 005e 8842     		cmp	r0, r1
+ 621 0060 F3D1     		bne	.L62
+ 939:Middlewares/Third_Party/LwIP/src/core/udp.c ****           }
+ 622              		.loc 1 939 0
+ 623 0062 6FF00700 		mvn	r0, #7
+ 624 0066 70BD     		pop	{r4, r5, r6, pc}
+ 625              	.LVL89:
+ 626              	.L70:
+ 946:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 627              		.loc 1 946 0
+ 628 0068 0023     		movs	r3, #0
+ 629 006a E3E7     		b	.L64
+ 630              	.LVL90:
+ 631              	.L66:
+ 896:Middlewares/Third_Party/LwIP/src/core/udp.c ****   }
+ 632              		.loc 1 896 0
+ 633 006c 6FF00500 		mvn	r0, #5
+ 634              	.LVL91:
+ 635 0070 70BD     		pop	{r4, r5, r6, pc}
+ 636              	.LVL92:
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s 			page 30
+
+
+ 637              	.L75:
+ 919:Middlewares/Third_Party/LwIP/src/core/udp.c ****     }
+ 638              		.loc 1 919 0
+ 639 0072 6FF00700 		mvn	r0, #7
+ 640              	.LVL93:
+ 641 0076 70BD     		pop	{r4, r5, r6, pc}
+ 642              	.LVL94:
+ 643              	.L71:
+ 644              		.loc 1 959 0
+ 645 0078 0020     		movs	r0, #0
+ 960:Middlewares/Third_Party/LwIP/src/core/udp.c **** }
+ 646              		.loc 1 960 0
+ 647 007a 70BD     		pop	{r4, r5, r6, pc}
+ 648              	.LVL95:
+ 649              	.L77:
+ 650              		.align	2
+ 651              	.L76:
+ 652 007c 00000000 		.word	udp_pcbs
+ 653 0080 00000000 		.word	ip_addr_any
+ 654              		.cfi_endproc
+ 655              	.LFE160:
+ 657              		.section	.text.udp_sendto_if_src,"ax",%progbits
+ 658              		.align	1
+ 659              		.global	udp_sendto_if_src
+ 660              		.syntax unified
+ 661              		.thumb
+ 662              		.thumb_func
+ 663              		.fpu fpv5-sp-d16
+ 665              	udp_sendto_if_src:
+ 666              	.LFB159:
+ 663:Middlewares/Third_Party/LwIP/src/core/udp.c **** #if LWIP_CHECKSUM_ON_COPY && CHECKSUM_GEN_UDP
+ 667              		.loc 1 663 0
+ 668              		.cfi_startproc
+ 669              		@ args = 8, pretend = 0, frame = 0
+ 670              		@ frame_needed = 0, uses_anonymous_args = 0
+ 671              	.LVL96:
+ 672 0000 2DE9F043 		push	{r4, r5, r6, r7, r8, r9, lr}
+ 673              	.LCFI5:
+ 674              		.cfi_def_cfa_offset 28
+ 675              		.cfi_offset 4, -28
+ 676              		.cfi_offset 5, -24
+ 677              		.cfi_offset 6, -20
+ 678              		.cfi_offset 7, -16
+ 679              		.cfi_offset 8, -12
+ 680              		.cfi_offset 9, -8
+ 681              		.cfi_offset 14, -4
+ 682 0004 85B0     		sub	sp, sp, #20
+ 683              	.LCFI6:
+ 684              		.cfi_def_cfa_offset 48
+ 681:Middlewares/Third_Party/LwIP/src/core/udp.c ****       !IP_ADDR_PCB_VERSION_MATCH(pcb, dst_ip)) {
+ 685              		.loc 1 681 0
+ 686 0006 002A     		cmp	r2, #0
+ 687 0008 18BF     		it	ne
+ 688 000a 0028     		cmpne	r0, #0
+ 689 000c 4FD0     		beq	.L83
+ 690 000e 0446     		mov	r4, r0
+ 691 0010 9046     		mov	r8, r2
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s 			page 31
+
+
+ 692 0012 9946     		mov	r9, r3
+ 693 0014 0D46     		mov	r5, r1
+ 700:Middlewares/Third_Party/LwIP/src/core/udp.c ****     LWIP_DEBUGF(UDP_DEBUG | LWIP_DBG_TRACE, ("udp_send: not yet bound to a port, binding now\n"));
+ 694              		.loc 1 700 0
+ 695 0016 428A     		ldrh	r2, [r0, #18]
+ 696              	.LVL97:
+ 697 0018 22B9     		cbnz	r2, .L80
+ 702:Middlewares/Third_Party/LwIP/src/core/udp.c ****     if (err != ERR_OK) {
+ 698              		.loc 1 702 0
+ 699 001a 0146     		mov	r1, r0
+ 700              	.LVL98:
+ 701 001c FFF7FEFF 		bl	udp_bind
+ 702              	.LVL99:
+ 703:Middlewares/Third_Party/LwIP/src/core/udp.c ****       LWIP_DEBUGF(UDP_DEBUG | LWIP_DBG_TRACE | LWIP_DBG_LEVEL_SERIOUS, ("udp_send: forced port bind
+ 703              		.loc 1 703 0
+ 704 0020 0746     		mov	r7, r0
+ 705 0022 50BB     		cbnz	r0, .L79
+ 706              	.LVL100:
+ 707              	.L80:
+ 710:Middlewares/Third_Party/LwIP/src/core/udp.c ****     /* allocate header in a separate new pbuf */
+ 708              		.loc 1 710 0
+ 709 0024 0821     		movs	r1, #8
+ 710 0026 2846     		mov	r0, r5
+ 711 0028 FFF7FEFF 		bl	pbuf_header
+ 712              	.LVL101:
+ 713 002c 48BB     		cbnz	r0, .L87
+ 728:Middlewares/Third_Party/LwIP/src/core/udp.c ****     LWIP_DEBUGF(UDP_DEBUG, ("udp_send: added header in given pbuf %p\n", (void *)p));
+ 714              		.loc 1 728 0
+ 715 002e 2E46     		mov	r6, r5
+ 716              	.L81:
+ 717              	.LVL102:
+ 731:Middlewares/Third_Party/LwIP/src/core/udp.c ****               (q->len >= sizeof(struct udp_hdr)));
+ 718              		.loc 1 731 0
+ 719 0030 7389     		ldrh	r3, [r6, #10]
+ 720 0032 072B     		cmp	r3, #7
+ 721 0034 33D9     		bls	.L88
+ 722              	.L82:
+ 734:Middlewares/Third_Party/LwIP/src/core/udp.c ****   udphdr->src = lwip_htons(pcb->local_port);
+ 723              		.loc 1 734 0
+ 724 0036 7768     		ldr	r7, [r6, #4]
+ 725              	.LVL103:
+ 735:Middlewares/Third_Party/LwIP/src/core/udp.c ****   udphdr->dest = lwip_htons(dst_port);
+ 726              		.loc 1 735 0
+ 727 0038 608A     		ldrh	r0, [r4, #18]
+ 728 003a FFF7FEFF 		bl	lwip_htons
+ 729              	.LVL104:
+ 730 003e 3880     		strh	r0, [r7]	@ unaligned
+ 736:Middlewares/Third_Party/LwIP/src/core/udp.c ****   /* in UDP, 0 checksum means 'no checksum' */
+ 731              		.loc 1 736 0
+ 732 0040 4846     		mov	r0, r9
+ 733 0042 FFF7FEFF 		bl	lwip_htons
+ 734              	.LVL105:
+ 735 0046 7880     		strh	r0, [r7, #2]	@ unaligned
+ 738:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 736              		.loc 1 738 0
+ 737 0048 0023     		movs	r3, #0
+ 738 004a BB71     		strb	r3, [r7, #6]
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s 			page 32
+
+
+ 739 004c FB71     		strb	r3, [r7, #7]
+ 800:Middlewares/Third_Party/LwIP/src/core/udp.c ****     /* calculate checksum */
+ 740              		.loc 1 800 0
+ 741 004e 3089     		ldrh	r0, [r6, #8]
+ 742 0050 FFF7FEFF 		bl	lwip_htons
+ 743              	.LVL106:
+ 744 0054 B880     		strh	r0, [r7, #4]	@ unaligned
+ 745              	.LVL107:
+ 836:Middlewares/Third_Party/LwIP/src/core/udp.c **** #endif /* LWIP_MULTICAST_TX_OPTIONS */
+ 746              		.loc 1 836 0
+ 747 0056 A37A     		ldrb	r3, [r4, #10]	@ zero_extendqisi2
+ 748              	.LVL108:
+ 843:Middlewares/Third_Party/LwIP/src/core/udp.c ****   NETIF_SET_HWADDRHINT(netif, NULL);
+ 749              		.loc 1 843 0
+ 750 0058 627A     		ldrb	r2, [r4, #9]	@ zero_extendqisi2
+ 751 005a 0C99     		ldr	r1, [sp, #48]
+ 752 005c 0291     		str	r1, [sp, #8]
+ 753 005e 1121     		movs	r1, #17
+ 754 0060 0191     		str	r1, [sp, #4]
+ 755 0062 0092     		str	r2, [sp]
+ 756 0064 4246     		mov	r2, r8
+ 757 0066 0D99     		ldr	r1, [sp, #52]
+ 758 0068 3046     		mov	r0, r6
+ 759 006a FFF7FEFF 		bl	ip4_output_if_src
+ 760              	.LVL109:
+ 761 006e 0746     		mov	r7, r0
+ 762              	.LVL110:
+ 850:Middlewares/Third_Party/LwIP/src/core/udp.c ****     /* free the header pbuf */
+ 763              		.loc 1 850 0
+ 764 0070 AE42     		cmp	r6, r5
+ 765 0072 02D0     		beq	.L79
+ 852:Middlewares/Third_Party/LwIP/src/core/udp.c ****     q = NULL;
+ 766              		.loc 1 852 0
+ 767 0074 3046     		mov	r0, r6
+ 768 0076 FFF7FEFF 		bl	pbuf_free
+ 769              	.LVL111:
+ 770              	.L79:
+ 859:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 771              		.loc 1 859 0
+ 772 007a 3846     		mov	r0, r7
+ 773 007c 05B0     		add	sp, sp, #20
+ 774              	.LCFI7:
+ 775              		.cfi_remember_state
+ 776              		.cfi_def_cfa_offset 28
+ 777              		@ sp needed
+ 778 007e BDE8F083 		pop	{r4, r5, r6, r7, r8, r9, pc}
+ 779              	.LVL112:
+ 780              	.L87:
+ 781              	.LCFI8:
+ 782              		.cfi_restore_state
+ 712:Middlewares/Third_Party/LwIP/src/core/udp.c ****     /* new header pbuf could not be allocated? */
+ 783              		.loc 1 712 0
+ 784 0082 0022     		movs	r2, #0
+ 785 0084 0821     		movs	r1, #8
+ 786 0086 0120     		movs	r0, #1
+ 787 0088 FFF7FEFF 		bl	pbuf_alloc
+ 788              	.LVL113:
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s 			page 33
+
+
+ 714:Middlewares/Third_Party/LwIP/src/core/udp.c ****       LWIP_DEBUGF(UDP_DEBUG | LWIP_DBG_TRACE | LWIP_DBG_LEVEL_SERIOUS, ("udp_send: could not alloca
+ 789              		.loc 1 714 0
+ 790 008c 0646     		mov	r6, r0
+ 791 008e 88B1     		cbz	r0, .L85
+ 718:Middlewares/Third_Party/LwIP/src/core/udp.c ****       /* chain header q in front of given pbuf p (only if p contains data) */
+ 792              		.loc 1 718 0
+ 793 0090 2B89     		ldrh	r3, [r5, #8]
+ 794 0092 002B     		cmp	r3, #0
+ 795 0094 CCD0     		beq	.L81
+ 720:Middlewares/Third_Party/LwIP/src/core/udp.c ****     }
+ 796              		.loc 1 720 0
+ 797 0096 2946     		mov	r1, r5
+ 798 0098 FFF7FEFF 		bl	pbuf_chain
+ 799              	.LVL114:
+ 800 009c C8E7     		b	.L81
+ 801              	.L88:
+ 731:Middlewares/Third_Party/LwIP/src/core/udp.c ****               (q->len >= sizeof(struct udp_hdr)));
+ 802              		.loc 1 731 0 discriminator 1
+ 803 009e 074B     		ldr	r3, .L89
+ 804 00a0 4FF43772 		mov	r2, #732
+ 805 00a4 0649     		ldr	r1, .L89+4
+ 806 00a6 0748     		ldr	r0, .L89+8
+ 807 00a8 FFF7FEFF 		bl	printf
+ 808              	.LVL115:
+ 809 00ac C3E7     		b	.L82
+ 810              	.LVL116:
+ 811              	.L83:
+ 683:Middlewares/Third_Party/LwIP/src/core/udp.c ****   }
+ 812              		.loc 1 683 0
+ 813 00ae 6FF00507 		mvn	r7, #5
+ 814 00b2 E2E7     		b	.L79
+ 815              	.LVL117:
+ 816              	.L85:
+ 716:Middlewares/Third_Party/LwIP/src/core/udp.c ****     }
+ 817              		.loc 1 716 0
+ 818 00b4 4FF0FF37 		mov	r7, #-1
+ 819 00b8 DFE7     		b	.L79
+ 820              	.L90:
+ 821 00ba 00BF     		.align	2
+ 822              	.L89:
+ 823 00bc 00000000 		.word	.LC0
+ 824 00c0 00000000 		.word	.LC3
+ 825 00c4 40000000 		.word	.LC2
+ 826              		.cfi_endproc
+ 827              	.LFE159:
+ 829              		.section	.text.udp_sendto_if,"ax",%progbits
+ 830              		.align	1
+ 831              		.global	udp_sendto_if
+ 832              		.syntax unified
+ 833              		.thumb
+ 834              		.thumb_func
+ 835              		.fpu fpv5-sp-d16
+ 837              	udp_sendto_if:
+ 838              	.LFB158:
+ 594:Middlewares/Third_Party/LwIP/src/core/udp.c **** #if LWIP_CHECKSUM_ON_COPY && CHECKSUM_GEN_UDP
+ 839              		.loc 1 594 0
+ 840              		.cfi_startproc
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s 			page 34
+
+
+ 841              		@ args = 4, pretend = 0, frame = 0
+ 842              		@ frame_needed = 0, uses_anonymous_args = 0
+ 843              	.LVL118:
+ 844 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 845              	.LCFI9:
+ 846              		.cfi_def_cfa_offset 20
+ 847              		.cfi_offset 4, -20
+ 848              		.cfi_offset 5, -16
+ 849              		.cfi_offset 6, -12
+ 850              		.cfi_offset 7, -8
+ 851              		.cfi_offset 14, -4
+ 852 0002 83B0     		sub	sp, sp, #12
+ 853              	.LCFI10:
+ 854              		.cfi_def_cfa_offset 32
+ 855 0004 089E     		ldr	r6, [sp, #32]
+ 608:Middlewares/Third_Party/LwIP/src/core/udp.c ****     return ERR_VAL;
+ 856              		.loc 1 608 0
+ 857 0006 002A     		cmp	r2, #0
+ 858 0008 18BF     		it	ne
+ 859 000a 0028     		cmpne	r0, #0
+ 860 000c 16D0     		beq	.L96
+ 861 000e 0446     		mov	r4, r0
+ 862 0010 1546     		mov	r5, r2
+ 635:Middlewares/Third_Party/LwIP/src/core/udp.c ****       ip4_addr_ismulticast(ip_2_ip4(&pcb->local_ip))) {
+ 863              		.loc 1 635 0
+ 864 0012 50B1     		cbz	r0, .L93
+ 635:Middlewares/Third_Party/LwIP/src/core/udp.c ****       ip4_addr_ismulticast(ip_2_ip4(&pcb->local_ip))) {
+ 865              		.loc 1 635 0 is_stmt 0 discriminator 1
+ 866 0014 0268     		ldr	r2, [r0]
+ 867              	.LVL119:
+ 868 0016 42B1     		cbz	r2, .L93
+ 636:Middlewares/Third_Party/LwIP/src/core/udp.c ****     /* if the local_ip is any or multicast
+ 869              		.loc 1 636 0 is_stmt 1 discriminator 2
+ 870 0018 02F0F000 		and	r0, r2, #240
+ 871              	.LVL120:
+ 635:Middlewares/Third_Party/LwIP/src/core/udp.c ****       ip4_addr_ismulticast(ip_2_ip4(&pcb->local_ip))) {
+ 872              		.loc 1 635 0 discriminator 2
+ 873 001c E028     		cmp	r0, #224
+ 874 001e 04D0     		beq	.L93
+ 643:Middlewares/Third_Party/LwIP/src/core/udp.c ****       /* local_ip doesn't match, drop the packet */
+ 875              		.loc 1 643 0
+ 876 0020 7068     		ldr	r0, [r6, #4]
+ 877 0022 8242     		cmp	r2, r0
+ 878 0024 0DD1     		bne	.L97
+ 648:Middlewares/Third_Party/LwIP/src/core/udp.c ****   }
+ 879              		.loc 1 648 0
+ 880 0026 2746     		mov	r7, r4
+ 881 0028 00E0     		b	.L95
+ 882              	.L93:
+ 639:Middlewares/Third_Party/LwIP/src/core/udp.c ****   } else {
+ 883              		.loc 1 639 0
+ 884 002a 371D     		adds	r7, r6, #4
+ 885              	.LVL121:
+ 886              	.L95:
+ 887 002c 2A46     		mov	r2, r5
+ 888 002e 2046     		mov	r0, r4
+ 889              	.LVL122:
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s 			page 35
+
+
+ 654:Middlewares/Third_Party/LwIP/src/core/udp.c **** #endif /* LWIP_CHECKSUM_ON_COPY && CHECKSUM_GEN_UDP */
+ 890              		.loc 1 654 0
+ 891 0030 0197     		str	r7, [sp, #4]
+ 892 0032 0096     		str	r6, [sp]
+ 893 0034 FFF7FEFF 		bl	udp_sendto_if_src
+ 894              	.LVL123:
+ 895              	.L92:
+ 656:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 896              		.loc 1 656 0
+ 897 0038 03B0     		add	sp, sp, #12
+ 898              	.LCFI11:
+ 899              		.cfi_remember_state
+ 900              		.cfi_def_cfa_offset 20
+ 901              		@ sp needed
+ 902 003a F0BD     		pop	{r4, r5, r6, r7, pc}
+ 903              	.LVL124:
+ 904              	.L96:
+ 905              	.LCFI12:
+ 906              		.cfi_restore_state
+ 609:Middlewares/Third_Party/LwIP/src/core/udp.c ****   }
+ 907              		.loc 1 609 0
+ 908 003c 6FF00500 		mvn	r0, #5
+ 909              	.LVL125:
+ 910 0040 FAE7     		b	.L92
+ 911              	.LVL126:
+ 912              	.L97:
+ 645:Middlewares/Third_Party/LwIP/src/core/udp.c ****     }
+ 913              		.loc 1 645 0
+ 914 0042 6FF00300 		mvn	r0, #3
+ 915 0046 F7E7     		b	.L92
+ 916              		.cfi_endproc
+ 917              	.LFE158:
+ 919              		.section	.text.udp_sendto,"ax",%progbits
+ 920              		.align	1
+ 921              		.global	udp_sendto
+ 922              		.syntax unified
+ 923              		.thumb
+ 924              		.thumb_func
+ 925              		.fpu fpv5-sp-d16
+ 927              	udp_sendto:
+ 928              	.LFB157:
+ 504:Middlewares/Third_Party/LwIP/src/core/udp.c **** #if LWIP_CHECKSUM_ON_COPY && CHECKSUM_GEN_UDP
+ 929              		.loc 1 504 0
+ 930              		.cfi_startproc
+ 931              		@ args = 0, pretend = 0, frame = 0
+ 932              		@ frame_needed = 0, uses_anonymous_args = 0
+ 933              	.LVL127:
+ 519:Middlewares/Third_Party/LwIP/src/core/udp.c ****     return ERR_VAL;
+ 934              		.loc 1 519 0
+ 935 0000 002A     		cmp	r2, #0
+ 936 0002 18BF     		it	ne
+ 937 0004 0028     		cmpne	r0, #0
+ 938 0006 12D0     		beq	.L101
+ 504:Middlewares/Third_Party/LwIP/src/core/udp.c **** #if LWIP_CHECKSUM_ON_COPY && CHECKSUM_GEN_UDP
+ 939              		.loc 1 504 0
+ 940 0008 F0B5     		push	{r4, r5, r6, r7, lr}
+ 941              	.LCFI13:
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s 			page 36
+
+
+ 942              		.cfi_def_cfa_offset 20
+ 943              		.cfi_offset 4, -20
+ 944              		.cfi_offset 5, -16
+ 945              		.cfi_offset 6, -12
+ 946              		.cfi_offset 7, -8
+ 947              		.cfi_offset 14, -4
+ 948 000a 83B0     		sub	sp, sp, #12
+ 949              	.LCFI14:
+ 950              		.cfi_def_cfa_offset 32
+ 951 000c 0546     		mov	r5, r0
+ 952 000e 1446     		mov	r4, r2
+ 953 0010 1F46     		mov	r7, r3
+ 954 0012 0E46     		mov	r6, r1
+ 553:Middlewares/Third_Party/LwIP/src/core/udp.c ****   }
+ 955              		.loc 1 553 0
+ 956 0014 1046     		mov	r0, r2
+ 957              	.LVL128:
+ 958 0016 FFF7FEFF 		bl	ip4_route
+ 959              	.LVL129:
+ 557:Middlewares/Third_Party/LwIP/src/core/udp.c ****     LWIP_DEBUGF(UDP_DEBUG | LWIP_DBG_LEVEL_SERIOUS, ("udp_send: No route to "));
+ 960              		.loc 1 557 0
+ 961 001a 58B1     		cbz	r0, .L102
+ 567:Middlewares/Third_Party/LwIP/src/core/udp.c **** #endif /* LWIP_CHECKSUM_ON_COPY && CHECKSUM_GEN_UDP */
+ 962              		.loc 1 567 0
+ 963 001c 0090     		str	r0, [sp]
+ 964 001e 3B46     		mov	r3, r7
+ 965 0020 2246     		mov	r2, r4
+ 966 0022 3146     		mov	r1, r6
+ 967 0024 2846     		mov	r0, r5
+ 968              	.LVL130:
+ 969 0026 FFF7FEFF 		bl	udp_sendto_if
+ 970              	.LVL131:
+ 971              	.L100:
+ 569:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 972              		.loc 1 569 0
+ 973 002a 03B0     		add	sp, sp, #12
+ 974              	.LCFI15:
+ 975              		.cfi_def_cfa_offset 20
+ 976              		@ sp needed
+ 977 002c F0BD     		pop	{r4, r5, r6, r7, pc}
+ 978              	.LVL132:
+ 979              	.L101:
+ 980              	.LCFI16:
+ 981              		.cfi_def_cfa_offset 0
+ 982              		.cfi_restore 4
+ 983              		.cfi_restore 5
+ 984              		.cfi_restore 6
+ 985              		.cfi_restore 7
+ 986              		.cfi_restore 14
+ 520:Middlewares/Third_Party/LwIP/src/core/udp.c ****   }
+ 987              		.loc 1 520 0
+ 988 002e 6FF00500 		mvn	r0, #5
+ 989              	.LVL133:
+ 990 0032 7047     		bx	lr
+ 991              	.LVL134:
+ 992              	.L102:
+ 993              	.LCFI17:
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s 			page 37
+
+
+ 994              		.cfi_def_cfa_offset 32
+ 995              		.cfi_offset 4, -20
+ 996              		.cfi_offset 5, -16
+ 997              		.cfi_offset 6, -12
+ 998              		.cfi_offset 7, -8
+ 999              		.cfi_offset 14, -4
+ 562:Middlewares/Third_Party/LwIP/src/core/udp.c ****   }
+ 1000              		.loc 1 562 0
+ 1001 0034 6FF00300 		mvn	r0, #3
+ 1002              	.LVL135:
+ 1003 0038 F7E7     		b	.L100
+ 1004              		.cfi_endproc
+ 1005              	.LFE157:
+ 1007              		.section	.text.udp_send,"ax",%progbits
+ 1008              		.align	1
+ 1009              		.global	udp_send
+ 1010              		.syntax unified
+ 1011              		.thumb
+ 1012              		.thumb_func
+ 1013              		.fpu fpv5-sp-d16
+ 1015              	udp_send:
+ 1016              	.LFB156:
+ 456:Middlewares/Third_Party/LwIP/src/core/udp.c ****   if ((pcb == NULL) || IP_IS_ANY_TYPE_VAL(pcb->remote_ip)) {
+ 1017              		.loc 1 456 0
+ 1018              		.cfi_startproc
+ 1019              		@ args = 0, pretend = 0, frame = 0
+ 1020              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1021              	.LVL136:
+ 457:Middlewares/Third_Party/LwIP/src/core/udp.c ****     return ERR_VAL;
+ 1022              		.loc 1 457 0
+ 1023 0000 28B1     		cbz	r0, .L109
+ 456:Middlewares/Third_Party/LwIP/src/core/udp.c ****   if ((pcb == NULL) || IP_IS_ANY_TYPE_VAL(pcb->remote_ip)) {
+ 1024              		.loc 1 456 0
+ 1025 0002 08B5     		push	{r3, lr}
+ 1026              	.LCFI18:
+ 1027              		.cfi_def_cfa_offset 8
+ 1028              		.cfi_offset 3, -8
+ 1029              		.cfi_offset 14, -4
+ 462:Middlewares/Third_Party/LwIP/src/core/udp.c **** }
+ 1030              		.loc 1 462 0
+ 1031 0004 838A     		ldrh	r3, [r0, #20]
+ 1032 0006 021D     		adds	r2, r0, #4
+ 1033 0008 FFF7FEFF 		bl	udp_sendto
+ 1034              	.LVL137:
+ 1035 000c 08BD     		pop	{r3, pc}
+ 1036              	.LVL138:
+ 1037              	.L109:
+ 1038              	.LCFI19:
+ 1039              		.cfi_def_cfa_offset 0
+ 1040              		.cfi_restore 3
+ 1041              		.cfi_restore 14
+ 458:Middlewares/Third_Party/LwIP/src/core/udp.c ****   }
+ 1042              		.loc 1 458 0
+ 1043 000e 6FF00500 		mvn	r0, #5
+ 1044              	.LVL139:
+ 1045 0012 7047     		bx	lr
+ 1046              		.cfi_endproc
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s 			page 38
+
+
+ 1047              	.LFE156:
+ 1049              		.section	.text.udp_connect,"ax",%progbits
+ 1050              		.align	1
+ 1051              		.global	udp_connect
+ 1052              		.syntax unified
+ 1053              		.thumb
+ 1054              		.thumb_func
+ 1055              		.fpu fpv5-sp-d16
+ 1057              	udp_connect:
+ 1058              	.LFB161:
+ 961:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 962:Middlewares/Third_Party/LwIP/src/core/udp.c **** /**
+ 963:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * @ingroup udp_raw
+ 964:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * Connect an UDP PCB.
+ 965:Middlewares/Third_Party/LwIP/src/core/udp.c ****  *
+ 966:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * This will associate the UDP PCB with the remote address.
+ 967:Middlewares/Third_Party/LwIP/src/core/udp.c ****  *
+ 968:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * @param pcb UDP PCB to be connected with remote address ipaddr and port.
+ 969:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * @param ipaddr remote IP address to connect with.
+ 970:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * @param port remote UDP port to connect with.
+ 971:Middlewares/Third_Party/LwIP/src/core/udp.c ****  *
+ 972:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * @return lwIP error code
+ 973:Middlewares/Third_Party/LwIP/src/core/udp.c ****  *
+ 974:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * ipaddr & port are expected to be in the same byte order as in the pcb.
+ 975:Middlewares/Third_Party/LwIP/src/core/udp.c ****  *
+ 976:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * The udp pcb is bound to a random local port if not already bound.
+ 977:Middlewares/Third_Party/LwIP/src/core/udp.c ****  *
+ 978:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * @see udp_disconnect()
+ 979:Middlewares/Third_Party/LwIP/src/core/udp.c ****  */
+ 980:Middlewares/Third_Party/LwIP/src/core/udp.c **** err_t
+ 981:Middlewares/Third_Party/LwIP/src/core/udp.c **** udp_connect(struct udp_pcb *pcb, const ip_addr_t *ipaddr, u16_t port)
+ 982:Middlewares/Third_Party/LwIP/src/core/udp.c **** {
+ 1059              		.loc 1 982 0
+ 1060              		.cfi_startproc
+ 1061              		@ args = 0, pretend = 0, frame = 0
+ 1062              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1063              	.LVL140:
+ 983:Middlewares/Third_Party/LwIP/src/core/udp.c ****   struct udp_pcb *ipcb;
+ 984:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 985:Middlewares/Third_Party/LwIP/src/core/udp.c ****   if ((pcb == NULL) || (ipaddr == NULL)) {
+ 1064              		.loc 1 985 0
+ 1065 0000 0029     		cmp	r1, #0
+ 1066 0002 18BF     		it	ne
+ 1067 0004 0028     		cmpne	r0, #0
+ 1068 0006 24D0     		beq	.L120
+ 982:Middlewares/Third_Party/LwIP/src/core/udp.c ****   struct udp_pcb *ipcb;
+ 1069              		.loc 1 982 0
+ 1070 0008 70B5     		push	{r4, r5, r6, lr}
+ 1071              	.LCFI20:
+ 1072              		.cfi_def_cfa_offset 16
+ 1073              		.cfi_offset 4, -16
+ 1074              		.cfi_offset 5, -12
+ 1075              		.cfi_offset 6, -8
+ 1076              		.cfi_offset 14, -4
+ 1077 000a 0446     		mov	r4, r0
+ 1078 000c 0D46     		mov	r5, r1
+ 1079 000e 1646     		mov	r6, r2
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s 			page 39
+
+
+ 986:Middlewares/Third_Party/LwIP/src/core/udp.c ****     return ERR_VAL;
+ 987:Middlewares/Third_Party/LwIP/src/core/udp.c ****   }
+ 988:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 989:Middlewares/Third_Party/LwIP/src/core/udp.c ****   if (pcb->local_port == 0) {
+ 1080              		.loc 1 989 0
+ 1081 0010 428A     		ldrh	r2, [r0, #18]
+ 1082              	.LVL141:
+ 1083 0012 7AB1     		cbz	r2, .L127
+ 1084              	.LVL142:
+ 1085              	.L116:
+ 990:Middlewares/Third_Party/LwIP/src/core/udp.c ****     err_t err = udp_bind(pcb, &pcb->local_ip, pcb->local_port);
+ 991:Middlewares/Third_Party/LwIP/src/core/udp.c ****     if (err != ERR_OK) {
+ 992:Middlewares/Third_Party/LwIP/src/core/udp.c ****       return err;
+ 993:Middlewares/Third_Party/LwIP/src/core/udp.c ****     }
+ 994:Middlewares/Third_Party/LwIP/src/core/udp.c ****   }
+ 995:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+ 996:Middlewares/Third_Party/LwIP/src/core/udp.c ****   ip_addr_set_ipaddr(&pcb->remote_ip, ipaddr);
+ 1086              		.loc 1 996 0
+ 1087 0014 ADB1     		cbz	r5, .L121
+ 1088              		.loc 1 996 0 is_stmt 0 discriminator 1
+ 1089 0016 2B68     		ldr	r3, [r5]
+ 1090              	.L117:
+ 1091              		.loc 1 996 0 discriminator 4
+ 1092 0018 6360     		str	r3, [r4, #4]
+ 997:Middlewares/Third_Party/LwIP/src/core/udp.c ****   pcb->remote_port = port;
+ 1093              		.loc 1 997 0 is_stmt 1 discriminator 4
+ 1094 001a A682     		strh	r6, [r4, #20]	@ movhi
+ 998:Middlewares/Third_Party/LwIP/src/core/udp.c ****   pcb->flags |= UDP_FLAGS_CONNECTED;
+ 1095              		.loc 1 998 0 discriminator 4
+ 1096 001c 237C     		ldrb	r3, [r4, #16]	@ zero_extendqisi2
+ 1097 001e 43F00403 		orr	r3, r3, #4
+ 1098 0022 2374     		strb	r3, [r4, #16]
+ 999:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+1000:Middlewares/Third_Party/LwIP/src/core/udp.c ****   LWIP_DEBUGF(UDP_DEBUG | LWIP_DBG_TRACE | LWIP_DBG_STATE, ("udp_connect: connected to "));
+1001:Middlewares/Third_Party/LwIP/src/core/udp.c ****   ip_addr_debug_print(UDP_DEBUG | LWIP_DBG_TRACE | LWIP_DBG_STATE,
+1002:Middlewares/Third_Party/LwIP/src/core/udp.c ****                       &pcb->remote_ip);
+1003:Middlewares/Third_Party/LwIP/src/core/udp.c ****   LWIP_DEBUGF(UDP_DEBUG | LWIP_DBG_TRACE | LWIP_DBG_STATE, (", port %"U16_F")\n", pcb->remote_port)
+1004:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+1005:Middlewares/Third_Party/LwIP/src/core/udp.c ****   /* Insert UDP PCB into the list of active UDP PCBs. */
+1006:Middlewares/Third_Party/LwIP/src/core/udp.c ****   for (ipcb = udp_pcbs; ipcb != NULL; ipcb = ipcb->next) {
+ 1099              		.loc 1 1006 0 discriminator 4
+ 1100 0024 0E4B     		ldr	r3, .L129
+ 1101 0026 1A68     		ldr	r2, [r3]
+ 1102              	.LVL143:
+ 1103 0028 1346     		mov	r3, r2
+ 1104              	.LVL144:
+ 1105              	.L118:
+ 1106              		.loc 1 1006 0 is_stmt 0 discriminator 1
+ 1107 002a 63B1     		cbz	r3, .L128
+1007:Middlewares/Third_Party/LwIP/src/core/udp.c ****     if (pcb == ipcb) {
+ 1108              		.loc 1 1007 0 is_stmt 1
+ 1109 002c A342     		cmp	r3, r4
+ 1110 002e 14D0     		beq	.L122
+1006:Middlewares/Third_Party/LwIP/src/core/udp.c ****     if (pcb == ipcb) {
+ 1111              		.loc 1 1006 0 discriminator 2
+ 1112 0030 DB68     		ldr	r3, [r3, #12]
+ 1113              	.LVL145:
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s 			page 40
+
+
+ 1114 0032 FAE7     		b	.L118
+ 1115              	.LVL146:
+ 1116              	.L127:
+ 1117              	.LBB2:
+ 990:Middlewares/Third_Party/LwIP/src/core/udp.c ****     if (err != ERR_OK) {
+ 1118              		.loc 1 990 0
+ 1119 0034 0146     		mov	r1, r0
+ 1120              	.LVL147:
+ 1121 0036 FFF7FEFF 		bl	udp_bind
+ 1122              	.LVL148:
+ 991:Middlewares/Third_Party/LwIP/src/core/udp.c ****       return err;
+ 1123              		.loc 1 991 0
+ 1124 003a 0346     		mov	r3, r0
+ 1125 003c 0028     		cmp	r0, #0
+ 1126 003e E9D0     		beq	.L116
+ 1127 0040 05E0     		b	.L115
+ 1128              	.LVL149:
+ 1129              	.L121:
+ 1130              	.LBE2:
+ 996:Middlewares/Third_Party/LwIP/src/core/udp.c ****   pcb->remote_port = port;
+ 1131              		.loc 1 996 0
+ 1132 0042 0023     		movs	r3, #0
+ 1133 0044 E8E7     		b	.L117
+ 1134              	.LVL150:
+ 1135              	.L128:
+1008:Middlewares/Third_Party/LwIP/src/core/udp.c ****       /* already on the list, just return */
+1009:Middlewares/Third_Party/LwIP/src/core/udp.c ****       return ERR_OK;
+1010:Middlewares/Third_Party/LwIP/src/core/udp.c ****     }
+1011:Middlewares/Third_Party/LwIP/src/core/udp.c ****   }
+1012:Middlewares/Third_Party/LwIP/src/core/udp.c ****   /* PCB not yet on the list, add PCB now */
+1013:Middlewares/Third_Party/LwIP/src/core/udp.c ****   pcb->next = udp_pcbs;
+ 1136              		.loc 1 1013 0
+ 1137 0046 E260     		str	r2, [r4, #12]
+1014:Middlewares/Third_Party/LwIP/src/core/udp.c ****   udp_pcbs = pcb;
+ 1138              		.loc 1 1014 0
+ 1139 0048 054B     		ldr	r3, .L129
+ 1140              	.LVL151:
+ 1141 004a 1C60     		str	r4, [r3]
+1015:Middlewares/Third_Party/LwIP/src/core/udp.c ****   return ERR_OK;
+ 1142              		.loc 1 1015 0
+ 1143 004c 0023     		movs	r3, #0
+ 1144              	.L115:
+1016:Middlewares/Third_Party/LwIP/src/core/udp.c **** }
+ 1145              		.loc 1 1016 0
+ 1146 004e 1846     		mov	r0, r3
+ 1147 0050 70BD     		pop	{r4, r5, r6, pc}
+ 1148              	.LVL152:
+ 1149              	.L120:
+ 1150              	.LCFI21:
+ 1151              		.cfi_def_cfa_offset 0
+ 1152              		.cfi_restore 4
+ 1153              		.cfi_restore 5
+ 1154              		.cfi_restore 6
+ 1155              		.cfi_restore 14
+ 986:Middlewares/Third_Party/LwIP/src/core/udp.c ****   }
+ 1156              		.loc 1 986 0
+ 1157 0052 6FF00503 		mvn	r3, #5
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s 			page 41
+
+
+ 1158              		.loc 1 1016 0
+ 1159 0056 1846     		mov	r0, r3
+ 1160              	.LVL153:
+ 1161 0058 7047     		bx	lr
+ 1162              	.LVL154:
+ 1163              	.L122:
+ 1164              	.LCFI22:
+ 1165              		.cfi_def_cfa_offset 16
+ 1166              		.cfi_offset 4, -16
+ 1167              		.cfi_offset 5, -12
+ 1168              		.cfi_offset 6, -8
+ 1169              		.cfi_offset 14, -4
+1009:Middlewares/Third_Party/LwIP/src/core/udp.c ****     }
+ 1170              		.loc 1 1009 0
+ 1171 005a 0023     		movs	r3, #0
+ 1172              	.LVL155:
+ 1173 005c F7E7     		b	.L115
+ 1174              	.L130:
+ 1175 005e 00BF     		.align	2
+ 1176              	.L129:
+ 1177 0060 00000000 		.word	udp_pcbs
+ 1178              		.cfi_endproc
+ 1179              	.LFE161:
+ 1181              		.section	.text.udp_disconnect,"ax",%progbits
+ 1182              		.align	1
+ 1183              		.global	udp_disconnect
+ 1184              		.syntax unified
+ 1185              		.thumb
+ 1186              		.thumb_func
+ 1187              		.fpu fpv5-sp-d16
+ 1189              	udp_disconnect:
+ 1190              	.LFB162:
+1017:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+1018:Middlewares/Third_Party/LwIP/src/core/udp.c **** /**
+1019:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * @ingroup udp_raw
+1020:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * Disconnect a UDP PCB
+1021:Middlewares/Third_Party/LwIP/src/core/udp.c ****  *
+1022:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * @param pcb the udp pcb to disconnect.
+1023:Middlewares/Third_Party/LwIP/src/core/udp.c ****  */
+1024:Middlewares/Third_Party/LwIP/src/core/udp.c **** void
+1025:Middlewares/Third_Party/LwIP/src/core/udp.c **** udp_disconnect(struct udp_pcb *pcb)
+1026:Middlewares/Third_Party/LwIP/src/core/udp.c **** {
+ 1191              		.loc 1 1026 0
+ 1192              		.cfi_startproc
+ 1193              		@ args = 0, pretend = 0, frame = 0
+ 1194              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1195              		@ link register save eliminated.
+ 1196              	.LVL156:
+1027:Middlewares/Third_Party/LwIP/src/core/udp.c ****   /* reset remote address association */
+1028:Middlewares/Third_Party/LwIP/src/core/udp.c **** #if LWIP_IPV4 && LWIP_IPV6
+1029:Middlewares/Third_Party/LwIP/src/core/udp.c ****   if (IP_IS_ANY_TYPE_VAL(pcb->local_ip)) {
+1030:Middlewares/Third_Party/LwIP/src/core/udp.c ****     ip_addr_copy(pcb->remote_ip, *IP_ANY_TYPE);
+1031:Middlewares/Third_Party/LwIP/src/core/udp.c ****   } else {
+1032:Middlewares/Third_Party/LwIP/src/core/udp.c **** #endif
+1033:Middlewares/Third_Party/LwIP/src/core/udp.c ****     ip_addr_set_any(IP_IS_V6_VAL(pcb->remote_ip), &pcb->remote_ip);
+ 1197              		.loc 1 1033 0
+ 1198 0000 0023     		movs	r3, #0
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s 			page 42
+
+
+ 1199 0002 4360     		str	r3, [r0, #4]
+1034:Middlewares/Third_Party/LwIP/src/core/udp.c **** #if LWIP_IPV4 && LWIP_IPV6
+1035:Middlewares/Third_Party/LwIP/src/core/udp.c ****   }
+1036:Middlewares/Third_Party/LwIP/src/core/udp.c **** #endif
+1037:Middlewares/Third_Party/LwIP/src/core/udp.c ****   pcb->remote_port = 0;
+ 1200              		.loc 1 1037 0
+ 1201 0004 8382     		strh	r3, [r0, #20]	@ movhi
+1038:Middlewares/Third_Party/LwIP/src/core/udp.c ****   /* mark PCB as unconnected */
+1039:Middlewares/Third_Party/LwIP/src/core/udp.c ****   pcb->flags &= ~UDP_FLAGS_CONNECTED;
+ 1202              		.loc 1 1039 0
+ 1203 0006 037C     		ldrb	r3, [r0, #16]	@ zero_extendqisi2
+ 1204 0008 23F00403 		bic	r3, r3, #4
+ 1205 000c 0374     		strb	r3, [r0, #16]
+ 1206 000e 7047     		bx	lr
+ 1207              		.cfi_endproc
+ 1208              	.LFE162:
+ 1210              		.section	.text.udp_recv,"ax",%progbits
+ 1211              		.align	1
+ 1212              		.global	udp_recv
+ 1213              		.syntax unified
+ 1214              		.thumb
+ 1215              		.thumb_func
+ 1216              		.fpu fpv5-sp-d16
+ 1218              	udp_recv:
+ 1219              	.LFB163:
+1040:Middlewares/Third_Party/LwIP/src/core/udp.c **** }
+1041:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+1042:Middlewares/Third_Party/LwIP/src/core/udp.c **** /**
+1043:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * @ingroup udp_raw
+1044:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * Set a receive callback for a UDP PCB
+1045:Middlewares/Third_Party/LwIP/src/core/udp.c ****  *
+1046:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * This callback will be called when receiving a datagram for the pcb.
+1047:Middlewares/Third_Party/LwIP/src/core/udp.c ****  *
+1048:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * @param pcb the pcb for which to set the recv callback
+1049:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * @param recv function pointer of the callback function
+1050:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * @param recv_arg additional argument to pass to the callback function
+1051:Middlewares/Third_Party/LwIP/src/core/udp.c ****  */
+1052:Middlewares/Third_Party/LwIP/src/core/udp.c **** void
+1053:Middlewares/Third_Party/LwIP/src/core/udp.c **** udp_recv(struct udp_pcb *pcb, udp_recv_fn recv, void *recv_arg)
+1054:Middlewares/Third_Party/LwIP/src/core/udp.c **** {
+ 1220              		.loc 1 1054 0
+ 1221              		.cfi_startproc
+ 1222              		@ args = 0, pretend = 0, frame = 0
+ 1223              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1224              		@ link register save eliminated.
+ 1225              	.LVL157:
+1055:Middlewares/Third_Party/LwIP/src/core/udp.c ****   /* remember recv() callback and user data */
+1056:Middlewares/Third_Party/LwIP/src/core/udp.c ****   pcb->recv = recv;
+ 1226              		.loc 1 1056 0
+ 1227 0000 8161     		str	r1, [r0, #24]
+1057:Middlewares/Third_Party/LwIP/src/core/udp.c ****   pcb->recv_arg = recv_arg;
+ 1228              		.loc 1 1057 0
+ 1229 0002 C261     		str	r2, [r0, #28]
+ 1230 0004 7047     		bx	lr
+ 1231              		.cfi_endproc
+ 1232              	.LFE163:
+ 1234              		.section	.text.udp_remove,"ax",%progbits
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s 			page 43
+
+
+ 1235              		.align	1
+ 1236              		.global	udp_remove
+ 1237              		.syntax unified
+ 1238              		.thumb
+ 1239              		.thumb_func
+ 1240              		.fpu fpv5-sp-d16
+ 1242              	udp_remove:
+ 1243              	.LFB164:
+1058:Middlewares/Third_Party/LwIP/src/core/udp.c **** }
+1059:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+1060:Middlewares/Third_Party/LwIP/src/core/udp.c **** /**
+1061:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * @ingroup udp_raw
+1062:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * Remove an UDP PCB.
+1063:Middlewares/Third_Party/LwIP/src/core/udp.c ****  *
+1064:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * @param pcb UDP PCB to be removed. The PCB is removed from the list of
+1065:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * UDP PCB's and the data structure is freed from memory.
+1066:Middlewares/Third_Party/LwIP/src/core/udp.c ****  *
+1067:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * @see udp_new()
+1068:Middlewares/Third_Party/LwIP/src/core/udp.c ****  */
+1069:Middlewares/Third_Party/LwIP/src/core/udp.c **** void
+1070:Middlewares/Third_Party/LwIP/src/core/udp.c **** udp_remove(struct udp_pcb *pcb)
+1071:Middlewares/Third_Party/LwIP/src/core/udp.c **** {
+ 1244              		.loc 1 1071 0
+ 1245              		.cfi_startproc
+ 1246              		@ args = 0, pretend = 0, frame = 0
+ 1247              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1248              	.LVL158:
+ 1249 0000 08B5     		push	{r3, lr}
+ 1250              	.LCFI23:
+ 1251              		.cfi_def_cfa_offset 8
+ 1252              		.cfi_offset 3, -8
+ 1253              		.cfi_offset 14, -4
+ 1254 0002 0146     		mov	r1, r0
+1072:Middlewares/Third_Party/LwIP/src/core/udp.c ****   struct udp_pcb *pcb2;
+1073:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+1074:Middlewares/Third_Party/LwIP/src/core/udp.c ****   mib2_udp_unbind(pcb);
+1075:Middlewares/Third_Party/LwIP/src/core/udp.c ****   /* pcb to be removed is first in list? */
+1076:Middlewares/Third_Party/LwIP/src/core/udp.c ****   if (udp_pcbs == pcb) {
+ 1255              		.loc 1 1076 0
+ 1256 0004 0B4B     		ldr	r3, .L141
+ 1257 0006 1A68     		ldr	r2, [r3]
+ 1258 0008 8242     		cmp	r2, r0
+ 1259 000a 09D1     		bne	.L134
+1077:Middlewares/Third_Party/LwIP/src/core/udp.c ****     /* make list start at 2nd pcb */
+1078:Middlewares/Third_Party/LwIP/src/core/udp.c ****     udp_pcbs = udp_pcbs->next;
+ 1260              		.loc 1 1078 0
+ 1261 000c D268     		ldr	r2, [r2, #12]
+ 1262 000e 1A60     		str	r2, [r3]
+ 1263 0010 01E0     		b	.L135
+ 1264              	.LVL159:
+ 1265              	.L140:
+1079:Middlewares/Third_Party/LwIP/src/core/udp.c ****     /* pcb not 1st in list */
+1080:Middlewares/Third_Party/LwIP/src/core/udp.c ****   } else {
+1081:Middlewares/Third_Party/LwIP/src/core/udp.c ****     for (pcb2 = udp_pcbs; pcb2 != NULL; pcb2 = pcb2->next) {
+1082:Middlewares/Third_Party/LwIP/src/core/udp.c ****       /* find pcb in udp_pcbs list */
+1083:Middlewares/Third_Party/LwIP/src/core/udp.c ****       if (pcb2->next != NULL && pcb2->next == pcb) {
+1084:Middlewares/Third_Party/LwIP/src/core/udp.c ****         /* remove pcb from list */
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s 			page 44
+
+
+1085:Middlewares/Third_Party/LwIP/src/core/udp.c ****         pcb2->next = pcb->next;
+ 1266              		.loc 1 1085 0
+ 1267 0012 CB68     		ldr	r3, [r1, #12]
+ 1268 0014 D360     		str	r3, [r2, #12]
+ 1269              	.LVL160:
+ 1270              	.L135:
+1086:Middlewares/Third_Party/LwIP/src/core/udp.c ****         break;
+1087:Middlewares/Third_Party/LwIP/src/core/udp.c ****       }
+1088:Middlewares/Third_Party/LwIP/src/core/udp.c ****     }
+1089:Middlewares/Third_Party/LwIP/src/core/udp.c ****   }
+1090:Middlewares/Third_Party/LwIP/src/core/udp.c ****   memp_free(MEMP_UDP_PCB, pcb);
+ 1271              		.loc 1 1090 0
+ 1272 0016 0020     		movs	r0, #0
+ 1273              	.LVL161:
+ 1274 0018 FFF7FEFF 		bl	memp_free
+ 1275              	.LVL162:
+ 1276 001c 08BD     		pop	{r3, pc}
+ 1277              	.LVL163:
+ 1278              	.L137:
+ 1279 001e 1A46     		mov	r2, r3
+ 1280              	.LVL164:
+ 1281              	.L134:
+1081:Middlewares/Third_Party/LwIP/src/core/udp.c ****       /* find pcb in udp_pcbs list */
+ 1282              		.loc 1 1081 0 discriminator 1
+ 1283 0020 002A     		cmp	r2, #0
+ 1284 0022 F8D0     		beq	.L135
+1083:Middlewares/Third_Party/LwIP/src/core/udp.c ****         /* remove pcb from list */
+ 1285              		.loc 1 1083 0
+ 1286 0024 D368     		ldr	r3, [r2, #12]
+ 1287 0026 002B     		cmp	r3, #0
+ 1288 0028 F9D0     		beq	.L137
+1083:Middlewares/Third_Party/LwIP/src/core/udp.c ****         /* remove pcb from list */
+ 1289              		.loc 1 1083 0 is_stmt 0 discriminator 1
+ 1290 002a 9942     		cmp	r1, r3
+ 1291 002c F1D0     		beq	.L140
+ 1292 002e 1A46     		mov	r2, r3
+ 1293              	.LVL165:
+ 1294 0030 F6E7     		b	.L134
+ 1295              	.L142:
+ 1296 0032 00BF     		.align	2
+ 1297              	.L141:
+ 1298 0034 00000000 		.word	udp_pcbs
+ 1299              		.cfi_endproc
+ 1300              	.LFE164:
+ 1302              		.section	.text.udp_new,"ax",%progbits
+ 1303              		.align	1
+ 1304              		.global	udp_new
+ 1305              		.syntax unified
+ 1306              		.thumb
+ 1307              		.thumb_func
+ 1308              		.fpu fpv5-sp-d16
+ 1310              	udp_new:
+ 1311              	.LFB165:
+1091:Middlewares/Third_Party/LwIP/src/core/udp.c **** }
+1092:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+1093:Middlewares/Third_Party/LwIP/src/core/udp.c **** /**
+1094:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * @ingroup udp_raw
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s 			page 45
+
+
+1095:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * Create a UDP PCB.
+1096:Middlewares/Third_Party/LwIP/src/core/udp.c ****  *
+1097:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * @return The UDP PCB which was created. NULL if the PCB data structure
+1098:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * could not be allocated.
+1099:Middlewares/Third_Party/LwIP/src/core/udp.c ****  *
+1100:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * @see udp_remove()
+1101:Middlewares/Third_Party/LwIP/src/core/udp.c ****  */
+1102:Middlewares/Third_Party/LwIP/src/core/udp.c **** struct udp_pcb *
+1103:Middlewares/Third_Party/LwIP/src/core/udp.c **** udp_new(void)
+1104:Middlewares/Third_Party/LwIP/src/core/udp.c **** {
+ 1312              		.loc 1 1104 0 is_stmt 1
+ 1313              		.cfi_startproc
+ 1314              		@ args = 0, pretend = 0, frame = 0
+ 1315              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1316 0000 10B5     		push	{r4, lr}
+ 1317              	.LCFI24:
+ 1318              		.cfi_def_cfa_offset 8
+ 1319              		.cfi_offset 4, -8
+ 1320              		.cfi_offset 14, -4
+1105:Middlewares/Third_Party/LwIP/src/core/udp.c ****   struct udp_pcb *pcb;
+1106:Middlewares/Third_Party/LwIP/src/core/udp.c ****   pcb = (struct udp_pcb *)memp_malloc(MEMP_UDP_PCB);
+ 1321              		.loc 1 1106 0
+ 1322 0002 0020     		movs	r0, #0
+ 1323 0004 FFF7FEFF 		bl	memp_malloc
+ 1324              	.LVL166:
+1107:Middlewares/Third_Party/LwIP/src/core/udp.c ****   /* could allocate UDP PCB? */
+1108:Middlewares/Third_Party/LwIP/src/core/udp.c ****   if (pcb != NULL) {
+ 1325              		.loc 1 1108 0
+ 1326 0008 0446     		mov	r4, r0
+ 1327 000a 28B1     		cbz	r0, .L143
+1109:Middlewares/Third_Party/LwIP/src/core/udp.c ****     /* UDP Lite: by initializing to all zeroes, chksum_len is set to 0
+1110:Middlewares/Third_Party/LwIP/src/core/udp.c ****      * which means checksum is generated over the whole datagram per default
+1111:Middlewares/Third_Party/LwIP/src/core/udp.c ****      * (recommended as default by RFC 3828). */
+1112:Middlewares/Third_Party/LwIP/src/core/udp.c ****     /* initialize PCB to all zeroes */
+1113:Middlewares/Third_Party/LwIP/src/core/udp.c ****     memset(pcb, 0, sizeof(struct udp_pcb));
+ 1328              		.loc 1 1113 0
+ 1329 000c 2022     		movs	r2, #32
+ 1330 000e 0021     		movs	r1, #0
+ 1331 0010 FFF7FEFF 		bl	memset
+ 1332              	.LVL167:
+1114:Middlewares/Third_Party/LwIP/src/core/udp.c ****     pcb->ttl = UDP_TTL;
+ 1333              		.loc 1 1114 0
+ 1334 0014 FF23     		movs	r3, #255
+ 1335 0016 A372     		strb	r3, [r4, #10]
+ 1336              	.L143:
+1115:Middlewares/Third_Party/LwIP/src/core/udp.c **** #if LWIP_MULTICAST_TX_OPTIONS
+1116:Middlewares/Third_Party/LwIP/src/core/udp.c ****     udp_set_multicast_ttl(pcb, UDP_TTL);
+1117:Middlewares/Third_Party/LwIP/src/core/udp.c **** #endif /* LWIP_MULTICAST_TX_OPTIONS */
+1118:Middlewares/Third_Party/LwIP/src/core/udp.c ****   }
+1119:Middlewares/Third_Party/LwIP/src/core/udp.c ****   return pcb;
+1120:Middlewares/Third_Party/LwIP/src/core/udp.c **** }
+ 1337              		.loc 1 1120 0
+ 1338 0018 2046     		mov	r0, r4
+ 1339 001a 10BD     		pop	{r4, pc}
+ 1340              		.cfi_endproc
+ 1341              	.LFE165:
+ 1343              		.section	.text.udp_new_ip_type,"ax",%progbits
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s 			page 46
+
+
+ 1344              		.align	1
+ 1345              		.global	udp_new_ip_type
+ 1346              		.syntax unified
+ 1347              		.thumb
+ 1348              		.thumb_func
+ 1349              		.fpu fpv5-sp-d16
+ 1351              	udp_new_ip_type:
+ 1352              	.LFB166:
+1121:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+1122:Middlewares/Third_Party/LwIP/src/core/udp.c **** /**
+1123:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * @ingroup udp_raw
+1124:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * Create a UDP PCB for specific IP type.
+1125:Middlewares/Third_Party/LwIP/src/core/udp.c ****  *
+1126:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * @param type IP address type, see @ref lwip_ip_addr_type definitions.
+1127:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * If you want to listen to IPv4 and IPv6 (dual-stack) packets,
+1128:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * supply @ref IPADDR_TYPE_ANY as argument and bind to @ref IP_ANY_TYPE.
+1129:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * @return The UDP PCB which was created. NULL if the PCB data structure
+1130:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * could not be allocated.
+1131:Middlewares/Third_Party/LwIP/src/core/udp.c ****  *
+1132:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * @see udp_remove()
+1133:Middlewares/Third_Party/LwIP/src/core/udp.c ****  */
+1134:Middlewares/Third_Party/LwIP/src/core/udp.c **** struct udp_pcb *
+1135:Middlewares/Third_Party/LwIP/src/core/udp.c **** udp_new_ip_type(u8_t type)
+1136:Middlewares/Third_Party/LwIP/src/core/udp.c **** {
+ 1353              		.loc 1 1136 0
+ 1354              		.cfi_startproc
+ 1355              		@ args = 0, pretend = 0, frame = 0
+ 1356              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1357              	.LVL168:
+ 1358 0000 08B5     		push	{r3, lr}
+ 1359              	.LCFI25:
+ 1360              		.cfi_def_cfa_offset 8
+ 1361              		.cfi_offset 3, -8
+ 1362              		.cfi_offset 14, -4
+1137:Middlewares/Third_Party/LwIP/src/core/udp.c ****   struct udp_pcb *pcb;
+1138:Middlewares/Third_Party/LwIP/src/core/udp.c ****   pcb = udp_new();
+ 1363              		.loc 1 1138 0
+ 1364 0002 FFF7FEFF 		bl	udp_new
+ 1365              	.LVL169:
+1139:Middlewares/Third_Party/LwIP/src/core/udp.c **** #if LWIP_IPV4 && LWIP_IPV6
+1140:Middlewares/Third_Party/LwIP/src/core/udp.c ****   if (pcb != NULL) {
+1141:Middlewares/Third_Party/LwIP/src/core/udp.c ****     IP_SET_TYPE_VAL(pcb->local_ip,  type);
+1142:Middlewares/Third_Party/LwIP/src/core/udp.c ****     IP_SET_TYPE_VAL(pcb->remote_ip, type);
+1143:Middlewares/Third_Party/LwIP/src/core/udp.c ****   }
+1144:Middlewares/Third_Party/LwIP/src/core/udp.c **** #else
+1145:Middlewares/Third_Party/LwIP/src/core/udp.c ****   LWIP_UNUSED_ARG(type);
+1146:Middlewares/Third_Party/LwIP/src/core/udp.c **** #endif /* LWIP_IPV4 && LWIP_IPV6 */
+1147:Middlewares/Third_Party/LwIP/src/core/udp.c ****   return pcb;
+1148:Middlewares/Third_Party/LwIP/src/core/udp.c **** }
+ 1366              		.loc 1 1148 0
+ 1367 0006 08BD     		pop	{r3, pc}
+ 1368              		.cfi_endproc
+ 1369              	.LFE166:
+ 1371              		.section	.text.udp_netif_ip_addr_changed,"ax",%progbits
+ 1372              		.align	1
+ 1373              		.global	udp_netif_ip_addr_changed
+ 1374              		.syntax unified
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s 			page 47
+
+
+ 1375              		.thumb
+ 1376              		.thumb_func
+ 1377              		.fpu fpv5-sp-d16
+ 1379              	udp_netif_ip_addr_changed:
+ 1380              	.LFB167:
+1149:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+1150:Middlewares/Third_Party/LwIP/src/core/udp.c **** /** This function is called from netif.c when address is changed
+1151:Middlewares/Third_Party/LwIP/src/core/udp.c ****  *
+1152:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * @param old_addr IP address of the netif before change
+1153:Middlewares/Third_Party/LwIP/src/core/udp.c ****  * @param new_addr IP address of the netif after change
+1154:Middlewares/Third_Party/LwIP/src/core/udp.c ****  */
+1155:Middlewares/Third_Party/LwIP/src/core/udp.c **** void udp_netif_ip_addr_changed(const ip_addr_t* old_addr, const ip_addr_t* new_addr)
+1156:Middlewares/Third_Party/LwIP/src/core/udp.c **** {
+ 1381              		.loc 1 1156 0
+ 1382              		.cfi_startproc
+ 1383              		@ args = 0, pretend = 0, frame = 0
+ 1384              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1385              		@ link register save eliminated.
+ 1386              	.LVL170:
+1157:Middlewares/Third_Party/LwIP/src/core/udp.c ****   struct udp_pcb* upcb;
+1158:Middlewares/Third_Party/LwIP/src/core/udp.c **** 
+1159:Middlewares/Third_Party/LwIP/src/core/udp.c ****   if (!ip_addr_isany(old_addr) && !ip_addr_isany(new_addr)) {
+ 1387              		.loc 1 1159 0
+ 1388 0000 A0B1     		cbz	r0, .L157
+1156:Middlewares/Third_Party/LwIP/src/core/udp.c ****   struct udp_pcb* upcb;
+ 1389              		.loc 1 1156 0 discriminator 1
+ 1390 0002 10B4     		push	{r4}
+ 1391              	.LCFI26:
+ 1392              		.cfi_def_cfa_offset 4
+ 1393              		.cfi_offset 4, -4
+ 1394 0004 0446     		mov	r4, r0
+ 1395              		.loc 1 1159 0 discriminator 1
+ 1396 0006 0368     		ldr	r3, [r0]
+ 1397 0008 73B1     		cbz	r3, .L148
+ 1398              		.loc 1 1159 0 is_stmt 0 discriminator 2
+ 1399 000a 69B1     		cbz	r1, .L148
+ 1400              		.loc 1 1159 0 discriminator 3
+ 1401 000c 0B68     		ldr	r3, [r1]
+ 1402 000e 5BB1     		cbz	r3, .L148
+1160:Middlewares/Third_Party/LwIP/src/core/udp.c ****     for (upcb = udp_pcbs; upcb != NULL; upcb = upcb->next) {
+ 1403              		.loc 1 1160 0 is_stmt 1
+ 1404 0010 074B     		ldr	r3, .L158
+ 1405 0012 1B68     		ldr	r3, [r3]
+ 1406              	.LVL171:
+ 1407 0014 00E0     		b	.L150
+ 1408              	.LVL172:
+ 1409              	.L151:
+ 1410              		.loc 1 1160 0 is_stmt 0 discriminator 2
+ 1411 0016 DB68     		ldr	r3, [r3, #12]
+ 1412              	.LVL173:
+ 1413              	.L150:
+ 1414              		.loc 1 1160 0 discriminator 1
+ 1415 0018 33B1     		cbz	r3, .L148
+1161:Middlewares/Third_Party/LwIP/src/core/udp.c ****       /* PCB bound to current local interface address? */
+1162:Middlewares/Third_Party/LwIP/src/core/udp.c ****       if (ip_addr_cmp(&upcb->local_ip, old_addr)) {
+ 1416              		.loc 1 1162 0 is_stmt 1
+ 1417 001a 1868     		ldr	r0, [r3]
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s 			page 48
+
+
+ 1418 001c 2268     		ldr	r2, [r4]
+ 1419 001e 9042     		cmp	r0, r2
+ 1420 0020 F9D1     		bne	.L151
+1163:Middlewares/Third_Party/LwIP/src/core/udp.c ****         /* The PCB is bound to the old ipaddr and
+1164:Middlewares/Third_Party/LwIP/src/core/udp.c ****          * is set to bound to the new one instead */
+1165:Middlewares/Third_Party/LwIP/src/core/udp.c ****         ip_addr_copy(upcb->local_ip, *new_addr);
+ 1421              		.loc 1 1165 0
+ 1422 0022 0A68     		ldr	r2, [r1]
+ 1423 0024 1A60     		str	r2, [r3]
+ 1424 0026 F6E7     		b	.L151
+ 1425              	.LVL174:
+ 1426              	.L148:
+1166:Middlewares/Third_Party/LwIP/src/core/udp.c ****       }
+1167:Middlewares/Third_Party/LwIP/src/core/udp.c ****     }
+1168:Middlewares/Third_Party/LwIP/src/core/udp.c ****   }
+1169:Middlewares/Third_Party/LwIP/src/core/udp.c **** }
+ 1427              		.loc 1 1169 0
+ 1428 0028 5DF8044B 		ldr	r4, [sp], #4
+ 1429              	.LCFI27:
+ 1430              		.cfi_restore 4
+ 1431              		.cfi_def_cfa_offset 0
+ 1432              	.LVL175:
+ 1433              	.L157:
+ 1434 002c 7047     		bx	lr
+ 1435              	.L159:
+ 1436 002e 00BF     		.align	2
+ 1437              	.L158:
+ 1438 0030 00000000 		.word	udp_pcbs
+ 1439              		.cfi_endproc
+ 1440              	.LFE167:
+ 1442              		.comm	udp_pcbs,4,4
+ 1443              		.section	.data.udp_port,"aw",%progbits
+ 1444              		.align	1
+ 1445              		.set	.LANCHOR0,. + 0
+ 1448              	udp_port:
+ 1449 0000 00C0     		.short	-16384
+ 1450              		.section	.rodata.udp_input.str1.4,"aMS",%progbits,1
+ 1451              		.align	2
+ 1452              	.LC0:
+ 1453 0000 4D696464 		.ascii	"Middlewares/Third_Party/LwIP/src/core/udp.c\000"
+ 1453      6C657761 
+ 1453      7265732F 
+ 1453      54686972 
+ 1453      645F5061 
+ 1454              	.LC1:
+ 1455 002c 70627566 		.ascii	"pbuf_header failed\012\000"
+ 1455      5F686561 
+ 1455      64657220 
+ 1455      6661696C 
+ 1455      65640A00 
+ 1456              	.LC2:
+ 1457 0040 41737365 		.ascii	"Assertion \"%s\" failed at line %d in %s\012\000"
+ 1457      7274696F 
+ 1457      6E202225 
+ 1457      73222066 
+ 1457      61696C65 
+ 1458              		.section	.rodata.udp_sendto_if_src.str1.4,"aMS",%progbits,1
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s 			page 49
+
+
+ 1459              		.align	2
+ 1460              	.LC3:
+ 1461 0000 63686563 		.ascii	"check that first pbuf can hold struct udp_hdr\000"
+ 1461      6B207468 
+ 1461      61742066 
+ 1461      69727374 
+ 1461      20706275 
+ 1462              		.text
+ 1463              	.Letext0:
+ 1464              		.file 2 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 1465              		.file 3 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 1466              		.file 4 "Drivers/CMSIS/Include/core_cm7.h"
+ 1467              		.file 5 "Drivers/CMSIS/Device/ST/STM32F7xx/Include/system_stm32f7xx.h"
+ 1468              		.file 6 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\lock.h"
+ 1469              		.file 7 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\_types.h"
+ 1470              		.file 8 "c:\\gcc_toolchain\\6_2017-q1-update\\lib\\gcc\\arm-none-eabi\\6.3.1\\include\\stddef.h"
+ 1471              		.file 9 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\reent.h"
+ 1472              		.file 10 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\stdlib.h"
+ 1473              		.file 11 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\time.h"
+ 1474              		.file 12 "Middlewares/Third_Party/LwIP/src/include/lwip/arch.h"
+ 1475              		.file 13 "Middlewares/Third_Party/LwIP/src/include/lwip/err.h"
+ 1476              		.file 14 "Middlewares/Third_Party/LwIP/src/include/lwip/pbuf.h"
+ 1477              		.file 15 "Middlewares/Third_Party/LwIP/src/include/lwip/ip4_addr.h"
+ 1478              		.file 16 "Middlewares/Third_Party/LwIP/src/include/lwip/ip_addr.h"
+ 1479              		.file 17 "Middlewares/Third_Party/LwIP/src/include/lwip/memp.h"
+ 1480              		.file 18 "Middlewares/Third_Party/LwIP/src/include/lwip/priv/memp_priv.h"
+ 1481              		.file 19 "Middlewares/Third_Party/LwIP/src/include/lwip/netif.h"
+ 1482              		.file 20 "Middlewares/Third_Party/LwIP/src/include/lwip/prot/ip4.h"
+ 1483              		.file 21 "Middlewares/Third_Party/LwIP/src/include/lwip/ip.h"
+ 1484              		.file 22 "Middlewares/Third_Party/LwIP/src/include/lwip/prot/udp.h"
+ 1485              		.file 23 "Middlewares/Third_Party/LwIP/src/include/lwip/udp.h"
+ 1486              		.file 24 "Middlewares/Third_Party/LwIP/src/include/lwip/icmp.h"
+ 1487              		.file 25 "Middlewares/Third_Party/LwIP/src/include/lwip/def.h"
+ 1488              		.file 26 "Middlewares/Third_Party/LwIP/src/include/lwip/ip4.h"
+ 1489              		.file 27 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\stdio.h"
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s 			page 50
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 udp.c
+C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s:18     .text.udp_new_port:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s:24     .text.udp_new_port:00000000 udp_new_port
+C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s:95     .text.udp_new_port:00000044 $d
+                            *COM*:00000004 udp_pcbs
+C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s:101    .text.udp_input_local_match:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s:107    .text.udp_input_local_match:00000000 udp_input_local_match
+C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s:198    .text.udp_input_local_match:0000004c $d
+C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s:203    .text.udp_init:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s:210    .text.udp_init:00000000 udp_init
+C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s:222    .text.udp_input:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s:229    .text.udp_input:00000000 udp_input
+C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s:494    .text.udp_input:0000012c $d
+C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s:504    .text.udp_bind:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s:511    .text.udp_bind:00000000 udp_bind
+C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s:652    .text.udp_bind:0000007c $d
+C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s:658    .text.udp_sendto_if_src:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s:665    .text.udp_sendto_if_src:00000000 udp_sendto_if_src
+C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s:823    .text.udp_sendto_if_src:000000bc $d
+C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s:830    .text.udp_sendto_if:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s:837    .text.udp_sendto_if:00000000 udp_sendto_if
+C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s:920    .text.udp_sendto:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s:927    .text.udp_sendto:00000000 udp_sendto
+C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s:1008   .text.udp_send:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s:1015   .text.udp_send:00000000 udp_send
+C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s:1050   .text.udp_connect:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s:1057   .text.udp_connect:00000000 udp_connect
+C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s:1177   .text.udp_connect:00000060 $d
+C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s:1182   .text.udp_disconnect:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s:1189   .text.udp_disconnect:00000000 udp_disconnect
+C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s:1211   .text.udp_recv:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s:1218   .text.udp_recv:00000000 udp_recv
+C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s:1235   .text.udp_remove:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s:1242   .text.udp_remove:00000000 udp_remove
+C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s:1298   .text.udp_remove:00000034 $d
+C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s:1303   .text.udp_new:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s:1310   .text.udp_new:00000000 udp_new
+C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s:1344   .text.udp_new_ip_type:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s:1351   .text.udp_new_ip_type:00000000 udp_new_ip_type
+C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s:1372   .text.udp_netif_ip_addr_changed:00000000 $t
+C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s:1379   .text.udp_netif_ip_addr_changed:00000000 udp_netif_ip_addr_changed
+C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s:1438   .text.udp_netif_ip_addr_changed:00000030 $d
+C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s:1444   .data.udp_port:00000000 $d
+C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s:1448   .data.udp_port:00000000 udp_port
+C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s:1451   .rodata.udp_input.str1.4:00000000 $d
+C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s:1459   .rodata.udp_sendto_if_src.str1.4:00000000 $d
+                     .debug_frame:00000010 $d
+
+UNDEFINED SYMBOLS
+ip_data
+ip4_addr_isbroadcast_u32
+lwip_htons
+pbuf_free
+pbuf_header
+printf
+pbuf_header_force
+ARM GAS  C:\Users\Student\AppData\Local\Temp\cctN5RQ5.s 			page 51
+
+
+icmp_dest_unreach
+ip_addr_any
+ip4_output_if_src
+pbuf_alloc
+pbuf_chain
+ip4_route
+memp_free
+memp_malloc
+memset
