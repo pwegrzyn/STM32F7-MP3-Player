@@ -1,8 +1,8 @@
 build/stm32746g_discovery_audio.o: \
  Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_audio.c \
  Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_audio.h \
- Drivers/BSP/STM32746G-Discovery/../Components/wm8994/wm8994.h \
- Drivers/BSP/STM32746G-Discovery/../Components/wm8994/../Common/audio.h \
+ d:\sw\drivers\bsp\components\wm8994\wm8994.h \
+ d:\sw\drivers\bsp\components\common\audio.h \
  Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.h \
  Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal.h \
  Inc/stm32f7xx_hal_conf.h Inc/main.h \
@@ -54,9 +54,9 @@ build/stm32746g_discovery_audio.o: \
 
 Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_audio.h:
 
-Drivers/BSP/STM32746G-Discovery/../Components/wm8994/wm8994.h:
+d:\sw\drivers\bsp\components\wm8994\wm8994.h:
 
-Drivers/BSP/STM32746G-Discovery/../Components/wm8994/../Common/audio.h:
+d:\sw\drivers\bsp\components\common\audio.h:
 
 Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.h:
 

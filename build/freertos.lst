@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cc03JXDL.s 			page 1
+ARM GAS  C:\Users\milek\AppData\Local\Temp\cc5e6st5.s 			page 1
 
 
    1              		.cpu cortex-m7
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cc03JXDL.s 			page 1
   29:Src/freertos.c ****   *    microprocessor devices manufactured by or for STMicroelectronics.
   30:Src/freertos.c ****   * 5. Redistribution and use of this software other than as permitted under 
   31:Src/freertos.c ****   *    this license is void and will automatically terminate your rights under 
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cc03JXDL.s 			page 2
+ARM GAS  C:\Users\milek\AppData\Local\Temp\cc5e6st5.s 			page 2
 
 
   32:Src/freertos.c ****   *    this license. 
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cc03JXDL.s 			page 1
   86:Src/freertos.c **** 
   87:Src/freertos.c **** /* USER CODE END FunctionPrototypes */
   88:Src/freertos.c **** 
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cc03JXDL.s 			page 3
+ARM GAS  C:\Users\milek\AppData\Local\Temp\cc5e6st5.s 			page 3
 
 
   89:Src/freertos.c **** /* Hook prototypes */
@@ -134,18 +134,6 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cc03JXDL.s 			page 1
   30              		@ args = 0, pretend = 0, frame = 0
   31              		@ frame_needed = 0, uses_anonymous_args = 0
   32              		@ link register save eliminated.
-  33 0000 7047     		bx	lr
-  34              		.cfi_endproc
-  35              	.LFE5:
-  37              		.section	.text.vApplicationStackOverflowHook,"ax",%progbits
-  38              		.align	1
-  39              		.weak	vApplicationStackOverflowHook
-  40              		.syntax unified
-  41              		.thumb
-  42              		.thumb_func
-  43              		.fpu fpv5-sp-d16
-  45              	vApplicationStackOverflowHook:
-  46              	.LFB6:
   97:Src/freertos.c ****    /* vApplicationIdleHook() will only be called if configUSE_IDLE_HOOK is set
   98:Src/freertos.c ****    to 1 in FreeRTOSConfig.h. It will be called on each iteration of the idle
   99:Src/freertos.c ****    task. It is essential that code added to this hook function never attempts
@@ -156,66 +144,91 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cc03JXDL.s 			page 1
  104:Src/freertos.c ****    function, because it is the responsibility of the idle task to clean up
  105:Src/freertos.c ****    memory allocated by the kernel to any task that has since been deleted. */
  106:Src/freertos.c **** }
+  33              		.loc 1 106 0
+  34 0000 7047     		bx	lr
+  35              		.cfi_endproc
+  36              	.LFE5:
+  38              		.section	.text.vApplicationStackOverflowHook,"ax",%progbits
+  39              		.align	1
+  40              		.weak	vApplicationStackOverflowHook
+  41              		.syntax unified
+  42              		.thumb
+  43              		.thumb_func
+  44              		.fpu fpv5-sp-d16
+  46              	vApplicationStackOverflowHook:
+  47              	.LFB6:
  107:Src/freertos.c **** /* USER CODE END 2 */
  108:Src/freertos.c **** 
  109:Src/freertos.c **** /* USER CODE BEGIN 4 */
  110:Src/freertos.c **** void vApplicationStackOverflowHook(xTaskHandle xTask, signed char *pcTaskName)
  111:Src/freertos.c **** {
-  47              		.loc 1 111 0
-  48              		.cfi_startproc
-  49              		@ args = 0, pretend = 0, frame = 0
-  50              		@ frame_needed = 0, uses_anonymous_args = 0
-  51              		@ link register save eliminated.
-  52              	.LVL0:
-  53 0000 7047     		bx	lr
-  54              		.cfi_endproc
-  55              	.LFE6:
-  57              		.section	.text.vApplicationMallocFailedHook,"ax",%progbits
-  58              		.align	1
-  59              		.weak	vApplicationMallocFailedHook
-  60              		.syntax unified
-  61              		.thumb
-  62              		.thumb_func
-  63              		.fpu fpv5-sp-d16
-  65              	vApplicationMallocFailedHook:
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cc03JXDL.s 			page 4
-
-
-  66              	.LFB7:
+  48              		.loc 1 111 0
+  49              		.cfi_startproc
+  50              		@ args = 0, pretend = 0, frame = 0
+  51              		@ frame_needed = 0, uses_anonymous_args = 0
+  52              		@ link register save eliminated.
+  53              	.LVL0:
  112:Src/freertos.c ****    /* Run time stack overflow checking is performed if
  113:Src/freertos.c ****    configCHECK_FOR_STACK_OVERFLOW is defined to 1 or 2. This hook function is
  114:Src/freertos.c ****    called if a stack overflow is detected. */
  115:Src/freertos.c **** }
+  54              		.loc 1 115 0
+  55 0000 7047     		bx	lr
+  56              		.cfi_endproc
+  57              	.LFE6:
+  59              		.section	.text.vApplicationMallocFailedHook,"ax",%progbits
+  60              		.align	1
+ARM GAS  C:\Users\milek\AppData\Local\Temp\cc5e6st5.s 			page 4
+
+
+  61              		.weak	vApplicationMallocFailedHook
+  62              		.syntax unified
+  63              		.thumb
+  64              		.thumb_func
+  65              		.fpu fpv5-sp-d16
+  67              	vApplicationMallocFailedHook:
+  68              	.LFB7:
  116:Src/freertos.c **** /* USER CODE END 4 */
  117:Src/freertos.c **** 
  118:Src/freertos.c **** /* USER CODE BEGIN 5 */
  119:Src/freertos.c **** void vApplicationMallocFailedHook(void)
  120:Src/freertos.c **** {
-  67              		.loc 1 120 0
-  68              		.cfi_startproc
-  69              		@ args = 0, pretend = 0, frame = 0
-  70              		@ frame_needed = 0, uses_anonymous_args = 0
-  71              		@ link register save eliminated.
-  72 0000 7047     		bx	lr
-  73              		.cfi_endproc
-  74              	.LFE7:
-  76              		.text
-  77              	.Letext0:
-  78              		.file 2 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\machine\\_default_types.h"
-  79              		.file 3 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\_stdint.h"
-  80              		.file 4 "Middlewares/Third_Party/FreeRTOS/Source/include/task.h"
-  81              		.file 5 "Inc/FreeRTOSConfig.h"
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cc03JXDL.s 			page 5
+  69              		.loc 1 120 0
+  70              		.cfi_startproc
+  71              		@ args = 0, pretend = 0, frame = 0
+  72              		@ frame_needed = 0, uses_anonymous_args = 0
+  73              		@ link register save eliminated.
+ 121:Src/freertos.c ****    /* vApplicationMallocFailedHook() will only be called if
+ 122:Src/freertos.c ****    configUSE_MALLOC_FAILED_HOOK is set to 1 in FreeRTOSConfig.h. It is a hook
+ 123:Src/freertos.c ****    function that will get called if a call to pvPortMalloc() fails.
+ 124:Src/freertos.c ****    pvPortMalloc() is called internally by the kernel whenever a task, queue,
+ 125:Src/freertos.c ****    timer or semaphore is created. It is also called by various parts of the
+ 126:Src/freertos.c ****    demo application. If heap_1.c or heap_2.c are used, then the size of the
+ 127:Src/freertos.c ****    heap available to pvPortMalloc() is defined by configTOTAL_HEAP_SIZE in
+ 128:Src/freertos.c ****    FreeRTOSConfig.h, and the xPortGetFreeHeapSize() API function can be used
+ 129:Src/freertos.c ****    to query the size of free heap space that remains (although it does not
+ 130:Src/freertos.c ****    provide information on how the remaining heap might be fragmented). */
+ 131:Src/freertos.c **** }
+  74              		.loc 1 131 0
+  75 0000 7047     		bx	lr
+  76              		.cfi_endproc
+  77              	.LFE7:
+  79              		.text
+  80              	.Letext0:
+  81              		.file 2 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\machine\\_default
+  82              		.file 3 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\_stdint.h"
+  83              		.file 4 "Middlewares/Third_Party/FreeRTOS/Source/include/task.h"
+  84              		.file 5 "Inc/FreeRTOSConfig.h"
+ARM GAS  C:\Users\milek\AppData\Local\Temp\cc5e6st5.s 			page 5
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 freertos.c
-C:\Users\Student\AppData\Local\Temp\cc03JXDL.s:18     .text.vApplicationIdleHook:00000000 $t
-C:\Users\Student\AppData\Local\Temp\cc03JXDL.s:25     .text.vApplicationIdleHook:00000000 vApplicationIdleHook
-C:\Users\Student\AppData\Local\Temp\cc03JXDL.s:38     .text.vApplicationStackOverflowHook:00000000 $t
-C:\Users\Student\AppData\Local\Temp\cc03JXDL.s:45     .text.vApplicationStackOverflowHook:00000000 vApplicationStackOverflowHook
-C:\Users\Student\AppData\Local\Temp\cc03JXDL.s:58     .text.vApplicationMallocFailedHook:00000000 $t
-C:\Users\Student\AppData\Local\Temp\cc03JXDL.s:65     .text.vApplicationMallocFailedHook:00000000 vApplicationMallocFailedHook
-                     .debug_frame:00000010 $d
+C:\Users\milek\AppData\Local\Temp\cc5e6st5.s:18     .text.vApplicationIdleHook:00000000 $t
+C:\Users\milek\AppData\Local\Temp\cc5e6st5.s:25     .text.vApplicationIdleHook:00000000 vApplicationIdleHook
+C:\Users\milek\AppData\Local\Temp\cc5e6st5.s:39     .text.vApplicationStackOverflowHook:00000000 $t
+C:\Users\milek\AppData\Local\Temp\cc5e6st5.s:46     .text.vApplicationStackOverflowHook:00000000 vApplicationStackOverflowHook
+C:\Users\milek\AppData\Local\Temp\cc5e6st5.s:60     .text.vApplicationMallocFailedHook:00000000 $t
+C:\Users\milek\AppData\Local\Temp\cc5e6st5.s:67     .text.vApplicationMallocFailedHook:00000000 vApplicationMallocFailedHook
 
 NO UNDEFINED SYMBOLS

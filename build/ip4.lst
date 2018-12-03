@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 1
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccUE8gpb.s 			page 1
 
 
    1              		.cpu cortex-m7
@@ -25,7 +25,7 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 1
   22              		.thumb_func
   23              		.fpu fpv5-sp-d16
   25              	ip4_route:
-  26              	.LFB152:
+  26              	.LFB154:
   27              		.file 1 "Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c"
    1:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** /**
    2:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****  * @file
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 1
   29:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****  * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
   30:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
   31:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 2
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccUE8gpb.s 			page 2
 
 
   32:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****  * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 1
   86:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****  * netif is down.
   87:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****  * To use this in your own application/protocol, define LWIP_IP_ACCEPT_UDP_PORT(port)
   88:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****  * to return 1 if the port is accepted and 0 if the port is not accepted.
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 3
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccUE8gpb.s 			page 3
 
 
   89:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****  */
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 1
  143:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****  * Finds the appropriate network interface for a given IP address. It
  144:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****  * searches the list of network interfaces linearly. A match is found
  145:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****  * if the masked IP address of the network interface equals the masked
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 4
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccUE8gpb.s 			page 4
 
 
  146:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****  * IP address given to the function.
@@ -207,10 +207,10 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 1
  163:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   /* iterate through netifs */
  164:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   for (netif = netif_list; netif != NULL; netif = netif->next) {
   34              		.loc 1 164 0
-  35 0000 254B     		ldr	r3, .L26
+  35 0000 274B     		ldr	r3, .L27
   36 0002 1B68     		ldr	r3, [r3]
   37              	.LVL1:
-  38 0004 2BE0     		b	.L10
+  38 0004 2DE0     		b	.L10
   39              	.L3:
   40              	.LCFI0:
   41              		.cfi_def_cfa_offset 8
@@ -219,50 +219,52 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 1
   44              		.loc 1 164 0 is_stmt 0 discriminator 2
   45 0006 1B68     		ldr	r3, [r3]
   46              	.LVL2:
-  47 0008 ABB1     		cbz	r3, .L23
+  47 0008 BBB1     		cbz	r3, .L23
  165:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     /* is the netif up, does it have a link and a valid address? */
  166:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     if (netif_is_up(netif) && netif_is_link_up(netif) && !ip4_addr_isany_val(*netif_ip4_addr(netif)
   48              		.loc 1 166 0 is_stmt 1
   49 000a 93F82F20 		ldrb	r2, [r3, #47]	@ zero_extendqisi2
-  50 000e 02F00501 		and	r1, r2, #5
-  51 0012 0529     		cmp	r1, #5
-  52 0014 F7D1     		bne	.L3
-  53              		.loc 1 166 0 is_stmt 0 discriminator 1
-  54 0016 5968     		ldr	r1, [r3, #4]
-  55 0018 0029     		cmp	r1, #0
-  56 001a F4D0     		beq	.L3
-  57              	.L13:
+  50 000e 12F0010F 		tst	r2, #1
+  51 0012 F8D0     		beq	.L3
+  52              		.loc 1 166 0 is_stmt 0 discriminator 1
+  53 0014 12F0040F 		tst	r2, #4
+  54 0018 F5D0     		beq	.L3
+  55              		.loc 1 166 0 discriminator 2
+  56 001a 5968     		ldr	r1, [r3, #4]
+  57 001c 0029     		cmp	r1, #0
+  58 001e F2D0     		beq	.L3
+  59              	.L14:
  167:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****       /* network mask matches? */
  168:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****       if (ip4_addr_netcmp(dest, netif_ip4_addr(netif), netif_ip4_netmask(netif))) {
-  58              		.loc 1 168 0 is_stmt 1
-  59 001c 0468     		ldr	r4, [r0]
-  60 001e 9D68     		ldr	r5, [r3, #8]
-  61 0020 6140     		eors	r1, r1, r4
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 5
+  60              		.loc 1 168 0 is_stmt 1
+  61 0020 0468     		ldr	r4, [r0]
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccUE8gpb.s 			page 5
 
 
-  62 0022 2942     		tst	r1, r5
-  63 0024 16D0     		beq	.L6
+  62 0022 9D68     		ldr	r5, [r3, #8]
+  63 0024 6140     		eors	r1, r1, r4
+  64 0026 2942     		tst	r1, r5
+  65 0028 16D0     		beq	.L6
  169:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****         /* return netif on which to forward IP packet */
  170:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****         return netif;
  171:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****       }
  172:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****       /* gateway matches on a non broadcast interface? (i.e. peer in a point to point interface) */
  173:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****       if (((netif->flags & NETIF_FLAG_BROADCAST) == 0) && ip4_addr_cmp(dest, netif_ip4_gw(netif))) 
-  64              		.loc 1 173 0
-  65 0026 12F0020F 		tst	r2, #2
-  66 002a ECD1     		bne	.L3
-  67              		.loc 1 173 0 is_stmt 0 discriminator 1
-  68 002c DA68     		ldr	r2, [r3, #12]
-  69 002e 9442     		cmp	r4, r2
-  70 0030 E9D1     		bne	.L3
+  66              		.loc 1 173 0
+  67 002a 12F0020F 		tst	r2, #2
+  68 002e EAD1     		bne	.L3
+  69              		.loc 1 173 0 is_stmt 0 discriminator 1
+  70 0030 DA68     		ldr	r2, [r3, #12]
+  71 0032 9442     		cmp	r4, r2
+  72 0034 E7D1     		bne	.L3
  174:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****         /* return netif on which to forward IP packet */
  175:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****         return netif;
-  71              		.loc 1 175 0 is_stmt 1
-  72 0032 1846     		mov	r0, r3
-  73              	.LVL3:
-  74 0034 0AE0     		b	.L1
-  75              	.LVL4:
-  76              	.L23:
+  73              		.loc 1 175 0 is_stmt 1
+  74 0036 1846     		mov	r0, r3
+  75              	.LVL3:
+  76 0038 0AE0     		b	.L1
+  77              	.LVL4:
+  78              	.L23:
  176:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****       }
  177:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     }
  178:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   }
@@ -296,27 +298,27 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 1
  206:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   }
  207:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** #endif
  208:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** 
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccUE8gpb.s 			page 6
+
+
  209:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   if ((netif_default == NULL) || !netif_is_up(netif_default) || !netif_is_link_up(netif_default) ||
-  77              		.loc 1 209 0
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 6
-
-
-  78 0036 194A     		ldr	r2, .L26+4
-  79 0038 1068     		ldr	r0, [r2]
-  80              	.LVL5:
-  81 003a 38B1     		cbz	r0, .L1
-  82              		.loc 1 209 0 is_stmt 0 discriminator 1
-  83 003c 90F82F20 		ldrb	r2, [r0, #47]	@ zero_extendqisi2
-  84 0040 02F00502 		and	r2, r2, #5
-  85 0044 052A     		cmp	r2, #5
-  86 0046 07D1     		bne	.L8
+  79              		.loc 1 209 0
+  80 003a 1A4A     		ldr	r2, .L27+4
+  81 003c 1068     		ldr	r0, [r2]
+  82              	.LVL5:
+  83 003e 38B1     		cbz	r0, .L1
+  84              		.loc 1 209 0 is_stmt 0 discriminator 1
+  85 0040 90F82F20 		ldrb	r2, [r0, #47]	@ zero_extendqisi2
+  86 0044 02F00502 		and	r2, r2, #5
+  87 0048 052A     		cmp	r2, #5
+  88 004a 07D1     		bne	.L8
  210:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****       ip4_addr_isany_val(*netif_ip4_addr(netif_default))) {
-  87              		.loc 1 210 0 is_stmt 1 discriminator 2
-  88 0048 4268     		ldr	r2, [r0, #4]
+  89              		.loc 1 210 0 is_stmt 1 discriminator 2
+  90 004c 4268     		ldr	r2, [r0, #4]
  209:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****       ip4_addr_isany_val(*netif_ip4_addr(netif_default))) {
-  89              		.loc 1 209 0 discriminator 2
-  90 004a 0AB1     		cbz	r2, .L24
-  91              	.L1:
+  91              		.loc 1 209 0 discriminator 2
+  92 004e 0AB1     		cbz	r2, .L24
+  93              	.L1:
  211:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     /* No matching netif found and default netif is not usable.
  212:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****        If this is not good enough for you, use LWIP_HOOK_IP4_ROUTE() */
  213:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     LWIP_DEBUGF(IP_DEBUG | LWIP_DBG_LEVEL_SERIOUS, ("ip4_route: No route to %"U16_F".%"U16_F".%"U16
@@ -328,37 +330,35 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 1
  219:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** 
  220:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   return netif_default;
  221:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** }
-  92              		.loc 1 221 0
-  93 004c 30BC     		pop	{r4, r5}
-  94              	.LCFI1:
-  95              		.cfi_restore 5
-  96              		.cfi_restore 4
-  97              		.cfi_def_cfa_offset 0
-  98              	.L22:
-  99 004e 7047     		bx	lr
- 100              	.L24:
- 101              	.LCFI2:
- 102              		.cfi_def_cfa_offset 8
- 103              		.cfi_offset 4, -8
- 104              		.cfi_offset 5, -4
+  94              		.loc 1 221 0
+  95 0050 30BC     		pop	{r4, r5}
+  96              	.LCFI1:
+  97              		.cfi_remember_state
+  98              		.cfi_restore 5
+  99              		.cfi_restore 4
+ 100              		.cfi_def_cfa_offset 0
+ 101 0052 7047     		bx	lr
+ 102              	.L24:
+ 103              	.LCFI2:
+ 104              		.cfi_restore_state
  217:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   }
  105              		.loc 1 217 0
- 106 0050 1846     		mov	r0, r3
- 107 0052 FBE7     		b	.L1
+ 106 0054 1846     		mov	r0, r3
+ 107 0056 FBE7     		b	.L1
  108              	.LVL6:
  109              	.L6:
  170:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****       }
  110              		.loc 1 170 0
- 111 0054 1846     		mov	r0, r3
+ 111 0058 1846     		mov	r0, r3
  112              	.LVL7:
- 113 0056 F9E7     		b	.L1
+ 113 005a F9E7     		b	.L1
  114              	.L8:
  217:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   }
  115              		.loc 1 217 0
- 116 0058 1846     		mov	r0, r3
- 117 005a F7E7     		b	.L1
+ 116 005c 1846     		mov	r0, r3
+ 117 005e F7E7     		b	.L1
  118              	.LVL8:
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 7
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccUE8gpb.s 			page 7
 
 
  119              	.L12:
@@ -368,76 +368,79 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 1
  123              		.cfi_restore 5
  164:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     /* is the netif up, does it have a link and a valid address? */
  124              		.loc 1 164 0
- 125 005c 1B68     		ldr	r3, [r3]
+ 125 0060 1B68     		ldr	r3, [r3]
  126              	.LVL9:
  127              	.L10:
- 128 005e 53B1     		cbz	r3, .L25
+ 128 0062 63B1     		cbz	r3, .L25
  166:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****       /* network mask matches? */
  129              		.loc 1 166 0
- 130 0060 93F82F20 		ldrb	r2, [r3, #47]	@ zero_extendqisi2
- 131 0064 02F00501 		and	r1, r2, #5
- 132 0068 0529     		cmp	r1, #5
- 133 006a F7D1     		bne	.L12
- 134 006c 5968     		ldr	r1, [r3, #4]
- 135 006e 0029     		cmp	r1, #0
- 136 0070 F4D0     		beq	.L12
+ 130 0064 93F82F20 		ldrb	r2, [r3, #47]	@ zero_extendqisi2
+ 131 0068 12F0010F 		tst	r2, #1
+ 132 006c F8D0     		beq	.L12
+ 133 006e 12F0040F 		tst	r2, #4
+ 134 0072 F5D0     		beq	.L12
+ 135 0074 5968     		ldr	r1, [r3, #4]
+ 136 0076 0029     		cmp	r1, #0
+ 137 0078 F2D0     		beq	.L12
  153:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   struct netif *netif;
- 137              		.loc 1 153 0
- 138 0072 30B4     		push	{r4, r5}
- 139              	.LCFI4:
- 140              		.cfi_def_cfa_offset 8
- 141              		.cfi_offset 4, -8
- 142              		.cfi_offset 5, -4
- 143 0074 D2E7     		b	.L13
- 144              	.L25:
- 145              	.LCFI5:
- 146              		.cfi_def_cfa_offset 0
- 147              		.cfi_restore 4
- 148              		.cfi_restore 5
+ 138              		.loc 1 153 0
+ 139 007a 30B4     		push	{r4, r5}
+ 140              	.LCFI4:
+ 141              		.cfi_def_cfa_offset 8
+ 142              		.cfi_offset 4, -8
+ 143              		.cfi_offset 5, -4
+ 144 007c D0E7     		b	.L14
+ 145              	.L25:
+ 146              	.LCFI5:
+ 147              		.cfi_def_cfa_offset 0
+ 148              		.cfi_restore 4
+ 149              		.cfi_restore 5
  209:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****       ip4_addr_isany_val(*netif_ip4_addr(netif_default))) {
- 149              		.loc 1 209 0
- 150 0076 094A     		ldr	r2, .L26+4
- 151 0078 1068     		ldr	r0, [r2]
- 152              	.LVL10:
- 153 007a 0028     		cmp	r0, #0
- 154 007c E7D0     		beq	.L22
- 155 007e 90F82F20 		ldrb	r2, [r0, #47]	@ zero_extendqisi2
- 156 0082 02F00502 		and	r2, r2, #5
- 157 0086 052A     		cmp	r2, #5
- 158 0088 04D1     		bne	.L18
+ 150              		.loc 1 209 0
+ 151 007e 094A     		ldr	r2, .L27+4
+ 152 0080 1068     		ldr	r0, [r2]
+ 153              	.LVL10:
+ 154 0082 38B1     		cbz	r0, .L17
+ 155 0084 90F82F20 		ldrb	r2, [r0, #47]	@ zero_extendqisi2
+ 156 0088 02F00502 		and	r2, r2, #5
+ 157 008c 052A     		cmp	r2, #5
+ 158 008e 04D1     		bne	.L19
  210:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     /* No matching netif found and default netif is not usable.
  159              		.loc 1 210 0
- 160 008a 4268     		ldr	r2, [r0, #4]
+ 160 0090 4268     		ldr	r2, [r0, #4]
  209:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****       ip4_addr_isany_val(*netif_ip4_addr(netif_default))) {
  161              		.loc 1 209 0
- 162 008c 002A     		cmp	r2, #0
- 163 008e DED1     		bne	.L22
+ 162 0092 02B1     		cbz	r2, .L26
+ 163              	.L17:
+ 164              		.loc 1 221 0
+ 165 0094 7047     		bx	lr
+ 166              	.L26:
  217:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   }
- 164              		.loc 1 217 0
- 165 0090 1846     		mov	r0, r3
- 166 0092 7047     		bx	lr
- 167              	.L18:
- 168 0094 1846     		mov	r0, r3
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 8
+ 167              		.loc 1 217 0
+ 168 0096 1846     		mov	r0, r3
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccUE8gpb.s 			page 8
 
 
- 169 0096 7047     		bx	lr
- 170              	.L27:
- 171              		.align	2
- 172              	.L26:
- 173 0098 00000000 		.word	netif_list
- 174 009c 00000000 		.word	netif_default
- 175              		.cfi_endproc
- 176              	.LFE152:
- 178              		.section	.text.ip4_input,"ax",%progbits
- 179              		.align	1
- 180              		.global	ip4_input
- 181              		.syntax unified
- 182              		.thumb
- 183              		.thumb_func
- 184              		.fpu fpv5-sp-d16
- 186              	ip4_input:
- 187              	.LFB153:
+ 169 0098 7047     		bx	lr
+ 170              	.L19:
+ 171 009a 1846     		mov	r0, r3
+ 172 009c 7047     		bx	lr
+ 173              	.L28:
+ 174 009e 00BF     		.align	2
+ 175              	.L27:
+ 176 00a0 00000000 		.word	netif_list
+ 177 00a4 00000000 		.word	netif_default
+ 178              		.cfi_endproc
+ 179              	.LFE154:
+ 181              		.section	.text.ip4_input,"ax",%progbits
+ 182              		.align	1
+ 183              		.global	ip4_input
+ 184              		.syntax unified
+ 185              		.thumb
+ 186              		.thumb_func
+ 187              		.fpu fpv5-sp-d16
+ 189              	ip4_input:
+ 190              	.LFB155:
  222:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** 
  223:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** #if IP_FORWARD
  224:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** /**
@@ -475,12 +478,12 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 1
  256:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** }
  257:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** 
  258:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** /**
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccUE8gpb.s 			page 9
+
+
  259:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****  * Forwards an IP packet. It finds an appropriate route for the
  260:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****  * packet, decrements the TTL value of the packet, adjusts the
  261:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****  * checksum and outputs the packet on the appropriate interface.
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 9
-
-
  262:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****  *
  263:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****  * @param p the packet to forward (p->payload points to IP header)
  264:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****  * @param iphdr the IP header of the input packet
@@ -535,12 +538,12 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 1
  313:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****       icmp_time_exceeded(p, ICMP_TE_TTL);
  314:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     }
  315:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** #endif /* LWIP_ICMP */
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccUE8gpb.s 			page 10
+
+
  316:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     return;
  317:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   }
  318:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** 
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 10
-
-
  319:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   /* Incrementally update the IP checksum. */
  320:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   if (IPH_CHKSUM(iphdr) >= PP_HTONS(0xffffU - 0x100)) {
  321:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     IPH_CHKSUM_SET(iphdr, IPH_CHKSUM(iphdr) + PP_HTONS(0x100) + 1);
@@ -595,30 +598,30 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 1
  370:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****  * @return ERR_OK if the packet was processed (could return ERR_* if it wasn't
  371:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****  *         processed, but currently always returns ERR_OK)
  372:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****  */
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccUE8gpb.s 			page 11
+
+
  373:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** err_t
  374:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** ip4_input(struct pbuf *p, struct netif *inp)
  375:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** {
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 11
-
-
- 188              		.loc 1 375 0
- 189              		.cfi_startproc
- 190              		@ args = 0, pretend = 0, frame = 0
- 191              		@ frame_needed = 0, uses_anonymous_args = 0
- 192              	.LVL11:
- 193 0000 2DE9F843 		push	{r3, r4, r5, r6, r7, r8, r9, lr}
- 194              	.LCFI6:
- 195              		.cfi_def_cfa_offset 32
- 196              		.cfi_offset 3, -32
- 197              		.cfi_offset 4, -28
- 198              		.cfi_offset 5, -24
- 199              		.cfi_offset 6, -20
- 200              		.cfi_offset 7, -16
- 201              		.cfi_offset 8, -12
- 202              		.cfi_offset 9, -8
- 203              		.cfi_offset 14, -4
- 204 0004 0546     		mov	r5, r0
- 205              	.LVL12:
+ 191              		.loc 1 375 0
+ 192              		.cfi_startproc
+ 193              		@ args = 0, pretend = 0, frame = 0
+ 194              		@ frame_needed = 0, uses_anonymous_args = 0
+ 195              	.LVL11:
+ 196 0000 2DE9F843 		push	{r3, r4, r5, r6, r7, r8, r9, lr}
+ 197              	.LCFI6:
+ 198              		.cfi_def_cfa_offset 32
+ 199              		.cfi_offset 3, -32
+ 200              		.cfi_offset 4, -28
+ 201              		.cfi_offset 5, -24
+ 202              		.cfi_offset 6, -20
+ 203              		.cfi_offset 7, -16
+ 204              		.cfi_offset 8, -12
+ 205              		.cfi_offset 9, -8
+ 206              		.cfi_offset 14, -4
+ 207 0004 0546     		mov	r5, r0
+ 208              	.LVL12:
  376:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   struct ip_hdr *iphdr;
  377:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   struct netif *netif;
  378:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   u16_t iphdr_hlen;
@@ -632,22 +635,22 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 1
  386:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** 
  387:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   /* identify the IP header */
  388:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   iphdr = (struct ip_hdr *)p->payload;
- 206              		.loc 1 388 0
- 207 0006 D0F80480 		ldr	r8, [r0, #4]
- 208              	.LVL13:
+ 209              		.loc 1 388 0
+ 210 0006 4768     		ldr	r7, [r0, #4]
+ 211              	.LVL13:
  389:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   if (IPH_V(iphdr) != 4) {
- 209              		.loc 1 389 0
- 210 000a 98F80030 		ldrb	r3, [r8]	@ zero_extendqisi2
- 211 000e 1A09     		lsrs	r2, r3, #4
- 212 0010 042A     		cmp	r2, #4
- 213 0012 04D0     		beq	.L29
+ 212              		.loc 1 389 0
+ 213 0008 3B78     		ldrb	r3, [r7]	@ zero_extendqisi2
+ 214 000a 1A09     		lsrs	r2, r3, #4
+ 215 000c 042A     		cmp	r2, #4
+ 216 000e 04D0     		beq	.L30
  390:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     LWIP_DEBUGF(IP_DEBUG | LWIP_DBG_LEVEL_WARNING, ("IP packet dropped due to bad version number %"
  391:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     ip4_debug_print(p);
  392:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     pbuf_free(p);
- 214              		.loc 1 392 0
- 215 0014 FFF7FEFF 		bl	pbuf_free
- 216              	.LVL14:
- 217              	.L30:
+ 217              		.loc 1 392 0
+ 218 0010 FFF7FEFF 		bl	pbuf_free
+ 219              	.LVL14:
+ 220              	.L31:
  393:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     IP_STATS_INC(ip.err);
  394:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     IP_STATS_INC(ip.drop);
  395:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     MIB2_STATS_INC(mib2.ipinhdrerrors);
@@ -655,12 +658,12 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 1
  397:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   }
  398:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** 
  399:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** #ifdef LWIP_HOOK_IP4_INPUT
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccUE8gpb.s 			page 12
+
+
  400:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   if (LWIP_HOOK_IP4_INPUT(p, inp)) {
  401:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     /* the packet has been eaten */
  402:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     return ERR_OK;
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 12
-
-
  403:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   }
  404:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** #endif
  405:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** 
@@ -715,12 +718,12 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 1
  454:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****       return ERR_OK;
  455:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     }
  456:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   }
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccUE8gpb.s 			page 13
+
+
  457:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** #endif
  458:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** 
  459:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   /* copy IP addresses to aligned ip_addr_t */
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 13
-
-
  460:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   ip_addr_copy_from_ip4(ip_data.current_iphdr_dest, iphdr->dest);
  461:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   ip_addr_copy_from_ip4(ip_data.current_iphdr_src, iphdr->src);
  462:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** 
@@ -775,12 +778,12 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 1
  511:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****           break;
  512:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****         }
  513:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** #if LWIP_AUTOIP
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccUE8gpb.s 			page 14
+
+
  514:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****         /* connections to link-local addresses must persist after changing
  515:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****            the netif's address (RFC3927 ch. 1.9) */
  516:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****         if (autoip_accept_packet(netif, ip4_current_dest_addr())) {
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 14
-
-
  517:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****           LWIP_DEBUGF(IP_DEBUG, ("ip4_input: LLA packet accepted on interface %c%c\n",
  518:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****               netif->name[0], netif->name[1]));
  519:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****           /* break out of for loop */
@@ -835,12 +838,12 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 1
  568:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** #endif /* IP_ACCEPT_LINK_LAYER_ADDRESSING */
  569:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** 
  570:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   /* broadcast or multicast packet source address? Compliant with RFC 1122: 3.2.1.3 */
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccUE8gpb.s 			page 15
+
+
  571:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** #if LWIP_IGMP || IP_ACCEPT_LINK_LAYER_ADDRESSING
  572:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   if (check_ip_src
  573:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** #if IP_ACCEPT_LINK_LAYER_ADDRESSING
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 15
-
-
  574:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   /* DHCP servers need 0.0.0.0 to be allowed as source address (RFC 1.1.2.2: 3.2.1.3/a) */
  575:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****       && !ip4_addr_isany_val(*ip4_current_src_addr())
  576:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** #endif /* IP_ACCEPT_LINK_LAYER_ADDRESSING */
@@ -895,12 +898,12 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 1
  625:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     pbuf_free(p);
  626:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     LWIP_DEBUGF(IP_DEBUG | LWIP_DBG_LEVEL_SERIOUS, ("IP packet dropped since it was fragmented (0x%
  627:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****       lwip_ntohs(IPH_OFFSET(iphdr))));
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccUE8gpb.s 			page 16
+
+
  628:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     IP_STATS_INC(ip.opterr);
  629:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     IP_STATS_INC(ip.drop);
  630:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     /* unsupported protocol feature */
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 16
-
-
  631:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     MIB2_STATS_INC(mib2.ipinunknownprotos);
  632:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     return ERR_OK;
  633:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** #endif /* IP_REASSEMBLY */
@@ -955,12 +958,12 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 1
  682:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     case IP_PROTO_TCP:
  683:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****       MIB2_STATS_INC(mib2.ipindelivers);
  684:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****       tcp_input(p, inp);
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccUE8gpb.s 			page 17
+
+
  685:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****       break;
  686:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** #endif /* LWIP_TCP */
  687:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** #if LWIP_ICMP
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 17
-
-
  688:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     case IP_PROTO_ICMP:
  689:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****       MIB2_STATS_INC(mib2.ipindelivers);
  690:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****       icmp_input(p, inp);
@@ -1001,469 +1004,448 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 1
  725:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** 
  726:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   return ERR_OK;
  727:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** }
- 218              		.loc 1 727 0
- 219 0018 0020     		movs	r0, #0
- 220 001a BDE8F883 		pop	{r3, r4, r5, r6, r7, r8, r9, pc}
- 221              	.LVL15:
- 222              	.L29:
- 223 001e 0F46     		mov	r7, r1
+ 221              		.loc 1 727 0
+ 222 0014 0020     		movs	r0, #0
+ 223 0016 BDE8F883 		pop	{r3, r4, r5, r6, r7, r8, r9, pc}
+ 224              	.LVL15:
+ 225              	.L30:
+ 226 001a 8846     		mov	r8, r1
  407:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   /* calculate IP header length in bytes */
- 224              		.loc 1 407 0
- 225 0020 03F00F03 		and	r3, r3, #15
- 226              	.LVL16:
+ 227              		.loc 1 407 0
+ 228 001c 03F00F03 		and	r3, r3, #15
+ 229              	.LVL16:
  409:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   /* obtain ip length in bytes */
- 227              		.loc 1 409 0
- 228 0024 9E00     		lsls	r6, r3, #2
- 229              	.LVL17:
+ 230              		.loc 1 409 0
+ 231 0020 9E00     		lsls	r6, r3, #2
+ 232              	.LVL17:
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccUE8gpb.s 			page 18
+
+
  411:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** 
- 230              		.loc 1 411 0
- 231 0026 B8F80200 		ldrh	r0, [r8, #2]	@ unaligned
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 18
-
-
- 232              	.LVL18:
- 233 002a FFF7FEFF 		bl	lwip_htons
- 234              	.LVL19:
- 235 002e 0446     		mov	r4, r0
- 236              	.LVL20:
+ 233              		.loc 1 411 0
+ 234 0022 7888     		ldrh	r0, [r7, #2]	@ unaligned
+ 235              	.LVL18:
+ 236 0024 FFF7FEFF 		bl	lwip_htons
+ 237              	.LVL19:
+ 238 0028 0446     		mov	r4, r0
+ 239              	.LVL20:
  414:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     pbuf_realloc(p, iphdr_len);
- 237              		.loc 1 414 0
- 238 0030 2B89     		ldrh	r3, [r5, #8]
- 239 0032 9842     		cmp	r0, r3
- 240 0034 16D3     		bcc	.L60
- 241              	.LVL21:
- 242              	.L31:
+ 240              		.loc 1 414 0
+ 241 002a 2B89     		ldrh	r3, [r5, #8]
+ 242 002c 8342     		cmp	r3, r0
+ 243 002e 14D8     		bhi	.L60
+ 244              	.LVL21:
+ 245              	.L32:
  419:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     if (iphdr_hlen < IP_HLEN) {
- 243              		.loc 1 419 0
- 244 0036 6B89     		ldrh	r3, [r5, #10]
- 245 0038 9E42     		cmp	r6, r3
- 246 003a 18D8     		bhi	.L32
+ 246              		.loc 1 419 0
+ 247 0030 6B89     		ldrh	r3, [r5, #10]
+ 248 0032 B342     		cmp	r3, r6
+ 249 0034 16D3     		bcc	.L33
  419:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     if (iphdr_hlen < IP_HLEN) {
- 247              		.loc 1 419 0 is_stmt 0 discriminator 1
- 248 003c 2B89     		ldrh	r3, [r5, #8]
- 249 003e 9C42     		cmp	r4, r3
- 250 0040 15D8     		bhi	.L32
+ 250              		.loc 1 419 0 is_stmt 0 discriminator 1
+ 251 0036 2B89     		ldrh	r3, [r5, #8]
+ 252 0038 A342     		cmp	r3, r4
+ 253 003a 13D3     		bcc	.L33
  419:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     if (iphdr_hlen < IP_HLEN) {
- 251              		.loc 1 419 0 discriminator 2
- 252 0042 132E     		cmp	r6, #19
- 253 0044 13D9     		bls	.L32
+ 254              		.loc 1 419 0 discriminator 2
+ 255 003c 132E     		cmp	r6, #19
+ 256 003e 11D9     		bls	.L33
  460:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   ip_addr_copy_from_ip4(ip_data.current_iphdr_src, iphdr->src);
- 254              		.loc 1 460 0 is_stmt 1
- 255 0046 D8F81030 		ldr	r3, [r8, #16]	@ unaligned
- 256 004a 644A     		ldr	r2, .L68
- 257 004c 5361     		str	r3, [r2, #20]
+ 257              		.loc 1 460 0 is_stmt 1
+ 258 0040 3B69     		ldr	r3, [r7, #16]	@ unaligned
+ 259 0042 5D4A     		ldr	r2, .L67
+ 260 0044 5361     		str	r3, [r2, #20]
  461:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** 
- 258              		.loc 1 461 0
- 259 004e D8F80C10 		ldr	r1, [r8, #12]	@ unaligned
- 260 0052 1161     		str	r1, [r2, #16]
+ 261              		.loc 1 461 0
+ 262 0046 F968     		ldr	r1, [r7, #12]	@ unaligned
+ 263 0048 1161     		str	r1, [r2, #16]
  464:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** #if LWIP_IGMP
- 261              		.loc 1 464 0
- 262 0054 03F0F003 		and	r3, r3, #240
- 263 0058 E02B     		cmp	r3, #224
- 264 005a 0CD0     		beq	.L61
- 265 005c 3C46     		mov	r4, r7
- 266 005e 4FF00109 		mov	r9, #1
- 267 0062 15E0     		b	.L34
- 268              	.LVL22:
- 269              	.L60:
+ 264              		.loc 1 464 0
+ 265 004a 03F0F003 		and	r3, r3, #240
+ 266 004e E02B     		cmp	r3, #224
+ 267 0050 0CD0     		beq	.L61
+ 268              	.LBB2:
+ 490:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     do {
+ 269              		.loc 1 490 0
+ 270 0052 4446     		mov	r4, r8
+ 489:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     netif = inp;
+ 271              		.loc 1 489 0
+ 272 0054 4FF00109 		mov	r9, #1
+ 273 0058 16E0     		b	.L35
+ 274              	.LVL22:
+ 275              	.L60:
+ 276              	.LBE2:
  415:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   }
- 270              		.loc 1 415 0
- 271 0064 0146     		mov	r1, r0
- 272 0066 2846     		mov	r0, r5
- 273              	.LVL23:
- 274 0068 FFF7FEFF 		bl	pbuf_realloc
- 275              	.LVL24:
- 276 006c E3E7     		b	.L31
- 277              	.L32:
+ 277              		.loc 1 415 0
+ 278 005a 0146     		mov	r1, r0
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccUE8gpb.s 			page 19
+
+
+ 279 005c 2846     		mov	r0, r5
+ 280              	.LVL23:
+ 281 005e FFF7FEFF 		bl	pbuf_realloc
+ 282              	.LVL24:
+ 283 0062 E5E7     		b	.L32
+ 284              	.L33:
  435:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     IP_STATS_INC(ip.lenerr);
- 278              		.loc 1 435 0
- 279 006e 2846     		mov	r0, r5
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 19
-
-
- 280 0070 FFF7FEFF 		bl	pbuf_free
- 281              	.LVL25:
+ 285              		.loc 1 435 0
+ 286 0064 2846     		mov	r0, r5
+ 287 0066 FFF7FEFF 		bl	pbuf_free
+ 288              	.LVL25:
  439:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   }
- 282              		.loc 1 439 0
- 283 0074 D0E7     		b	.L30
- 284              	.L61:
+ 289              		.loc 1 439 0
+ 290 006a D3E7     		b	.L31
+ 291              	.L61:
  479:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****       netif = inp;
- 285              		.loc 1 479 0
- 286 0076 97F82F30 		ldrb	r3, [r7, #47]	@ zero_extendqisi2
- 287 007a 13F0010F 		tst	r3, #1
- 288 007e 24D0     		beq	.L52
+ 292              		.loc 1 479 0
+ 293 006c 98F82F30 		ldrb	r3, [r8, #47]	@ zero_extendqisi2
+ 294 0070 13F0010F 		tst	r3, #1
+ 295 0074 61D0     		beq	.L54
  479:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****       netif = inp;
- 289              		.loc 1 479 0 is_stmt 0 discriminator 1
- 290 0080 7B68     		ldr	r3, [r7, #4]
- 291 0082 23BB     		cbnz	r3, .L53
- 482:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     }
- 292              		.loc 1 482 0 is_stmt 1
- 293 0084 0024     		movs	r4, #0
- 294 0086 25E0     		b	.L35
- 295              	.LVL26:
- 296              	.L37:
- 297              	.LBB2:
+ 296              		.loc 1 479 0 is_stmt 0 discriminator 1
+ 297 0076 D8F80430 		ldr	r3, [r8, #4]
+ 298 007a 13BB     		cbnz	r3, .L55
+ 299 007c 0024     		movs	r4, #0
+ 300 007e 5DE0     		b	.L36
+ 301              	.LVL26:
+ 302              	.L39:
+ 303              	.LBB3:
  537:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****       }
- 298              		.loc 1 537 0
- 299 0088 2468     		ldr	r4, [r4]
- 300              	.LVL27:
- 301              	.L38:
+ 304              		.loc 1 537 0 is_stmt 1
+ 305 0080 2468     		ldr	r4, [r4]
+ 306              	.LVL27:
+ 307              	.L40:
  539:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****         netif = netif->next;
- 302              		.loc 1 539 0
- 303 008a BC42     		cmp	r4, r7
- 304 008c 1BD0     		beq	.L62
- 305              	.L39:
+ 308              		.loc 1 539 0
+ 309 0082 4445     		cmp	r4, r8
+ 310 0084 1BD0     		beq	.L62
+ 311              	.L41:
  542:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   }
- 306              		.loc 1 542 0
- 307 008e 0CB3     		cbz	r4, .L35
- 308              	.LVL28:
- 309              	.L34:
+ 312              		.loc 1 542 0
+ 313 0086 FCB1     		cbz	r4, .L37
+ 314              	.LVL28:
+ 315              	.L35:
  499:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****         /* unicast to this interface address? */
- 310              		.loc 1 499 0
- 311 0090 94F82F30 		ldrb	r3, [r4, #47]	@ zero_extendqisi2
- 312 0094 13F0010F 		tst	r3, #1
- 313 0098 09D0     		beq	.L36
+ 316              		.loc 1 499 0
+ 317 0088 94F82F30 		ldrb	r3, [r4, #47]	@ zero_extendqisi2
+ 318 008c 13F0010F 		tst	r3, #1
+ 319 0090 09D0     		beq	.L38
  499:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****         /* unicast to this interface address? */
- 314              		.loc 1 499 0 is_stmt 0 discriminator 1
- 315 009a 6368     		ldr	r3, [r4, #4]
- 316 009c 3BB1     		cbz	r3, .L36
+ 320              		.loc 1 499 0 is_stmt 0 discriminator 1
+ 321 0092 6368     		ldr	r3, [r4, #4]
+ 322 0094 3BB1     		cbz	r3, .L38
  501:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****             /* or broadcast on this interface network address? */
- 317              		.loc 1 501 0 is_stmt 1
- 318 009e 4F4A     		ldr	r2, .L68
- 319 00a0 5069     		ldr	r0, [r2, #20]
- 320 00a2 8342     		cmp	r3, r0
- 321 00a4 16D0     		beq	.L35
+ 323              		.loc 1 501 0 is_stmt 1
+ 324 0096 484A     		ldr	r2, .L67
+ 325 0098 5069     		ldr	r0, [r2, #20]
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccUE8gpb.s 			page 20
+
+
+ 326 009a 8342     		cmp	r3, r0
+ 327 009c 14D0     		beq	.L37
  503:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** #if LWIP_NETIF_LOOPBACK && !LWIP_HAVE_LOOPIF
- 322              		.loc 1 503 0 discriminator 1
- 323 00a6 2146     		mov	r1, r4
- 324 00a8 FFF7FEFF 		bl	ip4_addr_isbroadcast_u32
- 325              	.LVL29:
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 20
-
-
+ 328              		.loc 1 503 0 discriminator 1
+ 329 009e 2146     		mov	r1, r4
+ 330 00a0 FFF7FEFF 		bl	ip4_addr_isbroadcast_u32
+ 331              	.LVL29:
  501:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****             /* or broadcast on this interface network address? */
- 326              		.loc 1 501 0 discriminator 1
- 327 00ac 90B9     		cbnz	r0, .L35
- 328              	.L36:
+ 332              		.loc 1 501 0 discriminator 1
+ 333 00a4 80B9     		cbnz	r0, .L37
+ 334              	.L38:
  524:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** #if !LWIP_NETIF_LOOPBACK || LWIP_HAVE_LOOPIF
- 329              		.loc 1 524 0
- 330 00ae B9F1000F 		cmp	r9, #0
- 331 00b2 E9D0     		beq	.L37
+ 335              		.loc 1 524 0
+ 336 00a6 B9F1000F 		cmp	r9, #0
+ 337 00aa E9D0     		beq	.L39
  529:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****           netif = NULL;
- 332              		.loc 1 529 0
- 333 00b4 494B     		ldr	r3, .L68
- 334 00b6 1B7D     		ldrb	r3, [r3, #20]	@ zero_extendqisi2
- 335 00b8 7F2B     		cmp	r3, #127
- 336 00ba 0AD0     		beq	.L54
- 337              	.LVL30:
+ 338              		.loc 1 529 0
+ 339 00ac 424B     		ldr	r3, .L67
+ 340 00ae 1B7D     		ldrb	r3, [r3, #20]	@ zero_extendqisi2
+ 341 00b0 7F2B     		cmp	r3, #127
+ 342 00b2 08D0     		beq	.L56
+ 343              	.LVL30:
  535:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****       } else {
- 338              		.loc 1 535 0
- 339 00bc 484B     		ldr	r3, .L68+4
- 340 00be 1C68     		ldr	r4, [r3]
- 341              	.LVL31:
+ 344              		.loc 1 535 0
+ 345 00b4 414B     		ldr	r3, .L67+4
+ 346 00b6 1C68     		ldr	r4, [r3]
+ 347              	.LVL31:
  534:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****         netif = netif_list;
- 342              		.loc 1 534 0
- 343 00c0 4FF00009 		mov	r9, #0
- 344 00c4 E1E7     		b	.L38
- 345              	.LVL32:
- 346              	.L62:
+ 348              		.loc 1 534 0
+ 349 00b8 4FF00009 		mov	r9, #0
+ 350 00bc E1E7     		b	.L40
+ 351              	.LVL32:
+ 352              	.L62:
  540:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****       }
- 347              		.loc 1 540 0
- 348 00c6 2468     		ldr	r4, [r4]
- 349              	.LVL33:
- 350 00c8 E1E7     		b	.L39
- 351              	.LVL34:
- 352              	.L52:
- 353              	.LBE2:
- 482:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     }
- 354              		.loc 1 482 0
- 355 00ca 0024     		movs	r4, #0
- 356 00cc 02E0     		b	.L35
- 357              	.L53:
+ 353              		.loc 1 540 0
+ 354 00be 2468     		ldr	r4, [r4]
+ 355              	.LVL33:
+ 356 00c0 E1E7     		b	.L41
+ 357              	.LVL34:
+ 358              	.L55:
+ 359              	.LBE3:
  480:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     } else {
- 358              		.loc 1 480 0
- 359 00ce 3C46     		mov	r4, r7
- 360 00d0 00E0     		b	.L35
- 361              	.LVL35:
- 362              	.L54:
- 363              	.LBB3:
+ 360              		.loc 1 480 0
+ 361 00c2 4446     		mov	r4, r8
+ 362 00c4 00E0     		b	.L37
+ 363              	.LVL35:
+ 364              	.L56:
+ 365              	.LBB4:
  530:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****           break;
- 364              		.loc 1 530 0
- 365 00d2 0024     		movs	r4, #0
- 366              	.LVL36:
- 367              	.L35:
- 368              	.LBE3:
+ 366              		.loc 1 530 0
+ 367 00c6 0024     		movs	r4, #0
+ 368              	.LVL36:
+ 369              	.L37:
+ 370              	.LBE4:
  555:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     /* remote port is DHCP server? */
- 369              		.loc 1 555 0
- 370 00d4 002C     		cmp	r4, #0
- 371 00d6 46D0     		beq	.L63
- 381:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** #endif /* IP_ACCEPT_LINK_LAYER_ADDRESSING || LWIP_IGMP */
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 21
+ 371              		.loc 1 555 0
+ 372 00c8 002C     		cmp	r4, #0
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccUE8gpb.s 			page 21
 
 
- 372              		.loc 1 381 0
- 373 00d8 0123     		movs	r3, #1
+ 373 00ca 37D0     		beq	.L36
  374              	.LVL37:
- 375              	.L40:
- 572:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** #if IP_ACCEPT_LINK_LAYER_ADDRESSING
- 376              		.loc 1 572 0
- 377 00da 1BB1     		cbz	r3, .L41
+ 375              	.L42:
  575:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** #endif /* IP_ACCEPT_LINK_LAYER_ADDRESSING */
- 378              		.loc 1 575 0
- 379 00dc 3F4B     		ldr	r3, .L68
- 380              	.LVL38:
- 381 00de 1869     		ldr	r0, [r3, #16]
- 382 00e0 0028     		cmp	r0, #0
- 383 00e2 51D1     		bne	.L64
- 384              	.L41:
+ 376              		.loc 1 575 0
+ 377 00cc 3A4B     		ldr	r3, .L67
+ 378 00ce 1869     		ldr	r0, [r3, #16]
+ 379 00d0 0028     		cmp	r0, #0
+ 380 00d2 3DD1     		bne	.L63
+ 381              	.L43:
  594:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     /* packet not for us, route or discard */
- 385              		.loc 1 594 0
- 386 00e4 002C     		cmp	r4, #0
- 387 00e6 5DD0     		beq	.L65
+ 382              		.loc 1 594 0
+ 383 00d4 002C     		cmp	r4, #0
+ 384 00d6 49D0     		beq	.L64
  613:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** #if IP_REASSEMBLY /* packet fragment reassembly code present? */
- 388              		.loc 1 613 0
- 389 00e8 B8F80630 		ldrh	r3, [r8, #6]	@ unaligned
- 390 00ec 23F0C003 		bic	r3, r3, #192
- 391 00f0 9BB2     		uxth	r3, r3
- 392 00f2 3BB1     		cbz	r3, .L44
+ 385              		.loc 1 613 0
+ 386 00d8 FB88     		ldrh	r3, [r7, #6]	@ unaligned
+ 387 00da 23F0C003 		bic	r3, r3, #192
+ 388 00de 9BB2     		uxth	r3, r3
+ 389 00e0 33B1     		cbz	r3, .L46
  618:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     /* packet not fully reassembled yet? */
- 393              		.loc 1 618 0
- 394 00f4 2846     		mov	r0, r5
- 395 00f6 FFF7FEFF 		bl	ip4_reass
- 396              	.LVL39:
+ 390              		.loc 1 618 0
+ 391 00e2 2846     		mov	r0, r5
+ 392 00e4 FFF7FEFF 		bl	ip4_reass
+ 393              	.LVL38:
  620:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****       return ERR_OK;
- 397              		.loc 1 620 0
- 398 00fa 0546     		mov	r5, r0
- 399 00fc 0028     		cmp	r0, #0
- 400 00fe 8BD0     		beq	.L30
+ 394              		.loc 1 620 0
+ 395 00e8 0546     		mov	r5, r0
+ 396 00ea 0028     		cmp	r0, #0
+ 397 00ec 92D0     		beq	.L31
  623:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** #else /* IP_REASSEMBLY == 0, no packet fragment reassembly code present */
- 401              		.loc 1 623 0
- 402 0100 D0F80480 		ldr	r8, [r0, #4]
- 403              	.LVL40:
- 404              	.L44:
+ 398              		.loc 1 623 0
+ 399 00ee 4768     		ldr	r7, [r0, #4]
+ 400              	.LVL39:
+ 401              	.L46:
  659:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   ip_data.current_input_netif = inp;
- 405              		.loc 1 659 0
- 406 0104 354A     		ldr	r2, .L68
- 407 0106 1460     		str	r4, [r2]
+ 402              		.loc 1 659 0
+ 403 00f0 314A     		ldr	r2, .L67
+ 404 00f2 1460     		str	r4, [r2]
  660:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   ip_data.current_ip4_header = iphdr;
- 408              		.loc 1 660 0
- 409 0108 5760     		str	r7, [r2, #4]
+ 405              		.loc 1 660 0
+ 406 00f4 C2F80480 		str	r8, [r2, #4]
  661:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   ip_data.current_ip_header_tot_len = IPH_HL(iphdr) * 4;
- 410              		.loc 1 661 0
- 411 010a C2F80880 		str	r8, [r2, #8]
+ 407              		.loc 1 661 0
+ 408 00f8 9760     		str	r7, [r2, #8]
  662:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** 
- 412              		.loc 1 662 0
- 413 010e 98F80030 		ldrb	r3, [r8]	@ zero_extendqisi2
- 414 0112 03F00F03 		and	r3, r3, #15
- 415 0116 9B00     		lsls	r3, r3, #2
- 416 0118 9381     		strh	r3, [r2, #12]	@ movhi
+ 409              		.loc 1 662 0
+ 410 00fa 3B78     		ldrb	r3, [r7]	@ zero_extendqisi2
+ 411 00fc 03F00F03 		and	r3, r3, #15
+ 412 0100 9B00     		lsls	r3, r3, #2
+ 413 0102 9381     		strh	r3, [r2, #12]	@ movhi
  669:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** 
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 22
+ 414              		.loc 1 669 0
+ 415 0104 7142     		negs	r1, r6
+ 416 0106 2846     		mov	r0, r5
+ 417 0108 FFF7FEFF 		bl	pbuf_header
+ 418              	.LVL40:
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccUE8gpb.s 			page 22
 
 
- 417              		.loc 1 669 0
- 418 011a 7142     		negs	r1, r6
- 419 011c 2846     		mov	r0, r5
- 420 011e FFF7FEFF 		bl	pbuf_header
- 421              	.LVL41:
  671:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** #if LWIP_UDP
- 422              		.loc 1 671 0
- 423 0122 98F80930 		ldrb	r3, [r8, #9]	@ zero_extendqisi2
- 424 0126 062B     		cmp	r3, #6
- 425 0128 4DD0     		beq	.L46
- 426 012a 112B     		cmp	r3, #17
- 427 012c 3ED0     		beq	.L47
- 428 012e 012B     		cmp	r3, #1
- 429 0130 4ED0     		beq	.L66
+ 419              		.loc 1 671 0
+ 420 010c 7B7A     		ldrb	r3, [r7, #9]	@ zero_extendqisi2
+ 421 010e 062B     		cmp	r3, #6
+ 422 0110 3DD0     		beq	.L48
+ 423 0112 112B     		cmp	r3, #17
+ 424 0114 2ED0     		beq	.L49
+ 425 0116 012B     		cmp	r3, #1
+ 426 0118 3ED0     		beq	.L65
  701:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****           !ip4_addr_ismulticast(ip4_current_dest_addr())) {
- 430              		.loc 1 701 0
- 431 0132 2146     		mov	r1, r4
- 432 0134 294B     		ldr	r3, .L68
- 433 0136 5869     		ldr	r0, [r3, #20]
- 434 0138 FFF7FEFF 		bl	ip4_addr_isbroadcast_u32
- 435              	.LVL42:
- 436 013c 78B9     		cbnz	r0, .L50
+ 427              		.loc 1 701 0
+ 428 011a 2146     		mov	r1, r4
+ 429 011c 264B     		ldr	r3, .L67
+ 430 011e 5869     		ldr	r0, [r3, #20]
+ 431 0120 FFF7FEFF 		bl	ip4_addr_isbroadcast_u32
+ 432              	.LVL41:
+ 433 0124 28B9     		cbnz	r0, .L52
  702:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****         pbuf_header_force(p, iphdr_hlen); /* Move to ip header, no check necessary. */
- 437              		.loc 1 702 0 discriminator 1
- 438 013e 274B     		ldr	r3, .L68
- 439 0140 5B69     		ldr	r3, [r3, #20]
- 440 0142 03F0F003 		and	r3, r3, #240
+ 434              		.loc 1 702 0 discriminator 1
+ 435 0126 244B     		ldr	r3, .L67
+ 436 0128 5B69     		ldr	r3, [r3, #20]
+ 437 012a 03F0F003 		and	r3, r3, #240
  701:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****           !ip4_addr_ismulticast(ip4_current_dest_addr())) {
- 441              		.loc 1 701 0 discriminator 1
- 442 0146 E02B     		cmp	r3, #224
- 443 0148 09D0     		beq	.L50
- 703:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****         p->payload = iphdr;
- 444              		.loc 1 703 0
- 445 014a 3146     		mov	r1, r6
- 446 014c 2846     		mov	r0, r5
- 447 014e FFF7FEFF 		bl	pbuf_header_force
- 448              	.LVL43:
- 704:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****         icmp_dest_unreach(p, ICMP_DUR_PROTO);
- 449              		.loc 1 704 0
- 450 0152 C5F80480 		str	r8, [r5, #4]
- 705:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****       }
- 451              		.loc 1 705 0
- 452 0156 0221     		movs	r1, #2
- 453 0158 2846     		mov	r0, r5
- 454 015a FFF7FEFF 		bl	icmp_dest_unreach
- 455              	.LVL44:
- 456              	.L50:
+ 438              		.loc 1 701 0 discriminator 1
+ 439 012e E02B     		cmp	r3, #224
+ 440 0130 37D1     		bne	.L66
+ 441              	.L52:
  708:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** 
- 457              		.loc 1 708 0
- 458 015e 2846     		mov	r0, r5
- 459 0160 FFF7FEFF 		bl	pbuf_free
- 460              	.LVL45:
- 461 0164 26E0     		b	.L49
- 462              	.LVL46:
- 463              	.L63:
+ 442              		.loc 1 708 0
+ 443 0132 2846     		mov	r0, r5
+ 444 0134 FFF7FEFF 		bl	pbuf_free
+ 445              	.LVL42:
+ 446 0138 20E0     		b	.L51
+ 447              	.L54:
+ 448 013a 0024     		movs	r4, #0
+ 449              	.L36:
  557:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****       struct udp_hdr *udphdr = (struct udp_hdr *)((u8_t *)iphdr + iphdr_hlen);
- 464              		.loc 1 557 0
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 23
-
-
- 465 0166 98F80930 		ldrb	r3, [r8, #9]	@ zero_extendqisi2
- 466 016a 112B     		cmp	r3, #17
- 467 016c 01D0     		beq	.L67
- 381:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** #endif /* IP_ACCEPT_LINK_LAYER_ADDRESSING || LWIP_IGMP */
- 468              		.loc 1 381 0
- 469 016e 0123     		movs	r3, #1
- 470 0170 B3E7     		b	.L40
- 471              	.L67:
- 472              	.LBB4:
+ 450              		.loc 1 557 0
+ 451 013c 7B7A     		ldrb	r3, [r7, #9]	@ zero_extendqisi2
+ 452 013e 112B     		cmp	r3, #17
+ 453 0140 C4D1     		bne	.L42
+ 454              	.LBB5:
  558:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****       LWIP_DEBUGF(IP_DEBUG | LWIP_DBG_TRACE, ("ip4_input: UDP packet to DHCP client port %"U16_F"\n
- 473              		.loc 1 558 0
- 474 0172 08EB0603 		add	r3, r8, r6
- 475              	.LVL47:
+ 455              		.loc 1 558 0
+ 456 0142 BB19     		adds	r3, r7, r6
+ 457              	.LVL43:
  561:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****         LWIP_DEBUGF(IP_DEBUG | LWIP_DBG_TRACE, ("ip4_input: DHCP packet accepted.\n"));
- 476              		.loc 1 561 0
- 477 0176 5B88     		ldrh	r3, [r3, #2]	@ unaligned
- 478              	.LVL48:
- 479 0178 B3F5884F 		cmp	r3, #17408
- 480 017c 01D0     		beq	.L57
- 481              	.LBE4:
- 381:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** #endif /* IP_ACCEPT_LINK_LAYER_ADDRESSING || LWIP_IGMP */
- 482              		.loc 1 381 0
- 483 017e 0123     		movs	r3, #1
- 484 0180 ABE7     		b	.L40
- 485              	.L57:
- 486              	.LBB5:
+ 458              		.loc 1 561 0
+ 459 0144 5B88     		ldrh	r3, [r3, #2]	@ unaligned
+ 460              	.LVL44:
+ 461 0146 B3F5884F 		cmp	r3, #17408
+ 462 014a BFD1     		bne	.L42
  563:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****         check_ip_src = 0;
- 487              		.loc 1 563 0
- 488 0182 3C46     		mov	r4, r7
- 489              	.LVL49:
- 564:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****       }
- 490              		.loc 1 564 0
- 491 0184 0023     		movs	r3, #0
- 492 0186 A8E7     		b	.L40
- 493              	.LVL50:
- 494              	.L64:
- 495              	.LBE5:
+ 463              		.loc 1 563 0
+ 464 014c 4446     		mov	r4, r8
+ 465 014e C1E7     		b	.L43
+ 466              	.LVL45:
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccUE8gpb.s 			page 23
+
+
+ 467              	.L63:
+ 468              	.LBE5:
  580:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****         (ip4_addr_ismulticast(ip4_current_src_addr()))) {
- 496              		.loc 1 580 0
- 497 0188 3946     		mov	r1, r7
- 498 018a FFF7FEFF 		bl	ip4_addr_isbroadcast_u32
- 499              	.LVL51:
- 500 018e 28B9     		cbnz	r0, .L42
+ 469              		.loc 1 580 0
+ 470 0150 4146     		mov	r1, r8
+ 471 0152 FFF7FEFF 		bl	ip4_addr_isbroadcast_u32
+ 472              	.LVL46:
+ 473 0156 28B9     		cbnz	r0, .L44
  581:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****       /* packet source is not valid */
- 501              		.loc 1 581 0 discriminator 1
- 502 0190 124B     		ldr	r3, .L68
- 503 0192 1B69     		ldr	r3, [r3, #16]
- 504 0194 03F0F003 		and	r3, r3, #240
+ 474              		.loc 1 581 0 discriminator 1
+ 475 0158 174B     		ldr	r3, .L67
+ 476 015a 1B69     		ldr	r3, [r3, #16]
+ 477 015c 03F0F003 		and	r3, r3, #240
  580:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****         (ip4_addr_ismulticast(ip4_current_src_addr()))) {
- 505              		.loc 1 580 0 discriminator 1
- 506 0198 E02B     		cmp	r3, #224
- 507 019a A3D1     		bne	.L41
- 508              	.L42:
+ 478              		.loc 1 580 0 discriminator 1
+ 479 0160 E02B     		cmp	r3, #224
+ 480 0162 B7D1     		bne	.L43
+ 481              	.L44:
  585:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****       IP_STATS_INC(ip.drop);
- 509              		.loc 1 585 0
- 510 019c 2846     		mov	r0, r5
- 511 019e FFF7FEFF 		bl	pbuf_free
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 24
-
-
- 512              	.LVL52:
+ 482              		.loc 1 585 0
+ 483 0164 2846     		mov	r0, r5
+ 484 0166 FFF7FEFF 		bl	pbuf_free
+ 485              	.LVL47:
  589:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     }
- 513              		.loc 1 589 0
- 514 01a2 39E7     		b	.L30
- 515              	.L65:
+ 486              		.loc 1 589 0
+ 487 016a 53E7     		b	.L31
+ 488              	.L64:
  609:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     return ERR_OK;
- 516              		.loc 1 609 0
- 517 01a4 2846     		mov	r0, r5
- 518 01a6 FFF7FEFF 		bl	pbuf_free
- 519              	.LVL53:
+ 489              		.loc 1 609 0
+ 490 016c 2846     		mov	r0, r5
+ 491 016e FFF7FEFF 		bl	pbuf_free
+ 492              	.LVL48:
  610:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   }
- 520              		.loc 1 610 0
- 521 01aa 35E7     		b	.L30
- 522              	.L47:
+ 493              		.loc 1 610 0
+ 494 0172 4FE7     		b	.L31
+ 495              	.L49:
  678:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****       break;
- 523              		.loc 1 678 0
- 524 01ac 3946     		mov	r1, r7
- 525 01ae 2846     		mov	r0, r5
- 526 01b0 FFF7FEFF 		bl	udp_input
- 527              	.LVL54:
- 528              	.L49:
+ 496              		.loc 1 678 0
+ 497 0174 4146     		mov	r1, r8
+ 498 0176 2846     		mov	r0, r5
+ 499 0178 FFF7FEFF 		bl	udp_input
+ 500              	.LVL49:
+ 501              	.L51:
  719:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   ip_data.current_input_netif = NULL;
- 529              		.loc 1 719 0
- 530 01b4 094B     		ldr	r3, .L68
- 531 01b6 0022     		movs	r2, #0
- 532 01b8 1A60     		str	r2, [r3]
+ 502              		.loc 1 719 0
+ 503 017c 0E4B     		ldr	r3, .L67
+ 504 017e 0022     		movs	r2, #0
+ 505 0180 1A60     		str	r2, [r3]
  720:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   ip_data.current_ip4_header = NULL;
- 533              		.loc 1 720 0
- 534 01ba 5A60     		str	r2, [r3, #4]
+ 506              		.loc 1 720 0
+ 507 0182 5A60     		str	r2, [r3, #4]
  721:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   ip_data.current_ip_header_tot_len = 0;
- 535              		.loc 1 721 0
- 536 01bc 9A60     		str	r2, [r3, #8]
+ 508              		.loc 1 721 0
+ 509 0184 9A60     		str	r2, [r3, #8]
  722:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   ip4_addr_set_any(ip4_current_src_addr());
- 537              		.loc 1 722 0
- 538 01be 9A81     		strh	r2, [r3, #12]	@ movhi
+ 510              		.loc 1 722 0
+ 511 0186 9A81     		strh	r2, [r3, #12]	@ movhi
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccUE8gpb.s 			page 24
+
+
  723:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   ip4_addr_set_any(ip4_current_dest_addr());
- 539              		.loc 1 723 0
- 540 01c0 1A61     		str	r2, [r3, #16]
+ 512              		.loc 1 723 0
+ 513 0188 1A61     		str	r2, [r3, #16]
  724:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** 
- 541              		.loc 1 724 0
- 542 01c2 5A61     		str	r2, [r3, #20]
+ 514              		.loc 1 724 0
+ 515 018a 5A61     		str	r2, [r3, #20]
  726:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** }
- 543              		.loc 1 726 0
- 544 01c4 28E7     		b	.L30
- 545              	.L46:
+ 516              		.loc 1 726 0
+ 517 018c 42E7     		b	.L31
+ 518              	.L48:
  684:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****       break;
- 546              		.loc 1 684 0
- 547 01c6 3946     		mov	r1, r7
- 548 01c8 2846     		mov	r0, r5
- 549 01ca FFF7FEFF 		bl	tcp_input
- 550              	.LVL55:
+ 519              		.loc 1 684 0
+ 520 018e 4146     		mov	r1, r8
+ 521 0190 2846     		mov	r0, r5
+ 522 0192 FFF7FEFF 		bl	tcp_input
+ 523              	.LVL50:
  685:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** #endif /* LWIP_TCP */
- 551              		.loc 1 685 0
- 552 01ce F1E7     		b	.L49
- 553              	.L66:
+ 524              		.loc 1 685 0
+ 525 0196 F1E7     		b	.L51
+ 526              	.L65:
  690:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****       break;
- 554              		.loc 1 690 0
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 25
-
-
- 555 01d0 3946     		mov	r1, r7
- 556 01d2 2846     		mov	r0, r5
- 557 01d4 FFF7FEFF 		bl	icmp_input
- 558              	.LVL56:
+ 527              		.loc 1 690 0
+ 528 0198 4146     		mov	r1, r8
+ 529 019a 2846     		mov	r0, r5
+ 530 019c FFF7FEFF 		bl	icmp_input
+ 531              	.LVL51:
  691:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** #endif /* LWIP_ICMP */
- 559              		.loc 1 691 0
- 560 01d8 ECE7     		b	.L49
- 561              	.L69:
- 562 01da 00BF     		.align	2
- 563              	.L68:
- 564 01dc 00000000 		.word	ip_data
- 565 01e0 00000000 		.word	netif_list
- 566              		.cfi_endproc
- 567              	.LFE153:
- 569              		.section	.text.ip4_output_if_src,"ax",%progbits
- 570              		.align	1
- 571              		.global	ip4_output_if_src
- 572              		.syntax unified
- 573              		.thumb
- 574              		.thumb_func
- 575              		.fpu fpv5-sp-d16
- 577              	ip4_output_if_src:
- 578              	.LFB155:
+ 532              		.loc 1 691 0
+ 533 01a0 ECE7     		b	.L51
+ 534              	.L66:
+ 703:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****         p->payload = iphdr;
+ 535              		.loc 1 703 0
+ 536 01a2 3146     		mov	r1, r6
+ 537 01a4 2846     		mov	r0, r5
+ 538 01a6 FFF7FEFF 		bl	pbuf_header_force
+ 539              	.LVL52:
+ 704:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****         icmp_dest_unreach(p, ICMP_DUR_PROTO);
+ 540              		.loc 1 704 0
+ 541 01aa 6F60     		str	r7, [r5, #4]
+ 705:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****       }
+ 542              		.loc 1 705 0
+ 543 01ac 0221     		movs	r1, #2
+ 544 01ae 2846     		mov	r0, r5
+ 545 01b0 FFF7FEFF 		bl	icmp_dest_unreach
+ 546              	.LVL53:
+ 547 01b4 BDE7     		b	.L52
+ 548              	.L68:
+ 549 01b6 00BF     		.align	2
+ 550              	.L67:
+ 551 01b8 00000000 		.word	ip_data
+ 552 01bc 00000000 		.word	netif_list
+ 553              		.cfi_endproc
+ 554              	.LFE155:
+ 556              		.section	.text.ip4_output_if_src,"ax",%progbits
+ 557              		.align	1
+ 558              		.global	ip4_output_if_src
+ 559              		.syntax unified
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccUE8gpb.s 			page 25
+
+
+ 560              		.thumb
+ 561              		.thumb_func
+ 562              		.fpu fpv5-sp-d16
+ 564              	ip4_output_if_src:
+ 565              	.LFB157:
  728:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** 
  729:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** /**
  730:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****  * Sends an IP packet on a network interface. This function constructs
@@ -1498,9 +1480,6 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 1
  759:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** #if IP_OPTIONS_SEND
  760:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   return ip4_output_if_opt(p, src, dest, ttl, tos, proto, netif, NULL, 0);
  761:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** }
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 26
-
-
  762:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** 
  763:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** /**
  764:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****  * Same as ip_output_if() but with the possibility to include IP options:
@@ -1519,6 +1498,9 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 1
  777:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     if (ip4_addr_isany(src)) {
  778:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****       src_used = netif_ip4_addr(netif);
  779:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     }
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccUE8gpb.s 			page 26
+
+
  780:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   }
  781:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** 
  782:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** #if IP_OPTIONS_SEND
@@ -1538,32 +1520,29 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 1
  796:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****              u8_t ttl, u8_t tos,
  797:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****              u8_t proto, struct netif *netif)
  798:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** {
- 579              		.loc 1 798 0
- 580              		.cfi_startproc
- 581              		@ args = 12, pretend = 0, frame = 8
- 582              		@ frame_needed = 0, uses_anonymous_args = 0
- 583              	.LVL57:
- 584 0000 2DE9F043 		push	{r4, r5, r6, r7, r8, r9, lr}
- 585              	.LCFI7:
- 586              		.cfi_def_cfa_offset 28
- 587              		.cfi_offset 4, -28
- 588              		.cfi_offset 5, -24
- 589              		.cfi_offset 6, -20
- 590              		.cfi_offset 7, -16
- 591              		.cfi_offset 8, -12
- 592              		.cfi_offset 9, -8
- 593              		.cfi_offset 14, -4
- 594 0004 83B0     		sub	sp, sp, #12
- 595              	.LCFI8:
- 596              		.cfi_def_cfa_offset 40
- 597 0006 0546     		mov	r5, r0
- 598 0008 8946     		mov	r9, r1
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 27
-
-
- 599 000a 1646     		mov	r6, r2
- 600 000c 9846     		mov	r8, r3
- 601 000e 0C9F     		ldr	r7, [sp, #48]
+ 566              		.loc 1 798 0
+ 567              		.cfi_startproc
+ 568              		@ args = 12, pretend = 0, frame = 8
+ 569              		@ frame_needed = 0, uses_anonymous_args = 0
+ 570              	.LVL54:
+ 571 0000 2DE9F043 		push	{r4, r5, r6, r7, r8, r9, lr}
+ 572              	.LCFI7:
+ 573              		.cfi_def_cfa_offset 28
+ 574              		.cfi_offset 4, -28
+ 575              		.cfi_offset 5, -24
+ 576              		.cfi_offset 6, -20
+ 577              		.cfi_offset 7, -16
+ 578              		.cfi_offset 8, -12
+ 579              		.cfi_offset 9, -8
+ 580              		.cfi_offset 14, -4
+ 581 0004 83B0     		sub	sp, sp, #12
+ 582              	.LCFI8:
+ 583              		.cfi_def_cfa_offset 40
+ 584 0006 0546     		mov	r5, r0
+ 585 0008 8946     		mov	r9, r1
+ 586 000a 1646     		mov	r6, r2
+ 587 000c 9846     		mov	r8, r3
+ 588 000e 0C9F     		ldr	r7, [sp, #48]
  799:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** #if IP_OPTIONS_SEND
  800:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   return ip4_output_if_opt_src(p, src, dest, ttl, tos, proto, netif, NULL, 0);
  801:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** }
@@ -1579,38 +1558,32 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 1
  811:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** {
  812:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** #endif /* IP_OPTIONS_SEND */
  813:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   struct ip_hdr *iphdr;
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccUE8gpb.s 			page 27
+
+
  814:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   ip4_addr_t dest_addr;
  815:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** #if CHECKSUM_GEN_IP_INLINE
  816:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   u32_t chk_sum = 0;
  817:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** #endif /* CHECKSUM_GEN_IP_INLINE */
  818:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** 
  819:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   LWIP_IP_CHECK_PBUF_REF_COUNT_FOR_TX(p);
- 602              		.loc 1 819 0
- 603 0010 C389     		ldrh	r3, [r0, #14]
- 604              	.LVL58:
- 605 0012 012B     		cmp	r3, #1
- 606 0014 06D0     		beq	.L71
- 607              		.loc 1 819 0 is_stmt 0 discriminator 1
- 608 0016 314B     		ldr	r3, .L84
- 609 0018 40F23332 		movw	r2, #819
- 610              	.LVL59:
- 611 001c 3049     		ldr	r1, .L84+4
- 612              	.LVL60:
- 613 001e 3148     		ldr	r0, .L84+8
- 614              	.LVL61:
- 615 0020 FFF7FEFF 		bl	printf
- 616              	.LVL62:
- 617              	.L71:
+ 589              		.loc 1 819 0
+ 590 0010 C389     		ldrh	r3, [r0, #14]
+ 591              	.LVL55:
+ 592 0012 012B     		cmp	r3, #1
+ 593 0014 3DD1     		bne	.L80
+ 594              	.LVL56:
+ 595              	.L70:
  820:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** 
  821:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   MIB2_STATS_INC(mib2.ipoutrequests);
  822:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** 
  823:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   /* Should the IP header be generated or is it already included in p? */
  824:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   if (dest != LWIP_IP_HDRINCL) {
- 618              		.loc 1 824 0 is_stmt 1
- 619 0024 002E     		cmp	r6, #0
- 620 0026 4AD0     		beq	.L72
- 621              	.LVL63:
- 622              	.LBB6:
+ 596              		.loc 1 824 0
+ 597 0016 002E     		cmp	r6, #0
+ 598 0018 4FD0     		beq	.L71
+ 599              	.LVL57:
+ 600              	.LBB6:
  825:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     u16_t ip_hlen = IP_HLEN;
  826:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** #if IP_OPTIONS_SEND
  827:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     u16_t optlen_aligned = 0;
@@ -1618,9 +1591,6 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 1
  829:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** #if CHECKSUM_GEN_IP_INLINE
  830:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****       int i;
  831:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** #endif /* CHECKSUM_GEN_IP_INLINE */
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 28
-
-
  832:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****       /* round up to a multiple of 4 */
  833:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****       optlen_aligned = ((optlen + 3) & ~3);
  834:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****       ip_hlen += optlen_aligned;
@@ -1645,13 +1615,16 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 1
  853:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** #endif /* IP_OPTIONS_SEND */
  854:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     /* generate IP header */
  855:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     if (pbuf_header(p, IP_HLEN)) {
- 623              		.loc 1 855 0
- 624 0028 1421     		movs	r1, #20
- 625 002a 2846     		mov	r0, r5
- 626 002c FFF7FEFF 		bl	pbuf_header
- 627              	.LVL64:
- 628 0030 0028     		cmp	r0, #0
- 629 0032 50D1     		bne	.L79
+ 601              		.loc 1 855 0
+ 602 001a 1421     		movs	r1, #20
+ 603 001c 2846     		mov	r0, r5
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccUE8gpb.s 			page 28
+
+
+ 604 001e FFF7FEFF 		bl	pbuf_header
+ 605              	.LVL58:
+ 606 0022 0028     		cmp	r0, #0
+ 607 0024 58D1     		bne	.L78
  856:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****       LWIP_DEBUGF(IP_DEBUG | LWIP_DBG_LEVEL_SERIOUS, ("ip4_output: not enough room for IP header in
  857:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** 
  858:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****       IP_STATS_INC(ip.err);
@@ -1660,97 +1633,94 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 1
  861:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     }
  862:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** 
  863:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     iphdr = (struct ip_hdr *)p->payload;
- 630              		.loc 1 863 0
- 631 0034 6C68     		ldr	r4, [r5, #4]
- 632              	.LVL65:
+ 608              		.loc 1 863 0
+ 609 0026 6C68     		ldr	r4, [r5, #4]
+ 610              	.LVL59:
  864:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     LWIP_ASSERT("check that first pbuf can hold struct ip_hdr",
- 633              		.loc 1 864 0
- 634 0036 6B89     		ldrh	r3, [r5, #10]
- 635 0038 132B     		cmp	r3, #19
- 636 003a 34D9     		bls	.L81
- 637              	.L74:
+ 611              		.loc 1 864 0
+ 612 0028 6B89     		ldrh	r3, [r5, #10]
+ 613 002a 132B     		cmp	r3, #19
+ 614 002c 39D9     		bls	.L81
+ 615              	.L73:
  865:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****                (p->len >= sizeof(struct ip_hdr)));
  866:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** 
  867:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     IPH_TTL_SET(iphdr, ttl);
- 638              		.loc 1 867 0
- 639 003c 84F80880 		strb	r8, [r4, #8]
+ 616              		.loc 1 867 0
+ 617 002e 84F80880 		strb	r8, [r4, #8]
  868:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     IPH_PROTO_SET(iphdr, proto);
- 640              		.loc 1 868 0
- 641 0040 9DF82C30 		ldrb	r3, [sp, #44]	@ zero_extendqisi2
- 642 0044 6372     		strb	r3, [r4, #9]
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 29
-
-
+ 618              		.loc 1 868 0
+ 619 0032 9DF82C30 		ldrb	r3, [sp, #44]	@ zero_extendqisi2
+ 620 0036 6372     		strb	r3, [r4, #9]
  869:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** #if CHECKSUM_GEN_IP_INLINE
  870:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     chk_sum += PP_NTOHS(proto | (ttl << 8));
  871:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** #endif /* CHECKSUM_GEN_IP_INLINE */
  872:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** 
  873:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     /* dest cannot be NULL here */
  874:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     ip4_addr_copy(iphdr->dest, *dest);
- 643              		.loc 1 874 0
- 644 0046 3368     		ldr	r3, [r6]
- 645 0048 2361     		str	r3, [r4, #16]	@ unaligned
+ 621              		.loc 1 874 0
+ 622 0038 3368     		ldr	r3, [r6]
+ 623 003a 2361     		str	r3, [r4, #16]	@ unaligned
  875:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** #if CHECKSUM_GEN_IP_INLINE
  876:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     chk_sum += ip4_addr_get_u32(&iphdr->dest) & 0xFFFF;
  877:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     chk_sum += ip4_addr_get_u32(&iphdr->dest) >> 16;
  878:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** #endif /* CHECKSUM_GEN_IP_INLINE */
  879:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** 
  880:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     IPH_VHL_SET(iphdr, 4, ip_hlen / 4);
- 646              		.loc 1 880 0
- 647 004a 4523     		movs	r3, #69
- 648 004c 2370     		strb	r3, [r4]
+ 624              		.loc 1 880 0
+ 625 003c 4523     		movs	r3, #69
+ 626 003e 2370     		strb	r3, [r4]
  881:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     IPH_TOS_SET(iphdr, tos);
- 649              		.loc 1 881 0
- 650 004e 9DF82830 		ldrb	r3, [sp, #40]	@ zero_extendqisi2
- 651 0052 6370     		strb	r3, [r4, #1]
+ 627              		.loc 1 881 0
+ 628 0040 9DF82830 		ldrb	r3, [sp, #40]	@ zero_extendqisi2
+ 629 0044 6370     		strb	r3, [r4, #1]
  882:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** #if CHECKSUM_GEN_IP_INLINE
  883:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     chk_sum += PP_NTOHS(tos | (iphdr->_v_hl << 8));
  884:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** #endif /* CHECKSUM_GEN_IP_INLINE */
  885:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     IPH_LEN_SET(iphdr, lwip_htons(p->tot_len));
- 652              		.loc 1 885 0
- 653 0054 2889     		ldrh	r0, [r5, #8]
- 654 0056 FFF7FEFF 		bl	lwip_htons
- 655              	.LVL66:
- 656 005a 6080     		strh	r0, [r4, #2]	@ unaligned
+ 630              		.loc 1 885 0
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccUE8gpb.s 			page 29
+
+
+ 631 0046 2889     		ldrh	r0, [r5, #8]
+ 632 0048 FFF7FEFF 		bl	lwip_htons
+ 633              	.LVL60:
+ 634 004c 6080     		strh	r0, [r4, #2]	@ unaligned
  886:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** #if CHECKSUM_GEN_IP_INLINE
  887:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     chk_sum += iphdr->_len;
  888:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** #endif /* CHECKSUM_GEN_IP_INLINE */
  889:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     IPH_OFFSET_SET(iphdr, 0);
- 657              		.loc 1 889 0
- 658 005c 0023     		movs	r3, #0
- 659 005e A371     		strb	r3, [r4, #6]
- 660 0060 E371     		strb	r3, [r4, #7]
+ 635              		.loc 1 889 0
+ 636 004e 0023     		movs	r3, #0
+ 637 0050 A371     		strb	r3, [r4, #6]
+ 638 0052 E371     		strb	r3, [r4, #7]
  890:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     IPH_ID_SET(iphdr, lwip_htons(ip_id));
- 661              		.loc 1 890 0
- 662 0062 DFF88C80 		ldr	r8, .L84+20
- 663 0066 B8F80000 		ldrh	r0, [r8]
- 664 006a FFF7FEFF 		bl	lwip_htons
- 665              	.LVL67:
- 666 006e A080     		strh	r0, [r4, #4]	@ unaligned
+ 639              		.loc 1 890 0
+ 640 0054 DFF89C80 		ldr	r8, .L84+20
+ 641 0058 B8F80000 		ldrh	r0, [r8]
+ 642 005c FFF7FEFF 		bl	lwip_htons
+ 643              	.LVL61:
+ 644 0060 A080     		strh	r0, [r4, #4]	@ unaligned
  891:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** #if CHECKSUM_GEN_IP_INLINE
  892:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     chk_sum += iphdr->_id;
  893:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** #endif /* CHECKSUM_GEN_IP_INLINE */
  894:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     ++ip_id;
- 667              		.loc 1 894 0
- 668 0070 B8F80030 		ldrh	r3, [r8]
- 669 0074 0133     		adds	r3, r3, #1
- 670 0076 A8F80030 		strh	r3, [r8]	@ movhi
+ 645              		.loc 1 894 0
+ 646 0062 B8F80030 		ldrh	r3, [r8]
+ 647 0066 0133     		adds	r3, r3, #1
+ 648 0068 A8F80030 		strh	r3, [r8]	@ movhi
  895:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** 
  896:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     if (src == NULL) {
- 671              		.loc 1 896 0
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 30
-
-
- 672 007a B9F1000F 		cmp	r9, #0
- 673 007e 1AD0     		beq	.L82
+ 649              		.loc 1 896 0
+ 650 006c B9F1000F 		cmp	r9, #0
+ 651 0070 1FD0     		beq	.L82
  897:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****       ip4_addr_copy(iphdr->src, *IP4_ADDR_ANY4);
  898:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     } else {
  899:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****       /* src cannot be NULL here */
  900:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****       ip4_addr_copy(iphdr->src, *src);
- 674              		.loc 1 900 0
- 675 0080 D9F80030 		ldr	r3, [r9]
- 676 0084 E360     		str	r3, [r4, #12]	@ unaligned
- 677              	.L76:
+ 652              		.loc 1 900 0
+ 653 0072 D9F80030 		ldr	r3, [r9]
+ 654 0076 E360     		str	r3, [r4, #12]	@ unaligned
+ 655              	.L75:
  901:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     }
  902:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** 
  903:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** #if CHECKSUM_GEN_IP_INLINE
@@ -1768,14 +1738,17 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 1
  915:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     }
  916:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** #endif /* LWIP_CHECKSUM_CTRL_PER_NETIF*/
  917:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** #else /* CHECKSUM_GEN_IP_INLINE */
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccUE8gpb.s 			page 30
+
+
  918:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     IPH_CHKSUM_SET(iphdr, 0);
- 678              		.loc 1 918 0
- 679 0086 0023     		movs	r3, #0
- 680 0088 A372     		strb	r3, [r4, #10]
- 681 008a E372     		strb	r3, [r4, #11]
- 682              	.LVL68:
- 683              	.L77:
- 684              	.LBE6:
+ 656              		.loc 1 918 0
+ 657 0078 0023     		movs	r3, #0
+ 658 007a A372     		strb	r3, [r4, #10]
+ 659 007c E372     		strb	r3, [r4, #11]
+ 660              	.LVL62:
+ 661              	.L76:
+ 662              	.LBE6:
  919:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** #if CHECKSUM_GEN_IP
  920:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     IF__NETIF_CHECKSUM_ENABLED(netif, NETIF_CHECKSUM_GEN_IP) {
  921:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****       IPH_CHKSUM_SET(iphdr, inet_chksum(iphdr, ip_hlen));
@@ -1798,9 +1771,6 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 1
  938:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   if (ip4_addr_cmp(dest, netif_ip4_addr(netif))
  939:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** #if !LWIP_HAVE_LOOPIF
  940:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****       || ip4_addr_isloopback(dest)
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 31
-
-
  941:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** #endif /* !LWIP_HAVE_LOOPIF */
  942:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****       ) {
  943:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     /* Packet to self, enqueue it for loopback */
@@ -1816,183 +1786,201 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 1
  953:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** #if IP_FRAG
  954:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   /* don't fragment if interface has mtu set to 0 [loopif] */
  955:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   if (netif->mtu && (p->tot_len > netif->mtu)) {
- 685              		.loc 1 955 0
- 686 008c FB8C     		ldrh	r3, [r7, #38]
- 687 008e 13B1     		cbz	r3, .L78
- 688              		.loc 1 955 0 is_stmt 0 discriminator 1
- 689 0090 2A89     		ldrh	r2, [r5, #8]
- 690 0092 9342     		cmp	r3, r2
- 691 0094 19D3     		bcc	.L83
- 692              	.L78:
+ 663              		.loc 1 955 0
+ 664 007e FB8C     		ldrh	r3, [r7, #38]
+ 665 0080 0BBB     		cbnz	r3, .L83
+ 666              	.L77:
  956:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     return ip4_frag(p, netif, dest);
  957:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   }
  958:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** #endif /* IP_FRAG */
  959:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** 
  960:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   LWIP_DEBUGF(IP_DEBUG, ("ip4_output_if: call netif->output()\n"));
  961:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   return netif->output(netif, p, dest);
- 693              		.loc 1 961 0 is_stmt 1
- 694 0096 7B69     		ldr	r3, [r7, #20]
- 695 0098 3246     		mov	r2, r6
- 696 009a 2946     		mov	r1, r5
- 697 009c 3846     		mov	r0, r7
- 698 009e 9847     		blx	r3
- 699              	.LVL69:
- 700              	.L73:
+ 667              		.loc 1 961 0
+ 668 0082 7B69     		ldr	r3, [r7, #20]
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccUE8gpb.s 			page 31
+
+
+ 669 0084 3246     		mov	r2, r6
+ 670 0086 2946     		mov	r1, r5
+ 671 0088 3846     		mov	r0, r7
+ 672 008a 9847     		blx	r3
+ 673              	.LVL63:
+ 674              	.L72:
  962:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** }
- 701              		.loc 1 962 0
- 702 00a0 03B0     		add	sp, sp, #12
- 703              	.LCFI9:
- 704              		.cfi_remember_state
- 705              		.cfi_def_cfa_offset 28
- 706              		@ sp needed
- 707 00a2 BDE8F083 		pop	{r4, r5, r6, r7, r8, r9, pc}
- 708              	.LVL70:
- 709              	.L81:
- 710              	.LCFI10:
- 711              		.cfi_restore_state
- 712              	.LBB7:
+ 675              		.loc 1 962 0
+ 676 008c 03B0     		add	sp, sp, #12
+ 677              	.LCFI9:
+ 678              		.cfi_remember_state
+ 679              		.cfi_def_cfa_offset 28
+ 680              		@ sp needed
+ 681 008e BDE8F083 		pop	{r4, r5, r6, r7, r8, r9, pc}
+ 682              	.LVL64:
+ 683              	.L80:
+ 684              	.LCFI10:
+ 685              		.cfi_restore_state
+ 819:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** 
+ 686              		.loc 1 819 0 discriminator 1
+ 687 0092 134B     		ldr	r3, .L84
+ 688 0094 40F23332 		movw	r2, #819
+ 689              	.LVL65:
+ 690 0098 1249     		ldr	r1, .L84+4
+ 691              	.LVL66:
+ 692 009a 1348     		ldr	r0, .L84+8
+ 693              	.LVL67:
+ 694 009c FFF7FEFF 		bl	printf
+ 695              	.LVL68:
+ 696 00a0 B9E7     		b	.L70
+ 697              	.LVL69:
+ 698              	.L81:
+ 699              	.LBB7:
  864:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****                (p->len >= sizeof(struct ip_hdr)));
- 713              		.loc 1 864 0 discriminator 1
- 714 00a6 0D4B     		ldr	r3, .L84
- 715 00a8 40F26132 		movw	r2, #865
- 716 00ac 0E49     		ldr	r1, .L84+12
- 717 00ae 0D48     		ldr	r0, .L84+8
- 718 00b0 FFF7FEFF 		bl	printf
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 32
-
-
- 719              	.LVL71:
- 720 00b4 C2E7     		b	.L74
- 721              	.L82:
+ 700              		.loc 1 864 0 discriminator 1
+ 701 00a2 0F4B     		ldr	r3, .L84
+ 702 00a4 40F26132 		movw	r2, #865
+ 703 00a8 1049     		ldr	r1, .L84+12
+ 704 00aa 0F48     		ldr	r0, .L84+8
+ 705 00ac FFF7FEFF 		bl	printf
+ 706              	.LVL70:
+ 707 00b0 BDE7     		b	.L73
+ 708              	.L82:
  897:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     } else {
- 722              		.loc 1 897 0
- 723 00b6 0D4B     		ldr	r3, .L84+16
- 724 00b8 1B68     		ldr	r3, [r3]
- 725 00ba E360     		str	r3, [r4, #12]	@ unaligned
- 726 00bc E3E7     		b	.L76
- 727              	.LVL72:
- 728              	.L72:
- 729              	.LBE7:
+ 709              		.loc 1 897 0
+ 710 00b2 0F4B     		ldr	r3, .L84+16
+ 711 00b4 1B68     		ldr	r3, [r3]
+ 712 00b6 E360     		str	r3, [r4, #12]	@ unaligned
+ 713 00b8 DEE7     		b	.L75
+ 714              	.LVL71:
+ 715              	.L71:
+ 716              	.LBE7:
  927:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     ip4_addr_copy(dest_addr, iphdr->dest);
- 730              		.loc 1 927 0
- 731 00be 6B68     		ldr	r3, [r5, #4]
- 732              	.LVL73:
+ 717              		.loc 1 927 0
+ 718 00ba 6B68     		ldr	r3, [r5, #4]
+ 719              	.LVL72:
  928:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     dest = &dest_addr;
- 733              		.loc 1 928 0
- 734 00c0 1B69     		ldr	r3, [r3, #16]	@ unaligned
- 735              	.LVL74:
- 736 00c2 02AE     		add	r6, sp, #8
- 737              	.LVL75:
- 738 00c4 46F8043D 		str	r3, [r6, #-4]!
- 739              	.LVL76:
- 740 00c8 E0E7     		b	.L77
- 741              	.LVL77:
- 742              	.L83:
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccUE8gpb.s 			page 32
+
+
+ 720              		.loc 1 928 0
+ 721 00bc 1B69     		ldr	r3, [r3, #16]	@ unaligned
+ 722              	.LVL73:
+ 723 00be 02AE     		add	r6, sp, #8
+ 724              	.LVL74:
+ 725 00c0 46F8043D 		str	r3, [r6, #-4]!
+ 726              	.LVL75:
+ 727 00c4 DBE7     		b	.L76
+ 728              	.LVL76:
+ 729              	.L83:
+ 955:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     return ip4_frag(p, netif, dest);
+ 730              		.loc 1 955 0 discriminator 1
+ 731 00c6 2A89     		ldrh	r2, [r5, #8]
+ 732 00c8 9342     		cmp	r3, r2
+ 733 00ca DAD2     		bcs	.L77
  956:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   }
- 743              		.loc 1 956 0
- 744 00ca 3246     		mov	r2, r6
- 745 00cc 3946     		mov	r1, r7
- 746 00ce 2846     		mov	r0, r5
- 747 00d0 FFF7FEFF 		bl	ip4_frag
- 748              	.LVL78:
- 749 00d4 E4E7     		b	.L73
- 750              	.LVL79:
- 751              	.L79:
- 752              	.LBB8:
+ 734              		.loc 1 956 0
+ 735 00cc 3246     		mov	r2, r6
+ 736 00ce 3946     		mov	r1, r7
+ 737 00d0 2846     		mov	r0, r5
+ 738 00d2 FFF7FEFF 		bl	ip4_frag
+ 739              	.LVL77:
+ 740 00d6 D9E7     		b	.L72
+ 741              	.LVL78:
+ 742              	.L78:
+ 743              	.LBB8:
  860:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     }
- 753              		.loc 1 860 0
- 754 00d6 6FF00100 		mvn	r0, #1
- 755 00da E1E7     		b	.L73
- 756              	.L85:
- 757              		.align	2
- 758              	.L84:
- 759 00dc 00000000 		.word	.LC0
- 760 00e0 34000000 		.word	.LC1
- 761 00e4 40000000 		.word	.LC2
- 762 00e8 68000000 		.word	.LC3
- 763 00ec 00000000 		.word	ip_addr_any
- 764 00f0 00000000 		.word	.LANCHOR0
- 765              	.LBE8:
- 766              		.cfi_endproc
- 767              	.LFE155:
- 769              		.section	.text.ip4_output_if,"ax",%progbits
- 770              		.align	1
- 771              		.global	ip4_output_if
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 33
-
-
- 772              		.syntax unified
- 773              		.thumb
- 774              		.thumb_func
- 775              		.fpu fpv5-sp-d16
- 777              	ip4_output_if:
- 778              	.LFB154:
+ 744              		.loc 1 860 0
+ 745 00d8 6FF00100 		mvn	r0, #1
+ 746 00dc D6E7     		b	.L72
+ 747              	.L85:
+ 748 00de 00BF     		.align	2
+ 749              	.L84:
+ 750 00e0 00000000 		.word	.LC0
+ 751 00e4 34000000 		.word	.LC1
+ 752 00e8 40000000 		.word	.LC2
+ 753 00ec 68000000 		.word	.LC3
+ 754 00f0 00000000 		.word	ip_addr_any
+ 755 00f4 00000000 		.word	.LANCHOR0
+ 756              	.LBE8:
+ 757              		.cfi_endproc
+ 758              	.LFE157:
+ 760              		.section	.text.ip4_output_if,"ax",%progbits
+ 761              		.align	1
+ 762              		.global	ip4_output_if
+ 763              		.syntax unified
+ 764              		.thumb
+ 765              		.thumb_func
+ 766              		.fpu fpv5-sp-d16
+ 768              	ip4_output_if:
+ 769              	.LFB156:
  758:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** #if IP_OPTIONS_SEND
- 779              		.loc 1 758 0
- 780              		.cfi_startproc
- 781              		@ args = 12, pretend = 0, frame = 0
- 782              		@ frame_needed = 0, uses_anonymous_args = 0
- 783              	.LVL80:
- 784 0000 30B5     		push	{r4, r5, lr}
- 785              	.LCFI11:
- 786              		.cfi_def_cfa_offset 12
- 787              		.cfi_offset 4, -12
- 788              		.cfi_offset 5, -8
- 789              		.cfi_offset 14, -4
- 790 0002 85B0     		sub	sp, sp, #20
- 791              	.LCFI12:
- 792              		.cfi_def_cfa_offset 32
- 793 0004 0A9C     		ldr	r4, [sp, #40]
- 794              	.LVL81:
+ 770              		.loc 1 758 0
+ 771              		.cfi_startproc
+ 772              		@ args = 12, pretend = 0, frame = 0
+ 773              		@ frame_needed = 0, uses_anonymous_args = 0
+ 774              	.LVL79:
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccUE8gpb.s 			page 33
+
+
+ 775 0000 30B5     		push	{r4, r5, lr}
+ 776              	.LCFI11:
+ 777              		.cfi_def_cfa_offset 12
+ 778              		.cfi_offset 4, -12
+ 779              		.cfi_offset 5, -8
+ 780              		.cfi_offset 14, -4
+ 781 0002 85B0     		sub	sp, sp, #20
+ 782              	.LCFI12:
+ 783              		.cfi_def_cfa_offset 32
+ 784 0004 0A9C     		ldr	r4, [sp, #40]
+ 785              	.LVL80:
  776:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     if (ip4_addr_isany(src)) {
- 795              		.loc 1 776 0
- 796 0006 1546     		mov	r5, r2
- 797 0008 1AB1     		cbz	r2, .L87
+ 786              		.loc 1 776 0
+ 787 0006 1546     		mov	r5, r2
+ 788 0008 1AB1     		cbz	r2, .L87
  777:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****       src_used = netif_ip4_addr(netif);
- 798              		.loc 1 777 0
- 799 000a 09B1     		cbz	r1, .L88
+ 789              		.loc 1 777 0
+ 790 000a 09B1     		cbz	r1, .L88
  777:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****       src_used = netif_ip4_addr(netif);
- 800              		.loc 1 777 0 is_stmt 0 discriminator 1
- 801 000c 0A68     		ldr	r2, [r1]
- 802              	.LVL82:
- 803 000e 02B9     		cbnz	r2, .L87
- 804              	.L88:
+ 791              		.loc 1 777 0 is_stmt 0 discriminator 1
+ 792 000c 0A68     		ldr	r2, [r1]
+ 793              	.LVL81:
+ 794 000e 02B9     		cbnz	r2, .L87
+ 795              	.L88:
  778:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     }
- 805              		.loc 1 778 0 is_stmt 1
- 806 0010 211D     		adds	r1, r4, #4
- 807              	.LVL83:
- 808              	.L87:
+ 796              		.loc 1 778 0 is_stmt 1
+ 797 0010 211D     		adds	r1, r4, #4
+ 798              	.LVL82:
+ 799              	.L87:
  786:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** #endif /* IP_OPTIONS_SEND */
- 809              		.loc 1 786 0
- 810 0012 0294     		str	r4, [sp, #8]
- 811 0014 9DF82420 		ldrb	r2, [sp, #36]	@ zero_extendqisi2
- 812 0018 0192     		str	r2, [sp, #4]
- 813 001a 9DF82020 		ldrb	r2, [sp, #32]	@ zero_extendqisi2
- 814 001e 0092     		str	r2, [sp]
- 815 0020 2A46     		mov	r2, r5
- 816 0022 FFF7FEFF 		bl	ip4_output_if_src
- 817              	.LVL84:
+ 800              		.loc 1 786 0
+ 801 0012 0294     		str	r4, [sp, #8]
+ 802 0014 9DF82420 		ldrb	r2, [sp, #36]	@ zero_extendqisi2
+ 803 0018 0192     		str	r2, [sp, #4]
+ 804 001a 9DF82020 		ldrb	r2, [sp, #32]	@ zero_extendqisi2
+ 805 001e 0092     		str	r2, [sp]
+ 806 0020 2A46     		mov	r2, r5
+ 807 0022 FFF7FEFF 		bl	ip4_output_if_src
+ 808              	.LVL83:
  788:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** 
- 818              		.loc 1 788 0
- 819 0026 05B0     		add	sp, sp, #20
- 820              	.LCFI13:
- 821              		.cfi_def_cfa_offset 12
- 822              		@ sp needed
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 34
+ 809              		.loc 1 788 0
+ 810 0026 05B0     		add	sp, sp, #20
+ 811              	.LCFI13:
+ 812              		.cfi_def_cfa_offset 12
+ 813              		@ sp needed
+ 814 0028 30BD     		pop	{r4, r5, pc}
+ 815              		.cfi_endproc
+ 816              	.LFE156:
+ 818              		.section	.text.ip4_output,"ax",%progbits
+ 819              		.align	1
+ 820              		.global	ip4_output
+ 821              		.syntax unified
+ 822              		.thumb
+ 823              		.thumb_func
+ 824              		.fpu fpv5-sp-d16
+ 826              	ip4_output:
+ 827              	.LFB158:
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccUE8gpb.s 			page 34
 
 
- 823 0028 30BD     		pop	{r4, r5, pc}
- 824              		.cfi_endproc
- 825              	.LFE154:
- 827              		.section	.text.ip4_output,"ax",%progbits
- 828              		.align	1
- 829              		.global	ip4_output
- 830              		.syntax unified
- 831              		.thumb
- 832              		.thumb_func
- 833              		.fpu fpv5-sp-d16
- 835              	ip4_output:
- 836              	.LFB156:
  963:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** 
  964:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** /**
  965:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****  * Simple interface to ip_output_if. It finds the outgoing network
@@ -2015,55 +2003,46 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 1
  982:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** ip4_output(struct pbuf *p, const ip4_addr_t *src, const ip4_addr_t *dest,
  983:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****           u8_t ttl, u8_t tos, u8_t proto)
  984:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** {
- 837              		.loc 1 984 0
- 838              		.cfi_startproc
- 839              		@ args = 8, pretend = 0, frame = 0
- 840              		@ frame_needed = 0, uses_anonymous_args = 0
- 841              	.LVL85:
- 842 0000 F0B5     		push	{r4, r5, r6, r7, lr}
- 843              	.LCFI14:
- 844              		.cfi_def_cfa_offset 20
- 845              		.cfi_offset 4, -20
- 846              		.cfi_offset 5, -16
- 847              		.cfi_offset 6, -12
- 848              		.cfi_offset 7, -8
- 849              		.cfi_offset 14, -4
- 850 0002 85B0     		sub	sp, sp, #20
- 851              	.LCFI15:
- 852              		.cfi_def_cfa_offset 40
- 853 0004 0446     		mov	r4, r0
- 854 0006 0E46     		mov	r6, r1
- 855 0008 1546     		mov	r5, r2
- 856 000a 1F46     		mov	r7, r3
+ 828              		.loc 1 984 0
+ 829              		.cfi_startproc
+ 830              		@ args = 8, pretend = 0, frame = 0
+ 831              		@ frame_needed = 0, uses_anonymous_args = 0
+ 832              	.LVL84:
+ 833 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 834              	.LCFI14:
+ 835              		.cfi_def_cfa_offset 20
+ 836              		.cfi_offset 4, -20
+ 837              		.cfi_offset 5, -16
+ 838              		.cfi_offset 6, -12
+ 839              		.cfi_offset 7, -8
+ 840              		.cfi_offset 14, -4
+ 841 0002 85B0     		sub	sp, sp, #20
+ 842              	.LCFI15:
+ 843              		.cfi_def_cfa_offset 40
+ 844 0004 0446     		mov	r4, r0
+ 845 0006 0E46     		mov	r6, r1
+ 846 0008 1546     		mov	r5, r2
+ 847 000a 1F46     		mov	r7, r3
  985:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   struct netif *netif;
  986:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** 
  987:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   LWIP_IP_CHECK_PBUF_REF_COUNT_FOR_TX(p);
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 35
-
-
- 857              		.loc 1 987 0
- 858 000c C389     		ldrh	r3, [r0, #14]
- 859              	.LVL86:
- 860 000e 012B     		cmp	r3, #1
- 861 0010 06D0     		beq	.L91
- 862              		.loc 1 987 0 is_stmt 0 discriminator 1
- 863 0012 0E4B     		ldr	r3, .L95
- 864 0014 40F2DB32 		movw	r2, #987
- 865              	.LVL87:
- 866 0018 0D49     		ldr	r1, .L95+4
- 867              	.LVL88:
- 868 001a 0E48     		ldr	r0, .L95+8
- 869              	.LVL89:
- 870 001c FFF7FEFF 		bl	printf
- 871              	.LVL90:
- 872              	.L91:
+ 848              		.loc 1 987 0
+ 849 000c C389     		ldrh	r3, [r0, #14]
+ 850              	.LVL85:
+ 851 000e 012B     		cmp	r3, #1
+ 852 0010 12D1     		bne	.L95
+ 853              	.LVL86:
+ 854              	.L91:
  988:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** 
  989:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   if ((netif = ip4_route_src(dest, src)) == NULL) {
- 873              		.loc 1 989 0 is_stmt 1
- 874 0020 2846     		mov	r0, r5
- 875 0022 FFF7FEFF 		bl	ip4_route
- 876              	.LVL91:
- 877 0026 70B1     		cbz	r0, .L93
+ 855              		.loc 1 989 0
+ 856 0012 2846     		mov	r0, r5
+ 857 0014 FFF7FEFF 		bl	ip4_route
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccUE8gpb.s 			page 35
+
+
+ 858              	.LVL87:
+ 859 0018 B0B1     		cbz	r0, .L93
  990:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     LWIP_DEBUGF(IP_DEBUG, ("ip4_output: No route to %"U16_F".%"U16_F".%"U16_F".%"U16_F"\n",
  991:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****       ip4_addr1_16(dest), ip4_addr2_16(dest), ip4_addr3_16(dest), ip4_addr4_16(dest)));
  992:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****     IP_STATS_INC(ip.rterr);
@@ -2071,135 +2050,148 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 1
  994:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   }
  995:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** 
  996:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   return ip4_output_if(p, src, dest, ttl, tos, proto, netif);
- 878              		.loc 1 996 0
- 879 0028 0290     		str	r0, [sp, #8]
- 880 002a 9DF82C30 		ldrb	r3, [sp, #44]	@ zero_extendqisi2
- 881 002e 0193     		str	r3, [sp, #4]
- 882 0030 9DF82830 		ldrb	r3, [sp, #40]	@ zero_extendqisi2
- 883 0034 0093     		str	r3, [sp]
- 884 0036 3B46     		mov	r3, r7
- 885 0038 2A46     		mov	r2, r5
- 886 003a 3146     		mov	r1, r6
- 887 003c 2046     		mov	r0, r4
- 888              	.LVL92:
- 889 003e FFF7FEFF 		bl	ip4_output_if
- 890              	.LVL93:
- 891              	.L92:
+ 860              		.loc 1 996 0
+ 861 001a 0290     		str	r0, [sp, #8]
+ 862 001c 9DF82C30 		ldrb	r3, [sp, #44]	@ zero_extendqisi2
+ 863 0020 0193     		str	r3, [sp, #4]
+ 864 0022 9DF82830 		ldrb	r3, [sp, #40]	@ zero_extendqisi2
+ 865 0026 0093     		str	r3, [sp]
+ 866 0028 3B46     		mov	r3, r7
+ 867 002a 2A46     		mov	r2, r5
+ 868 002c 3146     		mov	r1, r6
+ 869 002e 2046     		mov	r0, r4
+ 870              	.LVL88:
+ 871 0030 FFF7FEFF 		bl	ip4_output_if
+ 872              	.LVL89:
+ 873              	.L92:
  997:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** }
- 892              		.loc 1 997 0
- 893 0042 05B0     		add	sp, sp, #20
- 894              	.LCFI16:
- 895              		.cfi_remember_state
- 896              		.cfi_def_cfa_offset 20
- 897              		@ sp needed
- 898 0044 F0BD     		pop	{r4, r5, r6, r7, pc}
- 899              	.LVL94:
- 900              	.L93:
- 901              	.LCFI17:
- 902              		.cfi_restore_state
+ 874              		.loc 1 997 0
+ 875 0034 05B0     		add	sp, sp, #20
+ 876              	.LCFI16:
+ 877              		.cfi_remember_state
+ 878              		.cfi_def_cfa_offset 20
+ 879              		@ sp needed
+ 880 0036 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 881              	.LVL90:
+ 882              	.L95:
+ 883              	.LCFI17:
+ 884              		.cfi_restore_state
+ 987:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c **** 
+ 885              		.loc 1 987 0 discriminator 1
+ 886 0038 054B     		ldr	r3, .L96
+ 887 003a 40F2DB32 		movw	r2, #987
+ 888              	.LVL91:
+ 889 003e 0549     		ldr	r1, .L96+4
+ 890              	.LVL92:
+ 891 0040 0548     		ldr	r0, .L96+8
+ 892              	.LVL93:
+ 893 0042 FFF7FEFF 		bl	printf
+ 894              	.LVL94:
+ 895 0046 E4E7     		b	.L91
+ 896              	.LVL95:
+ 897              	.L93:
  993:Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c ****   }
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 36
+ 898              		.loc 1 993 0
+ 899 0048 6FF00300 		mvn	r0, #3
+ 900              	.LVL96:
+ 901 004c F2E7     		b	.L92
+ 902              	.L97:
+ 903 004e 00BF     		.align	2
+ 904              	.L96:
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccUE8gpb.s 			page 36
 
 
- 903              		.loc 1 993 0
- 904 0046 6FF00300 		mvn	r0, #3
- 905              	.LVL95:
- 906 004a FAE7     		b	.L92
- 907              	.L96:
- 908              		.align	2
- 909              	.L95:
- 910 004c 00000000 		.word	.LC0
- 911 0050 34000000 		.word	.LC1
- 912 0054 40000000 		.word	.LC2
- 913              		.cfi_endproc
- 914              	.LFE156:
- 916              		.section	.bss.ip_id,"aw",%nobits
- 917              		.align	1
- 918              		.set	.LANCHOR0,. + 0
- 921              	ip_id:
- 922 0000 0000     		.space	2
- 923              		.section	.rodata.ip4_output_if_src.str1.4,"aMS",%progbits,1
- 924              		.align	2
- 925              	.LC0:
- 926 0000 4D696464 		.ascii	"Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c\000"
- 926      6C657761 
- 926      7265732F 
- 926      54686972 
- 926      645F5061 
- 927 0031 000000   		.space	3
- 928              	.LC1:
- 929 0034 702D3E72 		.ascii	"p->ref == 1\000"
- 929      6566203D 
- 929      3D203100 
- 930              	.LC2:
- 931 0040 41737365 		.ascii	"Assertion \"%s\" failed at line %d in %s\012\000"
- 931      7274696F 
- 931      6E202225 
- 931      73222066 
- 931      61696C65 
- 932              	.LC3:
- 933 0068 63686563 		.ascii	"check that first pbuf can hold struct ip_hdr\000"
- 933      6B207468 
- 933      61742066 
- 933      69727374 
- 933      20706275 
- 934              		.text
- 935              	.Letext0:
- 936              		.file 2 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\machine\\_default_types.h"
- 937              		.file 3 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\_stdint.h"
- 938              		.file 4 "Drivers/CMSIS/Include/core_cm7.h"
- 939              		.file 5 "Drivers/CMSIS/Device/ST/STM32F7xx/Include/system_stm32f7xx.h"
- 940              		.file 6 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\lock.h"
- 941              		.file 7 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\_types.h"
- 942              		.file 8 "c:\\gcc_toolchain\\6_2017-q1-update\\lib\\gcc\\arm-none-eabi\\6.3.1\\include\\stddef.h"
- 943              		.file 9 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\reent.h"
- 944              		.file 10 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\stdlib.h"
- 945              		.file 11 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\time.h"
- 946              		.file 12 "Middlewares/Third_Party/LwIP/src/include/lwip/arch.h"
- 947              		.file 13 "Middlewares/Third_Party/LwIP/src/include/lwip/err.h"
- 948              		.file 14 "Middlewares/Third_Party/LwIP/src/include/lwip/pbuf.h"
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 37
+ 905 0050 00000000 		.word	.LC0
+ 906 0054 34000000 		.word	.LC1
+ 907 0058 40000000 		.word	.LC2
+ 908              		.cfi_endproc
+ 909              	.LFE158:
+ 911              		.section	.bss.ip_id,"aw",%nobits
+ 912              		.align	1
+ 913              		.set	.LANCHOR0,. + 0
+ 916              	ip_id:
+ 917 0000 0000     		.space	2
+ 918              		.section	.rodata.ip4_output_if_src.str1.4,"aMS",%progbits,1
+ 919              		.align	2
+ 920              	.LC0:
+ 921 0000 4D696464 		.ascii	"Middlewares/Third_Party/LwIP/src/core/ipv4/ip4.c\000"
+ 921      6C657761 
+ 921      7265732F 
+ 921      54686972 
+ 921      645F5061 
+ 922 0031 000000   		.space	3
+ 923              	.LC1:
+ 924 0034 702D3E72 		.ascii	"p->ref == 1\000"
+ 924      6566203D 
+ 924      3D203100 
+ 925              	.LC2:
+ 926 0040 41737365 		.ascii	"Assertion \"%s\" failed at line %d in %s\012\000"
+ 926      7274696F 
+ 926      6E202225 
+ 926      73222066 
+ 926      61696C65 
+ 927              	.LC3:
+ 928 0068 63686563 		.ascii	"check that first pbuf can hold struct ip_hdr\000"
+ 928      6B207468 
+ 928      61742066 
+ 928      69727374 
+ 928      20706275 
+ 929              		.text
+ 930              	.Letext0:
+ 931              		.file 2 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\machine\\_default
+ 932              		.file 3 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 933              		.file 4 "Drivers/CMSIS/Include/core_cm7.h"
+ 934              		.file 5 "Drivers/CMSIS/Device/ST/STM32F7xx/Include/system_stm32f7xx.h"
+ 935              		.file 6 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\lock.h"
+ 936              		.file 7 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\_types.h"
+ 937              		.file 8 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\lib\\gcc\\arm-none-eabi\\7.3.1\\include\\
+ 938              		.file 9 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\reent.h"
+ 939              		.file 10 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\stdlib.h"
+ 940              		.file 11 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\time.h"
+ 941              		.file 12 "Middlewares/Third_Party/LwIP/src/include/lwip/arch.h"
+ 942              		.file 13 "Middlewares/Third_Party/LwIP/src/include/lwip/err.h"
+ 943              		.file 14 "Middlewares/Third_Party/LwIP/src/include/lwip/pbuf.h"
+ 944              		.file 15 "Middlewares/Third_Party/LwIP/src/include/lwip/ip4_addr.h"
+ 945              		.file 16 "Middlewares/Third_Party/LwIP/src/include/lwip/ip_addr.h"
+ 946              		.file 17 "Middlewares/Third_Party/LwIP/src/include/lwip/memp.h"
+ 947              		.file 18 "Middlewares/Third_Party/LwIP/src/include/lwip/priv/memp_priv.h"
+ 948              		.file 19 "Middlewares/Third_Party/LwIP/src/include/lwip/netif.h"
+ 949              		.file 20 "Middlewares/Third_Party/LwIP/src/include/lwip/prot/ip4.h"
+ 950              		.file 21 "Middlewares/Third_Party/LwIP/src/include/lwip/ip.h"
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccUE8gpb.s 			page 37
 
 
- 949              		.file 15 "Middlewares/Third_Party/LwIP/src/include/lwip/ip4_addr.h"
- 950              		.file 16 "Middlewares/Third_Party/LwIP/src/include/lwip/ip_addr.h"
- 951              		.file 17 "Middlewares/Third_Party/LwIP/src/include/lwip/memp.h"
- 952              		.file 18 "Middlewares/Third_Party/LwIP/src/include/lwip/priv/memp_priv.h"
- 953              		.file 19 "Middlewares/Third_Party/LwIP/src/include/lwip/netif.h"
- 954              		.file 20 "Middlewares/Third_Party/LwIP/src/include/lwip/prot/ip4.h"
- 955              		.file 21 "Middlewares/Third_Party/LwIP/src/include/lwip/ip.h"
- 956              		.file 22 "Middlewares/Third_Party/LwIP/src/include/lwip/icmp.h"
- 957              		.file 23 "Middlewares/Third_Party/LwIP/src/include/lwip/prot/udp.h"
- 958              		.file 24 "Middlewares/Third_Party/LwIP/src/include/lwip/udp.h"
- 959              		.file 25 "Middlewares/Third_Party/LwIP/src/include/lwip/tcp.h"
- 960              		.file 26 "Middlewares/Third_Party/LwIP/src/include/lwip/priv/tcp_priv.h"
- 961              		.file 27 "Middlewares/Third_Party/LwIP/src/include/lwip/prot/tcp.h"
- 962              		.file 28 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\stdio.h"
- 963              		.file 29 "Middlewares/Third_Party/LwIP/src/include/lwip/def.h"
- 964              		.file 30 "Middlewares/Third_Party/LwIP/src/include/lwip/ip4_frag.h"
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchSbepg.s 			page 38
+ 951              		.file 22 "Middlewares/Third_Party/LwIP/src/include/lwip/icmp.h"
+ 952              		.file 23 "Middlewares/Third_Party/LwIP/src/include/lwip/prot/udp.h"
+ 953              		.file 24 "Middlewares/Third_Party/LwIP/src/include/lwip/udp.h"
+ 954              		.file 25 "Middlewares/Third_Party/LwIP/src/include/lwip/tcp.h"
+ 955              		.file 26 "Middlewares/Third_Party/LwIP/src/include/lwip/priv/tcp_priv.h"
+ 956              		.file 27 "Middlewares/Third_Party/LwIP/src/include/lwip/prot/tcp.h"
+ 957              		.file 28 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\stdio.h"
+ 958              		.file 29 "Middlewares/Third_Party/LwIP/src/include/lwip/def.h"
+ 959              		.file 30 "Middlewares/Third_Party/LwIP/src/include/lwip/ip4_frag.h"
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccUE8gpb.s 			page 38
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 ip4.c
-C:\Users\Student\AppData\Local\Temp\cchSbepg.s:18     .text.ip4_route:00000000 $t
-C:\Users\Student\AppData\Local\Temp\cchSbepg.s:25     .text.ip4_route:00000000 ip4_route
-C:\Users\Student\AppData\Local\Temp\cchSbepg.s:173    .text.ip4_route:00000098 $d
-C:\Users\Student\AppData\Local\Temp\cchSbepg.s:179    .text.ip4_input:00000000 $t
-C:\Users\Student\AppData\Local\Temp\cchSbepg.s:186    .text.ip4_input:00000000 ip4_input
-C:\Users\Student\AppData\Local\Temp\cchSbepg.s:564    .text.ip4_input:000001dc $d
-C:\Users\Student\AppData\Local\Temp\cchSbepg.s:570    .text.ip4_output_if_src:00000000 $t
-C:\Users\Student\AppData\Local\Temp\cchSbepg.s:577    .text.ip4_output_if_src:00000000 ip4_output_if_src
-C:\Users\Student\AppData\Local\Temp\cchSbepg.s:759    .text.ip4_output_if_src:000000dc $d
-C:\Users\Student\AppData\Local\Temp\cchSbepg.s:770    .text.ip4_output_if:00000000 $t
-C:\Users\Student\AppData\Local\Temp\cchSbepg.s:777    .text.ip4_output_if:00000000 ip4_output_if
-C:\Users\Student\AppData\Local\Temp\cchSbepg.s:828    .text.ip4_output:00000000 $t
-C:\Users\Student\AppData\Local\Temp\cchSbepg.s:835    .text.ip4_output:00000000 ip4_output
-C:\Users\Student\AppData\Local\Temp\cchSbepg.s:910    .text.ip4_output:0000004c $d
-C:\Users\Student\AppData\Local\Temp\cchSbepg.s:917    .bss.ip_id:00000000 $d
-C:\Users\Student\AppData\Local\Temp\cchSbepg.s:921    .bss.ip_id:00000000 ip_id
-C:\Users\Student\AppData\Local\Temp\cchSbepg.s:924    .rodata.ip4_output_if_src.str1.4:00000000 $d
-                     .debug_frame:00000010 $d
+C:\Users\milek\AppData\Local\Temp\ccUE8gpb.s:18     .text.ip4_route:00000000 $t
+C:\Users\milek\AppData\Local\Temp\ccUE8gpb.s:25     .text.ip4_route:00000000 ip4_route
+C:\Users\milek\AppData\Local\Temp\ccUE8gpb.s:176    .text.ip4_route:000000a0 $d
+C:\Users\milek\AppData\Local\Temp\ccUE8gpb.s:182    .text.ip4_input:00000000 $t
+C:\Users\milek\AppData\Local\Temp\ccUE8gpb.s:189    .text.ip4_input:00000000 ip4_input
+C:\Users\milek\AppData\Local\Temp\ccUE8gpb.s:551    .text.ip4_input:000001b8 $d
+C:\Users\milek\AppData\Local\Temp\ccUE8gpb.s:557    .text.ip4_output_if_src:00000000 $t
+C:\Users\milek\AppData\Local\Temp\ccUE8gpb.s:564    .text.ip4_output_if_src:00000000 ip4_output_if_src
+C:\Users\milek\AppData\Local\Temp\ccUE8gpb.s:750    .text.ip4_output_if_src:000000e0 $d
+C:\Users\milek\AppData\Local\Temp\ccUE8gpb.s:761    .text.ip4_output_if:00000000 $t
+C:\Users\milek\AppData\Local\Temp\ccUE8gpb.s:768    .text.ip4_output_if:00000000 ip4_output_if
+C:\Users\milek\AppData\Local\Temp\ccUE8gpb.s:819    .text.ip4_output:00000000 $t
+C:\Users\milek\AppData\Local\Temp\ccUE8gpb.s:826    .text.ip4_output:00000000 ip4_output
+C:\Users\milek\AppData\Local\Temp\ccUE8gpb.s:905    .text.ip4_output:00000050 $d
+C:\Users\milek\AppData\Local\Temp\ccUE8gpb.s:912    .bss.ip_id:00000000 $d
+C:\Users\milek\AppData\Local\Temp\ccUE8gpb.s:916    .bss.ip_id:00000000 ip_id
+C:\Users\milek\AppData\Local\Temp\ccUE8gpb.s:919    .rodata.ip4_output_if_src.str1.4:00000000 $d
 
 UNDEFINED SYMBOLS
 netif_list
@@ -2210,11 +2202,11 @@ pbuf_realloc
 ip4_addr_isbroadcast_u32
 ip4_reass
 pbuf_header
-pbuf_header_force
-icmp_dest_unreach
 udp_input
 tcp_input
 icmp_input
+pbuf_header_force
+icmp_dest_unreach
 ip_data
 printf
 ip4_frag

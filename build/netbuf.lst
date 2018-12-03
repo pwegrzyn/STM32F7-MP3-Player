@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s 			page 1
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccL3R092.s 			page 1
 
 
    1              		.cpu cortex-m7
@@ -25,7 +25,7 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s 			page 1
   22              		.thumb_func
   23              		.fpu fpv5-sp-d16
   25              	netbuf_new:
-  26              	.LFB152:
+  26              	.LFB154:
   27              		.file 1 "Middlewares/Third_Party/LwIP/src/api/netbuf.c"
    1:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** /**
    2:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * @file
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s 			page 1
   29:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
   30:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
   31:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s 			page 2
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccL3R092.s 			page 2
 
 
   32:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s 			page 1
   44              		.loc 1 69 0
   45 000c 0022     		movs	r2, #0
   46 000e 0260     		str	r2, [r0]	@ unaligned
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s 			page 3
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccL3R092.s 			page 3
 
 
   47 0010 4260     		str	r2, [r0, #4]	@ unaligned
@@ -133,7 +133,7 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s 			page 1
   53              	.LVL1:
   54 0018 08BD     		pop	{r3, pc}
   55              		.cfi_endproc
-  56              	.LFE152:
+  56              	.LFE154:
   58              		.section	.text.netbuf_delete,"ax",%progbits
   59              		.align	1
   60              		.global	netbuf_delete
@@ -142,7 +142,7 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s 			page 1
   63              		.thumb_func
   64              		.fpu fpv5-sp-d16
   66              	netbuf_delete:
-  67              	.LFB153:
+  67              	.LFB155:
   73:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** 
   74:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** /**
   75:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * @ingroup netbuf
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s 			page 1
   86              		.loc 1 85 0
   87 000a FFF7FEFF 		bl	pbuf_free
   88              	.LVL4:
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s 			page 4
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccL3R092.s 			page 4
 
 
   86:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****       buf->p = buf->ptr = NULL;
@@ -194,27 +194,28 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s 			page 1
   96 0016 0620     		movs	r0, #6
   97 0018 FFF7FEFF 		bl	memp_free
   98              	.LVL5:
-  99 001c 10BD     		pop	{r4, pc}
- 100              	.LVL6:
- 101              	.L8:
- 102              	.LCFI2:
- 103              		.cfi_def_cfa_offset 0
- 104              		.cfi_restore 4
- 105              		.cfi_restore 14
- 106 001e 7047     		bx	lr
- 107              		.cfi_endproc
- 108              	.LFE153:
- 110              		.section	.text.netbuf_alloc,"ax",%progbits
- 111              		.align	1
- 112              		.global	netbuf_alloc
- 113              		.syntax unified
- 114              		.thumb
- 115              		.thumb_func
- 116              		.fpu fpv5-sp-d16
- 118              	netbuf_alloc:
- 119              	.LFB154:
   89:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   }
   90:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** }
+  99              		.loc 1 90 0
+ 100 001c 10BD     		pop	{r4, pc}
+ 101              	.LVL6:
+ 102              	.L8:
+ 103              	.LCFI2:
+ 104              		.cfi_def_cfa_offset 0
+ 105              		.cfi_restore 4
+ 106              		.cfi_restore 14
+ 107 001e 7047     		bx	lr
+ 108              		.cfi_endproc
+ 109              	.LFE155:
+ 111              		.section	.text.netbuf_alloc,"ax",%progbits
+ 112              		.align	1
+ 113              		.global	netbuf_alloc
+ 114              		.syntax unified
+ 115              		.thumb
+ 116              		.thumb_func
+ 117              		.fpu fpv5-sp-d16
+ 119              	netbuf_alloc:
+ 120              	.LFB156:
   91:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** 
   92:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** /**
   93:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * @ingroup netbuf
@@ -228,121 +229,122 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s 			page 1
  101:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** void *
  102:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** netbuf_alloc(struct netbuf *buf, u16_t size)
  103:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** {
- 120              		.loc 1 103 0
- 121              		.cfi_startproc
- 122              		@ args = 0, pretend = 0, frame = 0
- 123              		@ frame_needed = 0, uses_anonymous_args = 0
- 124              	.LVL7:
- 125 0000 38B5     		push	{r3, r4, r5, lr}
- 126              	.LCFI3:
- 127              		.cfi_def_cfa_offset 16
- 128              		.cfi_offset 3, -16
- 129              		.cfi_offset 4, -12
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s 			page 5
+ 121              		.loc 1 103 0
+ 122              		.cfi_startproc
+ 123              		@ args = 0, pretend = 0, frame = 0
+ 124              		@ frame_needed = 0, uses_anonymous_args = 0
+ 125              	.LVL7:
+ 126 0000 38B5     		push	{r3, r4, r5, lr}
+ 127              	.LCFI3:
+ 128              		.cfi_def_cfa_offset 16
+ 129              		.cfi_offset 3, -16
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccL3R092.s 			page 5
 
 
- 130              		.cfi_offset 5, -8
- 131              		.cfi_offset 14, -4
+ 130              		.cfi_offset 4, -12
+ 131              		.cfi_offset 5, -8
+ 132              		.cfi_offset 14, -4
  104:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   LWIP_ERROR("netbuf_alloc: invalid buf", (buf != NULL), return NULL;);
- 132              		.loc 1 104 0
- 133 0002 98B1     		cbz	r0, .L18
- 134 0004 0D46     		mov	r5, r1
- 135 0006 0446     		mov	r4, r0
+ 133              		.loc 1 104 0
+ 134 0002 98B1     		cbz	r0, .L18
+ 135 0004 0D46     		mov	r5, r1
+ 136 0006 0446     		mov	r4, r0
  105:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** 
  106:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   /* Deallocate any previously allocated memory. */
  107:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   if (buf->p != NULL) {
- 136              		.loc 1 107 0
- 137 0008 0068     		ldr	r0, [r0]
- 138              	.LVL8:
- 139 000a 08B1     		cbz	r0, .L14
+ 137              		.loc 1 107 0
+ 138 0008 0068     		ldr	r0, [r0]
+ 139              	.LVL8:
+ 140 000a 08B1     		cbz	r0, .L14
  108:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****     pbuf_free(buf->p);
- 140              		.loc 1 108 0
- 141 000c FFF7FEFF 		bl	pbuf_free
- 142              	.LVL9:
- 143              	.L14:
+ 141              		.loc 1 108 0
+ 142 000c FFF7FEFF 		bl	pbuf_free
+ 143              	.LVL9:
+ 144              	.L14:
  109:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   }
  110:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   buf->p = pbuf_alloc(PBUF_TRANSPORT, size, PBUF_RAM);
- 144              		.loc 1 110 0
- 145 0010 0022     		movs	r2, #0
- 146 0012 2946     		mov	r1, r5
- 147 0014 1046     		mov	r0, r2
- 148 0016 FFF7FEFF 		bl	pbuf_alloc
- 149              	.LVL10:
- 150 001a 2060     		str	r0, [r4]
+ 145              		.loc 1 110 0
+ 146 0010 0022     		movs	r2, #0
+ 147 0012 2946     		mov	r1, r5
+ 148 0014 1046     		mov	r0, r2
+ 149 0016 FFF7FEFF 		bl	pbuf_alloc
+ 150              	.LVL10:
+ 151 001a 2060     		str	r0, [r4]
  111:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   if (buf->p == NULL) {
- 151              		.loc 1 111 0
- 152 001c A8B1     		cbz	r0, .L16
+ 152              		.loc 1 111 0
+ 153 001c A8B1     		cbz	r0, .L16
  112:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****      return NULL;
  113:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   }
  114:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   LWIP_ASSERT("check that first pbuf can hold size",
- 153              		.loc 1 114 0
- 154 001e 4389     		ldrh	r3, [r0, #10]
- 155 0020 9D42     		cmp	r5, r3
- 156 0022 0BD8     		bhi	.L19
- 157              	.L15:
+ 154              		.loc 1 114 0
+ 155 001e 4389     		ldrh	r3, [r0, #10]
+ 156 0020 AB42     		cmp	r3, r5
+ 157 0022 0BD3     		bcc	.L19
+ 158              	.L15:
  115:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****              (buf->p->len >= size));
  116:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   buf->ptr = buf->p;
- 158              		.loc 1 116 0
- 159 0024 2368     		ldr	r3, [r4]
- 160 0026 6360     		str	r3, [r4, #4]
+ 159              		.loc 1 116 0
+ 160 0024 2368     		ldr	r3, [r4]
+ 161 0026 6360     		str	r3, [r4, #4]
  117:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   return buf->p->payload;
- 161              		.loc 1 117 0
- 162 0028 5868     		ldr	r0, [r3, #4]
- 163 002a 38BD     		pop	{r3, r4, r5, pc}
+ 162              		.loc 1 117 0
+ 163 0028 5868     		ldr	r0, [r3, #4]
  164              	.LVL11:
- 165              	.L18:
- 104:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** 
- 166              		.loc 1 104 0 discriminator 1
- 167 002c 084B     		ldr	r3, .L20
- 168 002e 6822     		movs	r2, #104
- 169 0030 0849     		ldr	r1, .L20+4
- 170              	.LVL12:
- 171 0032 0948     		ldr	r0, .L20+8
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s 			page 6
-
-
- 172              	.LVL13:
- 173 0034 FFF7FEFF 		bl	printf
- 174              	.LVL14:
- 175 0038 0020     		movs	r0, #0
- 176 003a 38BD     		pop	{r3, r4, r5, pc}
- 177              	.LVL15:
- 178              	.L19:
- 114:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****              (buf->p->len >= size));
- 179              		.loc 1 114 0 discriminator 1
- 180 003c 044B     		ldr	r3, .L20
- 181 003e 7322     		movs	r2, #115
- 182 0040 0649     		ldr	r1, .L20+12
- 183 0042 0548     		ldr	r0, .L20+8
- 184 0044 FFF7FEFF 		bl	printf
- 185              	.LVL16:
- 186 0048 ECE7     		b	.L15
- 187              	.L16:
- 112:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   }
- 188              		.loc 1 112 0
- 189 004a 0020     		movs	r0, #0
+ 165              	.L11:
  118:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** }
- 190              		.loc 1 118 0
- 191 004c 38BD     		pop	{r3, r4, r5, pc}
- 192              	.LVL17:
- 193              	.L21:
- 194 004e 00BF     		.align	2
- 195              	.L20:
- 196 0050 00000000 		.word	.LC0
- 197 0054 30000000 		.word	.LC1
- 198 0058 4C000000 		.word	.LC2
- 199 005c 74000000 		.word	.LC3
- 200              		.cfi_endproc
- 201              	.LFE154:
- 203              		.section	.text.netbuf_free,"ax",%progbits
- 204              		.align	1
- 205              		.global	netbuf_free
- 206              		.syntax unified
- 207              		.thumb
- 208              		.thumb_func
- 209              		.fpu fpv5-sp-d16
- 211              	netbuf_free:
- 212              	.LFB155:
+ 166              		.loc 1 118 0
+ 167 002a 38BD     		pop	{r3, r4, r5, pc}
+ 168              	.LVL12:
+ 169              	.L18:
+ 104:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** 
+ 170              		.loc 1 104 0 discriminator 1
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccL3R092.s 			page 6
+
+
+ 171 002c 084B     		ldr	r3, .L20
+ 172 002e 6822     		movs	r2, #104
+ 173 0030 0849     		ldr	r1, .L20+4
+ 174              	.LVL13:
+ 175 0032 0948     		ldr	r0, .L20+8
+ 176              	.LVL14:
+ 177 0034 FFF7FEFF 		bl	printf
+ 178              	.LVL15:
+ 179 0038 0020     		movs	r0, #0
+ 180 003a F6E7     		b	.L11
+ 181              	.LVL16:
+ 182              	.L19:
+ 114:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****              (buf->p->len >= size));
+ 183              		.loc 1 114 0 discriminator 1
+ 184 003c 044B     		ldr	r3, .L20
+ 185 003e 7322     		movs	r2, #115
+ 186 0040 0649     		ldr	r1, .L20+12
+ 187 0042 0548     		ldr	r0, .L20+8
+ 188 0044 FFF7FEFF 		bl	printf
+ 189              	.LVL17:
+ 190 0048 ECE7     		b	.L15
+ 191              	.L16:
+ 112:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   }
+ 192              		.loc 1 112 0
+ 193 004a 0020     		movs	r0, #0
+ 194 004c EDE7     		b	.L11
+ 195              	.L21:
+ 196 004e 00BF     		.align	2
+ 197              	.L20:
+ 198 0050 00000000 		.word	.LC0
+ 199 0054 30000000 		.word	.LC1
+ 200 0058 4C000000 		.word	.LC2
+ 201 005c 74000000 		.word	.LC3
+ 202              		.cfi_endproc
+ 203              	.LFE156:
+ 205              		.section	.text.netbuf_free,"ax",%progbits
+ 206              		.align	1
+ 207              		.global	netbuf_free
+ 208              		.syntax unified
+ 209              		.thumb
+ 210              		.thumb_func
+ 211              		.fpu fpv5-sp-d16
+ 213              	netbuf_free:
+ 214              	.LFB157:
  119:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** 
  120:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** /**
  121:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * @ingroup netbuf
@@ -353,74 +355,77 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s 			page 1
  126:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** void
  127:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** netbuf_free(struct netbuf *buf)
  128:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** {
- 213              		.loc 1 128 0
- 214              		.cfi_startproc
- 215              		@ args = 0, pretend = 0, frame = 0
- 216              		@ frame_needed = 0, uses_anonymous_args = 0
- 217              	.LVL18:
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s 			page 7
+ 215              		.loc 1 128 0
+ 216              		.cfi_startproc
+ 217              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccL3R092.s 			page 7
 
 
- 218 0000 10B5     		push	{r4, lr}
- 219              	.LCFI4:
- 220              		.cfi_def_cfa_offset 8
- 221              		.cfi_offset 4, -8
- 222              		.cfi_offset 14, -4
+ 218              		@ frame_needed = 0, uses_anonymous_args = 0
+ 219              	.LVL18:
+ 220 0000 10B5     		push	{r4, lr}
+ 221              	.LCFI4:
+ 222              		.cfi_def_cfa_offset 8
+ 223              		.cfi_offset 4, -8
+ 224              		.cfi_offset 14, -4
  129:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   LWIP_ERROR("netbuf_free: invalid buf", (buf != NULL), return;);
- 223              		.loc 1 129 0
- 224 0002 40B1     		cbz	r0, .L27
- 225 0004 0446     		mov	r4, r0
+ 225              		.loc 1 129 0
+ 226 0002 40B1     		cbz	r0, .L27
+ 227 0004 0446     		mov	r4, r0
  130:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   if (buf->p != NULL) {
- 226              		.loc 1 130 0
- 227 0006 0068     		ldr	r0, [r0]
- 228              	.LVL19:
- 229 0008 08B1     		cbz	r0, .L25
+ 228              		.loc 1 130 0
+ 229 0006 0068     		ldr	r0, [r0]
+ 230              	.LVL19:
+ 231 0008 08B1     		cbz	r0, .L25
  131:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****     pbuf_free(buf->p);
- 230              		.loc 1 131 0
- 231 000a FFF7FEFF 		bl	pbuf_free
- 232              	.LVL20:
- 233              	.L25:
+ 232              		.loc 1 131 0
+ 233 000a FFF7FEFF 		bl	pbuf_free
+ 234              	.LVL20:
+ 235              	.L25:
  132:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   }
  133:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   buf->p = buf->ptr = NULL;
- 234              		.loc 1 133 0
- 235 000e 0023     		movs	r3, #0
- 236 0010 6360     		str	r3, [r4, #4]
- 237 0012 2360     		str	r3, [r4]
- 238 0014 10BD     		pop	{r4, pc}
- 239              	.LVL21:
- 240              	.L27:
- 129:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   if (buf->p != NULL) {
- 241              		.loc 1 129 0 discriminator 1
- 242 0016 034B     		ldr	r3, .L28
- 243 0018 8122     		movs	r2, #129
- 244 001a 0349     		ldr	r1, .L28+4
- 245 001c 0348     		ldr	r0, .L28+8
- 246              	.LVL22:
- 247 001e FFF7FEFF 		bl	printf
- 248              	.LVL23:
- 249 0022 10BD     		pop	{r4, pc}
- 250              	.L29:
- 251              		.align	2
- 252              	.L28:
- 253 0024 00000000 		.word	.LC0
- 254 0028 00000000 		.word	.LC4
- 255 002c 4C000000 		.word	.LC2
- 256              		.cfi_endproc
- 257              	.LFE155:
- 259              		.section	.text.netbuf_ref,"ax",%progbits
- 260              		.align	1
- 261              		.global	netbuf_ref
- 262              		.syntax unified
- 263              		.thumb
- 264              		.thumb_func
- 265              		.fpu fpv5-sp-d16
- 267              	netbuf_ref:
- 268              	.LFB156:
+ 236              		.loc 1 133 0
+ 237 000e 0023     		movs	r3, #0
+ 238 0010 6360     		str	r3, [r4, #4]
+ 239 0012 2360     		str	r3, [r4]
+ 240              	.LVL21:
+ 241              	.L22:
  134:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** }
+ 242              		.loc 1 134 0
+ 243 0014 10BD     		pop	{r4, pc}
+ 244              	.LVL22:
+ 245              	.L27:
+ 129:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   if (buf->p != NULL) {
+ 246              		.loc 1 129 0 discriminator 1
+ 247 0016 034B     		ldr	r3, .L28
+ 248 0018 8122     		movs	r2, #129
+ 249 001a 0349     		ldr	r1, .L28+4
+ 250 001c 0348     		ldr	r0, .L28+8
+ 251              	.LVL23:
+ 252 001e FFF7FEFF 		bl	printf
+ 253              	.LVL24:
+ 254 0022 F7E7     		b	.L22
+ 255              	.L29:
+ 256              		.align	2
+ 257              	.L28:
+ 258 0024 00000000 		.word	.LC0
+ 259 0028 00000000 		.word	.LC4
+ 260 002c 4C000000 		.word	.LC2
+ 261              		.cfi_endproc
+ 262              	.LFE157:
+ 264              		.section	.text.netbuf_ref,"ax",%progbits
+ 265              		.align	1
+ 266              		.global	netbuf_ref
+ 267              		.syntax unified
+ 268              		.thumb
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccL3R092.s 			page 8
+
+
+ 269              		.thumb_func
+ 270              		.fpu fpv5-sp-d16
+ 272              	netbuf_ref:
+ 273              	.LFB158:
  135:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** 
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s 			page 8
-
-
  136:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** /**
  137:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * @ingroup netbuf
  138:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * Let a netbuf reference existing (non-volatile) data.
@@ -434,116 +439,118 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s 			page 1
  146:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** err_t
  147:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** netbuf_ref(struct netbuf *buf, const void *dataptr, u16_t size)
  148:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** {
- 269              		.loc 1 148 0
- 270              		.cfi_startproc
- 271              		@ args = 0, pretend = 0, frame = 0
- 272              		@ frame_needed = 0, uses_anonymous_args = 0
- 273              	.LVL24:
- 274 0000 70B5     		push	{r4, r5, r6, lr}
- 275              	.LCFI5:
- 276              		.cfi_def_cfa_offset 16
- 277              		.cfi_offset 4, -16
- 278              		.cfi_offset 5, -12
- 279              		.cfi_offset 6, -8
- 280              		.cfi_offset 14, -4
+ 274              		.loc 1 148 0
+ 275              		.cfi_startproc
+ 276              		@ args = 0, pretend = 0, frame = 0
+ 277              		@ frame_needed = 0, uses_anonymous_args = 0
+ 278              	.LVL25:
+ 279 0000 70B5     		push	{r4, r5, r6, lr}
+ 280              	.LCFI5:
+ 281              		.cfi_def_cfa_offset 16
+ 282              		.cfi_offset 4, -16
+ 283              		.cfi_offset 5, -12
+ 284              		.cfi_offset 6, -8
+ 285              		.cfi_offset 14, -4
  149:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   LWIP_ERROR("netbuf_ref: invalid buf", (buf != NULL), return ERR_ARG;);
- 281              		.loc 1 149 0
- 282 0002 A8B1     		cbz	r0, .L36
- 283 0004 0E46     		mov	r6, r1
- 284 0006 1546     		mov	r5, r2
- 285 0008 0446     		mov	r4, r0
+ 286              		.loc 1 149 0
+ 287 0002 B0B1     		cbz	r0, .L36
+ 288 0004 0E46     		mov	r6, r1
+ 289 0006 1546     		mov	r5, r2
+ 290 0008 0446     		mov	r4, r0
  150:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   if (buf->p != NULL) {
- 286              		.loc 1 150 0
- 287 000a 0068     		ldr	r0, [r0]
- 288              	.LVL25:
- 289 000c 08B1     		cbz	r0, .L33
+ 291              		.loc 1 150 0
+ 292 000a 0068     		ldr	r0, [r0]
+ 293              	.LVL26:
+ 294 000c 08B1     		cbz	r0, .L33
  151:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****     pbuf_free(buf->p);
- 290              		.loc 1 151 0
- 291 000e FFF7FEFF 		bl	pbuf_free
- 292              	.LVL26:
- 293              	.L33:
+ 295              		.loc 1 151 0
+ 296 000e FFF7FEFF 		bl	pbuf_free
+ 297              	.LVL27:
+ 298              	.L33:
  152:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   }
  153:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   buf->p = pbuf_alloc(PBUF_TRANSPORT, 0, PBUF_REF);
- 294              		.loc 1 153 0
- 295 0012 0222     		movs	r2, #2
- 296 0014 0021     		movs	r1, #0
- 297 0016 0846     		mov	r0, r1
- 298 0018 FFF7FEFF 		bl	pbuf_alloc
- 299              	.LVL27:
- 300 001c 2060     		str	r0, [r4]
+ 299              		.loc 1 153 0
+ 300 0012 0222     		movs	r2, #2
+ 301 0014 0021     		movs	r1, #0
+ 302 0016 0846     		mov	r0, r1
+ 303 0018 FFF7FEFF 		bl	pbuf_alloc
+ 304              	.LVL28:
+ 305 001c 2060     		str	r0, [r4]
  154:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   if (buf->p == NULL) {
- 301              		.loc 1 154 0
- 302 001e 80B1     		cbz	r0, .L37
+ 306              		.loc 1 154 0
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccL3R092.s 			page 9
+
+
+ 307 001e 88B1     		cbz	r0, .L37
  155:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****     buf->ptr = NULL;
  156:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****     return ERR_MEM;
  157:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   }
  158:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   ((struct pbuf_rom*)buf->p)->payload = dataptr;
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s 			page 9
-
-
- 303              		.loc 1 158 0
- 304 0020 4660     		str	r6, [r0, #4]
+ 308              		.loc 1 158 0
+ 309 0020 4660     		str	r6, [r0, #4]
  159:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   buf->p->len = buf->p->tot_len = size;
- 305              		.loc 1 159 0
- 306 0022 2368     		ldr	r3, [r4]
- 307 0024 1D81     		strh	r5, [r3, #8]	@ movhi
- 308 0026 5D81     		strh	r5, [r3, #10]	@ movhi
+ 310              		.loc 1 159 0
+ 311 0022 2368     		ldr	r3, [r4]
+ 312 0024 1D81     		strh	r5, [r3, #8]	@ movhi
+ 313 0026 2368     		ldr	r3, [r4]
+ 314 0028 5D81     		strh	r5, [r3, #10]	@ movhi
  160:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   buf->ptr = buf->p;
- 309              		.loc 1 160 0
- 310 0028 2368     		ldr	r3, [r4]
- 311 002a 6360     		str	r3, [r4, #4]
+ 315              		.loc 1 160 0
+ 316 002a 2368     		ldr	r3, [r4]
+ 317 002c 6360     		str	r3, [r4, #4]
  161:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   return ERR_OK;
- 312              		.loc 1 161 0
- 313 002c 0020     		movs	r0, #0
+ 318              		.loc 1 161 0
+ 319 002e 0020     		movs	r0, #0
+ 320              	.LVL29:
+ 321              	.L32:
  162:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** }
- 314              		.loc 1 162 0
- 315 002e 70BD     		pop	{r4, r5, r6, pc}
- 316              	.LVL28:
- 317              	.L36:
+ 322              		.loc 1 162 0
+ 323 0030 70BD     		pop	{r4, r5, r6, pc}
+ 324              	.LVL30:
+ 325              	.L36:
  149:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   if (buf->p != NULL) {
- 318              		.loc 1 149 0 discriminator 1
- 319 0030 064B     		ldr	r3, .L38
- 320 0032 9522     		movs	r2, #149
- 321              	.LVL29:
- 322 0034 0649     		ldr	r1, .L38+4
- 323              	.LVL30:
- 324 0036 0748     		ldr	r0, .L38+8
- 325              	.LVL31:
- 326 0038 FFF7FEFF 		bl	printf
- 327              	.LVL32:
- 328 003c 6FF00F00 		mvn	r0, #15
- 329 0040 70BD     		pop	{r4, r5, r6, pc}
- 330              	.LVL33:
- 331              	.L37:
+ 326              		.loc 1 149 0 discriminator 1
+ 327 0032 074B     		ldr	r3, .L38
+ 328 0034 9522     		movs	r2, #149
+ 329              	.LVL31:
+ 330 0036 0749     		ldr	r1, .L38+4
+ 331              	.LVL32:
+ 332 0038 0748     		ldr	r0, .L38+8
+ 333              	.LVL33:
+ 334 003a FFF7FEFF 		bl	printf
+ 335              	.LVL34:
+ 336 003e 6FF00F00 		mvn	r0, #15
+ 337 0042 F5E7     		b	.L32
+ 338              	.LVL35:
+ 339              	.L37:
  155:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****     return ERR_MEM;
- 332              		.loc 1 155 0
- 333 0042 0023     		movs	r3, #0
- 334 0044 6360     		str	r3, [r4, #4]
+ 340              		.loc 1 155 0
+ 341 0044 0023     		movs	r3, #0
+ 342 0046 6360     		str	r3, [r4, #4]
  156:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   }
- 335              		.loc 1 156 0
- 336 0046 4FF0FF30 		mov	r0, #-1
- 337 004a 70BD     		pop	{r4, r5, r6, pc}
- 338              	.LVL34:
- 339              	.L39:
- 340              		.align	2
- 341              	.L38:
- 342 004c 00000000 		.word	.LC0
- 343 0050 00000000 		.word	.LC5
- 344 0054 4C000000 		.word	.LC2
- 345              		.cfi_endproc
- 346              	.LFE156:
- 348              		.section	.text.netbuf_chain,"ax",%progbits
- 349              		.align	1
- 350              		.global	netbuf_chain
- 351              		.syntax unified
- 352              		.thumb
- 353              		.thumb_func
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s 			page 10
+ 343              		.loc 1 156 0
+ 344 0048 4FF0FF30 		mov	r0, #-1
+ 345 004c F0E7     		b	.L32
+ 346              	.L39:
+ 347 004e 00BF     		.align	2
+ 348              	.L38:
+ 349 0050 00000000 		.word	.LC0
+ 350 0054 00000000 		.word	.LC5
+ 351 0058 4C000000 		.word	.LC2
+ 352              		.cfi_endproc
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccL3R092.s 			page 10
 
 
- 354              		.fpu fpv5-sp-d16
- 356              	netbuf_chain:
- 357              	.LFB157:
+ 353              	.LFE158:
+ 355              		.section	.text.netbuf_chain,"ax",%progbits
+ 356              		.align	1
+ 357              		.global	netbuf_chain
+ 358              		.syntax unified
+ 359              		.thumb
+ 360              		.thumb_func
+ 361              		.fpu fpv5-sp-d16
+ 363              	netbuf_chain:
+ 364              	.LFB159:
  163:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** 
  164:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** /**
  165:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * @ingroup netbuf
@@ -555,94 +562,95 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s 			page 1
  171:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** void
  172:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** netbuf_chain(struct netbuf *head, struct netbuf *tail)
  173:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** {
- 358              		.loc 1 173 0
- 359              		.cfi_startproc
- 360              		@ args = 0, pretend = 0, frame = 0
- 361              		@ frame_needed = 0, uses_anonymous_args = 0
- 362              	.LVL35:
- 363 0000 38B5     		push	{r3, r4, r5, lr}
- 364              	.LCFI6:
- 365              		.cfi_def_cfa_offset 16
- 366              		.cfi_offset 3, -16
- 367              		.cfi_offset 4, -12
- 368              		.cfi_offset 5, -8
- 369              		.cfi_offset 14, -4
+ 365              		.loc 1 173 0
+ 366              		.cfi_startproc
+ 367              		@ args = 0, pretend = 0, frame = 0
+ 368              		@ frame_needed = 0, uses_anonymous_args = 0
+ 369              	.LVL36:
+ 370 0000 38B5     		push	{r3, r4, r5, lr}
+ 371              	.LCFI6:
+ 372              		.cfi_def_cfa_offset 16
+ 373              		.cfi_offset 3, -16
+ 374              		.cfi_offset 4, -12
+ 375              		.cfi_offset 5, -8
+ 376              		.cfi_offset 14, -4
  174:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   LWIP_ERROR("netbuf_chain: invalid head", (head != NULL), return;);
- 370              		.loc 1 174 0
- 371 0002 68B1     		cbz	r0, .L45
- 372 0004 0C46     		mov	r4, r1
- 373 0006 0546     		mov	r5, r0
+ 377              		.loc 1 174 0
+ 378 0002 68B1     		cbz	r0, .L45
+ 379 0004 0C46     		mov	r4, r1
+ 380 0006 0546     		mov	r5, r0
  175:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   LWIP_ERROR("netbuf_chain: invalid tail", (tail != NULL), return;);
- 374              		.loc 1 175 0
- 375 0008 89B1     		cbz	r1, .L46
+ 381              		.loc 1 175 0
+ 382 0008 89B1     		cbz	r1, .L46
  176:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   pbuf_cat(head->p, tail->p);
- 376              		.loc 1 176 0
- 377 000a 0968     		ldr	r1, [r1]
- 378              	.LVL36:
- 379 000c 0068     		ldr	r0, [r0]
- 380              	.LVL37:
- 381 000e FFF7FEFF 		bl	pbuf_cat
- 382              	.LVL38:
+ 383              		.loc 1 176 0
+ 384 000a 0968     		ldr	r1, [r1]
+ 385              	.LVL37:
+ 386 000c 0068     		ldr	r0, [r0]
+ 387              	.LVL38:
+ 388 000e FFF7FEFF 		bl	pbuf_cat
+ 389              	.LVL39:
  177:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   head->ptr = head->p;
- 383              		.loc 1 177 0
- 384 0012 2B68     		ldr	r3, [r5]
- 385 0014 6B60     		str	r3, [r5, #4]
+ 390              		.loc 1 177 0
+ 391 0012 2B68     		ldr	r3, [r5]
+ 392 0014 6B60     		str	r3, [r5, #4]
  178:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   memp_free(MEMP_NETBUF, tail);
- 386              		.loc 1 178 0
- 387 0016 2146     		mov	r1, r4
- 388 0018 0620     		movs	r0, #6
- 389 001a FFF7FEFF 		bl	memp_free
- 390              	.LVL39:
- 391 001e 38BD     		pop	{r3, r4, r5, pc}
- 392              	.LVL40:
- 393              	.L45:
- 174:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   LWIP_ERROR("netbuf_chain: invalid tail", (tail != NULL), return;);
- 394              		.loc 1 174 0 discriminator 1
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s 			page 11
+ 393              		.loc 1 178 0
+ 394 0016 2146     		mov	r1, r4
+ 395 0018 0620     		movs	r0, #6
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccL3R092.s 			page 11
 
 
- 395 0020 064B     		ldr	r3, .L47
- 396 0022 AE22     		movs	r2, #174
- 397 0024 0649     		ldr	r1, .L47+4
- 398              	.LVL41:
- 399 0026 0748     		ldr	r0, .L47+8
- 400              	.LVL42:
- 401 0028 FFF7FEFF 		bl	printf
- 402              	.LVL43:
- 403 002c 38BD     		pop	{r3, r4, r5, pc}
- 404              	.LVL44:
- 405              	.L46:
- 175:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   pbuf_cat(head->p, tail->p);
- 406              		.loc 1 175 0 discriminator 1
- 407 002e 034B     		ldr	r3, .L47
- 408 0030 AF22     		movs	r2, #175
- 409 0032 0549     		ldr	r1, .L47+12
- 410              	.LVL45:
- 411 0034 0348     		ldr	r0, .L47+8
- 412              	.LVL46:
- 413 0036 FFF7FEFF 		bl	printf
- 414              	.LVL47:
- 415 003a 38BD     		pop	{r3, r4, r5, pc}
- 416              	.LVL48:
- 417              	.L48:
- 418              		.align	2
- 419              	.L47:
- 420 003c 00000000 		.word	.LC0
- 421 0040 00000000 		.word	.LC6
- 422 0044 4C000000 		.word	.LC2
- 423 0048 1C000000 		.word	.LC7
- 424              		.cfi_endproc
- 425              	.LFE157:
- 427              		.section	.text.netbuf_data,"ax",%progbits
- 428              		.align	1
- 429              		.global	netbuf_data
- 430              		.syntax unified
- 431              		.thumb
- 432              		.thumb_func
- 433              		.fpu fpv5-sp-d16
- 435              	netbuf_data:
- 436              	.LFB158:
+ 396 001a FFF7FEFF 		bl	memp_free
+ 397              	.LVL40:
+ 398              	.L40:
  179:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** }
+ 399              		.loc 1 179 0
+ 400 001e 38BD     		pop	{r3, r4, r5, pc}
+ 401              	.LVL41:
+ 402              	.L45:
+ 174:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   LWIP_ERROR("netbuf_chain: invalid tail", (tail != NULL), return;);
+ 403              		.loc 1 174 0 discriminator 1
+ 404 0020 064B     		ldr	r3, .L47
+ 405 0022 AE22     		movs	r2, #174
+ 406 0024 0649     		ldr	r1, .L47+4
+ 407              	.LVL42:
+ 408 0026 0748     		ldr	r0, .L47+8
+ 409              	.LVL43:
+ 410 0028 FFF7FEFF 		bl	printf
+ 411              	.LVL44:
+ 412 002c F7E7     		b	.L40
+ 413              	.LVL45:
+ 414              	.L46:
+ 175:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   pbuf_cat(head->p, tail->p);
+ 415              		.loc 1 175 0 discriminator 1
+ 416 002e 034B     		ldr	r3, .L47
+ 417 0030 AF22     		movs	r2, #175
+ 418 0032 0549     		ldr	r1, .L47+12
+ 419              	.LVL46:
+ 420 0034 0348     		ldr	r0, .L47+8
+ 421              	.LVL47:
+ 422 0036 FFF7FEFF 		bl	printf
+ 423              	.LVL48:
+ 424 003a F0E7     		b	.L40
+ 425              	.L48:
+ 426              		.align	2
+ 427              	.L47:
+ 428 003c 00000000 		.word	.LC0
+ 429 0040 00000000 		.word	.LC6
+ 430 0044 4C000000 		.word	.LC2
+ 431 0048 1C000000 		.word	.LC7
+ 432              		.cfi_endproc
+ 433              	.LFE159:
+ 435              		.section	.text.netbuf_data,"ax",%progbits
+ 436              		.align	1
+ 437              		.global	netbuf_data
+ 438              		.syntax unified
+ 439              		.thumb
+ 440              		.thumb_func
+ 441              		.fpu fpv5-sp-d16
+ 443              	netbuf_data:
+ 444              	.LFB160:
  180:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** 
  181:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** /**
  182:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * @ingroup netbuf
@@ -650,6 +658,9 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s 			page 1
  184:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  *
  185:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * @param buf netbuf to get the data from
  186:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * @param dataptr pointer to a void pointer where to store the data pointer
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccL3R092.s 			page 12
+
+
  187:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * @param len pointer to an u16_t where the length of the data is stored
  188:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * @return ERR_OK if the information was retrieved,
  189:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  *         ERR_BUF on error.
@@ -657,130 +668,128 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s 			page 1
  191:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** err_t
  192:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** netbuf_data(struct netbuf *buf, void **dataptr, u16_t *len)
  193:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** {
- 437              		.loc 1 193 0
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s 			page 12
-
-
- 438              		.cfi_startproc
- 439              		@ args = 0, pretend = 0, frame = 0
- 440              		@ frame_needed = 0, uses_anonymous_args = 0
- 441              	.LVL49:
- 442 0000 08B5     		push	{r3, lr}
- 443              	.LCFI7:
- 444              		.cfi_def_cfa_offset 8
- 445              		.cfi_offset 3, -8
- 446              		.cfi_offset 14, -4
+ 445              		.loc 1 193 0
+ 446              		.cfi_startproc
+ 447              		@ args = 0, pretend = 0, frame = 0
+ 448              		@ frame_needed = 0, uses_anonymous_args = 0
+ 449              	.LVL49:
+ 450 0000 08B5     		push	{r3, lr}
+ 451              	.LCFI7:
+ 452              		.cfi_def_cfa_offset 8
+ 453              		.cfi_offset 3, -8
+ 454              		.cfi_offset 14, -4
  194:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   LWIP_ERROR("netbuf_data: invalid buf", (buf != NULL), return ERR_ARG;);
- 447              		.loc 1 194 0
- 448 0002 58B1     		cbz	r0, .L56
- 449 0004 0346     		mov	r3, r0
+ 455              		.loc 1 194 0
+ 456 0002 58B1     		cbz	r0, .L56
+ 457 0004 0346     		mov	r3, r0
  195:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   LWIP_ERROR("netbuf_data: invalid dataptr", (dataptr != NULL), return ERR_ARG;);
- 450              		.loc 1 195 0
- 451 0006 91B1     		cbz	r1, .L57
+ 458              		.loc 1 195 0
+ 459 0006 91B1     		cbz	r1, .L57
  196:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   LWIP_ERROR("netbuf_data: invalid len", (len != NULL), return ERR_ARG;);
- 452              		.loc 1 196 0
- 453 0008 D2B1     		cbz	r2, .L58
+ 460              		.loc 1 196 0
+ 461 0008 D2B1     		cbz	r2, .L58
  197:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** 
  198:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   if (buf->ptr == NULL) {
- 454              		.loc 1 198 0
- 455 000a 4068     		ldr	r0, [r0, #4]
- 456              	.LVL50:
- 457 000c 08B3     		cbz	r0, .L54
+ 462              		.loc 1 198 0
+ 463 000a 4068     		ldr	r0, [r0, #4]
+ 464              	.LVL50:
+ 465 000c 08B3     		cbz	r0, .L54
  199:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****     return ERR_BUF;
  200:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   }
  201:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   *dataptr = buf->ptr->payload;
- 458              		.loc 1 201 0
- 459 000e 4068     		ldr	r0, [r0, #4]
- 460 0010 0860     		str	r0, [r1]
+ 466              		.loc 1 201 0
+ 467 000e 4068     		ldr	r0, [r0, #4]
+ 468 0010 0860     		str	r0, [r1]
  202:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   *len = buf->ptr->len;
- 461              		.loc 1 202 0
- 462 0012 5B68     		ldr	r3, [r3, #4]
- 463              	.LVL51:
- 464 0014 5B89     		ldrh	r3, [r3, #10]
- 465 0016 1380     		strh	r3, [r2]	@ movhi
+ 469              		.loc 1 202 0
+ 470 0012 5B68     		ldr	r3, [r3, #4]
+ 471              	.LVL51:
+ 472 0014 5B89     		ldrh	r3, [r3, #10]
+ 473 0016 1380     		strh	r3, [r2]	@ movhi
  203:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   return ERR_OK;
- 466              		.loc 1 203 0
- 467 0018 0020     		movs	r0, #0
- 468 001a 08BD     		pop	{r3, pc}
- 469              	.LVL52:
- 470              	.L56:
- 194:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   LWIP_ERROR("netbuf_data: invalid dataptr", (dataptr != NULL), return ERR_ARG;);
- 471              		.loc 1 194 0 discriminator 1
- 472 001c 0E4B     		ldr	r3, .L59
- 473 001e C222     		movs	r2, #194
- 474              	.LVL53:
- 475 0020 0E49     		ldr	r1, .L59+4
- 476              	.LVL54:
- 477 0022 0F48     		ldr	r0, .L59+8
- 478              	.LVL55:
- 479 0024 FFF7FEFF 		bl	printf
- 480              	.LVL56:
- 481 0028 6FF00F00 		mvn	r0, #15
- 482 002c 08BD     		pop	{r3, pc}
- 483              	.LVL57:
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s 			page 13
-
-
- 484              	.L57:
- 195:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   LWIP_ERROR("netbuf_data: invalid len", (len != NULL), return ERR_ARG;);
- 485              		.loc 1 195 0 discriminator 1
- 486 002e 0A4B     		ldr	r3, .L59
- 487 0030 C322     		movs	r2, #195
- 488              	.LVL58:
- 489 0032 0C49     		ldr	r1, .L59+12
- 490              	.LVL59:
- 491 0034 0A48     		ldr	r0, .L59+8
- 492              	.LVL60:
- 493 0036 FFF7FEFF 		bl	printf
- 494              	.LVL61:
- 495 003a 6FF00F00 		mvn	r0, #15
- 496 003e 08BD     		pop	{r3, pc}
- 497              	.LVL62:
- 498              	.L58:
- 196:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** 
- 499              		.loc 1 196 0 discriminator 1
- 500 0040 054B     		ldr	r3, .L59
- 501 0042 C422     		movs	r2, #196
- 502              	.LVL63:
- 503 0044 0849     		ldr	r1, .L59+16
- 504              	.LVL64:
- 505 0046 0648     		ldr	r0, .L59+8
- 506              	.LVL65:
- 507 0048 FFF7FEFF 		bl	printf
- 508              	.LVL66:
- 509 004c 6FF00F00 		mvn	r0, #15
- 510 0050 08BD     		pop	{r3, pc}
- 511              	.LVL67:
- 512              	.L54:
- 199:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   }
- 513              		.loc 1 199 0
- 514 0052 6FF00100 		mvn	r0, #1
+ 474              		.loc 1 203 0
+ 475 0018 0020     		movs	r0, #0
+ 476              	.LVL52:
+ 477              	.L51:
  204:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** }
- 515              		.loc 1 204 0
- 516 0056 08BD     		pop	{r3, pc}
- 517              	.LVL68:
- 518              	.L60:
- 519              		.align	2
- 520              	.L59:
- 521 0058 00000000 		.word	.LC0
- 522 005c 00000000 		.word	.LC8
- 523 0060 4C000000 		.word	.LC2
- 524 0064 1C000000 		.word	.LC9
- 525 0068 3C000000 		.word	.LC10
- 526              		.cfi_endproc
- 527              	.LFE158:
- 529              		.section	.text.netbuf_next,"ax",%progbits
- 530              		.align	1
- 531              		.global	netbuf_next
- 532              		.syntax unified
- 533              		.thumb
- 534              		.thumb_func
- 535              		.fpu fpv5-sp-d16
- 537              	netbuf_next:
- 538              	.LFB159:
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s 			page 14
+ 478              		.loc 1 204 0
+ 479 001a 08BD     		pop	{r3, pc}
+ 480              	.LVL53:
+ 481              	.L56:
+ 194:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   LWIP_ERROR("netbuf_data: invalid dataptr", (dataptr != NULL), return ERR_ARG;);
+ 482              		.loc 1 194 0 discriminator 1
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccL3R092.s 			page 13
 
 
+ 483 001c 0E4B     		ldr	r3, .L59
+ 484 001e C222     		movs	r2, #194
+ 485              	.LVL54:
+ 486 0020 0E49     		ldr	r1, .L59+4
+ 487              	.LVL55:
+ 488 0022 0F48     		ldr	r0, .L59+8
+ 489              	.LVL56:
+ 490 0024 FFF7FEFF 		bl	printf
+ 491              	.LVL57:
+ 492 0028 6FF00F00 		mvn	r0, #15
+ 493 002c F5E7     		b	.L51
+ 494              	.LVL58:
+ 495              	.L57:
+ 195:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   LWIP_ERROR("netbuf_data: invalid len", (len != NULL), return ERR_ARG;);
+ 496              		.loc 1 195 0 discriminator 1
+ 497 002e 0A4B     		ldr	r3, .L59
+ 498 0030 C322     		movs	r2, #195
+ 499              	.LVL59:
+ 500 0032 0C49     		ldr	r1, .L59+12
+ 501              	.LVL60:
+ 502 0034 0A48     		ldr	r0, .L59+8
+ 503              	.LVL61:
+ 504 0036 FFF7FEFF 		bl	printf
+ 505              	.LVL62:
+ 506 003a 6FF00F00 		mvn	r0, #15
+ 507 003e ECE7     		b	.L51
+ 508              	.LVL63:
+ 509              	.L58:
+ 196:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** 
+ 510              		.loc 1 196 0 discriminator 1
+ 511 0040 054B     		ldr	r3, .L59
+ 512 0042 C422     		movs	r2, #196
+ 513              	.LVL64:
+ 514 0044 0849     		ldr	r1, .L59+16
+ 515              	.LVL65:
+ 516 0046 0648     		ldr	r0, .L59+8
+ 517              	.LVL66:
+ 518 0048 FFF7FEFF 		bl	printf
+ 519              	.LVL67:
+ 520 004c 6FF00F00 		mvn	r0, #15
+ 521 0050 E3E7     		b	.L51
+ 522              	.LVL68:
+ 523              	.L54:
+ 199:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   }
+ 524              		.loc 1 199 0
+ 525 0052 6FF00100 		mvn	r0, #1
+ 526 0056 E0E7     		b	.L51
+ 527              	.L60:
+ 528              		.align	2
+ 529              	.L59:
+ 530 0058 00000000 		.word	.LC0
+ 531 005c 00000000 		.word	.LC8
+ 532 0060 4C000000 		.word	.LC2
+ 533 0064 1C000000 		.word	.LC9
+ 534 0068 3C000000 		.word	.LC10
+ 535              		.cfi_endproc
+ 536              	.LFE160:
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccL3R092.s 			page 14
+
+
+ 538              		.section	.text.netbuf_next,"ax",%progbits
+ 539              		.align	1
+ 540              		.global	netbuf_next
+ 541              		.syntax unified
+ 542              		.thumb
+ 543              		.thumb_func
+ 544              		.fpu fpv5-sp-d16
+ 546              	netbuf_next:
+ 547              	.LFB161:
  205:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** 
  206:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** /**
  207:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * @ingroup netbuf
@@ -796,89 +805,90 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s 			page 1
  217:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** s8_t
  218:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** netbuf_next(struct netbuf *buf)
  219:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** {
- 539              		.loc 1 219 0
- 540              		.cfi_startproc
- 541              		@ args = 0, pretend = 0, frame = 0
- 542              		@ frame_needed = 0, uses_anonymous_args = 0
- 543              	.LVL69:
- 544 0000 08B5     		push	{r3, lr}
- 545              	.LCFI8:
- 546              		.cfi_def_cfa_offset 8
- 547              		.cfi_offset 3, -8
- 548              		.cfi_offset 14, -4
+ 548              		.loc 1 219 0
+ 549              		.cfi_startproc
+ 550              		@ args = 0, pretend = 0, frame = 0
+ 551              		@ frame_needed = 0, uses_anonymous_args = 0
+ 552              	.LVL69:
+ 553 0000 08B5     		push	{r3, lr}
+ 554              	.LCFI8:
+ 555              		.cfi_def_cfa_offset 8
+ 556              		.cfi_offset 3, -8
+ 557              		.cfi_offset 14, -4
  220:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   LWIP_ERROR("netbuf_next: invalid buf", (buf != NULL), return -1;);
- 549              		.loc 1 220 0
- 550 0002 38B1     		cbz	r0, .L67
+ 558              		.loc 1 220 0
+ 559 0002 38B1     		cbz	r0, .L67
  221:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   if (buf->ptr->next == NULL) {
- 551              		.loc 1 221 0
- 552 0004 4368     		ldr	r3, [r0, #4]
- 553 0006 1B68     		ldr	r3, [r3]
- 554 0008 7BB1     		cbz	r3, .L64
+ 560              		.loc 1 221 0
+ 561 0004 4368     		ldr	r3, [r0, #4]
+ 562 0006 1B68     		ldr	r3, [r3]
+ 563 0008 7BB1     		cbz	r3, .L64
  222:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****     return -1;
  223:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   }
  224:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   buf->ptr = buf->ptr->next;
- 555              		.loc 1 224 0
- 556 000a 4360     		str	r3, [r0, #4]
+ 564              		.loc 1 224 0
+ 565 000a 4360     		str	r3, [r0, #4]
  225:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   if (buf->ptr->next == NULL) {
- 557              		.loc 1 225 0
- 558 000c 1B68     		ldr	r3, [r3]
- 559 000e 53B1     		cbz	r3, .L68
+ 566              		.loc 1 225 0
+ 567 000c 1B68     		ldr	r3, [r3]
+ 568 000e 53B1     		cbz	r3, .L68
  226:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****     return 1;
  227:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   }
  228:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   return 0;
- 560              		.loc 1 228 0
- 561 0010 0020     		movs	r0, #0
- 562              	.LVL70:
+ 569              		.loc 1 228 0
+ 570 0010 0020     		movs	r0, #0
+ 571              	.LVL70:
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccL3R092.s 			page 15
+
+
+ 572              	.L63:
  229:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** }
- 563              		.loc 1 229 0
- 564 0012 08BD     		pop	{r3, pc}
- 565              	.LVL71:
- 566              	.L67:
+ 573              		.loc 1 229 0
+ 574 0012 08BD     		pop	{r3, pc}
+ 575              	.LVL71:
+ 576              	.L67:
  220:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   if (buf->ptr->next == NULL) {
- 567              		.loc 1 220 0 discriminator 1
- 568 0014 064B     		ldr	r3, .L69
- 569 0016 DC22     		movs	r2, #220
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s 			page 15
-
-
- 570 0018 0649     		ldr	r1, .L69+4
- 571 001a 0748     		ldr	r0, .L69+8
- 572              	.LVL72:
- 573 001c FFF7FEFF 		bl	printf
- 574              	.LVL73:
- 575 0020 4FF0FF30 		mov	r0, #-1
- 576 0024 08BD     		pop	{r3, pc}
- 577              	.LVL74:
- 578              	.L68:
+ 577              		.loc 1 220 0 discriminator 1
+ 578 0014 064B     		ldr	r3, .L69
+ 579 0016 DC22     		movs	r2, #220
+ 580 0018 0649     		ldr	r1, .L69+4
+ 581 001a 0748     		ldr	r0, .L69+8
+ 582              	.LVL72:
+ 583 001c FFF7FEFF 		bl	printf
+ 584              	.LVL73:
+ 585 0020 4FF0FF30 		mov	r0, #-1
+ 586 0024 F5E7     		b	.L63
+ 587              	.LVL74:
+ 588              	.L68:
  226:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****     return 1;
- 579              		.loc 1 226 0
- 580 0026 0120     		movs	r0, #1
- 581              	.LVL75:
- 582 0028 08BD     		pop	{r3, pc}
- 583              	.LVL76:
- 584              	.L64:
+ 589              		.loc 1 226 0
+ 590 0026 0120     		movs	r0, #1
+ 591              	.LVL75:
+ 592 0028 F3E7     		b	.L63
+ 593              	.LVL76:
+ 594              	.L64:
  222:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   }
- 585              		.loc 1 222 0
- 586 002a 4FF0FF30 		mov	r0, #-1
- 587              	.LVL77:
- 588 002e 08BD     		pop	{r3, pc}
- 589              	.L70:
- 590              		.align	2
- 591              	.L69:
- 592 0030 00000000 		.word	.LC0
- 593 0034 00000000 		.word	.LC11
- 594 0038 4C000000 		.word	.LC2
- 595              		.cfi_endproc
- 596              	.LFE159:
- 598              		.section	.text.netbuf_first,"ax",%progbits
- 599              		.align	1
- 600              		.global	netbuf_first
- 601              		.syntax unified
- 602              		.thumb
- 603              		.thumb_func
- 604              		.fpu fpv5-sp-d16
- 606              	netbuf_first:
- 607              	.LFB160:
+ 595              		.loc 1 222 0
+ 596 002a 4FF0FF30 		mov	r0, #-1
+ 597              	.LVL77:
+ 598 002e F0E7     		b	.L63
+ 599              	.L70:
+ 600              		.align	2
+ 601              	.L69:
+ 602 0030 00000000 		.word	.LC0
+ 603 0034 00000000 		.word	.LC11
+ 604 0038 4C000000 		.word	.LC2
+ 605              		.cfi_endproc
+ 606              	.LFE161:
+ 608              		.section	.text.netbuf_first,"ax",%progbits
+ 609              		.align	1
+ 610              		.global	netbuf_first
+ 611              		.syntax unified
+ 612              		.thumb
+ 613              		.thumb_func
+ 614              		.fpu fpv5-sp-d16
+ 616              	netbuf_first:
+ 617              	.LFB162:
  230:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** 
  231:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** /**
  232:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * @ingroup netbuf
@@ -888,211 +898,215 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s 			page 1
  236:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  *
  237:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  * @param buf the netbuf to modify
  238:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****  */
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccL3R092.s 			page 16
+
+
  239:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** void
  240:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** netbuf_first(struct netbuf *buf)
  241:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** {
- 608              		.loc 1 241 0
- 609              		.cfi_startproc
- 610              		@ args = 0, pretend = 0, frame = 0
- 611              		@ frame_needed = 0, uses_anonymous_args = 0
- 612              	.LVL78:
- 613 0000 08B5     		push	{r3, lr}
- 614              	.LCFI9:
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s 			page 16
-
-
- 615              		.cfi_def_cfa_offset 8
- 616              		.cfi_offset 3, -8
- 617              		.cfi_offset 14, -4
+ 618              		.loc 1 241 0
+ 619              		.cfi_startproc
+ 620              		@ args = 0, pretend = 0, frame = 0
+ 621              		@ frame_needed = 0, uses_anonymous_args = 0
+ 622              	.LVL78:
+ 623 0000 08B5     		push	{r3, lr}
+ 624              	.LCFI9:
+ 625              		.cfi_def_cfa_offset 8
+ 626              		.cfi_offset 3, -8
+ 627              		.cfi_offset 14, -4
  242:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   LWIP_ERROR("netbuf_first: invalid buf", (buf != NULL), return;);
- 618              		.loc 1 242 0
- 619 0002 10B1     		cbz	r0, .L75
+ 628              		.loc 1 242 0
+ 629 0002 10B1     		cbz	r0, .L75
  243:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   buf->ptr = buf->p;
- 620              		.loc 1 243 0
- 621 0004 0268     		ldr	r2, [r0]
- 622 0006 4260     		str	r2, [r0, #4]
- 623 0008 08BD     		pop	{r3, pc}
- 624              	.L75:
+ 630              		.loc 1 243 0
+ 631 0004 0268     		ldr	r2, [r0]
+ 632 0006 4260     		str	r2, [r0, #4]
+ 633              	.LVL79:
+ 634              	.L71:
+ 244:Middlewares/Third_Party/LwIP/src/api/netbuf.c **** }
+ 635              		.loc 1 244 0
+ 636 0008 08BD     		pop	{r3, pc}
+ 637              	.LVL80:
+ 638              	.L75:
  242:Middlewares/Third_Party/LwIP/src/api/netbuf.c ****   LWIP_ERROR("netbuf_first: invalid buf", (buf != NULL), return;);
- 625              		.loc 1 242 0 discriminator 1
- 626 000a 034B     		ldr	r3, .L76
- 627 000c F222     		movs	r2, #242
- 628 000e 0349     		ldr	r1, .L76+4
- 629 0010 0348     		ldr	r0, .L76+8
- 630              	.LVL79:
- 631 0012 FFF7FEFF 		bl	printf
- 632              	.LVL80:
- 633 0016 08BD     		pop	{r3, pc}
- 634              	.L77:
- 635              		.align	2
- 636              	.L76:
- 637 0018 00000000 		.word	.LC0
- 638 001c 00000000 		.word	.LC12
- 639 0020 4C000000 		.word	.LC2
- 640              		.cfi_endproc
- 641              	.LFE160:
- 643              		.section	.rodata.netbuf_alloc.str1.4,"aMS",%progbits,1
- 644              		.align	2
- 645              	.LC0:
- 646 0000 4D696464 		.ascii	"Middlewares/Third_Party/LwIP/src/api/netbuf.c\000"
- 646      6C657761 
- 646      7265732F 
- 646      54686972 
- 646      645F5061 
- 647 002e 0000     		.space	2
- 648              	.LC1:
- 649 0030 6E657462 		.ascii	"netbuf_alloc: invalid buf\000"
- 649      75665F61 
- 649      6C6C6F63 
- 649      3A20696E 
- 649      76616C69 
- 650 004a 0000     		.space	2
- 651              	.LC2:
- 652 004c 41737365 		.ascii	"Assertion \"%s\" failed at line %d in %s\012\000"
- 652      7274696F 
- 652      6E202225 
- 652      73222066 
- 652      61696C65 
- 653              	.LC3:
- 654 0074 63686563 		.ascii	"check that first pbuf can hold size\000"
- 654      6B207468 
- 654      61742066 
- 654      69727374 
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s 			page 17
+ 639              		.loc 1 242 0 discriminator 1
+ 640 000a 034B     		ldr	r3, .L76
+ 641 000c F222     		movs	r2, #242
+ 642 000e 0349     		ldr	r1, .L76+4
+ 643 0010 0348     		ldr	r0, .L76+8
+ 644              	.LVL81:
+ 645 0012 FFF7FEFF 		bl	printf
+ 646              	.LVL82:
+ 647 0016 F7E7     		b	.L71
+ 648              	.L77:
+ 649              		.align	2
+ 650              	.L76:
+ 651 0018 00000000 		.word	.LC0
+ 652 001c 00000000 		.word	.LC12
+ 653 0020 4C000000 		.word	.LC2
+ 654              		.cfi_endproc
+ 655              	.LFE162:
+ 657              		.section	.rodata.netbuf_alloc.str1.4,"aMS",%progbits,1
+ 658              		.align	2
+ 659              	.LC0:
+ 660 0000 4D696464 		.ascii	"Middlewares/Third_Party/LwIP/src/api/netbuf.c\000"
+ 660      6C657761 
+ 660      7265732F 
+ 660      54686972 
+ 660      645F5061 
+ 661 002e 0000     		.space	2
+ 662              	.LC1:
+ 663 0030 6E657462 		.ascii	"netbuf_alloc: invalid buf\000"
+ 663      75665F61 
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccL3R092.s 			page 17
 
 
- 654      20706275 
- 655              		.section	.rodata.netbuf_chain.str1.4,"aMS",%progbits,1
- 656              		.align	2
- 657              	.LC6:
- 658 0000 6E657462 		.ascii	"netbuf_chain: invalid head\000"
- 658      75665F63 
- 658      6861696E 
- 658      3A20696E 
- 658      76616C69 
- 659 001b 00       		.space	1
- 660              	.LC7:
- 661 001c 6E657462 		.ascii	"netbuf_chain: invalid tail\000"
- 661      75665F63 
- 661      6861696E 
- 661      3A20696E 
- 661      76616C69 
- 662              		.section	.rodata.netbuf_data.str1.4,"aMS",%progbits,1
- 663              		.align	2
- 664              	.LC8:
- 665 0000 6E657462 		.ascii	"netbuf_data: invalid buf\000"
- 665      75665F64 
- 665      6174613A 
- 665      20696E76 
- 665      616C6964 
- 666 0019 000000   		.space	3
- 667              	.LC9:
- 668 001c 6E657462 		.ascii	"netbuf_data: invalid dataptr\000"
- 668      75665F64 
- 668      6174613A 
- 668      20696E76 
- 668      616C6964 
- 669 0039 000000   		.space	3
- 670              	.LC10:
- 671 003c 6E657462 		.ascii	"netbuf_data: invalid len\000"
- 671      75665F64 
- 671      6174613A 
- 671      20696E76 
- 671      616C6964 
- 672              		.section	.rodata.netbuf_first.str1.4,"aMS",%progbits,1
- 673              		.align	2
- 674              	.LC12:
- 675 0000 6E657462 		.ascii	"netbuf_first: invalid buf\000"
- 675      75665F66 
- 675      69727374 
+ 663      6C6C6F63 
+ 663      3A20696E 
+ 663      76616C69 
+ 664 004a 0000     		.space	2
+ 665              	.LC2:
+ 666 004c 41737365 		.ascii	"Assertion \"%s\" failed at line %d in %s\012\000"
+ 666      7274696F 
+ 666      6E202225 
+ 666      73222066 
+ 666      61696C65 
+ 667              	.LC3:
+ 668 0074 63686563 		.ascii	"check that first pbuf can hold size\000"
+ 668      6B207468 
+ 668      61742066 
+ 668      69727374 
+ 668      20706275 
+ 669              		.section	.rodata.netbuf_chain.str1.4,"aMS",%progbits,1
+ 670              		.align	2
+ 671              	.LC6:
+ 672 0000 6E657462 		.ascii	"netbuf_chain: invalid head\000"
+ 672      75665F63 
+ 672      6861696E 
+ 672      3A20696E 
+ 672      76616C69 
+ 673 001b 00       		.space	1
+ 674              	.LC7:
+ 675 001c 6E657462 		.ascii	"netbuf_chain: invalid tail\000"
+ 675      75665F63 
+ 675      6861696E 
  675      3A20696E 
  675      76616C69 
- 676              		.section	.rodata.netbuf_free.str1.4,"aMS",%progbits,1
+ 676              		.section	.rodata.netbuf_data.str1.4,"aMS",%progbits,1
  677              		.align	2
- 678              	.LC4:
- 679 0000 6E657462 		.ascii	"netbuf_free: invalid buf\000"
- 679      75665F66 
- 679      7265653A 
+ 678              	.LC8:
+ 679 0000 6E657462 		.ascii	"netbuf_data: invalid buf\000"
+ 679      75665F64 
+ 679      6174613A 
  679      20696E76 
  679      616C6964 
- 680              		.section	.rodata.netbuf_next.str1.4,"aMS",%progbits,1
- 681              		.align	2
- 682              	.LC11:
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s 			page 18
+ 680 0019 000000   		.space	3
+ 681              	.LC9:
+ 682 001c 6E657462 		.ascii	"netbuf_data: invalid dataptr\000"
+ 682      75665F64 
+ 682      6174613A 
+ 682      20696E76 
+ 682      616C6964 
+ 683 0039 000000   		.space	3
+ 684              	.LC10:
+ 685 003c 6E657462 		.ascii	"netbuf_data: invalid len\000"
+ 685      75665F64 
+ 685      6174613A 
+ 685      20696E76 
+ 685      616C6964 
+ 686              		.section	.rodata.netbuf_first.str1.4,"aMS",%progbits,1
+ 687              		.align	2
+ 688              	.LC12:
+ 689 0000 6E657462 		.ascii	"netbuf_first: invalid buf\000"
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccL3R092.s 			page 18
 
 
- 683 0000 6E657462 		.ascii	"netbuf_next: invalid buf\000"
- 683      75665F6E 
- 683      6578743A 
- 683      20696E76 
- 683      616C6964 
- 684              		.section	.rodata.netbuf_ref.str1.4,"aMS",%progbits,1
- 685              		.align	2
- 686              	.LC5:
- 687 0000 6E657462 		.ascii	"netbuf_ref: invalid buf\000"
- 687      75665F72 
- 687      65663A20 
- 687      696E7661 
- 687      6C696420 
- 688              		.text
- 689              	.Letext0:
- 690              		.file 2 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\machine\\_default_types.h"
- 691              		.file 3 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\_stdint.h"
- 692              		.file 4 "Drivers/CMSIS/Include/core_cm7.h"
- 693              		.file 5 "Drivers/CMSIS/Device/ST/STM32F7xx/Include/system_stm32f7xx.h"
- 694              		.file 6 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\lock.h"
- 695              		.file 7 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\_types.h"
- 696              		.file 8 "c:\\gcc_toolchain\\6_2017-q1-update\\lib\\gcc\\arm-none-eabi\\6.3.1\\include\\stddef.h"
- 697              		.file 9 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\reent.h"
- 698              		.file 10 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\stdlib.h"
- 699              		.file 11 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\time.h"
- 700              		.file 12 "Middlewares/Third_Party/LwIP/src/include/lwip/arch.h"
- 701              		.file 13 "Middlewares/Third_Party/LwIP/src/include/lwip/err.h"
- 702              		.file 14 "Middlewares/Third_Party/LwIP/src/include/lwip/pbuf.h"
- 703              		.file 15 "Middlewares/Third_Party/LwIP/src/include/lwip/ip4_addr.h"
- 704              		.file 16 "Middlewares/Third_Party/LwIP/src/include/lwip/ip_addr.h"
- 705              		.file 17 "Middlewares/Third_Party/LwIP/src/include/lwip/netbuf.h"
- 706              		.file 18 "Middlewares/Third_Party/LwIP/src/include/lwip/memp.h"
- 707              		.file 19 "Middlewares/Third_Party/LwIP/src/include/lwip/priv/memp_priv.h"
- 708              		.file 20 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\stdio.h"
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s 			page 19
+ 689      75665F66 
+ 689      69727374 
+ 689      3A20696E 
+ 689      76616C69 
+ 690              		.section	.rodata.netbuf_free.str1.4,"aMS",%progbits,1
+ 691              		.align	2
+ 692              	.LC4:
+ 693 0000 6E657462 		.ascii	"netbuf_free: invalid buf\000"
+ 693      75665F66 
+ 693      7265653A 
+ 693      20696E76 
+ 693      616C6964 
+ 694              		.section	.rodata.netbuf_next.str1.4,"aMS",%progbits,1
+ 695              		.align	2
+ 696              	.LC11:
+ 697 0000 6E657462 		.ascii	"netbuf_next: invalid buf\000"
+ 697      75665F6E 
+ 697      6578743A 
+ 697      20696E76 
+ 697      616C6964 
+ 698              		.section	.rodata.netbuf_ref.str1.4,"aMS",%progbits,1
+ 699              		.align	2
+ 700              	.LC5:
+ 701 0000 6E657462 		.ascii	"netbuf_ref: invalid buf\000"
+ 701      75665F72 
+ 701      65663A20 
+ 701      696E7661 
+ 701      6C696420 
+ 702              		.text
+ 703              	.Letext0:
+ 704              		.file 2 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\machine\\_default
+ 705              		.file 3 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 706              		.file 4 "Drivers/CMSIS/Include/core_cm7.h"
+ 707              		.file 5 "Drivers/CMSIS/Device/ST/STM32F7xx/Include/system_stm32f7xx.h"
+ 708              		.file 6 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\lock.h"
+ 709              		.file 7 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\_types.h"
+ 710              		.file 8 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\lib\\gcc\\arm-none-eabi\\7.3.1\\include\\
+ 711              		.file 9 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\reent.h"
+ 712              		.file 10 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\stdlib.h"
+ 713              		.file 11 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\time.h"
+ 714              		.file 12 "Middlewares/Third_Party/LwIP/src/include/lwip/arch.h"
+ 715              		.file 13 "Middlewares/Third_Party/LwIP/src/include/lwip/err.h"
+ 716              		.file 14 "Middlewares/Third_Party/LwIP/src/include/lwip/pbuf.h"
+ 717              		.file 15 "Middlewares/Third_Party/LwIP/src/include/lwip/ip4_addr.h"
+ 718              		.file 16 "Middlewares/Third_Party/LwIP/src/include/lwip/ip_addr.h"
+ 719              		.file 17 "Middlewares/Third_Party/LwIP/src/include/lwip/netbuf.h"
+ 720              		.file 18 "Middlewares/Third_Party/LwIP/src/include/lwip/memp.h"
+ 721              		.file 19 "Middlewares/Third_Party/LwIP/src/include/lwip/priv/memp_priv.h"
+ 722              		.file 20 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\stdio.h"
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccL3R092.s 			page 19
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 netbuf.c
-C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:18     .text.netbuf_new:00000000 $t
-C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:25     .text.netbuf_new:00000000 netbuf_new
-C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:59     .text.netbuf_delete:00000000 $t
-C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:66     .text.netbuf_delete:00000000 netbuf_delete
-C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:111    .text.netbuf_alloc:00000000 $t
-C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:118    .text.netbuf_alloc:00000000 netbuf_alloc
-C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:196    .text.netbuf_alloc:00000050 $d
-C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:204    .text.netbuf_free:00000000 $t
-C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:211    .text.netbuf_free:00000000 netbuf_free
-C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:253    .text.netbuf_free:00000024 $d
-C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:260    .text.netbuf_ref:00000000 $t
-C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:267    .text.netbuf_ref:00000000 netbuf_ref
-C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:342    .text.netbuf_ref:0000004c $d
-C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:349    .text.netbuf_chain:00000000 $t
-C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:356    .text.netbuf_chain:00000000 netbuf_chain
-C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:420    .text.netbuf_chain:0000003c $d
-C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:428    .text.netbuf_data:00000000 $t
-C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:435    .text.netbuf_data:00000000 netbuf_data
-C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:521    .text.netbuf_data:00000058 $d
-C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:530    .text.netbuf_next:00000000 $t
-C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:537    .text.netbuf_next:00000000 netbuf_next
-C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:592    .text.netbuf_next:00000030 $d
-C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:599    .text.netbuf_first:00000000 $t
-C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:606    .text.netbuf_first:00000000 netbuf_first
-C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:637    .text.netbuf_first:00000018 $d
-C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:644    .rodata.netbuf_alloc.str1.4:00000000 $d
-C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:656    .rodata.netbuf_chain.str1.4:00000000 $d
-C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:663    .rodata.netbuf_data.str1.4:00000000 $d
-C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:673    .rodata.netbuf_first.str1.4:00000000 $d
-C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:677    .rodata.netbuf_free.str1.4:00000000 $d
-C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:681    .rodata.netbuf_next.str1.4:00000000 $d
-C:\Users\Student\AppData\Local\Temp\ccS8BXHk.s:685    .rodata.netbuf_ref.str1.4:00000000 $d
-                     .debug_frame:00000010 $d
+C:\Users\milek\AppData\Local\Temp\ccL3R092.s:18     .text.netbuf_new:00000000 $t
+C:\Users\milek\AppData\Local\Temp\ccL3R092.s:25     .text.netbuf_new:00000000 netbuf_new
+C:\Users\milek\AppData\Local\Temp\ccL3R092.s:59     .text.netbuf_delete:00000000 $t
+C:\Users\milek\AppData\Local\Temp\ccL3R092.s:66     .text.netbuf_delete:00000000 netbuf_delete
+C:\Users\milek\AppData\Local\Temp\ccL3R092.s:112    .text.netbuf_alloc:00000000 $t
+C:\Users\milek\AppData\Local\Temp\ccL3R092.s:119    .text.netbuf_alloc:00000000 netbuf_alloc
+C:\Users\milek\AppData\Local\Temp\ccL3R092.s:198    .text.netbuf_alloc:00000050 $d
+C:\Users\milek\AppData\Local\Temp\ccL3R092.s:206    .text.netbuf_free:00000000 $t
+C:\Users\milek\AppData\Local\Temp\ccL3R092.s:213    .text.netbuf_free:00000000 netbuf_free
+C:\Users\milek\AppData\Local\Temp\ccL3R092.s:258    .text.netbuf_free:00000024 $d
+C:\Users\milek\AppData\Local\Temp\ccL3R092.s:265    .text.netbuf_ref:00000000 $t
+C:\Users\milek\AppData\Local\Temp\ccL3R092.s:272    .text.netbuf_ref:00000000 netbuf_ref
+C:\Users\milek\AppData\Local\Temp\ccL3R092.s:349    .text.netbuf_ref:00000050 $d
+C:\Users\milek\AppData\Local\Temp\ccL3R092.s:356    .text.netbuf_chain:00000000 $t
+C:\Users\milek\AppData\Local\Temp\ccL3R092.s:363    .text.netbuf_chain:00000000 netbuf_chain
+C:\Users\milek\AppData\Local\Temp\ccL3R092.s:428    .text.netbuf_chain:0000003c $d
+C:\Users\milek\AppData\Local\Temp\ccL3R092.s:436    .text.netbuf_data:00000000 $t
+C:\Users\milek\AppData\Local\Temp\ccL3R092.s:443    .text.netbuf_data:00000000 netbuf_data
+C:\Users\milek\AppData\Local\Temp\ccL3R092.s:530    .text.netbuf_data:00000058 $d
+C:\Users\milek\AppData\Local\Temp\ccL3R092.s:539    .text.netbuf_next:00000000 $t
+C:\Users\milek\AppData\Local\Temp\ccL3R092.s:546    .text.netbuf_next:00000000 netbuf_next
+C:\Users\milek\AppData\Local\Temp\ccL3R092.s:602    .text.netbuf_next:00000030 $d
+C:\Users\milek\AppData\Local\Temp\ccL3R092.s:609    .text.netbuf_first:00000000 $t
+C:\Users\milek\AppData\Local\Temp\ccL3R092.s:616    .text.netbuf_first:00000000 netbuf_first
+C:\Users\milek\AppData\Local\Temp\ccL3R092.s:651    .text.netbuf_first:00000018 $d
+C:\Users\milek\AppData\Local\Temp\ccL3R092.s:658    .rodata.netbuf_alloc.str1.4:00000000 $d
+C:\Users\milek\AppData\Local\Temp\ccL3R092.s:670    .rodata.netbuf_chain.str1.4:00000000 $d
+C:\Users\milek\AppData\Local\Temp\ccL3R092.s:677    .rodata.netbuf_data.str1.4:00000000 $d
+C:\Users\milek\AppData\Local\Temp\ccL3R092.s:687    .rodata.netbuf_first.str1.4:00000000 $d
+C:\Users\milek\AppData\Local\Temp\ccL3R092.s:691    .rodata.netbuf_free.str1.4:00000000 $d
+C:\Users\milek\AppData\Local\Temp\ccL3R092.s:695    .rodata.netbuf_next.str1.4:00000000 $d
+C:\Users\milek\AppData\Local\Temp\ccL3R092.s:699    .rodata.netbuf_ref.str1.4:00000000 $d
 
 UNDEFINED SYMBOLS
 memp_malloc

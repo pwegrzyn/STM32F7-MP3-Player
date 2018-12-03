@@ -114,20 +114,20 @@ build/main.o: Src/main.c Inc/main.h \
  Middlewares/Third_Party/LwIP/src/include/lwip/sys.h \
  Middlewares/Third_Party/LwIP/system/arch/sys_arch.h Inc/ethernetif.h \
  Middlewares/Third_Party/LwIP/src/include/lwip/tcpip.h Inc/usb_host.h \
- Inc/mp3_player.h Middlewares/Third_Party/LwIP/src/include/lwip/errno.h \
+ Inc/mp3_player.h Inc/fatfs.h \
+ Middlewares/Third_Party/LwIP/src/include/lwip/errno.h \
  Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_lcd.h \
- Drivers/BSP/STM32746G-Discovery/../Components/rk043fn48h/rk043fn48h.h \
+ d:\sw\drivers\bsp\components\rk043fn48h\rk043fn48h.h \
  Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.h \
  Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.h \
- Drivers/BSP/STM32746G-Discovery/../../../Utilities/Fonts/fonts.h \
- Utilities/Fonts/fonts.h \
+ d:\sw\utilities\fonts\fonts.h Utilities/Fonts/fonts.h \
  Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.h \
- Drivers/BSP/STM32746G-Discovery/../Components/ft5336/ft5336.h \
- Drivers/BSP/STM32746G-Discovery/../Components/ft5336/../Common/ts.h \
+ d:\sw\drivers\bsp\components\ft5336\ft5336.h \
+ d:\sw\drivers\bsp\components\common\ts.h \
  Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_audio.h \
- Drivers/BSP/STM32746G-Discovery/../Components/wm8994/wm8994.h \
- Drivers/BSP/STM32746G-Discovery/../Components/wm8994/../Common/audio.h \
- Inc/term_io.h Inc/dbgu.h Inc/ansi.h Inc/dbgu.h Inc/ansi.h \
+ d:\sw\drivers\bsp\components\wm8994\wm8994.h \
+ d:\sw\drivers\bsp\components\common\audio.h Inc/term_io.h Inc/dbgu.h \
+ Inc/ansi.h Inc/dbgu.h Inc/ansi.h \
  Middlewares/Third_Party/LwIP/src/include/lwip/api.h \
  Middlewares/Third_Party/LwIP/src/include/lwip/netbuf.h \
  Middlewares/Third_Party/LwIP/src/include/lwip/apps/fs.h \
@@ -396,31 +396,33 @@ Inc/usb_host.h:
 
 Inc/mp3_player.h:
 
+Inc/fatfs.h:
+
 Middlewares/Third_Party/LwIP/src/include/lwip/errno.h:
 
 Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_lcd.h:
 
-Drivers/BSP/STM32746G-Discovery/../Components/rk043fn48h/rk043fn48h.h:
+d:\sw\drivers\bsp\components\rk043fn48h\rk043fn48h.h:
 
 Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.h:
 
 Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.h:
 
-Drivers/BSP/STM32746G-Discovery/../../../Utilities/Fonts/fonts.h:
+d:\sw\utilities\fonts\fonts.h:
 
 Utilities/Fonts/fonts.h:
 
 Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.h:
 
-Drivers/BSP/STM32746G-Discovery/../Components/ft5336/ft5336.h:
+d:\sw\drivers\bsp\components\ft5336\ft5336.h:
 
-Drivers/BSP/STM32746G-Discovery/../Components/ft5336/../Common/ts.h:
+d:\sw\drivers\bsp\components\common\ts.h:
 
 Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_audio.h:
 
-Drivers/BSP/STM32746G-Discovery/../Components/wm8994/wm8994.h:
+d:\sw\drivers\bsp\components\wm8994\wm8994.h:
 
-Drivers/BSP/STM32746G-Discovery/../Components/wm8994/../Common/audio.h:
+d:\sw\drivers\bsp\components\common\audio.h:
 
 Inc/term_io.h:
 

@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s 			page 1
+ARM GAS  C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s 			page 1
 
 
    1              		.cpu cortex-m7
@@ -25,7 +25,7 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s 			page 1
   22              		.thumb_func
   23              		.fpu fpv5-sp-d16
   25              	BSP_TS_Init:
-  26              	.LFB136:
+  26              	.LFB138:
   27              		.file 1 "Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c"
    1:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** /**
    2:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   ******************************************************************************
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s 			page 1
   29:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****         o The touch screen state is captured whenever the function BSP_TS_GetState() is 
   30:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****           used. This function returns information about the last LCD touch occurred
   31:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****           in the TS_StateTypeDef structure.
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s 			page 2
+ARM GAS  C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s 			page 2
 
 
   32:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****         o If TS interrupt mode is used, the function BSP_TS_ITGetStatus() is needed to get
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s 			page 1
   86:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   * @{
   87:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   */   
   88:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** 
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s 			page 3
+ARM GAS  C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s 			page 3
 
 
   89:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** /** @defgroup STM32746G_DISCOVERY_TS_Private_Types_Definitions STM32746G_DISCOVERY_TS Types Definit
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s 			page 1
  143:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   * @param  ts_SizeY: Maximum Y size of the TS area on LCD
  144:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   * @retval TS_OK if all initializations are OK. Other value if error.
  145:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   */
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s 			page 4
+ARM GAS  C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s 			page 4
 
 
  146:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** uint8_t BSP_TS_Init(uint16_t ts_SizeX, uint16_t ts_SizeY)
@@ -197,17 +197,17 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s 			page 1
  148:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   uint8_t status = TS_OK;
  149:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   tsXBoundary = ts_SizeX;
   39              		.loc 1 149 0
-  40 0002 0D4B     		ldr	r3, .L6
+  40 0002 0D4B     		ldr	r3, .L5
   41 0004 1880     		strh	r0, [r3]	@ movhi
  150:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   tsYBoundary = ts_SizeY;
   42              		.loc 1 150 0
-  43 0006 0D4B     		ldr	r3, .L6+4
+  43 0006 0D4B     		ldr	r3, .L5+4
   44 0008 1980     		strh	r1, [r3]	@ movhi
  151:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   
  152:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   /* Read ID and verify if the touch screen driver is ready */
  153:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   ft5336_ts_drv.Init(TS_I2C_ADDRESS);
   45              		.loc 1 153 0
-  46 000a 0D4C     		ldr	r4, .L6+8
+  46 000a 0D4C     		ldr	r4, .L5+8
   47 000c 2368     		ldr	r3, [r4]
   48 000e 7020     		movs	r0, #112
   49              	.LVL2:
@@ -220,76 +220,74 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s 			page 1
   55 0016 9847     		blx	r3
   56              	.LVL4:
   57 0018 5128     		cmp	r0, #81
-  58 001a 01D0     		beq	.L5
+  58 001a 0BD1     		bne	.L3
  155:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   { 
  156:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****     /* Initialize the TS driver structure */
  157:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****     tsDriver = &ft5336_ts_drv;
+  59              		.loc 1 157 0
+  60 001c 094A     		ldr	r2, .L5+12
+  61 001e 1460     		str	r4, [r2]
  158:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****     I2cAddress = TS_I2C_ADDRESS;
+  62              		.loc 1 158 0
+  63 0020 7020     		movs	r0, #112
+  64 0022 094A     		ldr	r2, .L5+16
+  65 0024 1070     		strb	r0, [r2]
  159:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****     tsOrientation = TS_SWAP_XY;
+  66              		.loc 1 159 0
+  67 0026 094A     		ldr	r2, .L5+20
+  68 0028 0821     		movs	r1, #8
+  69 002a 1170     		strb	r1, [r2]
  160:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** 
+ARM GAS  C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s 			page 5
+
+
  161:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****     /* Initialize the TS driver */
  162:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****     tsDriver->Start(I2cAddress);
+  70              		.loc 1 162 0
+  71 002c E368     		ldr	r3, [r4, #12]
+  72 002e 9847     		blx	r3
+  73              	.LVL5:
+ 148:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   tsXBoundary = ts_SizeX;
+  74              		.loc 1 148 0
+  75 0030 0020     		movs	r0, #0
+  76              	.L2:
+  77              	.LVL6:
  163:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   }
  164:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   else
  165:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   {
  166:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****     status = TS_DEVICE_NOT_FOUND;
-  59              		.loc 1 166 0
-  60 001c 0320     		movs	r0, #3
-  61              	.LVL5:
  167:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   }
  168:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** 
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s 			page 5
-
-
  169:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   return status;
  170:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** }
-  62              		.loc 1 170 0
-  63 001e 10BD     		pop	{r4, pc}
-  64              	.LVL6:
-  65              	.L5:
- 157:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****     I2cAddress = TS_I2C_ADDRESS;
-  66              		.loc 1 157 0
-  67 0020 084A     		ldr	r2, .L6+12
-  68 0022 1460     		str	r4, [r2]
- 158:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****     tsOrientation = TS_SWAP_XY;
-  69              		.loc 1 158 0
-  70 0024 7020     		movs	r0, #112
-  71 0026 084A     		ldr	r2, .L6+16
-  72 0028 1070     		strb	r0, [r2]
- 159:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** 
-  73              		.loc 1 159 0
-  74 002a 0821     		movs	r1, #8
-  75 002c 074A     		ldr	r2, .L6+20
-  76 002e 1170     		strb	r1, [r2]
- 162:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   }
-  77              		.loc 1 162 0
-  78 0030 E368     		ldr	r3, [r4, #12]
-  79 0032 9847     		blx	r3
+  78              		.loc 1 170 0
+  79 0032 10BD     		pop	{r4, pc}
   80              	.LVL7:
- 148:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   tsXBoundary = ts_SizeX;
-  81              		.loc 1 148 0
-  82 0034 0020     		movs	r0, #0
-  83 0036 10BD     		pop	{r4, pc}
-  84              	.L7:
-  85              		.align	2
-  86              	.L6:
-  87 0038 00000000 		.word	.LANCHOR0
-  88 003c 00000000 		.word	.LANCHOR1
-  89 0040 00000000 		.word	ft5336_ts_drv
-  90 0044 00000000 		.word	.LANCHOR2
-  91 0048 00000000 		.word	.LANCHOR3
-  92 004c 00000000 		.word	.LANCHOR4
-  93              		.cfi_endproc
-  94              	.LFE136:
-  96              		.section	.text.BSP_TS_DeInit,"ax",%progbits
-  97              		.align	1
-  98              		.global	BSP_TS_DeInit
-  99              		.syntax unified
- 100              		.thumb
- 101              		.thumb_func
- 102              		.fpu fpv5-sp-d16
- 104              	BSP_TS_DeInit:
- 105              	.LFB137:
+  81              	.L3:
+ 166:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   }
+  82              		.loc 1 166 0
+  83 0034 0320     		movs	r0, #3
+  84 0036 FCE7     		b	.L2
+  85              	.L6:
+  86              		.align	2
+  87              	.L5:
+  88 0038 00000000 		.word	.LANCHOR0
+  89 003c 00000000 		.word	.LANCHOR1
+  90 0040 00000000 		.word	ft5336_ts_drv
+  91 0044 00000000 		.word	.LANCHOR2
+  92 0048 00000000 		.word	.LANCHOR3
+  93 004c 00000000 		.word	.LANCHOR4
+  94              		.cfi_endproc
+  95              	.LFE138:
+  97              		.section	.text.BSP_TS_DeInit,"ax",%progbits
+  98              		.align	1
+  99              		.global	BSP_TS_DeInit
+ 100              		.syntax unified
+ 101              		.thumb
+ 102              		.thumb_func
+ 103              		.fpu fpv5-sp-d16
+ 105              	BSP_TS_DeInit:
+ 106              	.LFB139:
  171:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** 
  172:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** /**
  173:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   * @brief  DeInitializes the TouchScreen.
@@ -297,31 +295,31 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s 			page 1
  175:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   */
  176:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** uint8_t BSP_TS_DeInit(void)
  177:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** { 
- 106              		.loc 1 177 0
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s 			page 6
+ 107              		.loc 1 177 0
+ 108              		.cfi_startproc
+ 109              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s 			page 6
 
 
- 107              		.cfi_startproc
- 108              		@ args = 0, pretend = 0, frame = 0
- 109              		@ frame_needed = 0, uses_anonymous_args = 0
- 110              		@ link register save eliminated.
+ 110              		@ frame_needed = 0, uses_anonymous_args = 0
+ 111              		@ link register save eliminated.
  178:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   /* Actually ts_driver does not provide a DeInit function */
  179:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   return TS_OK;
  180:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** }
- 111              		.loc 1 180 0
- 112 0000 0020     		movs	r0, #0
- 113 0002 7047     		bx	lr
- 114              		.cfi_endproc
- 115              	.LFE137:
- 117              		.section	.text.BSP_TS_ITConfig,"ax",%progbits
- 118              		.align	1
- 119              		.global	BSP_TS_ITConfig
- 120              		.syntax unified
- 121              		.thumb
- 122              		.thumb_func
- 123              		.fpu fpv5-sp-d16
- 125              	BSP_TS_ITConfig:
- 126              	.LFB138:
+ 112              		.loc 1 180 0
+ 113 0000 0020     		movs	r0, #0
+ 114 0002 7047     		bx	lr
+ 115              		.cfi_endproc
+ 116              	.LFE139:
+ 118              		.section	.text.BSP_TS_ITConfig,"ax",%progbits
+ 119              		.align	1
+ 120              		.global	BSP_TS_ITConfig
+ 121              		.syntax unified
+ 122              		.thumb
+ 123              		.thumb_func
+ 124              		.fpu fpv5-sp-d16
+ 126              	BSP_TS_ITConfig:
+ 127              	.LFB140:
  181:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** 
  182:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** /**
  183:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   * @brief  Configures and enables the touch screen interrupts.
@@ -329,102 +327,102 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s 			page 1
  185:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   */
  186:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** uint8_t BSP_TS_ITConfig(void)
  187:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** {
- 127              		.loc 1 187 0
- 128              		.cfi_startproc
- 129              		@ args = 0, pretend = 0, frame = 24
- 130              		@ frame_needed = 0, uses_anonymous_args = 0
- 131 0000 10B5     		push	{r4, lr}
- 132              	.LCFI1:
- 133              		.cfi_def_cfa_offset 8
- 134              		.cfi_offset 4, -8
- 135              		.cfi_offset 14, -4
- 136 0002 86B0     		sub	sp, sp, #24
- 137              	.LCFI2:
- 138              		.cfi_def_cfa_offset 32
+ 128              		.loc 1 187 0
+ 129              		.cfi_startproc
+ 130              		@ args = 0, pretend = 0, frame = 24
+ 131              		@ frame_needed = 0, uses_anonymous_args = 0
+ 132 0000 10B5     		push	{r4, lr}
+ 133              	.LCFI1:
+ 134              		.cfi_def_cfa_offset 8
+ 135              		.cfi_offset 4, -8
+ 136              		.cfi_offset 14, -4
+ 137 0002 86B0     		sub	sp, sp, #24
+ 138              	.LCFI2:
+ 139              		.cfi_def_cfa_offset 32
  188:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   GPIO_InitTypeDef gpio_init_structure;
  189:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** 
  190:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   /* Configure Interrupt mode for SD detection pin */
  191:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   gpio_init_structure.Pin = TS_INT_PIN;
- 139              		.loc 1 191 0
- 140 0004 4FF40053 		mov	r3, #8192
- 141 0008 0193     		str	r3, [sp, #4]
+ 140              		.loc 1 191 0
+ 141 0004 4FF40053 		mov	r3, #8192
+ 142 0008 0193     		str	r3, [sp, #4]
  192:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   gpio_init_structure.Pull = GPIO_NOPULL;
- 142              		.loc 1 192 0
- 143 000a 0024     		movs	r4, #0
- 144 000c 0394     		str	r4, [sp, #12]
+ 143              		.loc 1 192 0
+ 144 000a 0024     		movs	r4, #0
+ 145 000c 0394     		str	r4, [sp, #12]
  193:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   gpio_init_structure.Speed = GPIO_SPEED_FAST;
- 145              		.loc 1 193 0
- 146 000e 0223     		movs	r3, #2
- 147 0010 0493     		str	r3, [sp, #16]
+ 146              		.loc 1 193 0
+ 147 000e 0223     		movs	r3, #2
+ 148 0010 0493     		str	r3, [sp, #16]
  194:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   gpio_init_structure.Mode = GPIO_MODE_IT_RISING;
- 148              		.loc 1 194 0
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s 			page 7
+ 149              		.loc 1 194 0
+ 150 0012 0B4B     		ldr	r3, .L10
+ 151 0014 0293     		str	r3, [sp, #8]
+ARM GAS  C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s 			page 7
 
 
- 149 0012 0B4B     		ldr	r3, .L11
- 150 0014 0293     		str	r3, [sp, #8]
  195:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   HAL_GPIO_Init(TS_INT_GPIO_PORT, &gpio_init_structure);
- 151              		.loc 1 195 0
- 152 0016 01A9     		add	r1, sp, #4
- 153 0018 0A48     		ldr	r0, .L11+4
- 154 001a FFF7FEFF 		bl	HAL_GPIO_Init
- 155              	.LVL8:
+ 152              		.loc 1 195 0
+ 153 0016 01A9     		add	r1, sp, #4
+ 154 0018 0A48     		ldr	r0, .L10+4
+ 155 001a FFF7FEFF 		bl	HAL_GPIO_Init
+ 156              	.LVL8:
  196:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** 
  197:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   /* Enable and set Touch screen EXTI Interrupt to the lowest priority */
  198:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   HAL_NVIC_SetPriority((IRQn_Type)(TS_INT_EXTI_IRQn), 0x0F, 0x00);
- 156              		.loc 1 198 0
- 157 001e 2246     		mov	r2, r4
- 158 0020 0F21     		movs	r1, #15
- 159 0022 2820     		movs	r0, #40
- 160 0024 FFF7FEFF 		bl	HAL_NVIC_SetPriority
- 161              	.LVL9:
+ 157              		.loc 1 198 0
+ 158 001e 2246     		mov	r2, r4
+ 159 0020 0F21     		movs	r1, #15
+ 160 0022 2820     		movs	r0, #40
+ 161 0024 FFF7FEFF 		bl	HAL_NVIC_SetPriority
+ 162              	.LVL9:
  199:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   HAL_NVIC_EnableIRQ((IRQn_Type)(TS_INT_EXTI_IRQn));
- 162              		.loc 1 199 0
- 163 0028 2820     		movs	r0, #40
- 164 002a FFF7FEFF 		bl	HAL_NVIC_EnableIRQ
- 165              	.LVL10:
+ 163              		.loc 1 199 0
+ 164 0028 2820     		movs	r0, #40
+ 165 002a FFF7FEFF 		bl	HAL_NVIC_EnableIRQ
+ 166              	.LVL10:
  200:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** 
  201:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   /* Enable the TS ITs */
  202:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   tsDriver->EnableIT(I2cAddress);
- 166              		.loc 1 202 0
- 167 002e 064B     		ldr	r3, .L11+8
- 168 0030 1B68     		ldr	r3, [r3]
- 169 0032 9B69     		ldr	r3, [r3, #24]
- 170 0034 054A     		ldr	r2, .L11+12
- 171 0036 1078     		ldrb	r0, [r2]	@ zero_extendqisi2
- 172 0038 9847     		blx	r3
- 173              	.LVL11:
+ 167              		.loc 1 202 0
+ 168 002e 064B     		ldr	r3, .L10+8
+ 169 0030 1B68     		ldr	r3, [r3]
+ 170 0032 9B69     		ldr	r3, [r3, #24]
+ 171 0034 054A     		ldr	r2, .L10+12
+ 172 0036 1078     		ldrb	r0, [r2]	@ zero_extendqisi2
+ 173 0038 9847     		blx	r3
+ 174              	.LVL11:
  203:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** 
  204:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   return TS_OK;  
  205:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** }
- 174              		.loc 1 205 0
- 175 003a 2046     		mov	r0, r4
- 176 003c 06B0     		add	sp, sp, #24
- 177              	.LCFI3:
- 178              		.cfi_def_cfa_offset 8
- 179              		@ sp needed
- 180 003e 10BD     		pop	{r4, pc}
- 181              	.L12:
- 182              		.align	2
- 183              	.L11:
- 184 0040 00001110 		.word	269549568
- 185 0044 00200240 		.word	1073881088
- 186 0048 00000000 		.word	.LANCHOR2
- 187 004c 00000000 		.word	.LANCHOR3
- 188              		.cfi_endproc
- 189              	.LFE138:
- 191              		.section	.text.BSP_TS_ITGetStatus,"ax",%progbits
- 192              		.align	1
- 193              		.global	BSP_TS_ITGetStatus
- 194              		.syntax unified
- 195              		.thumb
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s 			page 8
+ 175              		.loc 1 205 0
+ 176 003a 2046     		mov	r0, r4
+ 177 003c 06B0     		add	sp, sp, #24
+ 178              	.LCFI3:
+ 179              		.cfi_def_cfa_offset 8
+ 180              		@ sp needed
+ 181 003e 10BD     		pop	{r4, pc}
+ 182              	.L11:
+ 183              		.align	2
+ 184              	.L10:
+ 185 0040 00001110 		.word	269549568
+ 186 0044 00200240 		.word	1073881088
+ 187 0048 00000000 		.word	.LANCHOR2
+ 188 004c 00000000 		.word	.LANCHOR3
+ 189              		.cfi_endproc
+ 190              	.LFE140:
+ 192              		.section	.text.BSP_TS_ITGetStatus,"ax",%progbits
+ 193              		.align	1
+ 194              		.global	BSP_TS_ITGetStatus
+ 195              		.syntax unified
+ 196              		.thumb
+ 197              		.thumb_func
+ 198              		.fpu fpv5-sp-d16
+ARM GAS  C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s 			page 8
 
 
- 196              		.thumb_func
- 197              		.fpu fpv5-sp-d16
- 199              	BSP_TS_ITGetStatus:
- 200              	.LFB139:
+ 200              	BSP_TS_ITGetStatus:
+ 201              	.LFB141:
  206:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** 
  207:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** /**
  208:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   * @brief  Gets the touch screen interrupt status.
@@ -432,44 +430,44 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s 			page 1
  210:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   */
  211:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** uint8_t BSP_TS_ITGetStatus(void)
  212:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** {
- 201              		.loc 1 212 0
- 202              		.cfi_startproc
- 203              		@ args = 0, pretend = 0, frame = 0
- 204              		@ frame_needed = 0, uses_anonymous_args = 0
- 205 0000 08B5     		push	{r3, lr}
- 206              	.LCFI4:
- 207              		.cfi_def_cfa_offset 8
- 208              		.cfi_offset 3, -8
- 209              		.cfi_offset 14, -4
+ 202              		.loc 1 212 0
+ 203              		.cfi_startproc
+ 204              		@ args = 0, pretend = 0, frame = 0
+ 205              		@ frame_needed = 0, uses_anonymous_args = 0
+ 206 0000 08B5     		push	{r3, lr}
+ 207              	.LCFI4:
+ 208              		.cfi_def_cfa_offset 8
+ 209              		.cfi_offset 3, -8
+ 210              		.cfi_offset 14, -4
  213:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   /* Return the TS IT status */
  214:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   return (tsDriver->GetITStatus(I2cAddress));
- 210              		.loc 1 214 0
- 211 0002 034B     		ldr	r3, .L15
- 212 0004 1B68     		ldr	r3, [r3]
- 213 0006 1B6A     		ldr	r3, [r3, #32]
- 214 0008 024A     		ldr	r2, .L15+4
- 215 000a 1078     		ldrb	r0, [r2]	@ zero_extendqisi2
- 216 000c 9847     		blx	r3
- 217              	.LVL12:
+ 211              		.loc 1 214 0
+ 212 0002 034B     		ldr	r3, .L14
+ 213 0004 1B68     		ldr	r3, [r3]
+ 214 0006 1B6A     		ldr	r3, [r3, #32]
+ 215 0008 024A     		ldr	r2, .L14+4
+ 216 000a 1078     		ldrb	r0, [r2]	@ zero_extendqisi2
+ 217 000c 9847     		blx	r3
+ 218              	.LVL12:
  215:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** }
- 218              		.loc 1 215 0
- 219 000e 08BD     		pop	{r3, pc}
- 220              	.L16:
- 221              		.align	2
- 222              	.L15:
- 223 0010 00000000 		.word	.LANCHOR2
- 224 0014 00000000 		.word	.LANCHOR3
- 225              		.cfi_endproc
- 226              	.LFE139:
- 228              		.section	.text.BSP_TS_Get_GestureId,"ax",%progbits
- 229              		.align	1
- 230              		.global	BSP_TS_Get_GestureId
- 231              		.syntax unified
- 232              		.thumb
- 233              		.thumb_func
- 234              		.fpu fpv5-sp-d16
- 236              	BSP_TS_Get_GestureId:
- 237              	.LFB141:
+ 219              		.loc 1 215 0
+ 220 000e 08BD     		pop	{r3, pc}
+ 221              	.L15:
+ 222              		.align	2
+ 223              	.L14:
+ 224 0010 00000000 		.word	.LANCHOR2
+ 225 0014 00000000 		.word	.LANCHOR3
+ 226              		.cfi_endproc
+ 227              	.LFE141:
+ 229              		.section	.text.BSP_TS_Get_GestureId,"ax",%progbits
+ 230              		.align	1
+ 231              		.global	BSP_TS_Get_GestureId
+ 232              		.syntax unified
+ 233              		.thumb
+ 234              		.thumb_func
+ 235              		.fpu fpv5-sp-d16
+ 237              	BSP_TS_Get_GestureId:
+ 238              	.LFB143:
  216:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** 
  217:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** /**
  218:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   * @brief  Returns status and positions of the touch screen.
@@ -478,11 +476,11 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s 			page 1
  221:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   */
  222:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** uint8_t BSP_TS_GetState(TS_StateTypeDef *TS_State)
  223:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** {
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s 			page 9
-
-
  224:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   static uint32_t _x[TS_MAX_NB_TOUCH] = {0, 0};
  225:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   static uint32_t _y[TS_MAX_NB_TOUCH] = {0, 0};
+ARM GAS  C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s 			page 9
+
+
  226:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   uint8_t ts_status = TS_OK;
  227:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   uint16_t x[TS_MAX_NB_TOUCH];
  228:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   uint16_t y[TS_MAX_NB_TOUCH];
@@ -538,11 +536,11 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s 			page 1
  278:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****         _y[index] = y[index];
  279:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****       }
  280:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** 
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s 			page 10
-
-
  281:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****       if(I2cAddress == FT5336_I2C_SLAVE_ADDRESS)
  282:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****       {
+ARM GAS  C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s 			page 10
+
+
  283:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****         TS_State->touchX[index] = x[index];
  284:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****         TS_State->touchY[index] = y[index];
  285:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****       }
@@ -598,59 +596,59 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s 			page 1
  335:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** 
  336:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** #if (TS_MULTI_TOUCH_SUPPORTED == 1)
  337:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** /**
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s 			page 11
-
-
  338:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   * @brief  Update gesture Id following a touch detected.
  339:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   * @param  TS_State: Pointer to touch screen current state structure
+ARM GAS  C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s 			page 11
+
+
  340:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   * @retval TS_OK if all initializations are OK. Other value if error.
  341:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   */
  342:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** uint8_t BSP_TS_Get_GestureId(TS_StateTypeDef *TS_State)
  343:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** {
- 238              		.loc 1 343 0
- 239              		.cfi_startproc
- 240              		@ args = 0, pretend = 0, frame = 8
- 241              		@ frame_needed = 0, uses_anonymous_args = 0
- 242              	.LVL13:
- 243 0000 10B5     		push	{r4, lr}
- 244              	.LCFI5:
- 245              		.cfi_def_cfa_offset 8
- 246              		.cfi_offset 4, -8
- 247              		.cfi_offset 14, -4
- 248 0002 82B0     		sub	sp, sp, #8
- 249              	.LCFI6:
- 250              		.cfi_def_cfa_offset 16
- 251 0004 0446     		mov	r4, r0
+ 239              		.loc 1 343 0
+ 240              		.cfi_startproc
+ 241              		@ args = 0, pretend = 0, frame = 8
+ 242              		@ frame_needed = 0, uses_anonymous_args = 0
+ 243              	.LVL13:
+ 244 0000 10B5     		push	{r4, lr}
+ 245              	.LCFI5:
+ 246              		.cfi_def_cfa_offset 8
+ 247              		.cfi_offset 4, -8
+ 248              		.cfi_offset 14, -4
+ 249 0002 82B0     		sub	sp, sp, #8
+ 250              	.LCFI6:
+ 251              		.cfi_def_cfa_offset 16
+ 252 0004 0446     		mov	r4, r0
  344:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   uint32_t gestureId = 0;
- 252              		.loc 1 344 0
- 253 0006 02A9     		add	r1, sp, #8
- 254 0008 0023     		movs	r3, #0
- 255 000a 41F8043D 		str	r3, [r1, #-4]!
- 256              	.LVL14:
+ 253              		.loc 1 344 0
+ 254 0006 02A9     		add	r1, sp, #8
+ 255 0008 0023     		movs	r3, #0
+ 256 000a 41F8043D 		str	r3, [r1, #-4]!
+ 257              	.LVL14:
  345:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   uint8_t  ts_status = TS_OK;
  346:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** 
  347:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   /* Get gesture Id */
  348:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   ft5336_TS_GetGestureID(I2cAddress, &gestureId);
- 257              		.loc 1 348 0
- 258 000e 184B     		ldr	r3, .L30
- 259 0010 1878     		ldrb	r0, [r3]	@ zero_extendqisi2
- 260              	.LVL15:
- 261 0012 FFF7FEFF 		bl	ft5336_TS_GetGestureID
- 262              	.LVL16:
+ 258              		.loc 1 348 0
+ 259 000e 184B     		ldr	r3, .L29
+ 260 0010 1878     		ldrb	r0, [r3]	@ zero_extendqisi2
+ 261              	.LVL15:
+ 262 0012 FFF7FEFF 		bl	ft5336_TS_GetGestureID
+ 263              	.LVL16:
  349:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** 
  350:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   /* Remap gesture Id to a TS_GestureIdTypeDef value */
  351:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   switch(gestureId)
- 263              		.loc 1 351 0
- 264 0016 019B     		ldr	r3, [sp, #4]
- 265 0018 182B     		cmp	r3, #24
- 266 001a 1DD0     		beq	.L19
- 267 001c 06D8     		bhi	.L20
- 268 001e 102B     		cmp	r3, #16
- 269 0020 12D0     		beq	.L21
- 270 0022 142B     		cmp	r3, #20
- 271 0024 14D0     		beq	.L22
- 272 0026 5BB1     		cbz	r3, .L29
- 273              	.L27:
+ 264              		.loc 1 351 0
+ 265 0016 019B     		ldr	r3, [sp, #4]
+ 266 0018 182B     		cmp	r3, #24
+ 267 001a 1DD0     		beq	.L18
+ 268 001c 06D8     		bhi	.L19
+ 269 001e 102B     		cmp	r3, #16
+ 270 0020 12D0     		beq	.L20
+ 271 0022 142B     		cmp	r3, #20
+ 272 0024 14D0     		beq	.L21
+ 273 0026 5BB1     		cbz	r3, .L28
+ 274              	.L26:
  352:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   {
  353:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****     case FT5336_GEST_ID_NO_GESTURE :
  354:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****       TS_State->gestureId = GEST_ID_NO_GESTURE;
@@ -658,11 +656,11 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s 			page 1
  356:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****     case FT5336_GEST_ID_MOVE_UP :
  357:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****       TS_State->gestureId = GEST_ID_MOVE_UP;
  358:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****       break;
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s 			page 12
-
-
  359:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****     case FT5336_GEST_ID_MOVE_RIGHT :
  360:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****       TS_State->gestureId = GEST_ID_MOVE_RIGHT;
+ARM GAS  C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s 			page 12
+
+
  361:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****       break;
  362:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****     case FT5336_GEST_ID_MOVE_DOWN :
  363:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****       TS_State->gestureId = GEST_ID_MOVE_DOWN;
@@ -678,479 +676,481 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s 			page 1
  373:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****       break;
  374:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****     default :
  375:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****       ts_status = TS_ERROR;
- 274              		.loc 1 375 0
- 275 0028 0120     		movs	r0, #1
- 276 002a 0BE0     		b	.L18
- 277              	.L20:
+ 275              		.loc 1 375 0
+ 276 0028 0120     		movs	r0, #1
+ 277 002a 0BE0     		b	.L17
+ 278              	.L19:
  351:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   {
- 278              		.loc 1 351 0
- 279 002c 402B     		cmp	r3, #64
- 280 002e 17D0     		beq	.L24
- 281 0030 492B     		cmp	r3, #73
- 282 0032 19D0     		beq	.L25
- 283 0034 1C2B     		cmp	r3, #28
- 284 0036 F7D1     		bne	.L27
+ 279              		.loc 1 351 0
+ 280 002c 402B     		cmp	r3, #64
+ 281 002e 17D0     		beq	.L23
+ 282 0030 492B     		cmp	r3, #73
+ 283 0032 19D0     		beq	.L24
+ 284 0034 1C2B     		cmp	r3, #28
+ 285 0036 F7D1     		bne	.L26
  366:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****       break;
- 285              		.loc 1 366 0
- 286 0038 0423     		movs	r3, #4
- 287 003a A362     		str	r3, [r4, #40]
+ 286              		.loc 1 366 0
+ 287 0038 0423     		movs	r3, #4
+ 288 003a A362     		str	r3, [r4, #40]
  345:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** 
- 288              		.loc 1 345 0
- 289 003c 0020     		movs	r0, #0
+ 289              		.loc 1 345 0
+ 290 003c 0020     		movs	r0, #0
  367:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****     case FT5336_GEST_ID_ZOOM_IN :
- 290              		.loc 1 367 0
- 291 003e 01E0     		b	.L18
- 292              	.L29:
+ 291              		.loc 1 367 0
+ 292 003e 01E0     		b	.L17
+ 293              	.L28:
  354:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****       break;
- 293              		.loc 1 354 0
- 294 0040 0020     		movs	r0, #0
- 295 0042 A062     		str	r0, [r4, #40]
- 296              	.L18:
- 297              	.LVL17:
+ 294              		.loc 1 354 0
+ 295 0040 0020     		movs	r0, #0
+ 296 0042 A062     		str	r0, [r4, #40]
+ 297              	.L17:
+ 298              	.LVL17:
  376:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****       break;
  377:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   } /* of switch(gestureId) */
  378:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** 
  379:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   return(ts_status);
  380:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** }
- 298              		.loc 1 380 0
- 299 0044 02B0     		add	sp, sp, #8
- 300              	.LCFI7:
- 301              		.cfi_remember_state
- 302              		.cfi_def_cfa_offset 8
- 303              		@ sp needed
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s 			page 13
+ 299              		.loc 1 380 0
+ 300 0044 02B0     		add	sp, sp, #8
+ 301              	.LCFI7:
+ 302              		.cfi_remember_state
+ 303              		.cfi_def_cfa_offset 8
+ 304              		@ sp needed
+ 305 0046 10BD     		pop	{r4, pc}
+ 306              	.LVL18:
+ARM GAS  C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s 			page 13
 
 
- 304 0046 10BD     		pop	{r4, pc}
- 305              	.LVL18:
- 306              	.L21:
- 307              	.LCFI8:
- 308              		.cfi_restore_state
+ 307              	.L20:
+ 308              	.LCFI8:
+ 309              		.cfi_restore_state
  357:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****       break;
- 309              		.loc 1 357 0
- 310 0048 0123     		movs	r3, #1
- 311 004a A362     		str	r3, [r4, #40]
+ 310              		.loc 1 357 0
+ 311 0048 0123     		movs	r3, #1
+ 312 004a A362     		str	r3, [r4, #40]
  345:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** 
- 312              		.loc 1 345 0
- 313 004c 0020     		movs	r0, #0
+ 313              		.loc 1 345 0
+ 314 004c 0020     		movs	r0, #0
  358:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****     case FT5336_GEST_ID_MOVE_RIGHT :
- 314              		.loc 1 358 0
- 315 004e F9E7     		b	.L18
- 316              	.L22:
+ 315              		.loc 1 358 0
+ 316 004e F9E7     		b	.L17
+ 317              	.L21:
  360:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****       break;
- 317              		.loc 1 360 0
- 318 0050 0223     		movs	r3, #2
- 319 0052 A362     		str	r3, [r4, #40]
+ 318              		.loc 1 360 0
+ 319 0050 0223     		movs	r3, #2
+ 320 0052 A362     		str	r3, [r4, #40]
  345:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** 
- 320              		.loc 1 345 0
- 321 0054 0020     		movs	r0, #0
+ 321              		.loc 1 345 0
+ 322 0054 0020     		movs	r0, #0
  361:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****     case FT5336_GEST_ID_MOVE_DOWN :
- 322              		.loc 1 361 0
- 323 0056 F5E7     		b	.L18
- 324              	.L19:
+ 323              		.loc 1 361 0
+ 324 0056 F5E7     		b	.L17
+ 325              	.L18:
  363:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****       break;
- 325              		.loc 1 363 0
- 326 0058 0323     		movs	r3, #3
- 327 005a A362     		str	r3, [r4, #40]
+ 326              		.loc 1 363 0
+ 327 0058 0323     		movs	r3, #3
+ 328 005a A362     		str	r3, [r4, #40]
  345:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** 
- 328              		.loc 1 345 0
- 329 005c 0020     		movs	r0, #0
+ 329              		.loc 1 345 0
+ 330 005c 0020     		movs	r0, #0
  364:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****     case FT5336_GEST_ID_MOVE_LEFT :
- 330              		.loc 1 364 0
- 331 005e F1E7     		b	.L18
- 332              	.L24:
+ 331              		.loc 1 364 0
+ 332 005e F1E7     		b	.L17
+ 333              	.L23:
  369:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****       break;
- 333              		.loc 1 369 0
- 334 0060 0523     		movs	r3, #5
- 335 0062 A362     		str	r3, [r4, #40]
+ 334              		.loc 1 369 0
+ 335 0060 0523     		movs	r3, #5
+ 336 0062 A362     		str	r3, [r4, #40]
  345:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** 
- 336              		.loc 1 345 0
- 337 0064 0020     		movs	r0, #0
+ 337              		.loc 1 345 0
+ 338 0064 0020     		movs	r0, #0
  370:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****     case FT5336_GEST_ID_ZOOM_OUT :
- 338              		.loc 1 370 0
- 339 0066 EDE7     		b	.L18
- 340              	.L25:
+ 339              		.loc 1 370 0
+ 340 0066 EDE7     		b	.L17
+ 341              	.L24:
  372:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****       break;
- 341              		.loc 1 372 0
- 342 0068 0623     		movs	r3, #6
- 343 006a A362     		str	r3, [r4, #40]
+ 342              		.loc 1 372 0
+ 343 0068 0623     		movs	r3, #6
+ 344 006a A362     		str	r3, [r4, #40]
  345:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** 
- 344              		.loc 1 345 0
- 345 006c 0020     		movs	r0, #0
+ 345              		.loc 1 345 0
+ 346 006c 0020     		movs	r0, #0
  373:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****     default :
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s 			page 14
+ 347              		.loc 1 373 0
+ 348 006e E9E7     		b	.L17
+ARM GAS  C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s 			page 14
 
 
- 346              		.loc 1 373 0
- 347 006e E9E7     		b	.L18
- 348              	.L31:
- 349              		.align	2
- 350              	.L30:
- 351 0070 00000000 		.word	.LANCHOR3
- 352              		.cfi_endproc
- 353              	.LFE141:
- 355              		.section	.text.BSP_TS_GetState,"ax",%progbits
- 356              		.align	1
- 357              		.global	BSP_TS_GetState
- 358              		.syntax unified
- 359              		.thumb
- 360              		.thumb_func
- 361              		.fpu fpv5-sp-d16
- 363              	BSP_TS_GetState:
- 364              	.LFB140:
+ 349              	.L30:
+ 350              		.align	2
+ 351              	.L29:
+ 352 0070 00000000 		.word	.LANCHOR3
+ 353              		.cfi_endproc
+ 354              	.LFE143:
+ 356              		.section	.text.BSP_TS_GetState,"ax",%progbits
+ 357              		.align	1
+ 358              		.global	BSP_TS_GetState
+ 359              		.syntax unified
+ 360              		.thumb
+ 361              		.thumb_func
+ 362              		.fpu fpv5-sp-d16
+ 364              	BSP_TS_GetState:
+ 365              	.LFB142:
  223:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   static uint32_t _x[TS_MAX_NB_TOUCH] = {0, 0};
- 365              		.loc 1 223 0
- 366              		.cfi_startproc
- 367              		@ args = 0, pretend = 0, frame = 64
- 368              		@ frame_needed = 0, uses_anonymous_args = 0
- 369              	.LVL19:
- 370 0000 30B5     		push	{r4, r5, lr}
- 371              	.LCFI9:
- 372              		.cfi_def_cfa_offset 12
- 373              		.cfi_offset 4, -12
- 374              		.cfi_offset 5, -8
- 375              		.cfi_offset 14, -4
- 376 0002 93B0     		sub	sp, sp, #76
- 377              	.LCFI10:
- 378              		.cfi_def_cfa_offset 88
- 379 0004 0546     		mov	r5, r0
- 380              	.LVL20:
+ 366              		.loc 1 223 0
+ 367              		.cfi_startproc
+ 368              		@ args = 0, pretend = 0, frame = 64
+ 369              		@ frame_needed = 0, uses_anonymous_args = 0
+ 370              	.LVL19:
+ 371 0000 30B5     		push	{r4, r5, lr}
+ 372              	.LCFI9:
+ 373              		.cfi_def_cfa_offset 12
+ 374              		.cfi_offset 4, -12
+ 375              		.cfi_offset 5, -8
+ 376              		.cfi_offset 14, -4
+ 377 0002 93B0     		sub	sp, sp, #76
+ 378              	.LCFI10:
+ 379              		.cfi_def_cfa_offset 88
+ 380 0004 0546     		mov	r5, r0
+ 381              	.LVL20:
  235:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   uint32_t area = 0;
- 381              		.loc 1 235 0
- 382 0006 0023     		movs	r3, #0
- 383 0008 0593     		str	r3, [sp, #20]
+ 382              		.loc 1 235 0
+ 383 0006 0023     		movs	r3, #0
+ 384 0008 0593     		str	r3, [sp, #20]
  236:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   uint32_t event = 0;
- 384              		.loc 1 236 0
- 385 000a 0493     		str	r3, [sp, #16]
+ 385              		.loc 1 236 0
+ 386 000a 0493     		str	r3, [sp, #16]
  237:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** #endif /* TS_MULTI_TOUCH_SUPPORTED == 1 */
- 386              		.loc 1 237 0
- 387 000c 0393     		str	r3, [sp, #12]
+ 387              		.loc 1 237 0
+ 388 000c 0393     		str	r3, [sp, #12]
  241:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   
- 388              		.loc 1 241 0
- 389 000e 694B     		ldr	r3, .L58
- 390 0010 1B68     		ldr	r3, [r3]
- 391 0012 1B69     		ldr	r3, [r3, #16]
- 392 0014 684A     		ldr	r2, .L58+4
- 393 0016 1078     		ldrb	r0, [r2]	@ zero_extendqisi2
- 394              	.LVL21:
- 395 0018 9847     		blx	r3
- 396              	.LVL22:
- 397 001a 2870     		strb	r0, [r5]
+ 389              		.loc 1 241 0
+ 390 000e 694B     		ldr	r3, .L57
+ 391 0010 1B68     		ldr	r3, [r3]
+ 392 0012 1B69     		ldr	r3, [r3, #16]
+ 393 0014 684A     		ldr	r2, .L57+4
+ 394 0016 1078     		ldrb	r0, [r2]	@ zero_extendqisi2
+ 395              	.LVL21:
+ 396 0018 9847     		blx	r3
+ 397              	.LVL22:
+ 398 001a 2870     		strb	r0, [r5]
  243:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   {
- 398              		.loc 1 243 0
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s 			page 15
+ 399              		.loc 1 243 0
+ 400 001c 0028     		cmp	r0, #0
+ 401 001e 00F0C680 		beq	.L33
+ARM GAS  C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s 			page 15
 
 
- 399 001c 0028     		cmp	r0, #0
- 400 001e 00F0C680 		beq	.L34
- 401 0022 0024     		movs	r4, #0
- 402 0024 1FE0     		b	.L33
- 403              	.LVL23:
- 404              	.L56:
+ 245:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****     {
+ 402              		.loc 1 245 0
+ 403 0022 0024     		movs	r4, #0
+ 404 0024 1FE0     		b	.L32
+ 405              	.LVL23:
+ 406              	.L55:
  252:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****         y[index] = brute_y[index];
- 405              		.loc 1 252 0
- 406 0026 12AA     		add	r2, sp, #72
- 407 0028 02EB4402 		add	r2, r2, r4, lsl #1
- 408 002c 32F8241C 		ldrh	r1, [r2, #-36]
- 409 0030 22F80C1C 		strh	r1, [r2, #-12]	@ movhi
+ 407              		.loc 1 252 0
+ 408 0026 12AA     		add	r2, sp, #72
+ 409 0028 02EB4402 		add	r2, r2, r4, lsl #1
+ 410 002c 32F8241C 		ldrh	r1, [r2, #-36]
+ 411 0030 22F80C1C 		strh	r1, [r2, #-12]	@ movhi
  253:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****       }
- 410              		.loc 1 253 0
- 411 0034 32F8301C 		ldrh	r1, [r2, #-48]
- 412 0038 22F8181C 		strh	r1, [r2, #-24]	@ movhi
- 413 003c 26E0     		b	.L35
- 414              	.L39:
+ 412              		.loc 1 253 0
+ 413 0034 32F8301C 		ldrh	r1, [r2, #-48]
+ 414 0038 22F8181C 		strh	r1, [r2, #-24]	@ movhi
+ 415 003c 26E0     		b	.L34
+ 416              	.L38:
  272:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****       y_diff = y[index] > _y[index]? (y[index] - _y[index]): (_y[index] - y[index]);
- 415              		.loc 1 272 0 discriminator 2
- 416 003e 9BB2     		uxth	r3, r3
- 417 0040 5B1A     		subs	r3, r3, r1
- 418 0042 9BB2     		uxth	r3, r3
- 419 0044 55E0     		b	.L40
- 420              	.LVL24:
- 421              	.L41:
+ 417              		.loc 1 272 0 discriminator 2
+ 418 003e 9BB2     		uxth	r3, r3
+ 419 0040 5B1A     		subs	r3, r3, r1
+ 420 0042 9BB2     		uxth	r3, r3
+ 421 0044 55E0     		b	.L39
+ 422              	.LVL24:
+ 423              	.L40:
  273:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** 
- 422              		.loc 1 273 0 discriminator 2
- 423 0046 92B2     		uxth	r2, r2
- 424 0048 121A     		subs	r2, r2, r0
- 425 004a 92B2     		uxth	r2, r2
- 426 004c 5EE0     		b	.L42
- 427              	.LVL25:
- 428              	.L57:
+ 424              		.loc 1 273 0 discriminator 2
+ 425 0046 92B2     		uxth	r2, r2
+ 426 0048 121A     		subs	r2, r2, r0
+ 427 004a 92B2     		uxth	r2, r2
+ 428 004c 5EE0     		b	.L41
+ 429              	.LVL25:
+ 430              	.L56:
  283:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****         TS_State->touchY[index] = y[index];
- 429              		.loc 1 283 0
- 430 004e 05EB4403 		add	r3, r5, r4, lsl #1
- 431 0052 5980     		strh	r1, [r3, #2]	@ movhi
+ 431              		.loc 1 283 0
+ 432 004e 05EB4403 		add	r3, r5, r4, lsl #1
+ 433 0052 5980     		strh	r1, [r3, #2]	@ movhi
  284:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****       }
- 432              		.loc 1 284 0
- 433 0054 231D     		adds	r3, r4, #4
- 434 0056 05EB4303 		add	r3, r5, r3, lsl #1
- 435 005a 9880     		strh	r0, [r3, #4]	@ movhi
- 436 005c 7AE0     		b	.L45
- 437              	.LVL26:
- 438              	.L47:
+ 434              		.loc 1 284 0
+ 435 0054 231D     		adds	r3, r4, #4
+ 436 0056 05EB4303 		add	r3, r5, r3, lsl #1
+ 437 005a 9880     		strh	r0, [r3, #4]	@ movhi
+ 438 005c 7AE0     		b	.L44
+ 439              	.LVL26:
+ 440              	.L46:
  306:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****           break;
- 439              		.loc 1 306 0
- 440 005e 2B19     		adds	r3, r5, r4
- 441 0060 0122     		movs	r2, #1
- 442 0062 DA76     		strb	r2, [r3, #27]
- 443              	.L46:
+ 441              		.loc 1 306 0
+ 442 005e 2B19     		adds	r3, r5, r4
+ 443 0060 0122     		movs	r2, #1
+ 444 0062 DA76     		strb	r2, [r3, #27]
+ 445              	.L45:
  245:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****     {
- 444              		.loc 1 245 0 discriminator 2
- 445 0064 0134     		adds	r4, r4, #1
- 446              	.LVL27:
- 447              	.L33:
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s 			page 16
+ 446              		.loc 1 245 0 discriminator 2
+ 447 0064 0134     		adds	r4, r4, #1
+ 448              	.LVL27:
+ 449              	.L32:
+ARM GAS  C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s 			page 16
 
 
  245:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****     {
- 448              		.loc 1 245 0 is_stmt 0 discriminator 1
- 449 0066 2B78     		ldrb	r3, [r5]	@ zero_extendqisi2
- 450 0068 9C42     		cmp	r4, r3
- 451 006a 80F09D80 		bcs	.L55
+ 450              		.loc 1 245 0 is_stmt 0 discriminator 1
+ 451 0066 2B78     		ldrb	r3, [r5]	@ zero_extendqisi2
+ 452 0068 A342     		cmp	r3, r4
+ 453 006a 40F29D80 		bls	.L54
  248:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** 
- 452              		.loc 1 248 0 is_stmt 1
- 453 006e 514B     		ldr	r3, .L58
- 454 0070 1B68     		ldr	r3, [r3]
- 455 0072 5B69     		ldr	r3, [r3, #20]
- 456 0074 6100     		lsls	r1, r4, #1
- 457 0076 06AA     		add	r2, sp, #24
- 458 0078 0A44     		add	r2, r2, r1
- 459 007a 09A8     		add	r0, sp, #36
- 460 007c 0144     		add	r1, r1, r0
- 461 007e 4E48     		ldr	r0, .L58+4
- 462 0080 0078     		ldrb	r0, [r0]	@ zero_extendqisi2
- 463 0082 9847     		blx	r3
- 464              	.LVL28:
+ 454              		.loc 1 248 0 is_stmt 1
+ 455 006e 514B     		ldr	r3, .L57
+ 456 0070 1B68     		ldr	r3, [r3]
+ 457 0072 5B69     		ldr	r3, [r3, #20]
+ 458 0074 6100     		lsls	r1, r4, #1
+ 459 0076 06AA     		add	r2, sp, #24
+ 460 0078 0A44     		add	r2, r2, r1
+ 461 007a 09A8     		add	r0, sp, #36
+ 462 007c 0144     		add	r1, r1, r0
+ 463 007e 4E48     		ldr	r0, .L57+4
+ 464 0080 0078     		ldrb	r0, [r0]	@ zero_extendqisi2
+ 465 0082 9847     		blx	r3
+ 466              	.LVL28:
  250:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****       {
- 465              		.loc 1 250 0
- 466 0084 4D4B     		ldr	r3, .L58+8
- 467 0086 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 468 0088 012B     		cmp	r3, #1
- 469 008a CCD0     		beq	.L56
- 470              	.L35:
+ 467              		.loc 1 250 0
+ 468 0084 4D4B     		ldr	r3, .L57+8
+ 469 0086 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 470 0088 012B     		cmp	r3, #1
+ 471 008a CCD0     		beq	.L55
+ 472              	.L34:
  256:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****       {
- 471              		.loc 1 256 0
- 472 008c 13F0020F 		tst	r3, #2
- 473 0090 08D0     		beq	.L36
+ 473              		.loc 1 256 0
+ 474 008c 13F0020F 		tst	r3, #2
+ 475 0090 08D0     		beq	.L35
  258:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****       }
- 474              		.loc 1 258 0
- 475 0092 12AA     		add	r2, sp, #72
- 476 0094 02EB4401 		add	r1, r2, r4, lsl #1
- 477 0098 31F8242C 		ldrh	r2, [r1, #-36]
- 478 009c C2F58052 		rsb	r2, r2, #4096
- 479 00a0 21F80C2C 		strh	r2, [r1, #-12]	@ movhi
- 480              	.L36:
+ 476              		.loc 1 258 0
+ 477 0092 12AA     		add	r2, sp, #72
+ 478 0094 02EB4401 		add	r1, r2, r4, lsl #1
+ 479 0098 31F8242C 		ldrh	r2, [r1, #-36]
+ 480 009c C2F58052 		rsb	r2, r2, #4096
+ 481 00a0 21F80C2C 		strh	r2, [r1, #-12]	@ movhi
+ 482              	.L35:
  261:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****       {
- 481              		.loc 1 261 0
- 482 00a4 13F0040F 		tst	r3, #4
- 483 00a8 08D0     		beq	.L37
+ 483              		.loc 1 261 0
+ 484 00a4 13F0040F 		tst	r3, #4
+ 485 00a8 08D0     		beq	.L36
  263:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****       }
- 484              		.loc 1 263 0
- 485 00aa 12AA     		add	r2, sp, #72
- 486 00ac 02EB4401 		add	r1, r2, r4, lsl #1
- 487 00b0 31F8302C 		ldrh	r2, [r1, #-48]
- 488 00b4 C2F58052 		rsb	r2, r2, #4096
- 489 00b8 21F8182C 		strh	r2, [r1, #-24]	@ movhi
- 490              	.L37:
+ 486              		.loc 1 263 0
+ 487 00aa 12AA     		add	r2, sp, #72
+ 488 00ac 02EB4401 		add	r1, r2, r4, lsl #1
+ 489 00b0 31F8302C 		ldrh	r2, [r1, #-48]
+ 490 00b4 C2F58052 		rsb	r2, r2, #4096
+ 491 00b8 21F8182C 		strh	r2, [r1, #-24]	@ movhi
+ 492              	.L36:
  266:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****       {
- 491              		.loc 1 266 0
- 492 00bc 13F0080F 		tst	r3, #8
- 493 00c0 0AD0     		beq	.L38
+ 493              		.loc 1 266 0
+ 494 00bc 13F0080F 		tst	r3, #8
+ 495 00c0 0AD0     		beq	.L37
  268:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****         x[index] = brute_y[index];
- 494              		.loc 1 268 0
- 495 00c2 12AB     		add	r3, sp, #72
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s 			page 17
+ 496              		.loc 1 268 0
+ 497 00c2 12AB     		add	r3, sp, #72
+ARM GAS  C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s 			page 17
 
 
- 496 00c4 03EB4403 		add	r3, r3, r4, lsl #1
- 497 00c8 33F8242C 		ldrh	r2, [r3, #-36]
- 498 00cc 23F8182C 		strh	r2, [r3, #-24]	@ movhi
+ 498 00c4 03EB4403 		add	r3, r3, r4, lsl #1
+ 499 00c8 33F8242C 		ldrh	r2, [r3, #-36]
+ 500 00cc 23F8182C 		strh	r2, [r3, #-24]	@ movhi
  269:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****       }
- 499              		.loc 1 269 0
- 500 00d0 33F8302C 		ldrh	r2, [r3, #-48]
- 501 00d4 23F80C2C 		strh	r2, [r3, #-12]	@ movhi
- 502              	.L38:
+ 501              		.loc 1 269 0
+ 502 00d0 33F8302C 		ldrh	r2, [r3, #-48]
+ 503 00d4 23F80C2C 		strh	r2, [r3, #-12]	@ movhi
+ 504              	.L37:
  272:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****       y_diff = y[index] > _y[index]? (y[index] - _y[index]): (_y[index] - y[index]);
- 503              		.loc 1 272 0
- 504 00d8 12AB     		add	r3, sp, #72
- 505 00da 03EB4403 		add	r3, r3, r4, lsl #1
- 506 00de 33F80C1C 		ldrh	r1, [r3, #-12]
- 507 00e2 374B     		ldr	r3, .L58+12
- 508 00e4 53F82430 		ldr	r3, [r3, r4, lsl #2]
- 509 00e8 9942     		cmp	r1, r3
- 510 00ea A8D9     		bls	.L39
+ 505              		.loc 1 272 0
+ 506 00d8 12AB     		add	r3, sp, #72
+ 507 00da 03EB4403 		add	r3, r3, r4, lsl #1
+ 508 00de 33F80C1C 		ldrh	r1, [r3, #-12]
+ 509 00e2 374B     		ldr	r3, .L57+12
+ 510 00e4 53F82430 		ldr	r3, [r3, r4, lsl #2]
+ 511 00e8 9942     		cmp	r1, r3
+ 512 00ea A8D9     		bls	.L38
  272:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****       y_diff = y[index] > _y[index]? (y[index] - _y[index]): (_y[index] - y[index]);
- 511              		.loc 1 272 0 is_stmt 0 discriminator 1
- 512 00ec 9BB2     		uxth	r3, r3
- 513 00ee CB1A     		subs	r3, r1, r3
- 514 00f0 9BB2     		uxth	r3, r3
- 515              	.L40:
- 516              	.LVL29:
+ 513              		.loc 1 272 0 is_stmt 0 discriminator 1
+ 514 00ec 9BB2     		uxth	r3, r3
+ 515 00ee CB1A     		subs	r3, r1, r3
+ 516 00f0 9BB2     		uxth	r3, r3
+ 517              	.L39:
+ 518              	.LVL29:
  273:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** 
- 517              		.loc 1 273 0 is_stmt 1 discriminator 4
- 518 00f2 12AA     		add	r2, sp, #72
- 519 00f4 02EB4402 		add	r2, r2, r4, lsl #1
- 520 00f8 32F8180C 		ldrh	r0, [r2, #-24]
- 521 00fc 314A     		ldr	r2, .L58+16
- 522 00fe 52F82420 		ldr	r2, [r2, r4, lsl #2]
- 523 0102 9042     		cmp	r0, r2
- 524 0104 9FD9     		bls	.L41
+ 519              		.loc 1 273 0 is_stmt 1 discriminator 4
+ 520 00f2 12AA     		add	r2, sp, #72
+ 521 00f4 02EB4402 		add	r2, r2, r4, lsl #1
+ 522 00f8 32F8180C 		ldrh	r0, [r2, #-24]
+ 523 00fc 314A     		ldr	r2, .L57+16
+ 524 00fe 52F82420 		ldr	r2, [r2, r4, lsl #2]
+ 525 0102 9042     		cmp	r0, r2
+ 526 0104 9FD9     		bls	.L40
  273:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** 
- 525              		.loc 1 273 0 is_stmt 0 discriminator 1
- 526 0106 92B2     		uxth	r2, r2
- 527 0108 821A     		subs	r2, r0, r2
- 528 010a 92B2     		uxth	r2, r2
- 529              	.L42:
- 530              	.LVL30:
+ 527              		.loc 1 273 0 is_stmt 0 discriminator 1
+ 528 0106 92B2     		uxth	r2, r2
+ 529 0108 821A     		subs	r2, r0, r2
+ 530 010a 92B2     		uxth	r2, r2
+ 531              	.L41:
+ 532              	.LVL30:
  275:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****       {
- 531              		.loc 1 275 0 is_stmt 1 discriminator 4
- 532 010c 1344     		add	r3, r3, r2
- 533              	.LVL31:
- 534 010e 052B     		cmp	r3, #5
- 535 0110 05DD     		ble	.L43
+ 533              		.loc 1 275 0 is_stmt 1 discriminator 4
+ 534 010c 1344     		add	r3, r3, r2
+ 535              	.LVL31:
+ 536 010e 052B     		cmp	r3, #5
+ 537 0110 05DD     		ble	.L42
  277:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****         _y[index] = y[index];
- 536              		.loc 1 277 0
- 537 0112 2B4B     		ldr	r3, .L58+12
- 538 0114 43F82410 		str	r1, [r3, r4, lsl #2]
+ 538              		.loc 1 277 0
+ 539 0112 2B4B     		ldr	r3, .L57+12
+ 540 0114 43F82410 		str	r1, [r3, r4, lsl #2]
  278:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****       }
- 539              		.loc 1 278 0
- 540 0118 2A4B     		ldr	r3, .L58+16
- 541 011a 43F82400 		str	r0, [r3, r4, lsl #2]
- 542              	.L43:
+ 541              		.loc 1 278 0
+ 542 0118 2A4B     		ldr	r3, .L57+16
+ 543 011a 43F82400 		str	r0, [r3, r4, lsl #2]
+ 544              	.L42:
  281:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****       {
- 543              		.loc 1 281 0
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s 			page 18
+ 545              		.loc 1 281 0
+ARM GAS  C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s 			page 18
 
 
- 544 011e 264B     		ldr	r3, .L58+4
- 545 0120 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 546 0122 702B     		cmp	r3, #112
- 547 0124 93D0     		beq	.L57
+ 546 011e 264B     		ldr	r3, .L57+4
+ 547 0120 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 548 0122 702B     		cmp	r3, #112
+ 549 0124 93D0     		beq	.L56
  289:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****         TS_State->touchY[index] = (tsYBoundary * _y[index]) >> 12;
- 548              		.loc 1 289 0
- 549 0126 264B     		ldr	r3, .L58+12
- 550 0128 53F82430 		ldr	r3, [r3, r4, lsl #2]
- 551 012c 264A     		ldr	r2, .L58+20
- 552              	.LVL32:
- 553 012e 1288     		ldrh	r2, [r2]
- 554 0130 03FB02F3 		mul	r3, r3, r2
- 555 0134 1B0B     		lsrs	r3, r3, #12
- 556 0136 05EB4402 		add	r2, r5, r4, lsl #1
- 557 013a 5380     		strh	r3, [r2, #2]	@ movhi
+ 550              		.loc 1 289 0
+ 551 0126 264B     		ldr	r3, .L57+12
+ 552 0128 53F82430 		ldr	r3, [r3, r4, lsl #2]
+ 553 012c 264A     		ldr	r2, .L57+20
+ 554              	.LVL32:
+ 555 012e 1288     		ldrh	r2, [r2]
+ 556 0130 03FB02F3 		mul	r3, r3, r2
+ 557 0134 1B0B     		lsrs	r3, r3, #12
+ 558 0136 05EB4402 		add	r2, r5, r4, lsl #1
+ 559 013a 5380     		strh	r3, [r2, #2]	@ movhi
  290:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****       }
- 558              		.loc 1 290 0
- 559 013c 214B     		ldr	r3, .L58+16
- 560 013e 53F82430 		ldr	r3, [r3, r4, lsl #2]
- 561 0142 224A     		ldr	r2, .L58+24
- 562 0144 1288     		ldrh	r2, [r2]
- 563 0146 03FB02F3 		mul	r3, r3, r2
- 564 014a 1B0B     		lsrs	r3, r3, #12
- 565 014c 221D     		adds	r2, r4, #4
- 566 014e 05EB4202 		add	r2, r5, r2, lsl #1
- 567 0152 9380     		strh	r3, [r2, #4]	@ movhi
- 568              	.L45:
+ 560              		.loc 1 290 0
+ 561 013c 214B     		ldr	r3, .L57+16
+ 562 013e 53F82430 		ldr	r3, [r3, r4, lsl #2]
+ 563 0142 224A     		ldr	r2, .L57+24
+ 564 0144 1288     		ldrh	r2, [r2]
+ 565 0146 03FB02F3 		mul	r3, r3, r2
+ 566 014a 1B0B     		lsrs	r3, r3, #12
+ 567 014c 221D     		adds	r2, r4, #4
+ 568 014e 05EB4202 		add	r2, r5, r2, lsl #1
+ 569 0152 9380     		strh	r3, [r2, #4]	@ movhi
+ 570              	.L44:
  296:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** 
- 569              		.loc 1 296 0
- 570 0154 184B     		ldr	r3, .L58+4
- 571 0156 1878     		ldrb	r0, [r3]	@ zero_extendqisi2
- 572 0158 03AB     		add	r3, sp, #12
- 573 015a 0093     		str	r3, [sp]
- 574 015c 04AB     		add	r3, sp, #16
- 575 015e 05AA     		add	r2, sp, #20
- 576 0160 2146     		mov	r1, r4
- 577 0162 FFF7FEFF 		bl	ft5336_TS_GetTouchInfo
- 578              	.LVL33:
+ 571              		.loc 1 296 0
+ 572 0154 184B     		ldr	r3, .L57+4
+ 573 0156 1878     		ldrb	r0, [r3]	@ zero_extendqisi2
+ 574 0158 03AB     		add	r3, sp, #12
+ 575 015a 0093     		str	r3, [sp]
+ 576 015c 04AB     		add	r3, sp, #16
+ 577 015e 05AA     		add	r2, sp, #20
+ 578 0160 2146     		mov	r1, r4
+ 579 0162 FFF7FEFF 		bl	ft5336_TS_GetTouchInfo
+ 580              	.LVL33:
  299:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****       TS_State->touchArea[index]   = area;
- 579              		.loc 1 299 0
- 580 0166 2B19     		adds	r3, r5, r4
- 581 0168 059A     		ldr	r2, [sp, #20]
- 582 016a 9A75     		strb	r2, [r3, #22]
+ 581              		.loc 1 299 0
+ 582 0166 2B19     		adds	r3, r5, r4
+ 583 0168 059A     		ldr	r2, [sp, #20]
+ 584 016a 9A75     		strb	r2, [r3, #22]
  300:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** 
- 583              		.loc 1 300 0
- 584 016c 049A     		ldr	r2, [sp, #16]
- 585 016e 83F82020 		strb	r2, [r3, #32]
+ 585              		.loc 1 300 0
+ 586 016c 049A     		ldr	r2, [sp, #16]
+ 587 016e 83F82020 		strb	r2, [r3, #32]
  303:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****       {
- 586              		.loc 1 303 0
- 587 0172 039B     		ldr	r3, [sp, #12]
- 588 0174 032B     		cmp	r3, #3
- 589 0176 3FF675AF 		bhi	.L46
- 590 017a 01A2     		adr	r2, .L48
- 591 017c 52F823F0 		ldr	pc, [r2, r3, lsl #2]
- 592              		.p2align 2
- 593              	.L48:
- 594 0180 5F000000 		.word	.L47+1
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s 			page 19
+ 588              		.loc 1 303 0
+ 589 0172 039B     		ldr	r3, [sp, #12]
+ 590 0174 032B     		cmp	r3, #3
+ 591 0176 3FF675AF 		bhi	.L45
+ 592 017a 01A2     		adr	r2, .L47
+ 593 017c 52F823F0 		ldr	pc, [r2, r3, lsl #2]
+ 594              		.p2align 2
+ 595              	.L47:
+ 596 0180 5F000000 		.word	.L46+1
+ARM GAS  C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s 			page 19
 
 
- 595 0184 91010000 		.word	.L49+1
- 596 0188 99010000 		.word	.L50+1
- 597 018c A1010000 		.word	.L51+1
- 598              		.p2align 1
- 599              	.L49:
+ 597 0184 91010000 		.word	.L48+1
+ 598 0188 99010000 		.word	.L49+1
+ 599 018c A1010000 		.word	.L50+1
+ 600              		.p2align 1
+ 601              	.L48:
  309:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****           break;
- 600              		.loc 1 309 0
- 601 0190 2B19     		adds	r3, r5, r4
- 602 0192 0222     		movs	r2, #2
- 603 0194 DA76     		strb	r2, [r3, #27]
+ 602              		.loc 1 309 0
+ 603 0190 2B19     		adds	r3, r5, r4
+ 604 0192 0222     		movs	r2, #2
+ 605 0194 DA76     		strb	r2, [r3, #27]
  310:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****         case FT5336_TOUCH_EVT_FLAG_CONTACT :
- 604              		.loc 1 310 0
- 605 0196 65E7     		b	.L46
- 606              	.L50:
+ 606              		.loc 1 310 0
+ 607 0196 65E7     		b	.L45
+ 608              	.L49:
  312:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****           break;
- 607              		.loc 1 312 0
- 608 0198 2B19     		adds	r3, r5, r4
- 609 019a 0322     		movs	r2, #3
- 610 019c DA76     		strb	r2, [r3, #27]
+ 609              		.loc 1 312 0
+ 610 0198 2B19     		adds	r3, r5, r4
+ 611 019a 0322     		movs	r2, #3
+ 612 019c DA76     		strb	r2, [r3, #27]
  313:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****         case FT5336_TOUCH_EVT_FLAG_NO_EVENT :
- 611              		.loc 1 313 0
- 612 019e 61E7     		b	.L46
- 613              	.L51:
+ 613              		.loc 1 313 0
+ 614 019e 61E7     		b	.L45
+ 615              	.L50:
  315:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****           break;
- 614              		.loc 1 315 0
- 615 01a0 2B19     		adds	r3, r5, r4
- 616 01a2 0022     		movs	r2, #0
- 617 01a4 DA76     		strb	r2, [r3, #27]
+ 616              		.loc 1 315 0
+ 617 01a0 2B19     		adds	r3, r5, r4
+ 618 01a2 0022     		movs	r2, #0
+ 619 01a4 DA76     		strb	r2, [r3, #27]
  316:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****         default :
- 618              		.loc 1 316 0
- 619 01a6 5DE7     		b	.L46
- 620              	.L55:
+ 620              		.loc 1 316 0
+ 621 01a6 5DE7     		b	.L45
+ 622              	.L54:
  328:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** #endif /* TS_MULTI_TOUCH_SUPPORTED == 1 */
- 621              		.loc 1 328 0
- 622 01a8 2846     		mov	r0, r5
- 623 01aa FFF7FEFF 		bl	BSP_TS_Get_GestureId
- 624              	.LVL34:
- 625              	.L34:
+ 623              		.loc 1 328 0
+ 624 01a8 2846     		mov	r0, r5
+ 625 01aa FFF7FEFF 		bl	BSP_TS_Get_GestureId
+ 626              	.LVL34:
+ 627              	.L33:
  334:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** 
- 626              		.loc 1 334 0
- 627 01ae 13B0     		add	sp, sp, #76
- 628              	.LCFI11:
- 629              		.cfi_def_cfa_offset 12
- 630              		@ sp needed
- 631 01b0 30BD     		pop	{r4, r5, pc}
- 632              	.LVL35:
- 633              	.L59:
- 634 01b2 00BF     		.align	2
+ 628              		.loc 1 334 0
+ 629 01ae 13B0     		add	sp, sp, #76
+ 630              	.LCFI11:
+ 631              		.cfi_def_cfa_offset 12
+ 632              		@ sp needed
+ 633 01b0 30BD     		pop	{r4, r5, pc}
+ 634              	.LVL35:
  635              	.L58:
- 636 01b4 00000000 		.word	.LANCHOR2
- 637 01b8 00000000 		.word	.LANCHOR3
- 638 01bc 00000000 		.word	.LANCHOR4
- 639 01c0 00000000 		.word	.LANCHOR5
- 640 01c4 00000000 		.word	.LANCHOR6
- 641 01c8 00000000 		.word	.LANCHOR0
- 642 01cc 00000000 		.word	.LANCHOR1
- 643              		.cfi_endproc
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s 			page 20
+ 636 01b2 00BF     		.align	2
+ 637              	.L57:
+ 638 01b4 00000000 		.word	.LANCHOR2
+ 639 01b8 00000000 		.word	.LANCHOR3
+ 640 01bc 00000000 		.word	.LANCHOR4
+ 641 01c0 00000000 		.word	.LANCHOR5
+ 642 01c4 00000000 		.word	.LANCHOR6
+ 643 01c8 00000000 		.word	.LANCHOR0
+ 644 01cc 00000000 		.word	.LANCHOR1
+ 645              		.cfi_endproc
+ARM GAS  C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s 			page 20
 
 
- 644              	.LFE140:
- 646              		.section	.text.BSP_TS_ITClear,"ax",%progbits
- 647              		.align	1
- 648              		.global	BSP_TS_ITClear
- 649              		.syntax unified
- 650              		.thumb
- 651              		.thumb_func
- 652              		.fpu fpv5-sp-d16
- 654              	BSP_TS_ITClear:
- 655              	.LFB142:
+ 646              	.LFE142:
+ 648              		.section	.text.BSP_TS_ITClear,"ax",%progbits
+ 649              		.align	1
+ 650              		.global	BSP_TS_ITClear
+ 651              		.syntax unified
+ 652              		.thumb
+ 653              		.thumb_func
+ 654              		.fpu fpv5-sp-d16
+ 656              	BSP_TS_ITClear:
+ 657              	.LFB144:
  381:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** #endif /* TS_MULTI_TOUCH_SUPPORTED == 1 */
  382:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** 
  383:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** /**
@@ -1158,49 +1158,50 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s 			page 1
  385:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   */
  386:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** void BSP_TS_ITClear(void)
  387:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** {
- 656              		.loc 1 387 0
- 657              		.cfi_startproc
- 658              		@ args = 0, pretend = 0, frame = 0
- 659              		@ frame_needed = 0, uses_anonymous_args = 0
- 660 0000 08B5     		push	{r3, lr}
- 661              	.LCFI12:
- 662              		.cfi_def_cfa_offset 8
- 663              		.cfi_offset 3, -8
- 664              		.cfi_offset 14, -4
+ 658              		.loc 1 387 0
+ 659              		.cfi_startproc
+ 660              		@ args = 0, pretend = 0, frame = 0
+ 661              		@ frame_needed = 0, uses_anonymous_args = 0
+ 662 0000 08B5     		push	{r3, lr}
+ 663              	.LCFI12:
+ 664              		.cfi_def_cfa_offset 8
+ 665              		.cfi_offset 3, -8
+ 666              		.cfi_offset 14, -4
  388:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   /* Clear TS IT pending bits */
  389:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   tsDriver->ClearIT(I2cAddress); 
- 665              		.loc 1 389 0
- 666 0002 034B     		ldr	r3, .L62
- 667 0004 1B68     		ldr	r3, [r3]
- 668 0006 DB69     		ldr	r3, [r3, #28]
- 669 0008 024A     		ldr	r2, .L62+4
- 670 000a 1078     		ldrb	r0, [r2]	@ zero_extendqisi2
- 671 000c 9847     		blx	r3
- 672              	.LVL36:
- 673 000e 08BD     		pop	{r3, pc}
- 674              	.L63:
- 675              		.align	2
- 676              	.L62:
- 677 0010 00000000 		.word	.LANCHOR2
- 678 0014 00000000 		.word	.LANCHOR3
- 679              		.cfi_endproc
- 680              	.LFE142:
- 682              		.section	.text.BSP_TS_ResetTouchData,"ax",%progbits
- 683              		.align	1
- 684              		.global	BSP_TS_ResetTouchData
- 685              		.syntax unified
- 686              		.thumb
- 687              		.thumb_func
- 688              		.fpu fpv5-sp-d16
- 690              	BSP_TS_ResetTouchData:
- 691              	.LFB143:
+ 667              		.loc 1 389 0
+ 668 0002 034B     		ldr	r3, .L61
+ 669 0004 1B68     		ldr	r3, [r3]
+ 670 0006 DB69     		ldr	r3, [r3, #28]
+ 671 0008 024A     		ldr	r2, .L61+4
+ 672 000a 1078     		ldrb	r0, [r2]	@ zero_extendqisi2
+ 673 000c 9847     		blx	r3
+ 674              	.LVL36:
  390:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** }
+ 675              		.loc 1 390 0
+ 676 000e 08BD     		pop	{r3, pc}
+ 677              	.L62:
+ 678              		.align	2
+ 679              	.L61:
+ 680 0010 00000000 		.word	.LANCHOR2
+ 681 0014 00000000 		.word	.LANCHOR3
+ 682              		.cfi_endproc
+ 683              	.LFE144:
+ 685              		.section	.text.BSP_TS_ResetTouchData,"ax",%progbits
+ 686              		.align	1
+ 687              		.global	BSP_TS_ResetTouchData
+ 688              		.syntax unified
+ 689              		.thumb
+ 690              		.thumb_func
+ 691              		.fpu fpv5-sp-d16
+ 693              	BSP_TS_ResetTouchData:
+ 694              	.LFB145:
  391:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** 
  392:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** 
+ARM GAS  C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s 			page 21
+
+
  393:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** /** @defgroup STM32756G_DISCOVERY_TS_Private_Functions TS Private Functions
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s 			page 21
-
-
  394:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   * @{
  395:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   */
  396:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** 
@@ -1213,204 +1214,204 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s 			page 1
  403:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   */
  404:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** uint8_t BSP_TS_ResetTouchData(TS_StateTypeDef *TS_State)
  405:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** {
- 692              		.loc 1 405 0
- 693              		.cfi_startproc
- 694              		@ args = 0, pretend = 0, frame = 0
- 695              		@ frame_needed = 0, uses_anonymous_args = 0
- 696              		@ link register save eliminated.
- 697              	.LVL37:
+ 695              		.loc 1 405 0
+ 696              		.cfi_startproc
+ 697              		@ args = 0, pretend = 0, frame = 0
+ 698              		@ frame_needed = 0, uses_anonymous_args = 0
+ 699              		@ link register save eliminated.
+ 700              	.LVL37:
  406:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   uint8_t ts_status = TS_ERROR;
  407:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   uint32_t index;
  408:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** 
  409:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   if (TS_State != (TS_StateTypeDef *)NULL)
- 698              		.loc 1 409 0
- 699 0000 C8B1     		cbz	r0, .L68
+ 701              		.loc 1 409 0
+ 702 0000 C8B1     		cbz	r0, .L67
  405:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   uint8_t ts_status = TS_ERROR;
- 700              		.loc 1 405 0
- 701 0002 10B4     		push	{r4}
- 702              	.LCFI13:
- 703              		.cfi_def_cfa_offset 4
- 704              		.cfi_offset 4, -4
- 705 0004 0446     		mov	r4, r0
+ 703              		.loc 1 405 0
+ 704 0002 10B4     		push	{r4}
+ 705              	.LCFI13:
+ 706              		.cfi_def_cfa_offset 4
+ 707              		.cfi_offset 4, -4
+ 708 0004 0446     		mov	r4, r0
  410:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   {
  411:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****     TS_State->gestureId = GEST_ID_NO_GESTURE;
- 706              		.loc 1 411 0
- 707 0006 0023     		movs	r3, #0
- 708 0008 8362     		str	r3, [r0, #40]
+ 709              		.loc 1 411 0
+ 710 0006 0023     		movs	r3, #0
+ 711 0008 8362     		str	r3, [r0, #40]
  412:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****     TS_State->touchDetected = 0;
- 709              		.loc 1 412 0
- 710 000a 0370     		strb	r3, [r0]
- 711              	.LVL38:
+ 712              		.loc 1 412 0
+ 713 000a 0370     		strb	r3, [r0]
+ 714              	.LVL38:
  413:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** 
  414:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****     for(index = 0; index < TS_MAX_NB_TOUCH; index++)
- 712              		.loc 1 414 0
- 713 000c 0DE0     		b	.L66
- 714              	.LVL39:
- 715              	.L67:
+ 715              		.loc 1 414 0
+ 716 000c 0DE0     		b	.L65
+ 717              	.LVL39:
+ 718              	.L66:
  415:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****     {
  416:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****       TS_State->touchX[index]       = 0;
- 716              		.loc 1 416 0 discriminator 3
- 717 000e 04EB4301 		add	r1, r4, r3, lsl #1
- 718 0012 0022     		movs	r2, #0
- 719 0014 4A80     		strh	r2, [r1, #2]	@ movhi
+ 719              		.loc 1 416 0 discriminator 3
+ 720 000e 04EB4301 		add	r1, r4, r3, lsl #1
+ 721 0012 0022     		movs	r2, #0
+ 722 0014 4A80     		strh	r2, [r1, #2]	@ movhi
  417:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****       TS_State->touchY[index]       = 0;
- 720              		.loc 1 417 0 discriminator 3
- 721 0016 191D     		adds	r1, r3, #4
- 722 0018 04EB4101 		add	r1, r4, r1, lsl #1
- 723 001c 8A80     		strh	r2, [r1, #4]	@ movhi
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s 			page 22
+ 723              		.loc 1 417 0 discriminator 3
+ 724 0016 191D     		adds	r1, r3, #4
+ 725 0018 04EB4101 		add	r1, r4, r1, lsl #1
+ARM GAS  C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s 			page 22
 
 
+ 726 001c 8A80     		strh	r2, [r1, #4]	@ movhi
  418:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****       TS_State->touchArea[index]    = 0;
- 724              		.loc 1 418 0 discriminator 3
- 725 001e E118     		adds	r1, r4, r3
- 726 0020 81F82020 		strb	r2, [r1, #32]
+ 727              		.loc 1 418 0 discriminator 3
+ 728 001e E118     		adds	r1, r4, r3
+ 729 0020 81F82020 		strb	r2, [r1, #32]
  419:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****       TS_State->touchEventId[index] = TOUCH_EVENT_NO_EVT;
- 727              		.loc 1 419 0 discriminator 3
- 728 0024 CA76     		strb	r2, [r1, #27]
+ 730              		.loc 1 419 0 discriminator 3
+ 731 0024 CA76     		strb	r2, [r1, #27]
  420:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****       TS_State->touchWeight[index]  = 0;
- 729              		.loc 1 420 0 discriminator 3
- 730 0026 8A75     		strb	r2, [r1, #22]
+ 732              		.loc 1 420 0 discriminator 3
+ 733 0026 8A75     		strb	r2, [r1, #22]
  414:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****     {
- 731              		.loc 1 414 0 discriminator 3
- 732 0028 0133     		adds	r3, r3, #1
- 733              	.LVL40:
- 734              	.L66:
+ 734              		.loc 1 414 0 discriminator 3
+ 735 0028 0133     		adds	r3, r3, #1
+ 736              	.LVL40:
+ 737              	.L65:
  414:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****     {
- 735              		.loc 1 414 0 is_stmt 0 discriminator 1
- 736 002a 042B     		cmp	r3, #4
- 737 002c EFD9     		bls	.L67
+ 738              		.loc 1 414 0 is_stmt 0 discriminator 1
+ 739 002a 042B     		cmp	r3, #4
+ 740 002c EFD9     		bls	.L66
  421:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****     }
  422:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** 
  423:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****     ts_status = TS_OK;
- 738              		.loc 1 423 0 is_stmt 1
- 739 002e 0020     		movs	r0, #0
- 740              	.LVL41:
+ 741              		.loc 1 423 0 is_stmt 1
+ 742 002e 0020     		movs	r0, #0
+ 743              	.LVL41:
  424:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** 
  425:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   } /* of if (TS_State != (TS_StateTypeDef *)NULL) */
  426:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** 
  427:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   return (ts_status);
  428:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c **** }
- 741              		.loc 1 428 0
- 742 0030 5DF8044B 		ldr	r4, [sp], #4
- 743              	.LCFI14:
- 744              		.cfi_restore 4
- 745              		.cfi_def_cfa_offset 0
- 746              	.LVL42:
- 747 0034 7047     		bx	lr
- 748              	.LVL43:
- 749              	.L68:
+ 744              		.loc 1 428 0
+ 745 0030 5DF8044B 		ldr	r4, [sp], #4
+ 746              	.LCFI14:
+ 747              		.cfi_restore 4
+ 748              		.cfi_def_cfa_offset 0
+ 749              	.LVL42:
+ 750 0034 7047     		bx	lr
+ 751              	.LVL43:
+ 752              	.L67:
  406:Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.c ****   uint32_t index;
- 750              		.loc 1 406 0
- 751 0036 0120     		movs	r0, #1
- 752              	.LVL44:
- 753 0038 7047     		bx	lr
- 754              		.cfi_endproc
- 755              	.LFE143:
- 757              		.section	.bss.I2cAddress,"aw",%nobits
- 758              		.set	.LANCHOR3,. + 0
- 761              	I2cAddress:
- 762 0000 00       		.space	1
- 763              		.section	.bss._x.11828,"aw",%nobits
- 764              		.align	2
- 765              		.set	.LANCHOR5,. + 0
- 768              	_x.11828:
- 769 0000 00000000 		.space	20
- 769      00000000 
- 769      00000000 
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s 			page 23
+ 753              		.loc 1 406 0
+ 754 0036 0120     		movs	r0, #1
+ 755              	.LVL44:
+ 756              		.loc 1 428 0
+ 757 0038 7047     		bx	lr
+ 758              		.cfi_endproc
+ 759              	.LFE145:
+ 761              		.section	.bss.I2cAddress,"aw",%nobits
+ 762              		.set	.LANCHOR3,. + 0
+ 765              	I2cAddress:
+ 766 0000 00       		.space	1
+ 767              		.section	.bss._x.12002,"aw",%nobits
+ 768              		.align	2
+ 769              		.set	.LANCHOR5,. + 0
+ 772              	_x.12002:
+ 773 0000 00000000 		.space	20
+ARM GAS  C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s 			page 23
 
 
- 769      00000000 
- 769      00000000 
- 770              		.section	.bss._y.11829,"aw",%nobits
- 771              		.align	2
- 772              		.set	.LANCHOR6,. + 0
- 775              	_y.11829:
- 776 0000 00000000 		.space	20
- 776      00000000 
- 776      00000000 
- 776      00000000 
- 776      00000000 
- 777              		.section	.bss.tsDriver,"aw",%nobits
- 778              		.align	2
- 779              		.set	.LANCHOR2,. + 0
- 782              	tsDriver:
- 783 0000 00000000 		.space	4
- 784              		.section	.bss.tsOrientation,"aw",%nobits
- 785              		.set	.LANCHOR4,. + 0
- 788              	tsOrientation:
- 789 0000 00       		.space	1
- 790              		.section	.bss.tsXBoundary,"aw",%nobits
- 791              		.align	1
- 792              		.set	.LANCHOR0,. + 0
- 795              	tsXBoundary:
- 796 0000 0000     		.space	2
- 797              		.section	.bss.tsYBoundary,"aw",%nobits
- 798              		.align	1
- 799              		.set	.LANCHOR1,. + 0
- 802              	tsYBoundary:
- 803 0000 0000     		.space	2
- 804              		.text
- 805              	.Letext0:
- 806              		.file 2 "Drivers/CMSIS/Device/ST/STM32F7xx/Include/stm32f746xx.h"
- 807              		.file 3 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\machine\\_default_types.h"
- 808              		.file 4 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\_stdint.h"
- 809              		.file 5 "Drivers/CMSIS/Include/core_cm7.h"
- 810              		.file 6 "Drivers/CMSIS/Device/ST/STM32F7xx/Include/system_stm32f7xx.h"
- 811              		.file 7 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\lock.h"
- 812              		.file 8 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\_types.h"
- 813              		.file 9 "c:\\gcc_toolchain\\6_2017-q1-update\\lib\\gcc\\arm-none-eabi\\6.3.1\\include\\stddef.h"
- 814              		.file 10 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\reent.h"
- 815              		.file 11 "Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_gpio.h"
- 816              		.file 12 "Drivers/BSP/STM32746G-Discovery/../Components/ft5336/../Common/ts.h"
- 817              		.file 13 "Drivers/BSP/STM32746G-Discovery/../Components/ft5336/ft5336.h"
- 818              		.file 14 "Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.h"
- 819              		.file 15 "Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_cortex.h"
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s 			page 24
+ 773      00000000 
+ 773      00000000 
+ 773      00000000 
+ 773      00000000 
+ 774              		.section	.bss._y.12003,"aw",%nobits
+ 775              		.align	2
+ 776              		.set	.LANCHOR6,. + 0
+ 779              	_y.12003:
+ 780 0000 00000000 		.space	20
+ 780      00000000 
+ 780      00000000 
+ 780      00000000 
+ 780      00000000 
+ 781              		.section	.bss.tsDriver,"aw",%nobits
+ 782              		.align	2
+ 783              		.set	.LANCHOR2,. + 0
+ 786              	tsDriver:
+ 787 0000 00000000 		.space	4
+ 788              		.section	.bss.tsOrientation,"aw",%nobits
+ 789              		.set	.LANCHOR4,. + 0
+ 792              	tsOrientation:
+ 793 0000 00       		.space	1
+ 794              		.section	.bss.tsXBoundary,"aw",%nobits
+ 795              		.align	1
+ 796              		.set	.LANCHOR0,. + 0
+ 799              	tsXBoundary:
+ 800 0000 0000     		.space	2
+ 801              		.section	.bss.tsYBoundary,"aw",%nobits
+ 802              		.align	1
+ 803              		.set	.LANCHOR1,. + 0
+ 806              	tsYBoundary:
+ 807 0000 0000     		.space	2
+ 808              		.text
+ 809              	.Letext0:
+ 810              		.file 2 "Drivers/CMSIS/Device/ST/STM32F7xx/Include/stm32f746xx.h"
+ 811              		.file 3 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\machine\\_default
+ 812              		.file 4 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 813              		.file 5 "Drivers/CMSIS/Include/core_cm7.h"
+ 814              		.file 6 "Drivers/CMSIS/Device/ST/STM32F7xx/Include/system_stm32f7xx.h"
+ 815              		.file 7 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\lock.h"
+ 816              		.file 8 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\_types.h"
+ 817              		.file 9 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\lib\\gcc\\arm-none-eabi\\7.3.1\\include\\
+ 818              		.file 10 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\reent.h"
+ 819              		.file 11 "Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_gpio.h"
+ 820              		.file 12 "d:\\sw\\drivers\\bsp\\components\\common\\ts.h"
+ 821              		.file 13 "d:\\sw\\drivers\\bsp\\components\\ft5336\\ft5336.h"
+ 822              		.file 14 "Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.h"
+ 823              		.file 15 "Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_cortex.h"
+ARM GAS  C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s 			page 24
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 stm32746g_discovery_ts.c
-C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s:18     .text.BSP_TS_Init:00000000 $t
-C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s:25     .text.BSP_TS_Init:00000000 BSP_TS_Init
-C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s:87     .text.BSP_TS_Init:00000038 $d
-C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s:97     .text.BSP_TS_DeInit:00000000 $t
-C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s:104    .text.BSP_TS_DeInit:00000000 BSP_TS_DeInit
-C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s:118    .text.BSP_TS_ITConfig:00000000 $t
-C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s:125    .text.BSP_TS_ITConfig:00000000 BSP_TS_ITConfig
-C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s:184    .text.BSP_TS_ITConfig:00000040 $d
-C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s:192    .text.BSP_TS_ITGetStatus:00000000 $t
-C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s:199    .text.BSP_TS_ITGetStatus:00000000 BSP_TS_ITGetStatus
-C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s:223    .text.BSP_TS_ITGetStatus:00000010 $d
-C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s:229    .text.BSP_TS_Get_GestureId:00000000 $t
-C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s:236    .text.BSP_TS_Get_GestureId:00000000 BSP_TS_Get_GestureId
-C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s:351    .text.BSP_TS_Get_GestureId:00000070 $d
-C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s:356    .text.BSP_TS_GetState:00000000 $t
-C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s:363    .text.BSP_TS_GetState:00000000 BSP_TS_GetState
-C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s:594    .text.BSP_TS_GetState:00000180 $d
-C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s:598    .text.BSP_TS_GetState:00000190 $t
-C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s:636    .text.BSP_TS_GetState:000001b4 $d
-C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s:647    .text.BSP_TS_ITClear:00000000 $t
-C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s:654    .text.BSP_TS_ITClear:00000000 BSP_TS_ITClear
-C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s:677    .text.BSP_TS_ITClear:00000010 $d
-C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s:683    .text.BSP_TS_ResetTouchData:00000000 $t
-C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s:690    .text.BSP_TS_ResetTouchData:00000000 BSP_TS_ResetTouchData
-C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s:761    .bss.I2cAddress:00000000 I2cAddress
-C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s:762    .bss.I2cAddress:00000000 $d
-C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s:764    .bss._x.11828:00000000 $d
-C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s:768    .bss._x.11828:00000000 _x.11828
-C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s:771    .bss._y.11829:00000000 $d
-C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s:775    .bss._y.11829:00000000 _y.11829
-C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s:778    .bss.tsDriver:00000000 $d
-C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s:782    .bss.tsDriver:00000000 tsDriver
-C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s:788    .bss.tsOrientation:00000000 tsOrientation
-C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s:789    .bss.tsOrientation:00000000 $d
-C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s:791    .bss.tsXBoundary:00000000 $d
-C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s:795    .bss.tsXBoundary:00000000 tsXBoundary
-C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s:798    .bss.tsYBoundary:00000000 $d
-C:\Users\Student\AppData\Local\Temp\cc6gRSj0.s:802    .bss.tsYBoundary:00000000 tsYBoundary
-                     .debug_frame:00000010 $d
+C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s:18     .text.BSP_TS_Init:00000000 $t
+C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s:25     .text.BSP_TS_Init:00000000 BSP_TS_Init
+C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s:88     .text.BSP_TS_Init:00000038 $d
+C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s:98     .text.BSP_TS_DeInit:00000000 $t
+C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s:105    .text.BSP_TS_DeInit:00000000 BSP_TS_DeInit
+C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s:119    .text.BSP_TS_ITConfig:00000000 $t
+C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s:126    .text.BSP_TS_ITConfig:00000000 BSP_TS_ITConfig
+C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s:185    .text.BSP_TS_ITConfig:00000040 $d
+C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s:193    .text.BSP_TS_ITGetStatus:00000000 $t
+C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s:200    .text.BSP_TS_ITGetStatus:00000000 BSP_TS_ITGetStatus
+C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s:224    .text.BSP_TS_ITGetStatus:00000010 $d
+C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s:230    .text.BSP_TS_Get_GestureId:00000000 $t
+C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s:237    .text.BSP_TS_Get_GestureId:00000000 BSP_TS_Get_GestureId
+C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s:352    .text.BSP_TS_Get_GestureId:00000070 $d
+C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s:357    .text.BSP_TS_GetState:00000000 $t
+C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s:364    .text.BSP_TS_GetState:00000000 BSP_TS_GetState
+C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s:596    .text.BSP_TS_GetState:00000180 $d
+C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s:600    .text.BSP_TS_GetState:00000190 $t
+C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s:638    .text.BSP_TS_GetState:000001b4 $d
+C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s:649    .text.BSP_TS_ITClear:00000000 $t
+C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s:656    .text.BSP_TS_ITClear:00000000 BSP_TS_ITClear
+C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s:680    .text.BSP_TS_ITClear:00000010 $d
+C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s:686    .text.BSP_TS_ResetTouchData:00000000 $t
+C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s:693    .text.BSP_TS_ResetTouchData:00000000 BSP_TS_ResetTouchData
+C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s:765    .bss.I2cAddress:00000000 I2cAddress
+C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s:766    .bss.I2cAddress:00000000 $d
+C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s:768    .bss._x.12002:00000000 $d
+C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s:772    .bss._x.12002:00000000 _x.12002
+C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s:775    .bss._y.12003:00000000 $d
+C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s:779    .bss._y.12003:00000000 _y.12003
+C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s:782    .bss.tsDriver:00000000 $d
+C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s:786    .bss.tsDriver:00000000 tsDriver
+C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s:792    .bss.tsOrientation:00000000 tsOrientation
+C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s:793    .bss.tsOrientation:00000000 $d
+C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s:795    .bss.tsXBoundary:00000000 $d
+C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s:799    .bss.tsXBoundary:00000000 tsXBoundary
+C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s:802    .bss.tsYBoundary:00000000 $d
+C:\Users\milek\AppData\Local\Temp\cc0Oa2Bq.s:806    .bss.tsYBoundary:00000000 tsYBoundary
 
 UNDEFINED SYMBOLS
 ft5336_ts_drv

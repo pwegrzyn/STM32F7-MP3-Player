@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccT13lY2.s 			page 1
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccUxQv4m.s 			page 1
 
 
    1              		.cpu cortex-m7
@@ -24,7 +24,7 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccT13lY2.s 			page 1
   21              		.thumb_func
   22              		.fpu fpv5-sp-d16
   24              	USBH_UserProcess:
-  25              	.LFB142:
+  25              	.LFB144:
   26              		.file 1 "Src/usb_host.c"
    1:Src/usb_host.c **** /**
    2:Src/usb_host.c ****   ******************************************************************************
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccT13lY2.s 			page 1
   30:Src/usb_host.c ****   * 5. Redistribution and use of this software other than as permitted under 
   31:Src/usb_host.c ****   *    this license is void and will automatically terminate your rights under 
   32:Src/usb_host.c ****   *    this license. 
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccT13lY2.s 			page 2
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccUxQv4m.s 			page 2
 
 
   33:Src/usb_host.c ****   *
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccT13lY2.s 			page 1
   87:Src/usb_host.c ****  * -- Insert your external function declaration here --
   88:Src/usb_host.c ****  */
   89:Src/usb_host.c **** /* USER CODE BEGIN 1 */
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccT13lY2.s 			page 3
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccUxQv4m.s 			page 3
 
 
   90:Src/usb_host.c **** 
@@ -167,43 +167,23 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccT13lY2.s 			page 1
   38 0008 0229     		cmp	r1, #2
   39 000a 04D0     		beq	.L6
   40              	.L1:
-  41 000c 7047     		bx	lr
-  42              	.L4:
  122:Src/usb_host.c ****   {
  123:Src/usb_host.c ****   case HOST_USER_SELECT_CONFIGURATION:
  124:Src/usb_host.c ****   break;
  125:Src/usb_host.c **** 
  126:Src/usb_host.c ****   case HOST_USER_DISCONNECTION:
  127:Src/usb_host.c ****   Appli_state = APPLICATION_DISCONNECT;
-  43              		.loc 1 127 0
-  44 000e 0322     		movs	r2, #3
-  45 0010 054B     		ldr	r3, .L7
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccT13lY2.s 			page 4
-
-
-  46 0012 1A70     		strb	r2, [r3]
  128:Src/usb_host.c ****   break;
-  47              		.loc 1 128 0
-  48 0014 7047     		bx	lr
-  49              	.L6:
  129:Src/usb_host.c **** 
  130:Src/usb_host.c ****   case HOST_USER_CLASS_ACTIVE:
  131:Src/usb_host.c ****   Appli_state = APPLICATION_READY;
-  50              		.loc 1 131 0
-  51 0016 0222     		movs	r2, #2
-  52 0018 034B     		ldr	r3, .L7
-  53 001a 1A70     		strb	r2, [r3]
  132:Src/usb_host.c ****   break;
-  54              		.loc 1 132 0
-  55 001c 7047     		bx	lr
-  56              	.L3:
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccUxQv4m.s 			page 4
+
+
  133:Src/usb_host.c **** 
  134:Src/usb_host.c ****   case HOST_USER_CONNECTION:
  135:Src/usb_host.c ****   Appli_state = APPLICATION_START;
-  57              		.loc 1 135 0
-  58 001e 0122     		movs	r2, #1
-  59 0020 014B     		ldr	r3, .L7
-  60 0022 1A70     		strb	r2, [r3]
  136:Src/usb_host.c ****   break;
  137:Src/usb_host.c **** 
  138:Src/usb_host.c ****   default:
@@ -211,104 +191,134 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccT13lY2.s 			page 1
  140:Src/usb_host.c ****   }
  141:Src/usb_host.c ****   /* USER CODE END CALL_BACK_1 */
  142:Src/usb_host.c **** }
-  61              		.loc 1 142 0
-  62 0024 F2E7     		b	.L1
-  63              	.L8:
-  64 0026 00BF     		.align	2
-  65              	.L7:
-  66 0028 00000000 		.word	.LANCHOR0
-  67              		.cfi_endproc
-  68              	.LFE142:
-  70              		.section	.text.MX_USB_HOST_Init,"ax",%progbits
-  71              		.align	1
-  72              		.global	MX_USB_HOST_Init
-  73              		.syntax unified
-  74              		.thumb
-  75              		.thumb_func
-  76              		.fpu fpv5-sp-d16
-  78              	MX_USB_HOST_Init:
-  79              	.LFB141:
+  41              		.loc 1 142 0
+  42 000c 7047     		bx	lr
+  43              	.L4:
+ 127:Src/usb_host.c ****   break;
+  44              		.loc 1 127 0
+  45 000e 064B     		ldr	r3, .L7
+  46 0010 0322     		movs	r2, #3
+  47 0012 1A70     		strb	r2, [r3]
+ 128:Src/usb_host.c **** 
+  48              		.loc 1 128 0
+  49 0014 7047     		bx	lr
+  50              	.L6:
+ 131:Src/usb_host.c ****   break;
+  51              		.loc 1 131 0
+  52 0016 044B     		ldr	r3, .L7
+  53 0018 0222     		movs	r2, #2
+  54 001a 1A70     		strb	r2, [r3]
+ 132:Src/usb_host.c **** 
+  55              		.loc 1 132 0
+  56 001c 7047     		bx	lr
+  57              	.L3:
+ 135:Src/usb_host.c ****   break;
+  58              		.loc 1 135 0
+  59 001e 024B     		ldr	r3, .L7
+  60 0020 0122     		movs	r2, #1
+  61 0022 1A70     		strb	r2, [r3]
+  62              		.loc 1 142 0
+  63 0024 F2E7     		b	.L1
+  64              	.L8:
+  65 0026 00BF     		.align	2
+  66              	.L7:
+  67 0028 00000000 		.word	.LANCHOR0
+  68              		.cfi_endproc
+  69              	.LFE144:
+  71              		.section	.text.MX_USB_HOST_Init,"ax",%progbits
+  72              		.align	1
+  73              		.global	MX_USB_HOST_Init
+  74              		.syntax unified
+  75              		.thumb
+  76              		.thumb_func
+  77              		.fpu fpv5-sp-d16
+  79              	MX_USB_HOST_Init:
+  80              	.LFB143:
   98:Src/usb_host.c ****   /* USER CODE BEGIN USB_HOST_Init_PreTreatment */
-  80              		.loc 1 98 0
-  81              		.cfi_startproc
-  82              		@ args = 0, pretend = 0, frame = 0
-  83              		@ frame_needed = 0, uses_anonymous_args = 0
-  84 0000 10B5     		push	{r4, lr}
-  85              	.LCFI0:
-  86              		.cfi_def_cfa_offset 8
-  87              		.cfi_offset 4, -8
-  88              		.cfi_offset 14, -4
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccT13lY2.s 			page 5
+  81              		.loc 1 98 0
+  82              		.cfi_startproc
+  83              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccUxQv4m.s 			page 5
 
 
+  84              		@ frame_needed = 0, uses_anonymous_args = 0
+  85 0000 10B5     		push	{r4, lr}
+  86              	.LCFI0:
+  87              		.cfi_def_cfa_offset 8
+  88              		.cfi_offset 4, -8
+  89              		.cfi_offset 14, -4
  104:Src/usb_host.c **** 
-  89              		.loc 1 104 0
-  90 0002 074C     		ldr	r4, .L11
-  91 0004 0122     		movs	r2, #1
-  92 0006 0749     		ldr	r1, .L11+4
-  93 0008 2046     		mov	r0, r4
-  94 000a FFF7FEFF 		bl	USBH_Init
-  95              	.LVL1:
+  90              		.loc 1 104 0
+  91 0002 074C     		ldr	r4, .L11
+  92 0004 0122     		movs	r2, #1
+  93 0006 0749     		ldr	r1, .L11+4
+  94 0008 2046     		mov	r0, r4
+  95 000a FFF7FEFF 		bl	USBH_Init
+  96              	.LVL1:
  106:Src/usb_host.c **** 
-  96              		.loc 1 106 0
-  97 000e 0649     		ldr	r1, .L11+8
-  98 0010 2046     		mov	r0, r4
-  99 0012 FFF7FEFF 		bl	USBH_RegisterClass
- 100              	.LVL2:
+  97              		.loc 1 106 0
+  98 000e 0649     		ldr	r1, .L11+8
+  99 0010 2046     		mov	r0, r4
+ 100 0012 FFF7FEFF 		bl	USBH_RegisterClass
+ 101              	.LVL2:
  108:Src/usb_host.c **** 
- 101              		.loc 1 108 0
- 102 0016 2046     		mov	r0, r4
- 103 0018 FFF7FEFF 		bl	USBH_Start
- 104              	.LVL3:
- 105 001c 10BD     		pop	{r4, pc}
- 106              	.L12:
- 107 001e 00BF     		.align	2
- 108              	.L11:
- 109 0020 00000000 		.word	hUsbHostFS
- 110 0024 00000000 		.word	USBH_UserProcess
- 111 0028 00000000 		.word	USBH_msc
- 112              		.cfi_endproc
- 113              	.LFE141:
- 115              		.global	Appli_state
- 116              		.comm	hUsbHostFS,980,4
- 117              		.section	.bss.Appli_state,"aw",%nobits
- 118              		.set	.LANCHOR0,. + 0
- 121              	Appli_state:
- 122 0000 00       		.space	1
- 123              		.text
- 124              	.Letext0:
- 125              		.file 2 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\machine\\_default_types.h"
- 126              		.file 3 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\_stdint.h"
- 127              		.file 4 "Drivers/CMSIS/Include/core_cm7.h"
- 128              		.file 5 "Drivers/CMSIS/Device/ST/STM32F7xx/Include/system_stm32f7xx.h"
- 129              		.file 6 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\lock.h"
- 130              		.file 7 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\_types.h"
- 131              		.file 8 "c:\\gcc_toolchain\\6_2017-q1-update\\lib\\gcc\\arm-none-eabi\\6.3.1\\include\\stddef.h"
- 132              		.file 9 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\reent.h"
- 133              		.file 10 "Inc/usb_host.h"
- 134              		.file 11 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\stdlib.h"
- 135              		.file 12 "Middlewares/Third_Party/FreeRTOS/Source/include/task.h"
- 136              		.file 13 "Middlewares/Third_Party/FreeRTOS/Source/include/queue.h"
- 137              		.file 14 "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h"
- 138              		.file 15 "Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_def.h"
- 139              		.file 16 "Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_ctlreq.h"
- 140              		.file 17 "Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc.h"
- 141              		.file 18 "Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_core.h"
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccT13lY2.s 			page 6
+ 102              		.loc 1 108 0
+ 103 0016 2046     		mov	r0, r4
+ 104 0018 FFF7FEFF 		bl	USBH_Start
+ 105              	.LVL3:
+ 113:Src/usb_host.c **** 
+ 106              		.loc 1 113 0
+ 107 001c 10BD     		pop	{r4, pc}
+ 108              	.L12:
+ 109 001e 00BF     		.align	2
+ 110              	.L11:
+ 111 0020 00000000 		.word	hUsbHostFS
+ 112 0024 00000000 		.word	USBH_UserProcess
+ 113 0028 00000000 		.word	USBH_msc
+ 114              		.cfi_endproc
+ 115              	.LFE143:
+ 117              		.global	Appli_state
+ 118              		.comm	hUsbHostFS,980,4
+ 119              		.section	.bss.Appli_state,"aw",%nobits
+ 120              		.set	.LANCHOR0,. + 0
+ 123              	Appli_state:
+ 124 0000 00       		.space	1
+ 125              		.text
+ 126              	.Letext0:
+ 127              		.file 2 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\machine\\_default
+ 128              		.file 3 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 129              		.file 4 "Drivers/CMSIS/Include/core_cm7.h"
+ 130              		.file 5 "Drivers/CMSIS/Device/ST/STM32F7xx/Include/system_stm32f7xx.h"
+ 131              		.file 6 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\lock.h"
+ 132              		.file 7 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\_types.h"
+ 133              		.file 8 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\lib\\gcc\\arm-none-eabi\\7.3.1\\include\\
+ 134              		.file 9 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\reent.h"
+ 135              		.file 10 "Inc/usb_host.h"
+ 136              		.file 11 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\stdlib.h"
+ 137              		.file 12 "Middlewares/Third_Party/FreeRTOS/Source/include/task.h"
+ 138              		.file 13 "Middlewares/Third_Party/FreeRTOS/Source/include/queue.h"
+ 139              		.file 14 "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h"
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccUxQv4m.s 			page 6
+
+
+ 140              		.file 15 "Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_def.h"
+ 141              		.file 16 "Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_ctlreq.h"
+ 142              		.file 17 "Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc.h"
+ 143              		.file 18 "Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_core.h"
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccUxQv4m.s 			page 7
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 usb_host.c
-C:\Users\Student\AppData\Local\Temp\ccT13lY2.s:18     .text.USBH_UserProcess:00000000 $t
-C:\Users\Student\AppData\Local\Temp\ccT13lY2.s:24     .text.USBH_UserProcess:00000000 USBH_UserProcess
-C:\Users\Student\AppData\Local\Temp\ccT13lY2.s:66     .text.USBH_UserProcess:00000028 $d
-C:\Users\Student\AppData\Local\Temp\ccT13lY2.s:71     .text.MX_USB_HOST_Init:00000000 $t
-C:\Users\Student\AppData\Local\Temp\ccT13lY2.s:78     .text.MX_USB_HOST_Init:00000000 MX_USB_HOST_Init
-C:\Users\Student\AppData\Local\Temp\ccT13lY2.s:109    .text.MX_USB_HOST_Init:00000020 $d
+C:\Users\milek\AppData\Local\Temp\ccUxQv4m.s:18     .text.USBH_UserProcess:00000000 $t
+C:\Users\milek\AppData\Local\Temp\ccUxQv4m.s:24     .text.USBH_UserProcess:00000000 USBH_UserProcess
+C:\Users\milek\AppData\Local\Temp\ccUxQv4m.s:67     .text.USBH_UserProcess:00000028 $d
+C:\Users\milek\AppData\Local\Temp\ccUxQv4m.s:72     .text.MX_USB_HOST_Init:00000000 $t
+C:\Users\milek\AppData\Local\Temp\ccUxQv4m.s:79     .text.MX_USB_HOST_Init:00000000 MX_USB_HOST_Init
+C:\Users\milek\AppData\Local\Temp\ccUxQv4m.s:111    .text.MX_USB_HOST_Init:00000020 $d
                             *COM*:000003d4 hUsbHostFS
-C:\Users\Student\AppData\Local\Temp\ccT13lY2.s:121    .bss.Appli_state:00000000 Appli_state
-C:\Users\Student\AppData\Local\Temp\ccT13lY2.s:122    .bss.Appli_state:00000000 $d
-                     .debug_frame:00000010 $d
+C:\Users\milek\AppData\Local\Temp\ccUxQv4m.s:123    .bss.Appli_state:00000000 Appli_state
+C:\Users\milek\AppData\Local\Temp\ccUxQv4m.s:124    .bss.Appli_state:00000000 $d
 
 UNDEFINED SYMBOLS
 USBH_Init

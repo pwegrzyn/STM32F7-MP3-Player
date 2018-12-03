@@ -1,0 +1,1299 @@
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccerQbvp.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"mp3_player.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.BSP_init,"ax",%progbits
+  18              		.align	1
+  19              		.global	BSP_init
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  23              		.fpu fpv5-sp-d16
+  25              	BSP_init:
+  26              	.LFB144:
+  27              		.file 1 "Src/mp3_player.c"
+   1:Src/mp3_player.c **** #include "mp3_player.h"
+   2:Src/mp3_player.c **** #include "lib\helix\pub\mp3dec.h"
+   3:Src/mp3_player.c **** #include <stdio.h>
+   4:Src/mp3_player.c **** #include <string.h>
+   5:Src/mp3_player.c **** #include "fatfs.h"
+   6:Src/mp3_player.c **** #include "stm32746g_discovery_audio.h"
+   7:Src/mp3_player.c **** #include "term_io.h"
+   8:Src/mp3_player.c **** #include "dbgu.h"
+   9:Src/mp3_player.c **** #include "ansi.h"
+  10:Src/mp3_player.c **** 
+  11:Src/mp3_player.c **** //#define EOF 1
+  12:Src/mp3_player.c **** 
+  13:Src/mp3_player.c **** /* ------------------------------------------------------------------- */
+  14:Src/mp3_player.c **** 
+  15:Src/mp3_player.c **** static HMP3Decoder hMP3Decoder;
+  16:Src/mp3_player.c **** Mp3_Player_State state;
+  17:Src/mp3_player.c **** 
+  18:Src/mp3_player.c **** short output_buffer[AUDIO_OUT_BUFFER_SIZE]; // check if correct type and lenth?
+  19:Src/mp3_player.c **** //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  20:Src/mp3_player.c **** uint8_t input_buffer[READ_BUFFER_SIZE];
+  21:Src/mp3_player.c **** static uint8_t *read_pointer;
+  22:Src/mp3_player.c **** static BSP_BUFFER_STATE out_buf_offs = BUFFER_OFFSET_NONE;
+  23:Src/mp3_player.c **** FIL input_file;
+  24:Src/mp3_player.c **** static int bytes_left=0;
+  25:Src/mp3_player.c **** static int bytes_left_before_decoding=0;
+  26:Src/mp3_player.c **** static int in_buf_offs;
+  27:Src/mp3_player.c **** static int underflows;
+  28:Src/mp3_player.c **** static int decode_result;
+  29:Src/mp3_player.c **** 
+  30:Src/mp3_player.c **** /* ------------------------------------------------------------------- */
+  31:Src/mp3_player.c **** void BSP_init(void);
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccerQbvp.s 			page 2
+
+
+  32:Src/mp3_player.c **** void mp3_player_init(void);
+  33:Src/mp3_player.c **** void mp3_player_fsm(const char*);
+  34:Src/mp3_player.c **** void mp3_player_play();
+  35:Src/mp3_player.c **** int mp3_player_process_frame();
+  36:Src/mp3_player.c **** int fill_input_buffer();
+  37:Src/mp3_player.c **** 
+  38:Src/mp3_player.c **** /* ------------------------------------------------------------------- */
+  39:Src/mp3_player.c **** 
+  40:Src/mp3_player.c **** // Main Finite State Machine of the player
+  41:Src/mp3_player.c **** void mp3_player_fsm(const char* path)
+  42:Src/mp3_player.c **** {
+  43:Src/mp3_player.c ****     BSP_init();
+  44:Src/mp3_player.c ****     state = NEXT;
+  45:Src/mp3_player.c **** 
+  46:Src/mp3_player.c ****     DIR directory;
+  47:Src/mp3_player.c ****     f_opendir(&directory, path);
+  48:Src/mp3_player.c **** 
+  49:Src/mp3_player.c **** 	while(1)
+  50:Src/mp3_player.c **** 	{
+  51:Src/mp3_player.c **** 		switch(state)
+  52:Src/mp3_player.c **** 		{
+  53:Src/mp3_player.c **** 			case PLAY:
+  54:Src/mp3_player.c **** 				mp3_player_play();
+  55:Src/mp3_player.c ****                 f_close(&input_file);
+  56:Src/mp3_player.c **** 				break;
+  57:Src/mp3_player.c **** 			case NEXT:
+  58:Src/mp3_player.c **** 			    ;
+  59:Src/mp3_player.c **** 			    FILINFO info;
+  60:Src/mp3_player.c **** 				if (f_readdir(&directory, &info) != FR_OK) {
+  61:Src/mp3_player.c ****                     xprintf("Error reading from directory");
+  62:Src/mp3_player.c ****                     return;
+  63:Src/mp3_player.c **** 				}
+  64:Src/mp3_player.c ****                 if (info.fname[0] == 0) {
+  65:Src/mp3_player.c ****                     f_closedir(&directory);
+  66:Src/mp3_player.c ****                     f_opendir(&directory, path);
+  67:Src/mp3_player.c ****                     continue;
+  68:Src/mp3_player.c ****                 }
+  69:Src/mp3_player.c ****                 if (strstr(info.fname, ".mp3")) {
+  70:Src/mp3_player.c ****                     if (f_open(&input_file, info.fname, FA_READ) != FR_OK) {
+  71:Src/mp3_player.c ****                         xprintf("Error opening file");
+  72:Src/mp3_player.c ****                         return;
+  73:Src/mp3_player.c ****                     }
+  74:Src/mp3_player.c ****                     state = PLAY;
+  75:Src/mp3_player.c ****                 }
+  76:Src/mp3_player.c **** 				break;
+  77:Src/mp3_player.c **** 			case FINISH:
+  78:Src/mp3_player.c **** 				return;
+  79:Src/mp3_player.c ****             default:
+  80:Src/mp3_player.c ****                 return;
+  81:Src/mp3_player.c **** 		}
+  82:Src/mp3_player.c **** 	}
+  83:Src/mp3_player.c **** 
+  84:Src/mp3_player.c **** }
+  85:Src/mp3_player.c **** 
+  86:Src/mp3_player.c **** void BSP_init(void) {
+  28              		.loc 1 86 0
+  29              		.cfi_startproc
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccerQbvp.s 			page 3
+
+
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32 0000 08B5     		push	{r3, lr}
+  33              	.LCFI0:
+  34              		.cfi_def_cfa_offset 8
+  35              		.cfi_offset 3, -8
+  36              		.cfi_offset 14, -4
+  87:Src/mp3_player.c **** 	if(BSP_AUDIO_OUT_Init(OUTPUT_DEVICE_BOTH, 60, AUDIO_FREQUENCY_44K) == 0)	// probably will only nee
+  37              		.loc 1 87 0
+  38 0002 4AF64442 		movw	r2, #44100
+  39 0006 3C21     		movs	r1, #60
+  40 0008 0320     		movs	r0, #3
+  41 000a FFF7FEFF 		bl	BSP_AUDIO_OUT_Init
+  42              	.LVL0:
+  43 000e 18B1     		cbz	r0, .L5
+  88:Src/mp3_player.c **** 	{
+  89:Src/mp3_player.c **** 	  BSP_AUDIO_OUT_SetAudioFrameSlot(CODEC_AUDIOFRAME_SLOT_02);
+  90:Src/mp3_player.c **** 		xprintf("Audio Init Ok\n");
+  91:Src/mp3_player.c **** 	}
+  92:Src/mp3_player.c **** 	else
+  93:Src/mp3_player.c **** 	{
+  94:Src/mp3_player.c **** 		xprintf("Audio Init Error\n");
+  44              		.loc 1 94 0
+  45 0010 0548     		ldr	r0, .L6
+  46 0012 FFF7FEFF 		bl	xprintf
+  47              	.LVL1:
+  48              	.L1:
+  95:Src/mp3_player.c **** 	}
+  96:Src/mp3_player.c **** }
+  49              		.loc 1 96 0
+  50 0016 08BD     		pop	{r3, pc}
+  51              	.L5:
+  89:Src/mp3_player.c **** 		xprintf("Audio Init Ok\n");
+  52              		.loc 1 89 0
+  53 0018 0520     		movs	r0, #5
+  54 001a FFF7FEFF 		bl	BSP_AUDIO_OUT_SetAudioFrameSlot
+  55              	.LVL2:
+  90:Src/mp3_player.c **** 	}
+  56              		.loc 1 90 0
+  57 001e 0348     		ldr	r0, .L6+4
+  58 0020 FFF7FEFF 		bl	xprintf
+  59              	.LVL3:
+  60 0024 F7E7     		b	.L1
+  61              	.L7:
+  62 0026 00BF     		.align	2
+  63              	.L6:
+  64 0028 10000000 		.word	.LC1
+  65 002c 00000000 		.word	.LC0
+  66              		.cfi_endproc
+  67              	.LFE144:
+  69              		.section	.text.fill_input_buffer,"ax",%progbits
+  70              		.align	1
+  71              		.global	fill_input_buffer
+  72              		.syntax unified
+  73              		.thumb
+  74              		.thumb_func
+  75              		.fpu fpv5-sp-d16
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccerQbvp.s 			page 4
+
+
+  77              	fill_input_buffer:
+  78              	.LFB149:
+  97:Src/mp3_player.c **** 
+  98:Src/mp3_player.c **** // Play state handler
+  99:Src/mp3_player.c **** void mp3_player_play(void)
+ 100:Src/mp3_player.c **** {
+ 101:Src/mp3_player.c **** 	// open file from disk (get it from fileset)
+ 102:Src/mp3_player.c **** 	// Check if is valid Mp3 file
+ 103:Src/mp3_player.c **** 	// Call process_frame once, enable DMA transfer to AUDIO_OUT
+ 104:Src/mp3_player.c **** 	// In loop: listern for ts input - make appropirate actions (next, stop etc)
+ 105:Src/mp3_player.c **** 	// LOOp will break when all data has been read from file
+ 106:Src/mp3_player.c **** 	// Disable DMA transer to audio_out
+ 107:Src/mp3_player.c **** 	// close file and free decoder object
+ 108:Src/mp3_player.c **** 
+ 109:Src/mp3_player.c **** 	hMP3Decoder = MP3InitDecoder();
+ 110:Src/mp3_player.c **** 
+ 111:Src/mp3_player.c **** //	if(checktype(fileset->current) == unsported) {
+ 112:Src/mp3_player.c **** //		return NEXT;
+ 113:Src/mp3_player.c **** //	}
+ 114:Src/mp3_player.c **** //
+ 115:Src/mp3_player.c **** //	if(f_open(&input_file, fileset->current, FA_READ) != FR_OK) {
+ 116:Src/mp3_player.c **** //		return FINISH;
+ 117:Src/mp3_player.c **** //	}
+ 118:Src/mp3_player.c **** 
+ 119:Src/mp3_player.c **** 	if(mp3_player_process_frame() == 0) {
+ 120:Src/mp3_player.c **** 		state = PLAY;
+ 121:Src/mp3_player.c **** 		BSP_AUDIO_OUT_Play((uint16_t*)&output_buffer[0], AUDIO_OUT_BUFFER_SIZE);
+ 122:Src/mp3_player.c **** 		while(1) {
+ 123:Src/mp3_player.c **** 			if(state != PLAY) {
+ 124:Src/mp3_player.c **** 				break;
+ 125:Src/mp3_player.c **** 			}
+ 126:Src/mp3_player.c **** 		}
+ 127:Src/mp3_player.c **** 		BSP_AUDIO_OUT_Stop(CODEC_PDWN_SW);
+ 128:Src/mp3_player.c **** 		out_buf_offs = BUFFER_OFFSET_NONE;
+ 129:Src/mp3_player.c **** 	}
+ 130:Src/mp3_player.c **** 	else
+ 131:Src/mp3_player.c **** 	{
+ 132:Src/mp3_player.c **** 		state = NEXT;
+ 133:Src/mp3_player.c **** 	}
+ 134:Src/mp3_player.c **** 
+ 135:Src/mp3_player.c **** 	bytes_left = 0;
+ 136:Src/mp3_player.c **** 	read_pointer = NULL;
+ 137:Src/mp3_player.c **** 	MP3FreeDecoder(hMP3Decoder);
+ 138:Src/mp3_player.c **** }
+ 139:Src/mp3_player.c **** 
+ 140:Src/mp3_player.c **** // Process mp3 file
+ 141:Src/mp3_player.c **** int mp3_player_process_frame(void)
+ 142:Src/mp3_player.c **** {
+ 143:Src/mp3_player.c **** 	MP3FrameInfo mp3FrameInfo;
+ 144:Src/mp3_player.c **** 
+ 145:Src/mp3_player.c **** 	if (read_pointer == NULL) {
+ 146:Src/mp3_player.c **** 		if(fill_input_buffer() != 0){
+ 147:Src/mp3_player.c **** 			return EOF;
+ 148:Src/mp3_player.c **** 		}
+ 149:Src/mp3_player.c **** 	}
+ 150:Src/mp3_player.c **** 
+ 151:Src/mp3_player.c **** 	in_buf_offs = MP3FindSyncWord(read_pointer, bytes_left);
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccerQbvp.s 			page 5
+
+
+ 152:Src/mp3_player.c **** 	while(in_buf_offs < 0) {
+ 153:Src/mp3_player.c **** 		if(fill_input_buffer() != 0)
+ 154:Src/mp3_player.c **** 			return EOF;
+ 155:Src/mp3_player.c **** 		if(bytes_left > 0){
+ 156:Src/mp3_player.c **** 			bytes_left -= 1;
+ 157:Src/mp3_player.c **** 			read_pointer += 1;
+ 158:Src/mp3_player.c **** 		}
+ 159:Src/mp3_player.c **** 		in_buf_offs = MP3FindSyncWord(read_pointer, bytes_left);
+ 160:Src/mp3_player.c **** 	}
+ 161:Src/mp3_player.c **** 	read_pointer += in_buf_offs;
+ 162:Src/mp3_player.c **** 	bytes_left -= in_buf_offs;
+ 163:Src/mp3_player.c **** 	bytes_left_before_decoding = bytes_left;
+ 164:Src/mp3_player.c **** 
+ 165:Src/mp3_player.c **** 	if (MP3GetNextFrameInfo(hMP3Decoder, &mp3FrameInfo, read_pointer) == 0 &&
+ 166:Src/mp3_player.c **** 			mp3FrameInfo.nChans == 2 &&
+ 167:Src/mp3_player.c **** 			mp3FrameInfo.version == 0)
+ 168:Src/mp3_player.c **** 	{
+ 169:Src/mp3_player.c **** 	}
+ 170:Src/mp3_player.c **** 	else
+ 171:Src/mp3_player.c **** 	{
+ 172:Src/mp3_player.c **** 		if(bytes_left > 0)
+ 173:Src/mp3_player.c **** 		{
+ 174:Src/mp3_player.c **** 			bytes_left -= 1;
+ 175:Src/mp3_player.c **** 			read_pointer += 1;
+ 176:Src/mp3_player.c **** 		}
+ 177:Src/mp3_player.c **** 		return 0;
+ 178:Src/mp3_player.c **** 	}
+ 179:Src/mp3_player.c **** 
+ 180:Src/mp3_player.c **** 	if (bytes_left < MAINBUF_SIZE)
+ 181:Src/mp3_player.c **** 	{
+ 182:Src/mp3_player.c **** 		if(fill_input_buffer() != 0)
+ 183:Src/mp3_player.c **** 			return EOF;
+ 184:Src/mp3_player.c **** 	}
+ 185:Src/mp3_player.c **** 
+ 186:Src/mp3_player.c **** 	//if(out_buf_offs == BUFFER_OFFSET_NONE)
+ 187:Src/mp3_player.c **** 	//{ // OR FULL?
+ 188:Src/mp3_player.c **** 	//	underflows++;
+ 189:Src/mp3_player.c **** 	//}
+ 190:Src/mp3_player.c **** 
+ 191:Src/mp3_player.c **** 	// IF LOW EMPTY
+ 192:Src/mp3_player.c **** 	if(out_buf_offs == BUFFER_OFFSET_HALF)
+ 193:Src/mp3_player.c **** 	{
+ 194:Src/mp3_player.c **** 		decode_result = MP3Decode(hMP3Decoder, &read_pointer, &bytes_left, output_buffer, 0);
+ 195:Src/mp3_player.c **** 		out_buf_offs = BUFFER_OFFSET_NONE;
+ 196:Src/mp3_player.c **** 	}
+ 197:Src/mp3_player.c **** 	if(out_buf_offs == BUFFER_OFFSET_FULL){
+ 198:Src/mp3_player.c **** 		decode_result = MP3Decode(hMP3Decoder, &read_pointer, &bytes_left, &output_buffer[DECODED_MP3_FRA
+ 199:Src/mp3_player.c **** 		out_buf_offs = BUFFER_OFFSET_NONE;
+ 200:Src/mp3_player.c **** 	}
+ 201:Src/mp3_player.c **** 
+ 202:Src/mp3_player.c **** 	if(decode_result != ERR_MP3_NONE)
+ 203:Src/mp3_player.c **** 	{
+ 204:Src/mp3_player.c **** 		switch(decode_result)
+ 205:Src/mp3_player.c **** 		{
+ 206:Src/mp3_player.c **** 		case ERR_MP3_INDATA_UNDERFLOW:
+ 207:Src/mp3_player.c **** 			bytes_left = 0;
+ 208:Src/mp3_player.c **** 			if(fill_input_buffer() != 0)
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccerQbvp.s 			page 6
+
+
+ 209:Src/mp3_player.c **** 				return EOF;
+ 210:Src/mp3_player.c **** 			break;
+ 211:Src/mp3_player.c **** 		case ERR_MP3_MAINDATA_UNDERFLOW:
+ 212:Src/mp3_player.c **** 			//do nothing, next call to MP3Decode will provide more data
+ 213:Src/mp3_player.c **** 			break;
+ 214:Src/mp3_player.c **** 		default:
+ 215:Src/mp3_player.c **** 			return 0; //skip this frame if error
+ 216:Src/mp3_player.c **** 			//return END_OF_FILE; //skip this file if error
+ 217:Src/mp3_player.c **** 		}
+ 218:Src/mp3_player.c **** 	}
+ 219:Src/mp3_player.c **** 	return 0;
+ 220:Src/mp3_player.c **** }
+ 221:Src/mp3_player.c **** 
+ 222:Src/mp3_player.c **** // Callback when half of audio out buffer is transefered
+ 223:Src/mp3_player.c **** void BSP_AUDIO_OUT_TransferComplete_CallBack(void)
+ 224:Src/mp3_player.c **** {
+ 225:Src/mp3_player.c ****     out_buf_offs = BUFFER_OFFSET_FULL;
+ 226:Src/mp3_player.c **** 
+ 227:Src/mp3_player.c **** 	if(mp3_player_process_frame() != 0) // zwroci EOF gdy skonczy sie plik
+ 228:Src/mp3_player.c **** 	{
+ 229:Src/mp3_player.c **** 		BSP_AUDIO_OUT_Stop(CODEC_PDWN_SW);
+ 230:Src/mp3_player.c **** 		state = NEXT;
+ 231:Src/mp3_player.c **** 	}
+ 232:Src/mp3_player.c **** }
+ 233:Src/mp3_player.c **** 
+ 234:Src/mp3_player.c **** // Callback when all of audio out buffer is transefered
+ 235:Src/mp3_player.c **** void BSP_AUDIO_OUT_HalfTransfer_CallBack(void)
+ 236:Src/mp3_player.c **** {
+ 237:Src/mp3_player.c ****     out_buf_offs = BUFFER_OFFSET_HALF;
+ 238:Src/mp3_player.c **** 
+ 239:Src/mp3_player.c **** 	if(mp3_player_process_frame() != 0) // zwroci EOF gdy skonczy sie plik
+ 240:Src/mp3_player.c **** 	{
+ 241:Src/mp3_player.c **** 		BSP_AUDIO_OUT_Stop(CODEC_PDWN_SW);
+ 242:Src/mp3_player.c **** 		state = NEXT;
+ 243:Src/mp3_player.c **** 	}
+ 244:Src/mp3_player.c **** }
+ 245:Src/mp3_player.c **** 
+ 246:Src/mp3_player.c **** // Fill the input buffer with mp3 data from the USB for the decoder
+ 247:Src/mp3_player.c **** int fill_input_buffer() {
+  79              		.loc 1 247 0
+  80              		.cfi_startproc
+  81              		@ args = 0, pretend = 0, frame = 8
+  82              		@ frame_needed = 0, uses_anonymous_args = 0
+  83 0000 30B5     		push	{r4, r5, lr}
+  84              	.LCFI1:
+  85              		.cfi_def_cfa_offset 12
+  86              		.cfi_offset 4, -12
+  87              		.cfi_offset 5, -8
+  88              		.cfi_offset 14, -4
+  89 0002 83B0     		sub	sp, sp, #12
+  90              	.LCFI2:
+  91              		.cfi_def_cfa_offset 24
+ 248:Src/mp3_player.c **** 
+ 249:Src/mp3_player.c **** 	unsigned int bytes_read;
+ 250:Src/mp3_player.c **** 	unsigned int bytes_to_read;
+ 251:Src/mp3_player.c **** 
+ 252:Src/mp3_player.c **** 	if(bytes_left > 0) {
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccerQbvp.s 			page 7
+
+
+  92              		.loc 1 252 0
+  93 0004 134B     		ldr	r3, .L14
+  94 0006 1D68     		ldr	r5, [r3]
+  95 0008 002D     		cmp	r5, #0
+  96 000a 18DC     		bgt	.L13
+  97              	.L9:
+ 253:Src/mp3_player.c **** 		memcpy(input_buffer, read_pointer, bytes_left);
+ 254:Src/mp3_player.c **** 	}
+ 255:Src/mp3_player.c **** 
+ 256:Src/mp3_player.c **** 	bytes_to_read = READ_BUFFER_SIZE - bytes_left;
+  98              		.loc 1 256 0
+  99 000c 40F62874 		movw	r4, #3880
+ 100 0010 641B     		subs	r4, r4, r5
+ 101              	.LVL4:
+ 257:Src/mp3_player.c **** 
+ 258:Src/mp3_player.c **** 	f_read(&input_file, (BYTE *)input_buffer + bytes_left, bytes_to_read, &bytes_read);
+ 102              		.loc 1 258 0
+ 103 0012 01AB     		add	r3, sp, #4
+ 104 0014 2246     		mov	r2, r4
+ 105 0016 1049     		ldr	r1, .L14+4
+ 106 0018 2944     		add	r1, r1, r5
+ 107 001a 1048     		ldr	r0, .L14+8
+ 108 001c FFF7FEFF 		bl	f_read
+ 109              	.LVL5:
+ 259:Src/mp3_player.c **** 
+ 260:Src/mp3_player.c **** 	if (bytes_read == bytes_to_read){
+ 110              		.loc 1 260 0
+ 111 0020 019B     		ldr	r3, [sp, #4]
+ 112 0022 A342     		cmp	r3, r4
+ 113 0024 12D1     		bne	.L11
+ 261:Src/mp3_player.c **** 		read_pointer = input_buffer;
+ 114              		.loc 1 261 0
+ 115 0026 0E4B     		ldr	r3, .L14+12
+ 116 0028 0B4A     		ldr	r2, .L14+4
+ 117 002a 1A60     		str	r2, [r3]
+ 262:Src/mp3_player.c **** 		in_buf_offs = 0;
+ 118              		.loc 1 262 0
+ 119 002c 0020     		movs	r0, #0
+ 120 002e 0D4B     		ldr	r3, .L14+16
+ 121 0030 1860     		str	r0, [r3]
+ 263:Src/mp3_player.c **** 		bytes_left = READ_BUFFER_SIZE;
+ 122              		.loc 1 263 0
+ 123 0032 084B     		ldr	r3, .L14
+ 124 0034 40F62872 		movw	r2, #3880
+ 125 0038 1A60     		str	r2, [r3]
+ 126              	.L8:
+ 264:Src/mp3_player.c **** 		return 0;
+ 265:Src/mp3_player.c **** 	}
+ 266:Src/mp3_player.c **** 	else{
+ 267:Src/mp3_player.c **** 		return EOF;
+ 268:Src/mp3_player.c **** 	}
+ 269:Src/mp3_player.c **** 
+ 270:Src/mp3_player.c **** }
+ 127              		.loc 1 270 0
+ 128 003a 03B0     		add	sp, sp, #12
+ 129              	.LCFI3:
+ 130              		.cfi_remember_state
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccerQbvp.s 			page 8
+
+
+ 131              		.cfi_def_cfa_offset 12
+ 132              		@ sp needed
+ 133 003c 30BD     		pop	{r4, r5, pc}
+ 134              	.LVL6:
+ 135              	.L13:
+ 136              	.LCFI4:
+ 137              		.cfi_restore_state
+ 253:Src/mp3_player.c **** 	}
+ 138              		.loc 1 253 0
+ 139 003e 2A46     		mov	r2, r5
+ 140 0040 074B     		ldr	r3, .L14+12
+ 141 0042 1968     		ldr	r1, [r3]
+ 142 0044 0448     		ldr	r0, .L14+4
+ 143 0046 FFF7FEFF 		bl	memcpy
+ 144              	.LVL7:
+ 145 004a DFE7     		b	.L9
+ 146              	.LVL8:
+ 147              	.L11:
+ 267:Src/mp3_player.c **** 	}
+ 148              		.loc 1 267 0
+ 149 004c 4FF0FF30 		mov	r0, #-1
+ 150 0050 F3E7     		b	.L8
+ 151              	.L15:
+ 152 0052 00BF     		.align	2
+ 153              	.L14:
+ 154 0054 00000000 		.word	.LANCHOR0
+ 155 0058 00000000 		.word	input_buffer
+ 156 005c 00000000 		.word	input_file
+ 157 0060 00000000 		.word	.LANCHOR1
+ 158 0064 00000000 		.word	.LANCHOR2
+ 159              		.cfi_endproc
+ 160              	.LFE149:
+ 162              		.section	.text.mp3_player_process_frame,"ax",%progbits
+ 163              		.align	1
+ 164              		.global	mp3_player_process_frame
+ 165              		.syntax unified
+ 166              		.thumb
+ 167              		.thumb_func
+ 168              		.fpu fpv5-sp-d16
+ 170              	mp3_player_process_frame:
+ 171              	.LFB146:
+ 142:Src/mp3_player.c **** 	MP3FrameInfo mp3FrameInfo;
+ 172              		.loc 1 142 0
+ 173              		.cfi_startproc
+ 174              		@ args = 0, pretend = 0, frame = 32
+ 175              		@ frame_needed = 0, uses_anonymous_args = 0
+ 176 0000 30B5     		push	{r4, r5, lr}
+ 177              	.LCFI5:
+ 178              		.cfi_def_cfa_offset 12
+ 179              		.cfi_offset 4, -12
+ 180              		.cfi_offset 5, -8
+ 181              		.cfi_offset 14, -4
+ 182 0002 8BB0     		sub	sp, sp, #44
+ 183              	.LCFI6:
+ 184              		.cfi_def_cfa_offset 56
+ 145:Src/mp3_player.c **** 		if(fill_input_buffer() != 0){
+ 185              		.loc 1 145 0
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccerQbvp.s 			page 9
+
+
+ 186 0004 4C4B     		ldr	r3, .L43
+ 187 0006 1B68     		ldr	r3, [r3]
+ 188 0008 43B1     		cbz	r3, .L36
+ 189              	.L17:
+ 151:Src/mp3_player.c **** 	while(in_buf_offs < 0) {
+ 190              		.loc 1 151 0
+ 191 000a 4C4B     		ldr	r3, .L43+4
+ 192 000c 1968     		ldr	r1, [r3]
+ 193 000e 4A4B     		ldr	r3, .L43
+ 194 0010 1868     		ldr	r0, [r3]
+ 195 0012 FFF7FEFF 		bl	MP3FindSyncWord
+ 196              	.LVL9:
+ 197 0016 4A4B     		ldr	r3, .L43+8
+ 198 0018 1860     		str	r0, [r3]
+ 152:Src/mp3_player.c **** 		if(fill_input_buffer() != 0)
+ 199              		.loc 1 152 0
+ 200 001a 0EE0     		b	.L19
+ 201              	.L36:
+ 146:Src/mp3_player.c **** 			return EOF;
+ 202              		.loc 1 146 0
+ 203 001c FFF7FEFF 		bl	fill_input_buffer
+ 204              	.LVL10:
+ 205 0020 0028     		cmp	r0, #0
+ 206 0022 F2D0     		beq	.L17
+ 147:Src/mp3_player.c **** 		}
+ 207              		.loc 1 147 0
+ 208 0024 4FF0FF34 		mov	r4, #-1
+ 209 0028 80E0     		b	.L16
+ 210              	.L20:
+ 159:Src/mp3_player.c **** 	}
+ 211              		.loc 1 159 0
+ 212 002a 444B     		ldr	r3, .L43+4
+ 213 002c 1968     		ldr	r1, [r3]
+ 214 002e 424B     		ldr	r3, .L43
+ 215 0030 1868     		ldr	r0, [r3]
+ 216 0032 FFF7FEFF 		bl	MP3FindSyncWord
+ 217              	.LVL11:
+ 218 0036 424B     		ldr	r3, .L43+8
+ 219 0038 1860     		str	r0, [r3]
+ 220              	.L19:
+ 152:Src/mp3_player.c **** 		if(fill_input_buffer() != 0)
+ 221              		.loc 1 152 0
+ 222 003a 414B     		ldr	r3, .L43+8
+ 223 003c 1B68     		ldr	r3, [r3]
+ 224 003e 002B     		cmp	r3, #0
+ 225 0040 0FDA     		bge	.L37
+ 153:Src/mp3_player.c **** 			return EOF;
+ 226              		.loc 1 153 0
+ 227 0042 FFF7FEFF 		bl	fill_input_buffer
+ 228              	.LVL12:
+ 229 0046 0028     		cmp	r0, #0
+ 230 0048 6ED1     		bne	.L29
+ 155:Src/mp3_player.c **** 			bytes_left -= 1;
+ 231              		.loc 1 155 0
+ 232 004a 3C4B     		ldr	r3, .L43+4
+ 233 004c 1B68     		ldr	r3, [r3]
+ 234 004e 002B     		cmp	r3, #0
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccerQbvp.s 			page 10
+
+
+ 235 0050 EBDD     		ble	.L20
+ 156:Src/mp3_player.c **** 			read_pointer += 1;
+ 236              		.loc 1 156 0
+ 237 0052 013B     		subs	r3, r3, #1
+ 238 0054 394A     		ldr	r2, .L43+4
+ 239 0056 1360     		str	r3, [r2]
+ 157:Src/mp3_player.c **** 		}
+ 240              		.loc 1 157 0
+ 241 0058 374A     		ldr	r2, .L43
+ 242 005a 1368     		ldr	r3, [r2]
+ 243 005c 0133     		adds	r3, r3, #1
+ 244 005e 1360     		str	r3, [r2]
+ 245 0060 E3E7     		b	.L20
+ 246              	.L37:
+ 161:Src/mp3_player.c **** 	bytes_left -= in_buf_offs;
+ 247              		.loc 1 161 0
+ 248 0062 3549     		ldr	r1, .L43
+ 249 0064 0A68     		ldr	r2, [r1]
+ 250 0066 1A44     		add	r2, r2, r3
+ 251 0068 0A60     		str	r2, [r1]
+ 162:Src/mp3_player.c **** 	bytes_left_before_decoding = bytes_left;
+ 252              		.loc 1 162 0
+ 253 006a 3448     		ldr	r0, .L43+4
+ 254 006c 0168     		ldr	r1, [r0]
+ 255 006e CB1A     		subs	r3, r1, r3
+ 256 0070 0360     		str	r3, [r0]
+ 165:Src/mp3_player.c **** 			mp3FrameInfo.nChans == 2 &&
+ 257              		.loc 1 165 0
+ 258 0072 03A9     		add	r1, sp, #12
+ 259 0074 334B     		ldr	r3, .L43+12
+ 260 0076 1868     		ldr	r0, [r3]
+ 261 0078 FFF7FEFF 		bl	MP3GetNextFrameInfo
+ 262              	.LVL13:
+ 263 007c 10B9     		cbnz	r0, .L22
+ 166:Src/mp3_player.c **** 			mp3FrameInfo.version == 0)
+ 264              		.loc 1 166 0 discriminator 1
+ 265 007e 049B     		ldr	r3, [sp, #16]
+ 165:Src/mp3_player.c **** 			mp3FrameInfo.nChans == 2 &&
+ 266              		.loc 1 165 0 discriminator 1
+ 267 0080 022B     		cmp	r3, #2
+ 268 0082 0CD0     		beq	.L38
+ 269              	.L22:
+ 172:Src/mp3_player.c **** 		{
+ 270              		.loc 1 172 0
+ 271 0084 2D4B     		ldr	r3, .L43+4
+ 272 0086 1B68     		ldr	r3, [r3]
+ 273 0088 002B     		cmp	r3, #0
+ 274 008a 52DD     		ble	.L30
+ 174:Src/mp3_player.c **** 			read_pointer += 1;
+ 275              		.loc 1 174 0
+ 276 008c 013B     		subs	r3, r3, #1
+ 277 008e 2B4A     		ldr	r2, .L43+4
+ 278 0090 1360     		str	r3, [r2]
+ 175:Src/mp3_player.c **** 		}
+ 279              		.loc 1 175 0
+ 280 0092 294A     		ldr	r2, .L43
+ 281 0094 1368     		ldr	r3, [r2]
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccerQbvp.s 			page 11
+
+
+ 282 0096 0133     		adds	r3, r3, #1
+ 283 0098 1360     		str	r3, [r2]
+ 177:Src/mp3_player.c **** 	}
+ 284              		.loc 1 177 0
+ 285 009a 0024     		movs	r4, #0
+ 286 009c 46E0     		b	.L16
+ 287              	.L38:
+ 167:Src/mp3_player.c **** 	{
+ 288              		.loc 1 167 0
+ 289 009e 099D     		ldr	r5, [sp, #36]
+ 166:Src/mp3_player.c **** 			mp3FrameInfo.version == 0)
+ 290              		.loc 1 166 0
+ 291 00a0 002D     		cmp	r5, #0
+ 292 00a2 EFD1     		bne	.L22
+ 180:Src/mp3_player.c **** 	{
+ 293              		.loc 1 180 0
+ 294 00a4 254B     		ldr	r3, .L43+4
+ 295 00a6 1A68     		ldr	r2, [r3]
+ 296 00a8 40F29373 		movw	r3, #1939
+ 297 00ac 9A42     		cmp	r2, r3
+ 298 00ae 10DD     		ble	.L39
+ 299              	.L24:
+ 192:Src/mp3_player.c **** 	{
+ 300              		.loc 1 192 0
+ 301 00b0 254B     		ldr	r3, .L43+16
+ 302 00b2 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 303 00b4 012B     		cmp	r3, #1
+ 304 00b6 13D0     		beq	.L40
+ 305              	.L25:
+ 197:Src/mp3_player.c **** 		decode_result = MP3Decode(hMP3Decoder, &read_pointer, &bytes_left, &output_buffer[DECODED_MP3_FRA
+ 306              		.loc 1 197 0
+ 307 00b8 234B     		ldr	r3, .L43+16
+ 308 00ba 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 309 00bc 022B     		cmp	r3, #2
+ 310 00be 1DD0     		beq	.L41
+ 311              	.L26:
+ 202:Src/mp3_player.c **** 	{
+ 312              		.loc 1 202 0
+ 313 00c0 224B     		ldr	r3, .L43+20
+ 314 00c2 1C68     		ldr	r4, [r3]
+ 315 00c4 002C     		cmp	r4, #0
+ 316 00c6 31D0     		beq	.L16
+ 204:Src/mp3_player.c **** 		{
+ 317              		.loc 1 204 0
+ 318 00c8 B4F1FF3F 		cmp	r4, #-1
+ 319 00cc 24D0     		beq	.L42
+ 215:Src/mp3_player.c **** 			//return END_OF_FILE; //skip this file if error
+ 320              		.loc 1 215 0
+ 321 00ce 2C46     		mov	r4, r5
+ 322 00d0 2CE0     		b	.L16
+ 323              	.L39:
+ 182:Src/mp3_player.c **** 			return EOF;
+ 324              		.loc 1 182 0
+ 325 00d2 FFF7FEFF 		bl	fill_input_buffer
+ 326              	.LVL14:
+ 327 00d6 0028     		cmp	r0, #0
+ 328 00d8 EAD0     		beq	.L24
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccerQbvp.s 			page 12
+
+
+ 183:Src/mp3_player.c **** 	}
+ 329              		.loc 1 183 0
+ 330 00da 4FF0FF34 		mov	r4, #-1
+ 331 00de 25E0     		b	.L16
+ 332              	.L40:
+ 194:Src/mp3_player.c **** 		out_buf_offs = BUFFER_OFFSET_NONE;
+ 333              		.loc 1 194 0
+ 334 00e0 184B     		ldr	r3, .L43+12
+ 335 00e2 1868     		ldr	r0, [r3]
+ 336 00e4 0024     		movs	r4, #0
+ 337 00e6 0094     		str	r4, [sp]
+ 338 00e8 194B     		ldr	r3, .L43+24
+ 339 00ea 144A     		ldr	r2, .L43+4
+ 340 00ec 1249     		ldr	r1, .L43
+ 341 00ee FFF7FEFF 		bl	MP3Decode
+ 342              	.LVL15:
+ 343 00f2 164B     		ldr	r3, .L43+20
+ 344 00f4 1860     		str	r0, [r3]
+ 195:Src/mp3_player.c **** 	}
+ 345              		.loc 1 195 0
+ 346 00f6 144B     		ldr	r3, .L43+16
+ 347 00f8 1C70     		strb	r4, [r3]
+ 348 00fa DDE7     		b	.L25
+ 349              	.L41:
+ 198:Src/mp3_player.c **** 		out_buf_offs = BUFFER_OFFSET_NONE;
+ 350              		.loc 1 198 0
+ 351 00fc 114B     		ldr	r3, .L43+12
+ 352 00fe 1868     		ldr	r0, [r3]
+ 353 0100 0024     		movs	r4, #0
+ 354 0102 0094     		str	r4, [sp]
+ 355 0104 134B     		ldr	r3, .L43+28
+ 356 0106 0D4A     		ldr	r2, .L43+4
+ 357 0108 0B49     		ldr	r1, .L43
+ 358 010a FFF7FEFF 		bl	MP3Decode
+ 359              	.LVL16:
+ 360 010e 0F4B     		ldr	r3, .L43+20
+ 361 0110 1860     		str	r0, [r3]
+ 199:Src/mp3_player.c **** 	}
+ 362              		.loc 1 199 0
+ 363 0112 0D4B     		ldr	r3, .L43+16
+ 364 0114 1C70     		strb	r4, [r3]
+ 365 0116 D3E7     		b	.L26
+ 366              	.L42:
+ 207:Src/mp3_player.c **** 			if(fill_input_buffer() != 0)
+ 367              		.loc 1 207 0
+ 368 0118 084B     		ldr	r3, .L43+4
+ 369 011a 0022     		movs	r2, #0
+ 370 011c 1A60     		str	r2, [r3]
+ 208:Src/mp3_player.c **** 				return EOF;
+ 371              		.loc 1 208 0
+ 372 011e FFF7FEFF 		bl	fill_input_buffer
+ 373              	.LVL17:
+ 374 0122 18B9     		cbnz	r0, .L16
+ 219:Src/mp3_player.c **** }
+ 375              		.loc 1 219 0
+ 376 0124 0446     		mov	r4, r0
+ 377 0126 01E0     		b	.L16
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccerQbvp.s 			page 13
+
+
+ 378              	.L29:
+ 154:Src/mp3_player.c **** 		if(bytes_left > 0){
+ 379              		.loc 1 154 0
+ 380 0128 4FF0FF34 		mov	r4, #-1
+ 381              	.L16:
+ 220:Src/mp3_player.c **** 
+ 382              		.loc 1 220 0
+ 383 012c 2046     		mov	r0, r4
+ 384 012e 0BB0     		add	sp, sp, #44
+ 385              	.LCFI7:
+ 386              		.cfi_remember_state
+ 387              		.cfi_def_cfa_offset 12
+ 388              		@ sp needed
+ 389 0130 30BD     		pop	{r4, r5, pc}
+ 390              	.L30:
+ 391              	.LCFI8:
+ 392              		.cfi_restore_state
+ 177:Src/mp3_player.c **** 	}
+ 393              		.loc 1 177 0
+ 394 0132 0024     		movs	r4, #0
+ 395 0134 FAE7     		b	.L16
+ 396              	.L44:
+ 397 0136 00BF     		.align	2
+ 398              	.L43:
+ 399 0138 00000000 		.word	.LANCHOR1
+ 400 013c 00000000 		.word	.LANCHOR0
+ 401 0140 00000000 		.word	.LANCHOR2
+ 402 0144 00000000 		.word	.LANCHOR3
+ 403 0148 00000000 		.word	.LANCHOR4
+ 404 014c 00000000 		.word	.LANCHOR5
+ 405 0150 00000000 		.word	output_buffer
+ 406 0154 00120000 		.word	output_buffer+4608
+ 407              		.cfi_endproc
+ 408              	.LFE146:
+ 410              		.section	.text.mp3_player_play,"ax",%progbits
+ 411              		.align	1
+ 412              		.global	mp3_player_play
+ 413              		.syntax unified
+ 414              		.thumb
+ 415              		.thumb_func
+ 416              		.fpu fpv5-sp-d16
+ 418              	mp3_player_play:
+ 419              	.LFB145:
+ 100:Src/mp3_player.c **** 	// open file from disk (get it from fileset)
+ 420              		.loc 1 100 0
+ 421              		.cfi_startproc
+ 422              		@ args = 0, pretend = 0, frame = 0
+ 423              		@ frame_needed = 0, uses_anonymous_args = 0
+ 424 0000 08B5     		push	{r3, lr}
+ 425              	.LCFI9:
+ 426              		.cfi_def_cfa_offset 8
+ 427              		.cfi_offset 3, -8
+ 428              		.cfi_offset 14, -4
+ 109:Src/mp3_player.c **** 
+ 429              		.loc 1 109 0
+ 430 0002 FFF7FEFF 		bl	MP3InitDecoder
+ 431              	.LVL18:
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccerQbvp.s 			page 14
+
+
+ 432 0006 124B     		ldr	r3, .L51
+ 433 0008 1860     		str	r0, [r3]
+ 119:Src/mp3_player.c **** 		state = PLAY;
+ 434              		.loc 1 119 0
+ 435 000a FFF7FEFF 		bl	mp3_player_process_frame
+ 436              	.LVL19:
+ 437 000e 60B1     		cbz	r0, .L50
+ 132:Src/mp3_player.c **** 	}
+ 438              		.loc 1 132 0
+ 439 0010 104B     		ldr	r3, .L51+4
+ 440 0012 0322     		movs	r2, #3
+ 441 0014 1A70     		strb	r2, [r3]
+ 442              	.L48:
+ 135:Src/mp3_player.c **** 	read_pointer = NULL;
+ 443              		.loc 1 135 0
+ 444 0016 0023     		movs	r3, #0
+ 445 0018 0F4A     		ldr	r2, .L51+8
+ 446 001a 1360     		str	r3, [r2]
+ 136:Src/mp3_player.c **** 	MP3FreeDecoder(hMP3Decoder);
+ 447              		.loc 1 136 0
+ 448 001c 0F4A     		ldr	r2, .L51+12
+ 449 001e 1360     		str	r3, [r2]
+ 137:Src/mp3_player.c **** }
+ 450              		.loc 1 137 0
+ 451 0020 0B4B     		ldr	r3, .L51
+ 452 0022 1868     		ldr	r0, [r3]
+ 453 0024 FFF7FEFF 		bl	MP3FreeDecoder
+ 454              	.LVL20:
+ 138:Src/mp3_player.c **** 
+ 455              		.loc 1 138 0
+ 456 0028 08BD     		pop	{r3, pc}
+ 457              	.L50:
+ 120:Src/mp3_player.c **** 		BSP_AUDIO_OUT_Play((uint16_t*)&output_buffer[0], AUDIO_OUT_BUFFER_SIZE);
+ 458              		.loc 1 120 0
+ 459 002a 0A4B     		ldr	r3, .L51+4
+ 460 002c 0022     		movs	r2, #0
+ 461 002e 1A70     		strb	r2, [r3]
+ 121:Src/mp3_player.c **** 		while(1) {
+ 462              		.loc 1 121 0
+ 463 0030 4FF49051 		mov	r1, #4608
+ 464 0034 0A48     		ldr	r0, .L51+16
+ 465 0036 FFF7FEFF 		bl	BSP_AUDIO_OUT_Play
+ 466              	.LVL21:
+ 467              	.L47:
+ 123:Src/mp3_player.c **** 				break;
+ 468              		.loc 1 123 0
+ 469 003a 064B     		ldr	r3, .L51+4
+ 470 003c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 471 003e 002B     		cmp	r3, #0
+ 472 0040 FBD0     		beq	.L47
+ 127:Src/mp3_player.c **** 		out_buf_offs = BUFFER_OFFSET_NONE;
+ 473              		.loc 1 127 0
+ 474 0042 0220     		movs	r0, #2
+ 475 0044 FFF7FEFF 		bl	BSP_AUDIO_OUT_Stop
+ 476              	.LVL22:
+ 128:Src/mp3_player.c **** 	}
+ 477              		.loc 1 128 0
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccerQbvp.s 			page 15
+
+
+ 478 0048 064B     		ldr	r3, .L51+20
+ 479 004a 0022     		movs	r2, #0
+ 480 004c 1A70     		strb	r2, [r3]
+ 481 004e E2E7     		b	.L48
+ 482              	.L52:
+ 483              		.align	2
+ 484              	.L51:
+ 485 0050 00000000 		.word	.LANCHOR3
+ 486 0054 00000000 		.word	state
+ 487 0058 00000000 		.word	.LANCHOR0
+ 488 005c 00000000 		.word	.LANCHOR1
+ 489 0060 00000000 		.word	output_buffer
+ 490 0064 00000000 		.word	.LANCHOR4
+ 491              		.cfi_endproc
+ 492              	.LFE145:
+ 494              		.section	.text.mp3_player_fsm,"ax",%progbits
+ 495              		.align	1
+ 496              		.global	mp3_player_fsm
+ 497              		.syntax unified
+ 498              		.thumb
+ 499              		.thumb_func
+ 500              		.fpu fpv5-sp-d16
+ 502              	mp3_player_fsm:
+ 503              	.LFB143:
+  42:Src/mp3_player.c ****     BSP_init();
+ 504              		.loc 1 42 0
+ 505              		.cfi_startproc
+ 506              		@ args = 0, pretend = 0, frame = 336
+ 507              		@ frame_needed = 0, uses_anonymous_args = 0
+ 508              	.LVL23:
+ 509 0000 10B5     		push	{r4, lr}
+ 510              	.LCFI10:
+ 511              		.cfi_def_cfa_offset 8
+ 512              		.cfi_offset 4, -8
+ 513              		.cfi_offset 14, -4
+ 514 0002 D4B0     		sub	sp, sp, #336
+ 515              	.LCFI11:
+ 516              		.cfi_def_cfa_offset 344
+ 517 0004 0446     		mov	r4, r0
+  43:Src/mp3_player.c ****     state = NEXT;
+ 518              		.loc 1 43 0
+ 519 0006 FFF7FEFF 		bl	BSP_init
+ 520              	.LVL24:
+  44:Src/mp3_player.c **** 
+ 521              		.loc 1 44 0
+ 522 000a 1F4B     		ldr	r3, .L67
+ 523 000c 0322     		movs	r2, #3
+ 524 000e 1A70     		strb	r2, [r3]
+  47:Src/mp3_player.c **** 
+ 525              		.loc 1 47 0
+ 526 0010 2146     		mov	r1, r4
+ 527 0012 47A8     		add	r0, sp, #284
+ 528 0014 FFF7FEFF 		bl	f_opendir
+ 529              	.LVL25:
+ 530              	.L54:
+  51:Src/mp3_player.c **** 		{
+ 531              		.loc 1 51 0
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccerQbvp.s 			page 16
+
+
+ 532 0018 1B4B     		ldr	r3, .L67
+ 533 001a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 534 001c 1BB1     		cbz	r3, .L56
+ 535 001e 032B     		cmp	r3, #3
+ 536 0020 07D0     		beq	.L57
+ 537              	.L53:
+  84:Src/mp3_player.c **** 
+ 538              		.loc 1 84 0
+ 539 0022 54B0     		add	sp, sp, #336
+ 540              	.LCFI12:
+ 541              		.cfi_remember_state
+ 542              		.cfi_def_cfa_offset 8
+ 543              		@ sp needed
+ 544 0024 10BD     		pop	{r4, pc}
+ 545              	.LVL26:
+ 546              	.L56:
+ 547              	.LCFI13:
+ 548              		.cfi_restore_state
+ 549              	.LBB2:
+  54:Src/mp3_player.c ****                 f_close(&input_file);
+ 550              		.loc 1 54 0
+ 551 0026 FFF7FEFF 		bl	mp3_player_play
+ 552              	.LVL27:
+  55:Src/mp3_player.c **** 				break;
+ 553              		.loc 1 55 0
+ 554 002a 1848     		ldr	r0, .L67+4
+ 555 002c FFF7FEFF 		bl	f_close
+ 556              	.LVL28:
+  56:Src/mp3_player.c **** 			case NEXT:
+ 557              		.loc 1 56 0
+ 558 0030 F2E7     		b	.L54
+ 559              	.L57:
+  60:Src/mp3_player.c ****                     xprintf("Error reading from directory");
+ 560              		.loc 1 60 0
+ 561 0032 01A9     		add	r1, sp, #4
+ 562 0034 47A8     		add	r0, sp, #284
+ 563 0036 FFF7FEFF 		bl	f_readdir
+ 564              	.LVL29:
+ 565 003a A0B9     		cbnz	r0, .L64
+  64:Src/mp3_player.c ****                     f_closedir(&directory);
+ 566              		.loc 1 64 0
+ 567 003c 9DF81A30 		ldrb	r3, [sp, #26]	@ zero_extendqisi2
+ 568 0040 ABB1     		cbz	r3, .L65
+  69:Src/mp3_player.c ****                     if (f_open(&input_file, info.fname, FA_READ) != FR_OK) {
+ 569              		.loc 1 69 0
+ 570 0042 1349     		ldr	r1, .L67+8
+ 571 0044 0DF11A00 		add	r0, sp, #26
+ 572 0048 FFF7FEFF 		bl	strstr
+ 573              	.LVL30:
+ 574 004c 0028     		cmp	r0, #0
+ 575 004e E3D0     		beq	.L54
+  70:Src/mp3_player.c ****                         xprintf("Error opening file");
+ 576              		.loc 1 70 0
+ 577 0050 0122     		movs	r2, #1
+ 578 0052 0DF11A01 		add	r1, sp, #26
+ 579 0056 0D48     		ldr	r0, .L67+4
+ 580 0058 FFF7FEFF 		bl	f_open
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccerQbvp.s 			page 17
+
+
+ 581              	.LVL31:
+ 582 005c 78B9     		cbnz	r0, .L66
+  74:Src/mp3_player.c ****                 }
+ 583              		.loc 1 74 0
+ 584 005e 0A4B     		ldr	r3, .L67
+ 585 0060 0022     		movs	r2, #0
+ 586 0062 1A70     		strb	r2, [r3]
+ 587 0064 D8E7     		b	.L54
+ 588              	.L64:
+  61:Src/mp3_player.c ****                     return;
+ 589              		.loc 1 61 0
+ 590 0066 0B48     		ldr	r0, .L67+12
+ 591 0068 FFF7FEFF 		bl	xprintf
+ 592              	.LVL32:
+  62:Src/mp3_player.c **** 				}
+ 593              		.loc 1 62 0
+ 594 006c D9E7     		b	.L53
+ 595              	.L65:
+  65:Src/mp3_player.c ****                     f_opendir(&directory, path);
+ 596              		.loc 1 65 0
+ 597 006e 47A8     		add	r0, sp, #284
+ 598 0070 FFF7FEFF 		bl	f_closedir
+ 599              	.LVL33:
+  66:Src/mp3_player.c ****                     continue;
+ 600              		.loc 1 66 0
+ 601 0074 2146     		mov	r1, r4
+ 602 0076 47A8     		add	r0, sp, #284
+ 603 0078 FFF7FEFF 		bl	f_opendir
+ 604              	.LVL34:
+ 605 007c CCE7     		b	.L54
+ 606              	.L66:
+  71:Src/mp3_player.c ****                         return;
+ 607              		.loc 1 71 0
+ 608 007e 0648     		ldr	r0, .L67+16
+ 609 0080 FFF7FEFF 		bl	xprintf
+ 610              	.LVL35:
+  72:Src/mp3_player.c ****                     }
+ 611              		.loc 1 72 0
+ 612 0084 CDE7     		b	.L53
+ 613              	.L68:
+ 614 0086 00BF     		.align	2
+ 615              	.L67:
+ 616 0088 00000000 		.word	state
+ 617 008c 00000000 		.word	input_file
+ 618 0090 20000000 		.word	.LC3
+ 619 0094 00000000 		.word	.LC2
+ 620 0098 28000000 		.word	.LC4
+ 621              	.LBE2:
+ 622              		.cfi_endproc
+ 623              	.LFE143:
+ 625              		.section	.text.BSP_AUDIO_OUT_TransferComplete_CallBack,"ax",%progbits
+ 626              		.align	1
+ 627              		.global	BSP_AUDIO_OUT_TransferComplete_CallBack
+ 628              		.syntax unified
+ 629              		.thumb
+ 630              		.thumb_func
+ 631              		.fpu fpv5-sp-d16
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccerQbvp.s 			page 18
+
+
+ 633              	BSP_AUDIO_OUT_TransferComplete_CallBack:
+ 634              	.LFB147:
+ 224:Src/mp3_player.c ****     out_buf_offs = BUFFER_OFFSET_FULL;
+ 635              		.loc 1 224 0
+ 636              		.cfi_startproc
+ 637              		@ args = 0, pretend = 0, frame = 0
+ 638              		@ frame_needed = 0, uses_anonymous_args = 0
+ 639 0000 08B5     		push	{r3, lr}
+ 640              	.LCFI14:
+ 641              		.cfi_def_cfa_offset 8
+ 642              		.cfi_offset 3, -8
+ 643              		.cfi_offset 14, -4
+ 225:Src/mp3_player.c **** 
+ 644              		.loc 1 225 0
+ 645 0002 074B     		ldr	r3, .L73
+ 646 0004 0222     		movs	r2, #2
+ 647 0006 1A70     		strb	r2, [r3]
+ 227:Src/mp3_player.c **** 	{
+ 648              		.loc 1 227 0
+ 649 0008 FFF7FEFF 		bl	mp3_player_process_frame
+ 650              	.LVL36:
+ 651 000c 00B9     		cbnz	r0, .L72
+ 652              	.L69:
+ 232:Src/mp3_player.c **** 
+ 653              		.loc 1 232 0
+ 654 000e 08BD     		pop	{r3, pc}
+ 655              	.L72:
+ 229:Src/mp3_player.c **** 		state = NEXT;
+ 656              		.loc 1 229 0
+ 657 0010 0220     		movs	r0, #2
+ 658 0012 FFF7FEFF 		bl	BSP_AUDIO_OUT_Stop
+ 659              	.LVL37:
+ 230:Src/mp3_player.c **** 	}
+ 660              		.loc 1 230 0
+ 661 0016 034B     		ldr	r3, .L73+4
+ 662 0018 0322     		movs	r2, #3
+ 663 001a 1A70     		strb	r2, [r3]
+ 232:Src/mp3_player.c **** 
+ 664              		.loc 1 232 0
+ 665 001c F7E7     		b	.L69
+ 666              	.L74:
+ 667 001e 00BF     		.align	2
+ 668              	.L73:
+ 669 0020 00000000 		.word	.LANCHOR4
+ 670 0024 00000000 		.word	state
+ 671              		.cfi_endproc
+ 672              	.LFE147:
+ 674              		.section	.text.BSP_AUDIO_OUT_HalfTransfer_CallBack,"ax",%progbits
+ 675              		.align	1
+ 676              		.global	BSP_AUDIO_OUT_HalfTransfer_CallBack
+ 677              		.syntax unified
+ 678              		.thumb
+ 679              		.thumb_func
+ 680              		.fpu fpv5-sp-d16
+ 682              	BSP_AUDIO_OUT_HalfTransfer_CallBack:
+ 683              	.LFB148:
+ 236:Src/mp3_player.c ****     out_buf_offs = BUFFER_OFFSET_HALF;
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccerQbvp.s 			page 19
+
+
+ 684              		.loc 1 236 0
+ 685              		.cfi_startproc
+ 686              		@ args = 0, pretend = 0, frame = 0
+ 687              		@ frame_needed = 0, uses_anonymous_args = 0
+ 688 0000 08B5     		push	{r3, lr}
+ 689              	.LCFI15:
+ 690              		.cfi_def_cfa_offset 8
+ 691              		.cfi_offset 3, -8
+ 692              		.cfi_offset 14, -4
+ 237:Src/mp3_player.c **** 
+ 693              		.loc 1 237 0
+ 694 0002 074B     		ldr	r3, .L79
+ 695 0004 0122     		movs	r2, #1
+ 696 0006 1A70     		strb	r2, [r3]
+ 239:Src/mp3_player.c **** 	{
+ 697              		.loc 1 239 0
+ 698 0008 FFF7FEFF 		bl	mp3_player_process_frame
+ 699              	.LVL38:
+ 700 000c 00B9     		cbnz	r0, .L78
+ 701              	.L75:
+ 244:Src/mp3_player.c **** 
+ 702              		.loc 1 244 0
+ 703 000e 08BD     		pop	{r3, pc}
+ 704              	.L78:
+ 241:Src/mp3_player.c **** 		state = NEXT;
+ 705              		.loc 1 241 0
+ 706 0010 0220     		movs	r0, #2
+ 707 0012 FFF7FEFF 		bl	BSP_AUDIO_OUT_Stop
+ 708              	.LVL39:
+ 242:Src/mp3_player.c **** 	}
+ 709              		.loc 1 242 0
+ 710 0016 034B     		ldr	r3, .L79+4
+ 711 0018 0322     		movs	r2, #3
+ 712 001a 1A70     		strb	r2, [r3]
+ 244:Src/mp3_player.c **** 
+ 713              		.loc 1 244 0
+ 714 001c F7E7     		b	.L75
+ 715              	.L80:
+ 716 001e 00BF     		.align	2
+ 717              	.L79:
+ 718 0020 00000000 		.word	.LANCHOR4
+ 719 0024 00000000 		.word	state
+ 720              		.cfi_endproc
+ 721              	.LFE148:
+ 723              		.comm	input_file,560,4
+ 724              		.comm	input_buffer,3880,4
+ 725              		.comm	output_buffer,9216,4
+ 726              		.comm	state,1,1
+ 727              		.section	.bss.bytes_left,"aw",%nobits
+ 728              		.align	2
+ 729              		.set	.LANCHOR0,. + 0
+ 732              	bytes_left:
+ 733 0000 00000000 		.space	4
+ 734              		.section	.bss.decode_result,"aw",%nobits
+ 735              		.align	2
+ 736              		.set	.LANCHOR5,. + 0
+ 739              	decode_result:
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccerQbvp.s 			page 20
+
+
+ 740 0000 00000000 		.space	4
+ 741              		.section	.bss.hMP3Decoder,"aw",%nobits
+ 742              		.align	2
+ 743              		.set	.LANCHOR3,. + 0
+ 746              	hMP3Decoder:
+ 747 0000 00000000 		.space	4
+ 748              		.section	.bss.in_buf_offs,"aw",%nobits
+ 749              		.align	2
+ 750              		.set	.LANCHOR2,. + 0
+ 753              	in_buf_offs:
+ 754 0000 00000000 		.space	4
+ 755              		.section	.bss.out_buf_offs,"aw",%nobits
+ 756              		.set	.LANCHOR4,. + 0
+ 759              	out_buf_offs:
+ 760 0000 00       		.space	1
+ 761              		.section	.bss.read_pointer,"aw",%nobits
+ 762              		.align	2
+ 763              		.set	.LANCHOR1,. + 0
+ 766              	read_pointer:
+ 767 0000 00000000 		.space	4
+ 768              		.section	.rodata.BSP_init.str1.4,"aMS",%progbits,1
+ 769              		.align	2
+ 770              	.LC0:
+ 771 0000 41756469 		.ascii	"Audio Init Ok\012\000"
+ 771      6F20496E 
+ 771      6974204F 
+ 771      6B0A00
+ 772 000f 00       		.space	1
+ 773              	.LC1:
+ 774 0010 41756469 		.ascii	"Audio Init Error\012\000"
+ 774      6F20496E 
+ 774      69742045 
+ 774      72726F72 
+ 774      0A00
+ 775              		.section	.rodata.mp3_player_fsm.str1.4,"aMS",%progbits,1
+ 776              		.align	2
+ 777              	.LC2:
+ 778 0000 4572726F 		.ascii	"Error reading from directory\000"
+ 778      72207265 
+ 778      6164696E 
+ 778      67206672 
+ 778      6F6D2064 
+ 779 001d 000000   		.space	3
+ 780              	.LC3:
+ 781 0020 2E6D7033 		.ascii	".mp3\000"
+ 781      00
+ 782 0025 000000   		.space	3
+ 783              	.LC4:
+ 784 0028 4572726F 		.ascii	"Error opening file\000"
+ 784      72206F70 
+ 784      656E696E 
+ 784      67206669 
+ 784      6C6500
+ 785              		.text
+ 786              	.Letext0:
+ 787              		.file 2 "Middlewares/Third_Party/FatFs/src/integer.h"
+ 788              		.file 3 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\machine\\_default
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccerQbvp.s 			page 21
+
+
+ 789              		.file 4 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 790              		.file 5 "Drivers/CMSIS/Include/core_cm7.h"
+ 791              		.file 6 "Drivers/CMSIS/Device/ST/STM32F7xx/Include/system_stm32f7xx.h"
+ 792              		.file 7 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\lock.h"
+ 793              		.file 8 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\_types.h"
+ 794              		.file 9 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\lib\\gcc\\arm-none-eabi\\7.3.1\\include\\
+ 795              		.file 10 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\reent.h"
+ 796              		.file 11 "Middlewares/Third_Party/FreeRTOS/Source/include/task.h"
+ 797              		.file 12 "Middlewares/Third_Party/FreeRTOS/Source/include/queue.h"
+ 798              		.file 13 "Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h"
+ 799              		.file 14 "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h"
+ 800              		.file 15 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\stdlib.h"
+ 801              		.file 16 "Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_def.h"
+ 802              		.file 17 "Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_ctlreq.h"
+ 803              		.file 18 "Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc.h"
+ 804              		.file 19 "Middlewares/Third_Party/FatFs/src/ff.h"
+ 805              		.file 20 "Middlewares/Third_Party/FatFs/src/diskio.h"
+ 806              		.file 21 "Middlewares/Third_Party/FatFs/src/ff_gen_drv.h"
+ 807              		.file 22 "Inc/sd_diskio.h"
+ 808              		.file 23 "Inc/usbh_diskio.h"
+ 809              		.file 24 "Inc/fatfs.h"
+ 810              		.file 25 "Inc/mp3_player.h"
+ 811              		.file 26 "./lib\\helix\\pub\\mp3dec.h"
+ 812              		.file 27 "d:\\sw\\drivers\\bsp\\components\\common\\audio.h"
+ 813              		.file 28 "d:\\sw\\drivers\\bsp\\components\\wm8994\\wm8994.h"
+ 814              		.file 29 "Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_audio.h"
+ 815              		.file 30 "Inc/term_io.h"
+ 816              		.file 31 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\string.h"
+ 817              		.file 32 "<built-in>"
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccerQbvp.s 			page 22
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 mp3_player.c
+C:\Users\milek\AppData\Local\Temp\ccerQbvp.s:18     .text.BSP_init:00000000 $t
+C:\Users\milek\AppData\Local\Temp\ccerQbvp.s:25     .text.BSP_init:00000000 BSP_init
+C:\Users\milek\AppData\Local\Temp\ccerQbvp.s:64     .text.BSP_init:00000028 $d
+C:\Users\milek\AppData\Local\Temp\ccerQbvp.s:70     .text.fill_input_buffer:00000000 $t
+C:\Users\milek\AppData\Local\Temp\ccerQbvp.s:77     .text.fill_input_buffer:00000000 fill_input_buffer
+C:\Users\milek\AppData\Local\Temp\ccerQbvp.s:154    .text.fill_input_buffer:00000054 $d
+                            *COM*:00000f28 input_buffer
+                            *COM*:00000230 input_file
+C:\Users\milek\AppData\Local\Temp\ccerQbvp.s:163    .text.mp3_player_process_frame:00000000 $t
+C:\Users\milek\AppData\Local\Temp\ccerQbvp.s:170    .text.mp3_player_process_frame:00000000 mp3_player_process_frame
+C:\Users\milek\AppData\Local\Temp\ccerQbvp.s:399    .text.mp3_player_process_frame:00000138 $d
+                            *COM*:00002400 output_buffer
+C:\Users\milek\AppData\Local\Temp\ccerQbvp.s:411    .text.mp3_player_play:00000000 $t
+C:\Users\milek\AppData\Local\Temp\ccerQbvp.s:418    .text.mp3_player_play:00000000 mp3_player_play
+C:\Users\milek\AppData\Local\Temp\ccerQbvp.s:485    .text.mp3_player_play:00000050 $d
+                            *COM*:00000001 state
+C:\Users\milek\AppData\Local\Temp\ccerQbvp.s:495    .text.mp3_player_fsm:00000000 $t
+C:\Users\milek\AppData\Local\Temp\ccerQbvp.s:502    .text.mp3_player_fsm:00000000 mp3_player_fsm
+C:\Users\milek\AppData\Local\Temp\ccerQbvp.s:616    .text.mp3_player_fsm:00000088 $d
+C:\Users\milek\AppData\Local\Temp\ccerQbvp.s:626    .text.BSP_AUDIO_OUT_TransferComplete_CallBack:00000000 $t
+C:\Users\milek\AppData\Local\Temp\ccerQbvp.s:633    .text.BSP_AUDIO_OUT_TransferComplete_CallBack:00000000 BSP_AUDIO_OUT_TransferComplete_CallBack
+C:\Users\milek\AppData\Local\Temp\ccerQbvp.s:669    .text.BSP_AUDIO_OUT_TransferComplete_CallBack:00000020 $d
+C:\Users\milek\AppData\Local\Temp\ccerQbvp.s:675    .text.BSP_AUDIO_OUT_HalfTransfer_CallBack:00000000 $t
+C:\Users\milek\AppData\Local\Temp\ccerQbvp.s:682    .text.BSP_AUDIO_OUT_HalfTransfer_CallBack:00000000 BSP_AUDIO_OUT_HalfTransfer_CallBack
+C:\Users\milek\AppData\Local\Temp\ccerQbvp.s:718    .text.BSP_AUDIO_OUT_HalfTransfer_CallBack:00000020 $d
+C:\Users\milek\AppData\Local\Temp\ccerQbvp.s:728    .bss.bytes_left:00000000 $d
+C:\Users\milek\AppData\Local\Temp\ccerQbvp.s:732    .bss.bytes_left:00000000 bytes_left
+C:\Users\milek\AppData\Local\Temp\ccerQbvp.s:735    .bss.decode_result:00000000 $d
+C:\Users\milek\AppData\Local\Temp\ccerQbvp.s:739    .bss.decode_result:00000000 decode_result
+C:\Users\milek\AppData\Local\Temp\ccerQbvp.s:742    .bss.hMP3Decoder:00000000 $d
+C:\Users\milek\AppData\Local\Temp\ccerQbvp.s:746    .bss.hMP3Decoder:00000000 hMP3Decoder
+C:\Users\milek\AppData\Local\Temp\ccerQbvp.s:749    .bss.in_buf_offs:00000000 $d
+C:\Users\milek\AppData\Local\Temp\ccerQbvp.s:753    .bss.in_buf_offs:00000000 in_buf_offs
+C:\Users\milek\AppData\Local\Temp\ccerQbvp.s:759    .bss.out_buf_offs:00000000 out_buf_offs
+C:\Users\milek\AppData\Local\Temp\ccerQbvp.s:760    .bss.out_buf_offs:00000000 $d
+C:\Users\milek\AppData\Local\Temp\ccerQbvp.s:762    .bss.read_pointer:00000000 $d
+C:\Users\milek\AppData\Local\Temp\ccerQbvp.s:766    .bss.read_pointer:00000000 read_pointer
+C:\Users\milek\AppData\Local\Temp\ccerQbvp.s:769    .rodata.BSP_init.str1.4:00000000 $d
+C:\Users\milek\AppData\Local\Temp\ccerQbvp.s:776    .rodata.mp3_player_fsm.str1.4:00000000 $d
+
+UNDEFINED SYMBOLS
+BSP_AUDIO_OUT_Init
+xprintf
+BSP_AUDIO_OUT_SetAudioFrameSlot
+f_read
+memcpy
+MP3FindSyncWord
+MP3GetNextFrameInfo
+MP3Decode
+MP3InitDecoder
+MP3FreeDecoder
+BSP_AUDIO_OUT_Play
+BSP_AUDIO_OUT_Stop
+f_opendir
+f_close
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccerQbvp.s 			page 23
+
+
+f_readdir
+strstr
+f_open
+f_closedir

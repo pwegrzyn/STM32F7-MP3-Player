@@ -1,7 +1,7 @@
 build/stm32746g_discovery_lcd.o: \
  Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_lcd.c \
  Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_lcd.h \
- Drivers/BSP/STM32746G-Discovery/../Components/rk043fn48h/rk043fn48h.h \
+ d:\sw\drivers\bsp\components\rk043fn48h\rk043fn48h.h \
  Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.h \
  Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal.h \
  Inc/stm32f7xx_hal_conf.h Inc/main.h \
@@ -51,17 +51,14 @@ build/stm32746g_discovery_lcd.o: \
  Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_hcd.h \
  Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_usb.h \
  Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.h \
- Drivers/BSP/STM32746G-Discovery/../../../Utilities/Fonts/fonts.h \
- Drivers/BSP/STM32746G-Discovery/../../../Utilities/Fonts/font24.c \
- Drivers/BSP/STM32746G-Discovery/../../../Utilities/Fonts/fonts.h \
- Drivers/BSP/STM32746G-Discovery/../../../Utilities/Fonts/font20.c \
- Drivers/BSP/STM32746G-Discovery/../../../Utilities/Fonts/font16.c \
- Drivers/BSP/STM32746G-Discovery/../../../Utilities/Fonts/font12.c \
- Drivers/BSP/STM32746G-Discovery/../../../Utilities/Fonts/font8.c
+ d:\sw\utilities\fonts\fonts.h d:\sw\utilities\fonts\font24.c \
+ d:\sw\utilities\fonts\fonts.h d:\sw\utilities\fonts\font20.c \
+ d:\sw\utilities\fonts\font16.c d:\sw\utilities\fonts\font12.c \
+ d:\sw\utilities\fonts\font8.c
 
 Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_lcd.h:
 
-Drivers/BSP/STM32746G-Discovery/../Components/rk043fn48h/rk043fn48h.h:
+d:\sw\drivers\bsp\components\rk043fn48h\rk043fn48h.h:
 
 Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.h:
 
@@ -167,16 +164,16 @@ Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_usb.h:
 
 Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.h:
 
-Drivers/BSP/STM32746G-Discovery/../../../Utilities/Fonts/fonts.h:
+d:\sw\utilities\fonts\fonts.h:
 
-Drivers/BSP/STM32746G-Discovery/../../../Utilities/Fonts/font24.c:
+d:\sw\utilities\fonts\font24.c:
 
-Drivers/BSP/STM32746G-Discovery/../../../Utilities/Fonts/fonts.h:
+d:\sw\utilities\fonts\fonts.h:
 
-Drivers/BSP/STM32746G-Discovery/../../../Utilities/Fonts/font20.c:
+d:\sw\utilities\fonts\font20.c:
 
-Drivers/BSP/STM32746G-Discovery/../../../Utilities/Fonts/font16.c:
+d:\sw\utilities\fonts\font16.c:
 
-Drivers/BSP/STM32746G-Discovery/../../../Utilities/Fonts/font12.c:
+d:\sw\utilities\fonts\font12.c:
 
-Drivers/BSP/STM32746G-Discovery/../../../Utilities/Fonts/font8.c:
+d:\sw\utilities\fonts\font8.c:

@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s 			page 1
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccbRbTaw.s 			page 1
 
 
    1              		.cpu cortex-m7
@@ -24,7 +24,7 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s 			page 1
   21              		.thumb_func
   22              		.fpu fpv5-sp-d16
   24              	SD_CheckStatus:
-  25              	.LFB141:
+  25              	.LFB143:
   26              		.file 1 "Src/sd_diskio.c"
    1:Src/sd_diskio.c **** /**
    2:Src/sd_diskio.c ****   ******************************************************************************
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s 			page 1
   30:Src/sd_diskio.c ****   *    this license is void and will automatically terminate your rights under 
   31:Src/sd_diskio.c ****   *    this license. 
   32:Src/sd_diskio.c ****   *
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s 			page 2
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccbRbTaw.s 			page 2
 
 
   33:Src/sd_diskio.c ****   * THIS SOFTWARE IS PROVIDED BY STMICROELECTRONICS AND CONTRIBUTORS "AS IS" 
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s 			page 1
   87:Src/sd_diskio.c **** /* USER CODE BEGIN enableSDDmaCacheMaintenance */
   88:Src/sd_diskio.c **** /* #define ENABLE_SD_DMA_CACHE_MAINTENANCE  1 */
   89:Src/sd_diskio.c **** /* USER CODE BEGIN enableSDDmaCacheMaintenance */
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s 			page 3
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccbRbTaw.s 			page 3
 
 
   90:Src/sd_diskio.c **** 
@@ -172,13 +172,13 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s 			page 1
   36              		.cfi_offset 14, -4
  129:Src/sd_diskio.c ****   Stat = STA_NOINIT;
   37              		.loc 1 129 0
-  38 0002 0122     		movs	r2, #1
-  39 0004 064B     		ldr	r3, .L4
+  38 0002 074B     		ldr	r3, .L4
+  39 0004 0122     		movs	r2, #1
   40 0006 1A70     		strb	r2, [r3]
  130:Src/sd_diskio.c **** 
  131:Src/sd_diskio.c ****   if(BSP_SD_GetCardState() == MSD_OK)
   41              		.loc 1 131 0
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s 			page 4
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccbRbTaw.s 			page 4
 
 
   42 0008 FFF7FEFF 		bl	BSP_SD_GetCardState
@@ -206,7 +206,7 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s 			page 1
   58              	.L4:
   59 0020 00000000 		.word	.LANCHOR0
   60              		.cfi_endproc
-  61              	.LFE141:
+  61              	.LFE143:
   63              		.section	.text.SD_initialize,"ax",%progbits
   64              		.align	1
   65              		.global	SD_initialize
@@ -215,7 +215,7 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s 			page 1
   68              		.thumb_func
   69              		.fpu fpv5-sp-d16
   71              	SD_initialize:
-  72              	.LFB142:
+  72              	.LFB144:
  138:Src/sd_diskio.c **** 
  139:Src/sd_diskio.c **** /**
  140:Src/sd_diskio.c ****   * @brief  Initializes a Drive
@@ -238,13 +238,13 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s 			page 1
   84              	.LCFI2:
   85              		.cfi_def_cfa_offset 16
   86 0004 0446     		mov	r4, r0
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s 			page 5
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccbRbTaw.s 			page 5
 
 
  146:Src/sd_diskio.c ****   Stat = STA_NOINIT;
   87              		.loc 1 146 0
-  88 0006 0122     		movs	r2, #1
-  89 0008 114B     		ldr	r3, .L12
+  88 0006 124B     		ldr	r3, .L12
+  89 0008 0122     		movs	r2, #1
   90 000a 1A70     		strb	r2, [r3]
  147:Src/sd_diskio.c ****   /*
  148:Src/sd_diskio.c ****    * check that the kernel has been started before continuing
@@ -297,8 +297,8 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s 			page 1
  109              		.loc 1 155 0
  110 001a FFF7FEFF 		bl	BSP_SD_Init
  111              	.LVL4:
- 112 001e 80B1     		cbz	r0, .L11
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s 			page 6
+ 112 001e 88B1     		cbz	r0, .L11
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccbRbTaw.s 			page 6
 
 
  113              	.L8:
@@ -313,83 +313,84 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s 			page 1
  170:Src/sd_diskio.c ****       SDQueueID = osMessageCreate (osMessageQ(SD_Queue), NULL);
  121              		.loc 1 170 0
  122 002a 0A4A     		ldr	r2, .L12+4
- 123 002c 92E80300 		ldm	r2, {r0, r1}
- 124 0030 8DE80300 		stm	sp, {r0, r1}
+ 123 002c 6B46     		mov	r3, sp
+ 124 002e 92E80300 		ldm	r2, {r0, r1}
+ 125 0032 83E80300 		stm	r3, {r0, r1}
  171:Src/sd_diskio.c ****     }
- 125              		.loc 1 171 0
- 126 0034 0021     		movs	r1, #0
- 127 0036 6846     		mov	r0, sp
- 128 0038 FFF7FEFF 		bl	osMessageCreate
- 129              	.LVL5:
- 130 003c 064B     		ldr	r3, .L12+8
- 131 003e 1860     		str	r0, [r3]
- 132 0040 E7E7     		b	.L7
- 133              	.L11:
- 134              	.LBE2:
+ 126              		.loc 1 171 0
+ 127 0036 0021     		movs	r1, #0
+ 128 0038 1846     		mov	r0, r3
+ 129 003a FFF7FEFF 		bl	osMessageCreate
+ 130              	.LVL5:
+ 131 003e 064B     		ldr	r3, .L12+8
+ 132 0040 1860     		str	r0, [r3]
+ 133 0042 E6E7     		b	.L7
+ 134              	.L11:
+ 135              	.LBE2:
  157:Src/sd_diskio.c ****     }
- 135              		.loc 1 157 0
- 136 0042 2046     		mov	r0, r4
- 137 0044 FFF7FEFF 		bl	SD_CheckStatus
- 138              	.LVL6:
- 139 0048 014B     		ldr	r3, .L12
- 140 004a 1870     		strb	r0, [r3]
- 141 004c E8E7     		b	.L8
- 142              	.L13:
- 143 004e 00BF     		.align	2
- 144              	.L12:
- 145 0050 00000000 		.word	.LANCHOR0
- 146 0054 00000000 		.word	.LANCHOR1
- 147 0058 00000000 		.word	.LANCHOR2
- 148              		.cfi_endproc
- 149              	.LFE142:
- 151              		.section	.text.SD_status,"ax",%progbits
- 152              		.align	1
- 153              		.global	SD_status
- 154              		.syntax unified
- 155              		.thumb
- 156              		.thumb_func
- 157              		.fpu fpv5-sp-d16
- 159              	SD_status:
- 160              	.LFB143:
+ 136              		.loc 1 157 0
+ 137 0044 2046     		mov	r0, r4
+ 138 0046 FFF7FEFF 		bl	SD_CheckStatus
+ 139              	.LVL6:
+ 140 004a 014B     		ldr	r3, .L12
+ 141 004c 1870     		strb	r0, [r3]
+ 142 004e E7E7     		b	.L8
+ 143              	.L13:
+ 144              		.align	2
+ 145              	.L12:
+ 146 0050 00000000 		.word	.LANCHOR0
+ 147 0054 00000000 		.word	.LANCHOR1
+ 148 0058 00000000 		.word	.LANCHOR2
+ 149              		.cfi_endproc
+ 150              	.LFE144:
+ 152              		.section	.text.SD_status,"ax",%progbits
+ 153              		.align	1
+ 154              		.global	SD_status
+ 155              		.syntax unified
+ 156              		.thumb
+ 157              		.thumb_func
+ 158              		.fpu fpv5-sp-d16
+ 160              	SD_status:
+ 161              	.LFB145:
  176:Src/sd_diskio.c **** 
  177:Src/sd_diskio.c **** /**
  178:Src/sd_diskio.c ****   * @brief  Gets Disk Status
  179:Src/sd_diskio.c ****   * @param  lun : not used
  180:Src/sd_diskio.c ****   * @retval DSTATUS: Operation status
  181:Src/sd_diskio.c ****   */
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccbRbTaw.s 			page 7
+
+
  182:Src/sd_diskio.c **** DSTATUS SD_status(BYTE lun)
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s 			page 7
-
-
  183:Src/sd_diskio.c **** {
- 161              		.loc 1 183 0
- 162              		.cfi_startproc
- 163              		@ args = 0, pretend = 0, frame = 0
- 164              		@ frame_needed = 0, uses_anonymous_args = 0
- 165              	.LVL7:
- 166 0000 08B5     		push	{r3, lr}
- 167              	.LCFI5:
- 168              		.cfi_def_cfa_offset 8
- 169              		.cfi_offset 3, -8
- 170              		.cfi_offset 14, -4
+ 162              		.loc 1 183 0
+ 163              		.cfi_startproc
+ 164              		@ args = 0, pretend = 0, frame = 0
+ 165              		@ frame_needed = 0, uses_anonymous_args = 0
+ 166              	.LVL7:
+ 167 0000 08B5     		push	{r3, lr}
+ 168              	.LCFI5:
+ 169              		.cfi_def_cfa_offset 8
+ 170              		.cfi_offset 3, -8
+ 171              		.cfi_offset 14, -4
  184:Src/sd_diskio.c ****   return SD_CheckStatus(lun);
- 171              		.loc 1 184 0
- 172 0002 FFF7FEFF 		bl	SD_CheckStatus
- 173              	.LVL8:
+ 172              		.loc 1 184 0
+ 173 0002 FFF7FEFF 		bl	SD_CheckStatus
+ 174              	.LVL8:
  185:Src/sd_diskio.c **** }
- 174              		.loc 1 185 0
- 175 0006 08BD     		pop	{r3, pc}
- 176              		.cfi_endproc
- 177              	.LFE143:
- 179              		.section	.text.SD_read,"ax",%progbits
- 180              		.align	1
- 181              		.global	SD_read
- 182              		.syntax unified
- 183              		.thumb
- 184              		.thumb_func
- 185              		.fpu fpv5-sp-d16
- 187              	SD_read:
- 188              	.LFB144:
+ 175              		.loc 1 185 0
+ 176 0006 08BD     		pop	{r3, pc}
+ 177              		.cfi_endproc
+ 178              	.LFE145:
+ 180              		.section	.text.SD_read,"ax",%progbits
+ 181              		.align	1
+ 182              		.global	SD_read
+ 183              		.syntax unified
+ 184              		.thumb
+ 185              		.thumb_func
+ 186              		.fpu fpv5-sp-d16
+ 188              	SD_read:
+ 189              	.LFB146:
  186:Src/sd_diskio.c **** 
  187:Src/sd_diskio.c **** /* USER CODE BEGIN beforeReadSection */
  188:Src/sd_diskio.c **** /* can be used to modify previous code / undefine following code / add new code */
@@ -404,26 +405,26 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s 			page 1
  197:Src/sd_diskio.c ****   */
  198:Src/sd_diskio.c **** DRESULT SD_read(BYTE lun, BYTE *buff, DWORD sector, UINT count)
  199:Src/sd_diskio.c **** {
- 189              		.loc 1 199 0
- 190              		.cfi_startproc
- 191              		@ args = 0, pretend = 0, frame = 16
- 192              		@ frame_needed = 0, uses_anonymous_args = 0
- 193              	.LVL9:
- 194 0000 10B5     		push	{r4, lr}
- 195              	.LCFI6:
- 196              		.cfi_def_cfa_offset 8
- 197              		.cfi_offset 4, -8
- 198              		.cfi_offset 14, -4
- 199 0002 84B0     		sub	sp, sp, #16
- 200              	.LCFI7:
- 201              		.cfi_def_cfa_offset 24
- 202 0004 0846     		mov	r0, r1
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s 			page 8
+ 190              		.loc 1 199 0
+ 191              		.cfi_startproc
+ 192              		@ args = 0, pretend = 0, frame = 16
+ 193              		@ frame_needed = 0, uses_anonymous_args = 0
+ 194              	.LVL9:
+ 195 0000 10B5     		push	{r4, lr}
+ 196              	.LCFI6:
+ 197              		.cfi_def_cfa_offset 8
+ 198              		.cfi_offset 4, -8
+ 199              		.cfi_offset 14, -4
+ 200 0002 84B0     		sub	sp, sp, #16
+ 201              	.LCFI7:
+ 202              		.cfi_def_cfa_offset 24
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccbRbTaw.s 			page 8
 
 
- 203              	.LVL10:
- 204 0006 1146     		mov	r1, r2
- 205              	.LVL11:
+ 203 0004 0846     		mov	r0, r1
+ 204              	.LVL10:
+ 205 0006 1146     		mov	r1, r2
+ 206              	.LVL11:
  200:Src/sd_diskio.c ****   DRESULT res = RES_ERROR;
  201:Src/sd_diskio.c ****   osEvent event;
  202:Src/sd_diskio.c ****   uint32_t timer;
@@ -432,17 +433,17 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s 			page 1
  205:Src/sd_diskio.c **** #endif
  206:Src/sd_diskio.c **** 
  207:Src/sd_diskio.c ****   if(BSP_SD_ReadBlocks_DMA((uint32_t*)buff,
- 206              		.loc 1 207 0
- 207 0008 1A46     		mov	r2, r3
- 208              	.LVL12:
- 209 000a FFF7FEFF 		bl	BSP_SD_ReadBlocks_DMA
- 210              	.LVL13:
- 211 000e 10B1     		cbz	r0, .L25
+ 207              		.loc 1 207 0
+ 208 0008 1A46     		mov	r2, r3
+ 209              	.LVL12:
+ 210 000a FFF7FEFF 		bl	BSP_SD_ReadBlocks_DMA
+ 211              	.LVL13:
+ 212 000e 10B1     		cbz	r0, .L25
  200:Src/sd_diskio.c ****   DRESULT res = RES_ERROR;
- 212              		.loc 1 200 0
- 213 0010 0120     		movs	r0, #1
- 214              	.L17:
- 215              	.LVL14:
+ 213              		.loc 1 200 0
+ 214 0010 0120     		movs	r0, #1
+ 215              	.L17:
+ 216              	.LVL14:
  208:Src/sd_diskio.c ****                            (uint32_t) (sector),
  209:Src/sd_diskio.c ****                            count) == MSD_OK)
  210:Src/sd_diskio.c ****   {
@@ -477,95 +478,95 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s 			page 1
  239:Src/sd_diskio.c **** 
  240:Src/sd_diskio.c ****   return res;
  241:Src/sd_diskio.c **** }
- 216              		.loc 1 241 0
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s 			page 9
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccbRbTaw.s 			page 9
 
 
- 217 0012 04B0     		add	sp, sp, #16
- 218              	.LCFI8:
- 219              		.cfi_remember_state
- 220              		.cfi_def_cfa_offset 8
- 221              		@ sp needed
- 222 0014 10BD     		pop	{r4, pc}
- 223              	.LVL15:
- 224              	.L25:
- 225              	.LCFI9:
- 226              		.cfi_restore_state
+ 217              		.loc 1 241 0
+ 218 0012 04B0     		add	sp, sp, #16
+ 219              	.LCFI8:
+ 220              		.cfi_remember_state
+ 221              		.cfi_def_cfa_offset 8
+ 222              		@ sp needed
+ 223 0014 10BD     		pop	{r4, pc}
+ 224              	.LVL15:
+ 225              	.L25:
+ 226              	.LCFI9:
+ 227              		.cfi_restore_state
  212:Src/sd_diskio.c **** 
- 227              		.loc 1 212 0
- 228 0016 47F23052 		movw	r2, #30000
- 229 001a 104B     		ldr	r3, .L29
- 230 001c 1968     		ldr	r1, [r3]
- 231 001e 01A8     		add	r0, sp, #4
- 232 0020 FFF7FEFF 		bl	osMessageGet
- 233              	.LVL16:
+ 228              		.loc 1 212 0
+ 229 0016 47F23052 		movw	r2, #30000
+ 230 001a 104B     		ldr	r3, .L29
+ 231 001c 1968     		ldr	r1, [r3]
+ 232 001e 01A8     		add	r0, sp, #4
+ 233 0020 FFF7FEFF 		bl	osMessageGet
+ 234              	.LVL16:
  214:Src/sd_diskio.c ****     {
- 234              		.loc 1 214 0
- 235 0024 019B     		ldr	r3, [sp, #4]
- 236 0026 102B     		cmp	r3, #16
- 237 0028 01D0     		beq	.L26
+ 235              		.loc 1 214 0
+ 236 0024 019B     		ldr	r3, [sp, #4]
+ 237 0026 102B     		cmp	r3, #16
+ 238 0028 01D0     		beq	.L26
  200:Src/sd_diskio.c ****   osEvent event;
- 238              		.loc 1 200 0
- 239 002a 0120     		movs	r0, #1
- 240 002c F1E7     		b	.L17
- 241              	.L26:
+ 239              		.loc 1 200 0
+ 240 002a 0120     		movs	r0, #1
+ 241 002c F1E7     		b	.L17
+ 242              	.L26:
  216:Src/sd_diskio.c ****       {
- 242              		.loc 1 216 0
- 243 002e 029B     		ldr	r3, [sp, #8]
- 244 0030 012B     		cmp	r3, #1
- 245 0032 01D0     		beq	.L27
+ 243              		.loc 1 216 0
+ 244 002e 029B     		ldr	r3, [sp, #8]
+ 245 0030 012B     		cmp	r3, #1
+ 246 0032 01D0     		beq	.L27
  200:Src/sd_diskio.c ****   osEvent event;
- 246              		.loc 1 200 0
- 247 0034 0120     		movs	r0, #1
- 248 0036 ECE7     		b	.L17
- 249              	.L27:
+ 247              		.loc 1 200 0
+ 248 0034 0120     		movs	r0, #1
+ 249 0036 ECE7     		b	.L17
+ 250              	.L27:
  218:Src/sd_diskio.c ****         /* block until SDIO IP is ready or a timeout occur */
- 250              		.loc 1 218 0
- 251 0038 FFF7FEFF 		bl	osKernelSysTick
- 252              	.LVL17:
- 253 003c 47F23054 		movw	r4, #30000
- 254 0040 0444     		add	r4, r4, r0
- 255              	.LVL18:
- 256              	.L18:
+ 251              		.loc 1 218 0
+ 252 0038 FFF7FEFF 		bl	osKernelSysTick
+ 253              	.LVL17:
+ 254 003c 47F23054 		movw	r4, #30000
+ 255 0040 0444     		add	r4, r4, r0
+ 256              	.LVL18:
+ 257              	.L18:
  220:Src/sd_diskio.c ****         {
- 257              		.loc 1 220 0
- 258 0042 FFF7FEFF 		bl	osKernelSysTick
- 259              	.LVL19:
- 260 0046 8442     		cmp	r4, r0
- 261 0048 05D9     		bls	.L28
+ 258              		.loc 1 220 0
+ 259 0042 FFF7FEFF 		bl	osKernelSysTick
+ 260              	.LVL19:
+ 261 0046 A042     		cmp	r0, r4
+ 262 0048 05D2     		bcs	.L28
  222:Src/sd_diskio.c ****           {
- 262              		.loc 1 222 0
- 263 004a FFF7FEFF 		bl	BSP_SD_GetCardState
- 264              	.LVL20:
- 265 004e 0028     		cmp	r0, #0
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s 			page 10
+ 263              		.loc 1 222 0
+ 264 004a FFF7FEFF 		bl	BSP_SD_GetCardState
+ 265              	.LVL20:
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccbRbTaw.s 			page 10
 
 
- 266 0050 F7D1     		bne	.L18
+ 266 004e 0028     		cmp	r0, #0
+ 267 0050 F7D1     		bne	.L18
  224:Src/sd_diskio.c **** #if (ENABLE_SD_DMA_CACHE_MAINTENANCE == 1)
- 267              		.loc 1 224 0
- 268 0052 0020     		movs	r0, #0
- 269 0054 DDE7     		b	.L17
- 270              	.L28:
+ 268              		.loc 1 224 0
+ 269 0052 0020     		movs	r0, #0
+ 270 0054 DDE7     		b	.L17
+ 271              	.L28:
  200:Src/sd_diskio.c ****   osEvent event;
- 271              		.loc 1 200 0
- 272 0056 0120     		movs	r0, #1
- 273 0058 DBE7     		b	.L17
- 274              	.L30:
- 275 005a 00BF     		.align	2
- 276              	.L29:
- 277 005c 00000000 		.word	.LANCHOR2
- 278              		.cfi_endproc
- 279              	.LFE144:
- 281              		.section	.text.SD_write,"ax",%progbits
- 282              		.align	1
- 283              		.global	SD_write
- 284              		.syntax unified
- 285              		.thumb
- 286              		.thumb_func
- 287              		.fpu fpv5-sp-d16
- 289              	SD_write:
- 290              	.LFB145:
+ 272              		.loc 1 200 0
+ 273 0056 0120     		movs	r0, #1
+ 274 0058 DBE7     		b	.L17
+ 275              	.L30:
+ 276 005a 00BF     		.align	2
+ 277              	.L29:
+ 278 005c 00000000 		.word	.LANCHOR2
+ 279              		.cfi_endproc
+ 280              	.LFE146:
+ 282              		.section	.text.SD_write,"ax",%progbits
+ 283              		.align	1
+ 284              		.global	SD_write
+ 285              		.syntax unified
+ 286              		.thumb
+ 287              		.thumb_func
+ 288              		.fpu fpv5-sp-d16
+ 290              	SD_write:
+ 291              	.LFB147:
  242:Src/sd_diskio.c **** 
  243:Src/sd_diskio.c **** /* USER CODE BEGIN beforeWriteSection */
  244:Src/sd_diskio.c **** /* can be used to modify previous code / undefine following code / add new code */
@@ -581,26 +582,26 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s 			page 1
  254:Src/sd_diskio.c **** #if _USE_WRITE == 1
  255:Src/sd_diskio.c **** DRESULT SD_write(BYTE lun, const BYTE *buff, DWORD sector, UINT count)
  256:Src/sd_diskio.c **** {
- 291              		.loc 1 256 0
- 292              		.cfi_startproc
- 293              		@ args = 0, pretend = 0, frame = 16
- 294              		@ frame_needed = 0, uses_anonymous_args = 0
- 295              	.LVL21:
- 296 0000 10B5     		push	{r4, lr}
- 297              	.LCFI10:
- 298              		.cfi_def_cfa_offset 8
- 299              		.cfi_offset 4, -8
- 300              		.cfi_offset 14, -4
- 301 0002 84B0     		sub	sp, sp, #16
- 302              	.LCFI11:
- 303              		.cfi_def_cfa_offset 24
- 304 0004 0846     		mov	r0, r1
- 305              	.LVL22:
- 306 0006 1146     		mov	r1, r2
- 307              	.LVL23:
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s 			page 11
+ 292              		.loc 1 256 0
+ 293              		.cfi_startproc
+ 294              		@ args = 0, pretend = 0, frame = 16
+ 295              		@ frame_needed = 0, uses_anonymous_args = 0
+ 296              	.LVL21:
+ 297 0000 10B5     		push	{r4, lr}
+ 298              	.LCFI10:
+ 299              		.cfi_def_cfa_offset 8
+ 300              		.cfi_offset 4, -8
+ 301              		.cfi_offset 14, -4
+ 302 0002 84B0     		sub	sp, sp, #16
+ 303              	.LCFI11:
+ 304              		.cfi_def_cfa_offset 24
+ 305 0004 0846     		mov	r0, r1
+ 306              	.LVL22:
+ 307 0006 1146     		mov	r1, r2
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccbRbTaw.s 			page 11
 
 
+ 308              	.LVL23:
  257:Src/sd_diskio.c ****   DRESULT res = RES_ERROR;
  258:Src/sd_diskio.c ****   osEvent event;
  259:Src/sd_diskio.c ****   uint32_t timer;
@@ -615,17 +616,17 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s 			page 1
  268:Src/sd_diskio.c **** #endif
  269:Src/sd_diskio.c **** 
  270:Src/sd_diskio.c ****   if(BSP_SD_WriteBlocks_DMA((uint32_t*)buff,
- 308              		.loc 1 270 0
- 309 0008 1A46     		mov	r2, r3
- 310              	.LVL24:
- 311 000a FFF7FEFF 		bl	BSP_SD_WriteBlocks_DMA
- 312              	.LVL25:
- 313 000e 10B1     		cbz	r0, .L40
+ 309              		.loc 1 270 0
+ 310 0008 1A46     		mov	r2, r3
+ 311              	.LVL24:
+ 312 000a FFF7FEFF 		bl	BSP_SD_WriteBlocks_DMA
+ 313              	.LVL25:
+ 314 000e 10B1     		cbz	r0, .L40
  257:Src/sd_diskio.c ****   DRESULT res = RES_ERROR;
- 314              		.loc 1 257 0
- 315 0010 0120     		movs	r0, #1
- 316              	.L32:
- 317              	.LVL26:
+ 315              		.loc 1 257 0
+ 316 0010 0120     		movs	r0, #1
+ 317              	.L32:
+ 318              	.LVL26:
  271:Src/sd_diskio.c ****                             (uint32_t) (sector),
  272:Src/sd_diskio.c ****                             count) == MSD_OK)
  273:Src/sd_diskio.c ****   {
@@ -652,95 +653,95 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s 			page 1
  294:Src/sd_diskio.c **** 
  295:Src/sd_diskio.c ****   return res;
  296:Src/sd_diskio.c **** }
- 318              		.loc 1 296 0
- 319 0012 04B0     		add	sp, sp, #16
- 320              	.LCFI12:
- 321              		.cfi_remember_state
- 322              		.cfi_def_cfa_offset 8
- 323              		@ sp needed
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s 			page 12
+ 319              		.loc 1 296 0
+ 320 0012 04B0     		add	sp, sp, #16
+ 321              	.LCFI12:
+ 322              		.cfi_remember_state
+ 323              		.cfi_def_cfa_offset 8
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccbRbTaw.s 			page 12
 
 
- 324 0014 10BD     		pop	{r4, pc}
- 325              	.LVL27:
- 326              	.L40:
- 327              	.LCFI13:
- 328              		.cfi_restore_state
+ 324              		@ sp needed
+ 325 0014 10BD     		pop	{r4, pc}
+ 326              	.LVL27:
+ 327              	.L40:
+ 328              	.LCFI13:
+ 329              		.cfi_restore_state
  275:Src/sd_diskio.c **** 
- 329              		.loc 1 275 0
- 330 0016 47F23052 		movw	r2, #30000
- 331 001a 104B     		ldr	r3, .L44
- 332 001c 1968     		ldr	r1, [r3]
- 333 001e 01A8     		add	r0, sp, #4
- 334 0020 FFF7FEFF 		bl	osMessageGet
- 335              	.LVL28:
+ 330              		.loc 1 275 0
+ 331 0016 47F23052 		movw	r2, #30000
+ 332 001a 104B     		ldr	r3, .L44
+ 333 001c 1968     		ldr	r1, [r3]
+ 334 001e 01A8     		add	r0, sp, #4
+ 335 0020 FFF7FEFF 		bl	osMessageGet
+ 336              	.LVL28:
  277:Src/sd_diskio.c ****     {
- 336              		.loc 1 277 0
- 337 0024 019B     		ldr	r3, [sp, #4]
- 338 0026 102B     		cmp	r3, #16
- 339 0028 01D0     		beq	.L41
+ 337              		.loc 1 277 0
+ 338 0024 019B     		ldr	r3, [sp, #4]
+ 339 0026 102B     		cmp	r3, #16
+ 340 0028 01D0     		beq	.L41
  257:Src/sd_diskio.c ****   osEvent event;
- 340              		.loc 1 257 0
- 341 002a 0120     		movs	r0, #1
- 342 002c F1E7     		b	.L32
- 343              	.L41:
+ 341              		.loc 1 257 0
+ 342 002a 0120     		movs	r0, #1
+ 343 002c F1E7     		b	.L32
+ 344              	.L41:
  279:Src/sd_diskio.c ****       {
- 344              		.loc 1 279 0
- 345 002e 029B     		ldr	r3, [sp, #8]
- 346 0030 022B     		cmp	r3, #2
- 347 0032 01D0     		beq	.L42
+ 345              		.loc 1 279 0
+ 346 002e 029B     		ldr	r3, [sp, #8]
+ 347 0030 022B     		cmp	r3, #2
+ 348 0032 01D0     		beq	.L42
  257:Src/sd_diskio.c ****   osEvent event;
- 348              		.loc 1 257 0
- 349 0034 0120     		movs	r0, #1
- 350 0036 ECE7     		b	.L32
- 351              	.L42:
+ 349              		.loc 1 257 0
+ 350 0034 0120     		movs	r0, #1
+ 351 0036 ECE7     		b	.L32
+ 352              	.L42:
  281:Src/sd_diskio.c ****         /* block until SDIO IP is ready or a timeout occur */
- 352              		.loc 1 281 0
- 353 0038 FFF7FEFF 		bl	osKernelSysTick
- 354              	.LVL29:
- 355 003c 47F23054 		movw	r4, #30000
- 356 0040 0444     		add	r4, r4, r0
- 357              	.LVL30:
- 358              	.L33:
+ 353              		.loc 1 281 0
+ 354 0038 FFF7FEFF 		bl	osKernelSysTick
+ 355              	.LVL29:
+ 356 003c 47F23054 		movw	r4, #30000
+ 357 0040 0444     		add	r4, r4, r0
+ 358              	.LVL30:
+ 359              	.L33:
  283:Src/sd_diskio.c ****         {
- 359              		.loc 1 283 0
- 360 0042 FFF7FEFF 		bl	osKernelSysTick
- 361              	.LVL31:
- 362 0046 8442     		cmp	r4, r0
- 363 0048 05D9     		bls	.L43
+ 360              		.loc 1 283 0
+ 361 0042 FFF7FEFF 		bl	osKernelSysTick
+ 362              	.LVL31:
+ 363 0046 A042     		cmp	r0, r4
+ 364 0048 05D2     		bcs	.L43
  285:Src/sd_diskio.c ****           {
- 364              		.loc 1 285 0
- 365 004a FFF7FEFF 		bl	BSP_SD_GetCardState
- 366              	.LVL32:
- 367 004e 0028     		cmp	r0, #0
- 368 0050 F7D1     		bne	.L33
+ 365              		.loc 1 285 0
+ 366 004a FFF7FEFF 		bl	BSP_SD_GetCardState
+ 367              	.LVL32:
+ 368 004e 0028     		cmp	r0, #0
+ 369 0050 F7D1     		bne	.L33
  287:Src/sd_diskio.c ****             break;
- 369              		.loc 1 287 0
- 370 0052 0020     		movs	r0, #0
- 371 0054 DDE7     		b	.L32
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s 			page 13
+ 370              		.loc 1 287 0
+ 371 0052 0020     		movs	r0, #0
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccbRbTaw.s 			page 13
 
 
- 372              	.L43:
+ 372 0054 DDE7     		b	.L32
+ 373              	.L43:
  257:Src/sd_diskio.c ****   osEvent event;
- 373              		.loc 1 257 0
- 374 0056 0120     		movs	r0, #1
- 375 0058 DBE7     		b	.L32
- 376              	.L45:
- 377 005a 00BF     		.align	2
- 378              	.L44:
- 379 005c 00000000 		.word	.LANCHOR2
- 380              		.cfi_endproc
- 381              	.LFE145:
- 383              		.section	.text.SD_ioctl,"ax",%progbits
- 384              		.align	1
- 385              		.global	SD_ioctl
- 386              		.syntax unified
- 387              		.thumb
- 388              		.thumb_func
- 389              		.fpu fpv5-sp-d16
- 391              	SD_ioctl:
- 392              	.LFB146:
+ 374              		.loc 1 257 0
+ 375 0056 0120     		movs	r0, #1
+ 376 0058 DBE7     		b	.L32
+ 377              	.L45:
+ 378 005a 00BF     		.align	2
+ 379              	.L44:
+ 380 005c 00000000 		.word	.LANCHOR2
+ 381              		.cfi_endproc
+ 382              	.LFE147:
+ 384              		.section	.text.SD_ioctl,"ax",%progbits
+ 385              		.align	1
+ 386              		.global	SD_ioctl
+ 387              		.syntax unified
+ 388              		.thumb
+ 389              		.thumb_func
+ 390              		.fpu fpv5-sp-d16
+ 392              	SD_ioctl:
+ 393              	.LFB148:
  297:Src/sd_diskio.c **** #endif /* _USE_WRITE == 1 */
  298:Src/sd_diskio.c **** 
  299:Src/sd_diskio.c **** /* USER CODE BEGIN beforeIoctlSection */
@@ -756,60 +757,55 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s 			page 1
  309:Src/sd_diskio.c **** #if _USE_IOCTL == 1
  310:Src/sd_diskio.c **** DRESULT SD_ioctl(BYTE lun, BYTE cmd, void *buff)
  311:Src/sd_diskio.c **** {
- 393              		.loc 1 311 0
- 394              		.cfi_startproc
- 395              		@ args = 0, pretend = 0, frame = 32
- 396              		@ frame_needed = 0, uses_anonymous_args = 0
- 397              	.LVL33:
+ 394              		.loc 1 311 0
+ 395              		.cfi_startproc
+ 396              		@ args = 0, pretend = 0, frame = 32
+ 397              		@ frame_needed = 0, uses_anonymous_args = 0
+ 398              	.LVL33:
  312:Src/sd_diskio.c ****   DRESULT res = RES_ERROR;
  313:Src/sd_diskio.c ****   BSP_SD_CardInfo CardInfo;
  314:Src/sd_diskio.c **** 
  315:Src/sd_diskio.c ****   if (Stat & STA_NOINIT) return RES_NOTRDY;
- 398              		.loc 1 315 0
- 399 0000 154B     		ldr	r3, .L60
- 400 0002 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 401 0004 13F0010F 		tst	r3, #1
- 402 0008 01D0     		beq	.L59
- 403 000a 0320     		movs	r0, #3
- 404              	.LVL34:
- 405 000c 7047     		bx	lr
- 406              	.LVL35:
- 407              	.L59:
+ 399              		.loc 1 315 0
+ 400 0000 154B     		ldr	r3, .L59
+ 401 0002 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 402 0004 13F0010F 		tst	r3, #1
+ 403 0008 21D1     		bne	.L53
  311:Src/sd_diskio.c ****   DRESULT res = RES_ERROR;
- 408              		.loc 1 311 0
- 409 000e 10B5     		push	{r4, lr}
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s 			page 14
+ 404              		.loc 1 311 0
+ 405 000a 10B5     		push	{r4, lr}
+ 406              	.LCFI14:
+ 407              		.cfi_def_cfa_offset 8
+ 408              		.cfi_offset 4, -8
+ 409              		.cfi_offset 14, -4
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccbRbTaw.s 			page 14
 
 
- 410              	.LCFI14:
- 411              		.cfi_def_cfa_offset 8
- 412              		.cfi_offset 4, -8
- 413              		.cfi_offset 14, -4
- 414 0010 88B0     		sub	sp, sp, #32
- 415              	.LCFI15:
- 416              		.cfi_def_cfa_offset 40
- 417 0012 1446     		mov	r4, r2
+ 410 000c 88B0     		sub	sp, sp, #32
+ 411              	.LCFI15:
+ 412              		.cfi_def_cfa_offset 40
+ 413 000e 1446     		mov	r4, r2
  316:Src/sd_diskio.c **** 
  317:Src/sd_diskio.c ****   switch (cmd)
- 418              		.loc 1 317 0
- 419 0014 0329     		cmp	r1, #3
- 420 0016 1CD8     		bhi	.L54
- 421 0018 DFE801F0 		tbb	[pc, r1]
- 422              	.L49:
- 423 001c 02       		.byte	(.L48-.L49)/2
- 424 001d 05       		.byte	(.L50-.L49)/2
- 425 001e 0C       		.byte	(.L51-.L49)/2
- 426 001f 13       		.byte	(.L52-.L49)/2
- 427              		.p2align 1
- 428              	.L48:
+ 414              		.loc 1 317 0
+ 415 0010 0329     		cmp	r1, #3
+ 416 0012 1ED8     		bhi	.L54
+ 417 0014 DFE801F0 		tbb	[pc, r1]
+ 418              	.L49:
+ 419 0018 02       		.byte	(.L48-.L49)/2
+ 420 0019 05       		.byte	(.L50-.L49)/2
+ 421 001a 0C       		.byte	(.L51-.L49)/2
+ 422 001b 13       		.byte	(.L52-.L49)/2
+ 423              		.p2align 1
+ 424              	.L48:
  318:Src/sd_diskio.c ****   {
  319:Src/sd_diskio.c ****   /* Make sure that no pending write process */
  320:Src/sd_diskio.c ****   case CTRL_SYNC :
  321:Src/sd_diskio.c ****     res = RES_OK;
- 429              		.loc 1 321 0
- 430 0020 0020     		movs	r0, #0
- 431              	.LVL36:
- 432              	.L47:
+ 425              		.loc 1 321 0
+ 426 001c 0020     		movs	r0, #0
+ 427              	.LVL34:
+ 428              	.L47:
  322:Src/sd_diskio.c ****     break;
  323:Src/sd_diskio.c **** 
  324:Src/sd_diskio.c ****   /* Get number of sectors on the disk (DWORD) */
@@ -838,102 +834,114 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s 			page 1
  347:Src/sd_diskio.c ****   }
  348:Src/sd_diskio.c **** 
  349:Src/sd_diskio.c ****   return res;
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s 			page 15
-
-
  350:Src/sd_diskio.c **** }
- 433              		.loc 1 350 0
- 434 0022 08B0     		add	sp, sp, #32
- 435              	.LCFI16:
- 436              		.cfi_remember_state
- 437              		.cfi_def_cfa_offset 8
- 438              		@ sp needed
- 439 0024 10BD     		pop	{r4, pc}
- 440              	.LVL37:
- 441              	.L50:
- 442              	.LCFI17:
- 443              		.cfi_restore_state
+ 429              		.loc 1 350 0
+ 430 001e 08B0     		add	sp, sp, #32
+ 431              	.LCFI16:
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccbRbTaw.s 			page 15
+
+
+ 432              		.cfi_remember_state
+ 433              		.cfi_def_cfa_offset 8
+ 434              		@ sp needed
+ 435 0020 10BD     		pop	{r4, pc}
+ 436              	.LVL35:
+ 437              	.L50:
+ 438              	.LCFI17:
+ 439              		.cfi_restore_state
  326:Src/sd_diskio.c ****     *(DWORD*)buff = CardInfo.LogBlockNbr;
- 444              		.loc 1 326 0
- 445 0026 6846     		mov	r0, sp
- 446              	.LVL38:
- 447 0028 FFF7FEFF 		bl	BSP_SD_GetCardInfo
- 448              	.LVL39:
+ 440              		.loc 1 326 0
+ 441 0022 6846     		mov	r0, sp
+ 442              	.LVL36:
+ 443 0024 FFF7FEFF 		bl	BSP_SD_GetCardInfo
+ 444              	.LVL37:
  327:Src/sd_diskio.c ****     res = RES_OK;
- 449              		.loc 1 327 0
- 450 002c 069B     		ldr	r3, [sp, #24]
- 451 002e 2360     		str	r3, [r4]
- 452              	.LVL40:
+ 445              		.loc 1 327 0
+ 446 0028 069B     		ldr	r3, [sp, #24]
+ 447 002a 2360     		str	r3, [r4]
+ 448              	.LVL38:
  328:Src/sd_diskio.c ****     break;
- 453              		.loc 1 328 0
- 454 0030 0020     		movs	r0, #0
+ 449              		.loc 1 328 0
+ 450 002c 0020     		movs	r0, #0
  329:Src/sd_diskio.c **** 
- 455              		.loc 1 329 0
- 456 0032 F6E7     		b	.L47
- 457              	.LVL41:
- 458              	.L51:
+ 451              		.loc 1 329 0
+ 452 002e F6E7     		b	.L47
+ 453              	.LVL39:
+ 454              	.L51:
  333:Src/sd_diskio.c ****     *(WORD*)buff = CardInfo.LogBlockSize;
- 459              		.loc 1 333 0
- 460 0034 6846     		mov	r0, sp
- 461              	.LVL42:
- 462 0036 FFF7FEFF 		bl	BSP_SD_GetCardInfo
- 463              	.LVL43:
+ 455              		.loc 1 333 0
+ 456 0030 6846     		mov	r0, sp
+ 457              	.LVL40:
+ 458 0032 FFF7FEFF 		bl	BSP_SD_GetCardInfo
+ 459              	.LVL41:
  334:Src/sd_diskio.c ****     res = RES_OK;
- 464              		.loc 1 334 0
- 465 003a 079B     		ldr	r3, [sp, #28]
- 466 003c 2380     		strh	r3, [r4]	@ movhi
- 467              	.LVL44:
+ 460              		.loc 1 334 0
+ 461 0036 079B     		ldr	r3, [sp, #28]
+ 462 0038 2380     		strh	r3, [r4]	@ movhi
+ 463              	.LVL42:
  335:Src/sd_diskio.c ****     break;
- 468              		.loc 1 335 0
- 469 003e 0020     		movs	r0, #0
+ 464              		.loc 1 335 0
+ 465 003a 0020     		movs	r0, #0
  336:Src/sd_diskio.c **** 
- 470              		.loc 1 336 0
- 471 0040 EFE7     		b	.L47
- 472              	.LVL45:
- 473              	.L52:
+ 466              		.loc 1 336 0
+ 467 003c EFE7     		b	.L47
+ 468              	.LVL43:
+ 469              	.L52:
  340:Src/sd_diskio.c ****     *(DWORD*)buff = CardInfo.LogBlockSize / SD_DEFAULT_BLOCK_SIZE;
- 474              		.loc 1 340 0
- 475 0042 6846     		mov	r0, sp
- 476              	.LVL46:
- 477 0044 FFF7FEFF 		bl	BSP_SD_GetCardInfo
- 478              	.LVL47:
+ 470              		.loc 1 340 0
+ 471 003e 6846     		mov	r0, sp
+ 472              	.LVL44:
+ 473 0040 FFF7FEFF 		bl	BSP_SD_GetCardInfo
+ 474              	.LVL45:
  341:Src/sd_diskio.c ****     res = RES_OK;
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s 			page 16
+ 475              		.loc 1 341 0
+ 476 0044 079B     		ldr	r3, [sp, #28]
+ 477 0046 5B0A     		lsrs	r3, r3, #9
+ 478 0048 2360     		str	r3, [r4]
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccbRbTaw.s 			page 16
 
 
- 479              		.loc 1 341 0
- 480 0048 079B     		ldr	r3, [sp, #28]
- 481 004a 5B0A     		lsrs	r3, r3, #9
- 482 004c 2360     		str	r3, [r4]
- 483              	.LVL48:
+ 479              	.LVL46:
  342:Src/sd_diskio.c ****     break;
- 484              		.loc 1 342 0
- 485 004e 0020     		movs	r0, #0
+ 480              		.loc 1 342 0
+ 481 004a 0020     		movs	r0, #0
  343:Src/sd_diskio.c **** 
- 486              		.loc 1 343 0
- 487 0050 E7E7     		b	.L47
- 488              	.LVL49:
- 489              	.L54:
+ 482              		.loc 1 343 0
+ 483 004c E7E7     		b	.L47
+ 484              	.LVL47:
+ 485              	.L53:
+ 486              	.LCFI18:
+ 487              		.cfi_def_cfa_offset 0
+ 488              		.cfi_restore 4
+ 489              		.cfi_restore 14
+ 315:Src/sd_diskio.c **** 
+ 490              		.loc 1 315 0
+ 491 004e 0320     		movs	r0, #3
+ 492              	.LVL48:
+ 493              		.loc 1 350 0
+ 494 0050 7047     		bx	lr
+ 495              	.LVL49:
+ 496              	.L54:
  346:Src/sd_diskio.c ****   }
- 490              		.loc 1 346 0
- 491 0052 0420     		movs	r0, #4
- 492              	.LVL50:
- 493 0054 E5E7     		b	.L47
- 494              	.L61:
- 495 0056 00BF     		.align	2
- 496              	.L60:
- 497 0058 00000000 		.word	.LANCHOR0
- 498              		.cfi_endproc
- 499              	.LFE146:
- 501              		.section	.text.BSP_SD_WriteCpltCallback,"ax",%progbits
- 502              		.align	1
- 503              		.global	BSP_SD_WriteCpltCallback
- 504              		.syntax unified
- 505              		.thumb
- 506              		.thumb_func
- 507              		.fpu fpv5-sp-d16
- 509              	BSP_SD_WriteCpltCallback:
- 510              	.LFB147:
+ 497              		.loc 1 346 0
+ 498 0052 0420     		movs	r0, #4
+ 499              	.LVL50:
+ 500 0054 E3E7     		b	.L47
+ 501              	.L60:
+ 502 0056 00BF     		.align	2
+ 503              	.L59:
+ 504 0058 00000000 		.word	.LANCHOR0
+ 505              		.cfi_endproc
+ 506              	.LFE148:
+ 508              		.section	.text.BSP_SD_WriteCpltCallback,"ax",%progbits
+ 509              		.align	1
+ 510              		.global	BSP_SD_WriteCpltCallback
+ 511              		.syntax unified
+ 512              		.thumb
+ 513              		.thumb_func
+ 514              		.fpu fpv5-sp-d16
+ 516              	BSP_SD_WriteCpltCallback:
+ 517              	.LFB149:
  351:Src/sd_diskio.c **** #endif /* _USE_IOCTL == 1 */
  352:Src/sd_diskio.c **** 
  353:Src/sd_diskio.c **** /* USER CODE BEGIN afterIoctlSection */
@@ -950,6 +958,9 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s 			page 1
  364:Src/sd_diskio.c ****   */
  365:Src/sd_diskio.c **** 
  366:Src/sd_diskio.c ****  /*
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccbRbTaw.s 			page 17
+
+
  367:Src/sd_diskio.c ****    ===============================================================================
  368:Src/sd_diskio.c ****     Select the correct function signature depending on your platform.
  369:Src/sd_diskio.c ****     please refer to the file "stm32xxxx_eval_sd.h" to verify the correct function
@@ -958,48 +969,46 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s 			page 1
  372:Src/sd_diskio.c ****   */
  373:Src/sd_diskio.c **** //void BSP_SD_WriteCpltCallback(uint32_t SdCard)
  374:Src/sd_diskio.c **** void BSP_SD_WriteCpltCallback(void)
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s 			page 17
-
-
  375:Src/sd_diskio.c **** {
- 511              		.loc 1 375 0
- 512              		.cfi_startproc
- 513              		@ args = 0, pretend = 0, frame = 0
- 514              		@ frame_needed = 0, uses_anonymous_args = 0
- 515 0000 08B5     		push	{r3, lr}
- 516              	.LCFI18:
- 517              		.cfi_def_cfa_offset 8
- 518              		.cfi_offset 3, -8
- 519              		.cfi_offset 14, -4
+ 518              		.loc 1 375 0
+ 519              		.cfi_startproc
+ 520              		@ args = 0, pretend = 0, frame = 0
+ 521              		@ frame_needed = 0, uses_anonymous_args = 0
+ 522 0000 08B5     		push	{r3, lr}
+ 523              	.LCFI19:
+ 524              		.cfi_def_cfa_offset 8
+ 525              		.cfi_offset 3, -8
+ 526              		.cfi_offset 14, -4
  376:Src/sd_diskio.c ****   /*
  377:Src/sd_diskio.c ****    * No need to add an "osKernelRunning()" check here, as the SD_initialize()
  378:Src/sd_diskio.c ****    * is always called before any SD_Read()/SD_Write() call
  379:Src/sd_diskio.c ****    */
  380:Src/sd_diskio.c ****   osMessagePut(SDQueueID, WRITE_CPLT_MSG, osWaitForever);
- 520              		.loc 1 380 0
- 521 0002 4FF0FF32 		mov	r2, #-1
- 522 0006 0221     		movs	r1, #2
- 523 0008 024B     		ldr	r3, .L64
- 524 000a 1868     		ldr	r0, [r3]
- 525 000c FFF7FEFF 		bl	osMessagePut
- 526              	.LVL51:
- 527 0010 08BD     		pop	{r3, pc}
- 528              	.L65:
- 529 0012 00BF     		.align	2
- 530              	.L64:
- 531 0014 00000000 		.word	.LANCHOR2
- 532              		.cfi_endproc
- 533              	.LFE147:
- 535              		.section	.text.BSP_SD_ReadCpltCallback,"ax",%progbits
- 536              		.align	1
- 537              		.global	BSP_SD_ReadCpltCallback
- 538              		.syntax unified
- 539              		.thumb
- 540              		.thumb_func
- 541              		.fpu fpv5-sp-d16
- 543              	BSP_SD_ReadCpltCallback:
- 544              	.LFB148:
+ 527              		.loc 1 380 0
+ 528 0002 4FF0FF32 		mov	r2, #-1
+ 529 0006 0221     		movs	r1, #2
+ 530 0008 024B     		ldr	r3, .L63
+ 531 000a 1868     		ldr	r0, [r3]
+ 532 000c FFF7FEFF 		bl	osMessagePut
+ 533              	.LVL51:
  381:Src/sd_diskio.c **** }
+ 534              		.loc 1 381 0
+ 535 0010 08BD     		pop	{r3, pc}
+ 536              	.L64:
+ 537 0012 00BF     		.align	2
+ 538              	.L63:
+ 539 0014 00000000 		.word	.LANCHOR2
+ 540              		.cfi_endproc
+ 541              	.LFE149:
+ 543              		.section	.text.BSP_SD_ReadCpltCallback,"ax",%progbits
+ 544              		.align	1
+ 545              		.global	BSP_SD_ReadCpltCallback
+ 546              		.syntax unified
+ 547              		.thumb
+ 548              		.thumb_func
+ 549              		.fpu fpv5-sp-d16
+ 551              	BSP_SD_ReadCpltCallback:
+ 552              	.LFB150:
  382:Src/sd_diskio.c **** 
  383:Src/sd_diskio.c **** /**
  384:Src/sd_diskio.c ****   * @brief Rx Transfer completed callbacks
@@ -1009,6 +1018,9 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s 			page 1
  388:Src/sd_diskio.c **** 
  389:Src/sd_diskio.c ****   /*
  390:Src/sd_diskio.c ****    ===============================================================================
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccbRbTaw.s 			page 18
+
+
  391:Src/sd_diskio.c ****     Select the correct function signature depending on your platform.
  392:Src/sd_diskio.c ****     please refer to the file "stm32xxxx_eval_sd.h" to verify the correct function
  393:Src/sd_diskio.c ****     prototype
@@ -1017,124 +1029,122 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s 			page 1
  396:Src/sd_diskio.c **** //void BSP_SD_ReadCpltCallback(uint32_t SdCard)
  397:Src/sd_diskio.c **** void BSP_SD_ReadCpltCallback(void)
  398:Src/sd_diskio.c **** {
- 545              		.loc 1 398 0
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s 			page 18
-
-
- 546              		.cfi_startproc
- 547              		@ args = 0, pretend = 0, frame = 0
- 548              		@ frame_needed = 0, uses_anonymous_args = 0
- 549 0000 08B5     		push	{r3, lr}
- 550              	.LCFI19:
- 551              		.cfi_def_cfa_offset 8
- 552              		.cfi_offset 3, -8
- 553              		.cfi_offset 14, -4
+ 553              		.loc 1 398 0
+ 554              		.cfi_startproc
+ 555              		@ args = 0, pretend = 0, frame = 0
+ 556              		@ frame_needed = 0, uses_anonymous_args = 0
+ 557 0000 08B5     		push	{r3, lr}
+ 558              	.LCFI20:
+ 559              		.cfi_def_cfa_offset 8
+ 560              		.cfi_offset 3, -8
+ 561              		.cfi_offset 14, -4
  399:Src/sd_diskio.c ****   /*
  400:Src/sd_diskio.c ****    * No need to add an "osKernelRunning()" check here, as the SD_initialize()
  401:Src/sd_diskio.c ****    * is always called before any SD_Read()/SD_Write() call
  402:Src/sd_diskio.c ****    */
  403:Src/sd_diskio.c ****   osMessagePut(SDQueueID, READ_CPLT_MSG, osWaitForever);
- 554              		.loc 1 403 0
- 555 0002 4FF0FF32 		mov	r2, #-1
- 556 0006 0121     		movs	r1, #1
- 557 0008 024B     		ldr	r3, .L68
- 558 000a 1868     		ldr	r0, [r3]
- 559 000c FFF7FEFF 		bl	osMessagePut
- 560              	.LVL52:
- 561 0010 08BD     		pop	{r3, pc}
- 562              	.L69:
- 563 0012 00BF     		.align	2
- 564              	.L68:
- 565 0014 00000000 		.word	.LANCHOR2
- 566              		.cfi_endproc
- 567              	.LFE148:
- 569              		.global	SD_Driver
- 570              		.section	.rodata
- 571              		.align	2
- 572              		.set	.LANCHOR1,. + 0
- 573              	.LC0:
- 574 0000 0A000000 		.word	10
- 575 0004 02000000 		.word	2
- 576              		.section	.bss.SDQueueID,"aw",%nobits
- 577              		.align	2
- 578              		.set	.LANCHOR2,. + 0
- 581              	SDQueueID:
- 582 0000 00000000 		.space	4
- 583              		.section	.data.Stat,"aw",%progbits
- 584              		.set	.LANCHOR0,. + 0
- 587              	Stat:
- 588 0000 01       		.byte	1
- 589              		.section	.rodata.SD_Driver,"a",%progbits
- 590              		.align	2
- 593              	SD_Driver:
- 594 0000 00000000 		.word	SD_initialize
- 595 0004 00000000 		.word	SD_status
- 596 0008 00000000 		.word	SD_read
- 597 000c 00000000 		.word	SD_write
- 598 0010 00000000 		.word	SD_ioctl
- 599              		.text
- 600              	.Letext0:
- 601              		.file 2 "Middlewares/Third_Party/FatFs/src/integer.h"
- 602              		.file 3 "Middlewares/Third_Party/FatFs/src/diskio.h"
- 603              		.file 4 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\machine\\_default_types.h"
- 604              		.file 5 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\_stdint.h"
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s 			page 19
+ 562              		.loc 1 403 0
+ 563 0002 4FF0FF32 		mov	r2, #-1
+ 564 0006 0121     		movs	r1, #1
+ 565 0008 024B     		ldr	r3, .L67
+ 566 000a 1868     		ldr	r0, [r3]
+ 567 000c FFF7FEFF 		bl	osMessagePut
+ 568              	.LVL52:
+ 404:Src/sd_diskio.c **** }
+ 569              		.loc 1 404 0
+ 570 0010 08BD     		pop	{r3, pc}
+ 571              	.L68:
+ 572 0012 00BF     		.align	2
+ 573              	.L67:
+ 574 0014 00000000 		.word	.LANCHOR2
+ 575              		.cfi_endproc
+ 576              	.LFE150:
+ 578              		.global	SD_Driver
+ 579              		.section	.rodata
+ 580              		.align	2
+ 581              		.set	.LANCHOR1,. + 0
+ 582              	.LC0:
+ 583 0000 0A000000 		.word	10
+ 584 0004 02000000 		.word	2
+ 585              		.section	.bss.SDQueueID,"aw",%nobits
+ 586              		.align	2
+ 587              		.set	.LANCHOR2,. + 0
+ 590              	SDQueueID:
+ 591 0000 00000000 		.space	4
+ 592              		.section	.data.Stat,"aw",%progbits
+ 593              		.set	.LANCHOR0,. + 0
+ 596              	Stat:
+ 597 0000 01       		.byte	1
+ 598              		.section	.rodata.SD_Driver,"a",%progbits
+ 599              		.align	2
+ 602              	SD_Driver:
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccbRbTaw.s 			page 19
 
 
- 605              		.file 6 "Drivers/CMSIS/Include/core_cm7.h"
- 606              		.file 7 "Drivers/CMSIS/Device/ST/STM32F7xx/Include/system_stm32f7xx.h"
- 607              		.file 8 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\lock.h"
- 608              		.file 9 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\_types.h"
- 609              		.file 10 "c:\\gcc_toolchain\\6_2017-q1-update\\lib\\gcc\\arm-none-eabi\\6.3.1\\include\\stddef.h"
- 610              		.file 11 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\reent.h"
- 611              		.file 12 "Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_sd.h"
- 612              		.file 13 "Middlewares/Third_Party/FreeRTOS/Source/include/task.h"
- 613              		.file 14 "Middlewares/Third_Party/FreeRTOS/Source/include/queue.h"
- 614              		.file 15 "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h"
- 615              		.file 16 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\stdlib.h"
- 616              		.file 17 "Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_def.h"
- 617              		.file 18 "Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_ctlreq.h"
- 618              		.file 19 "Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc.h"
- 619              		.file 20 "Middlewares/Third_Party/FatFs/src/ff_gen_drv.h"
- 620              		.file 21 "Inc/sd_diskio.h"
- 621              		.file 22 "Inc/bsp_driver_sd.h"
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s 			page 20
+ 603 0000 00000000 		.word	SD_initialize
+ 604 0004 00000000 		.word	SD_status
+ 605 0008 00000000 		.word	SD_read
+ 606 000c 00000000 		.word	SD_write
+ 607 0010 00000000 		.word	SD_ioctl
+ 608              		.text
+ 609              	.Letext0:
+ 610              		.file 2 "Middlewares/Third_Party/FatFs/src/integer.h"
+ 611              		.file 3 "Middlewares/Third_Party/FatFs/src/diskio.h"
+ 612              		.file 4 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\machine\\_default
+ 613              		.file 5 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 614              		.file 6 "Drivers/CMSIS/Include/core_cm7.h"
+ 615              		.file 7 "Drivers/CMSIS/Device/ST/STM32F7xx/Include/system_stm32f7xx.h"
+ 616              		.file 8 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\lock.h"
+ 617              		.file 9 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\_types.h"
+ 618              		.file 10 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\lib\\gcc\\arm-none-eabi\\7.3.1\\include\
+ 619              		.file 11 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\reent.h"
+ 620              		.file 12 "Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_sd.h"
+ 621              		.file 13 "Middlewares/Third_Party/FreeRTOS/Source/include/task.h"
+ 622              		.file 14 "Middlewares/Third_Party/FreeRTOS/Source/include/queue.h"
+ 623              		.file 15 "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h"
+ 624              		.file 16 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\stdlib.h"
+ 625              		.file 17 "Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_def.h"
+ 626              		.file 18 "Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_ctlreq.h"
+ 627              		.file 19 "Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc.h"
+ 628              		.file 20 "Middlewares/Third_Party/FatFs/src/ff_gen_drv.h"
+ 629              		.file 21 "Inc/sd_diskio.h"
+ 630              		.file 22 "Inc/bsp_driver_sd.h"
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccbRbTaw.s 			page 20
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 sd_diskio.c
-C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s:18     .text.SD_CheckStatus:00000000 $t
-C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s:24     .text.SD_CheckStatus:00000000 SD_CheckStatus
-C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s:59     .text.SD_CheckStatus:00000020 $d
-C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s:64     .text.SD_initialize:00000000 $t
-C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s:71     .text.SD_initialize:00000000 SD_initialize
-C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s:145    .text.SD_initialize:00000050 $d
-C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s:152    .text.SD_status:00000000 $t
-C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s:159    .text.SD_status:00000000 SD_status
-C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s:180    .text.SD_read:00000000 $t
-C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s:187    .text.SD_read:00000000 SD_read
-C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s:277    .text.SD_read:0000005c $d
-C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s:282    .text.SD_write:00000000 $t
-C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s:289    .text.SD_write:00000000 SD_write
-C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s:379    .text.SD_write:0000005c $d
-C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s:384    .text.SD_ioctl:00000000 $t
-C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s:391    .text.SD_ioctl:00000000 SD_ioctl
-C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s:423    .text.SD_ioctl:0000001c $d
-C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s:427    .text.SD_ioctl:00000020 $t
-C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s:497    .text.SD_ioctl:00000058 $d
-C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s:502    .text.BSP_SD_WriteCpltCallback:00000000 $t
-C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s:509    .text.BSP_SD_WriteCpltCallback:00000000 BSP_SD_WriteCpltCallback
-C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s:531    .text.BSP_SD_WriteCpltCallback:00000014 $d
-C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s:536    .text.BSP_SD_ReadCpltCallback:00000000 $t
-C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s:543    .text.BSP_SD_ReadCpltCallback:00000000 BSP_SD_ReadCpltCallback
-C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s:565    .text.BSP_SD_ReadCpltCallback:00000014 $d
-C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s:593    .rodata.SD_Driver:00000000 SD_Driver
-C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s:571    .rodata:00000000 $d
-C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s:577    .bss.SDQueueID:00000000 $d
-C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s:581    .bss.SDQueueID:00000000 SDQueueID
-C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s:587    .data.Stat:00000000 Stat
-C:\Users\Student\AppData\Local\Temp\ccfoB1Bx.s:590    .rodata.SD_Driver:00000000 $d
-                     .debug_frame:00000010 $d
+C:\Users\milek\AppData\Local\Temp\ccbRbTaw.s:18     .text.SD_CheckStatus:00000000 $t
+C:\Users\milek\AppData\Local\Temp\ccbRbTaw.s:24     .text.SD_CheckStatus:00000000 SD_CheckStatus
+C:\Users\milek\AppData\Local\Temp\ccbRbTaw.s:59     .text.SD_CheckStatus:00000020 $d
+C:\Users\milek\AppData\Local\Temp\ccbRbTaw.s:64     .text.SD_initialize:00000000 $t
+C:\Users\milek\AppData\Local\Temp\ccbRbTaw.s:71     .text.SD_initialize:00000000 SD_initialize
+C:\Users\milek\AppData\Local\Temp\ccbRbTaw.s:146    .text.SD_initialize:00000050 $d
+C:\Users\milek\AppData\Local\Temp\ccbRbTaw.s:153    .text.SD_status:00000000 $t
+C:\Users\milek\AppData\Local\Temp\ccbRbTaw.s:160    .text.SD_status:00000000 SD_status
+C:\Users\milek\AppData\Local\Temp\ccbRbTaw.s:181    .text.SD_read:00000000 $t
+C:\Users\milek\AppData\Local\Temp\ccbRbTaw.s:188    .text.SD_read:00000000 SD_read
+C:\Users\milek\AppData\Local\Temp\ccbRbTaw.s:278    .text.SD_read:0000005c $d
+C:\Users\milek\AppData\Local\Temp\ccbRbTaw.s:283    .text.SD_write:00000000 $t
+C:\Users\milek\AppData\Local\Temp\ccbRbTaw.s:290    .text.SD_write:00000000 SD_write
+C:\Users\milek\AppData\Local\Temp\ccbRbTaw.s:380    .text.SD_write:0000005c $d
+C:\Users\milek\AppData\Local\Temp\ccbRbTaw.s:385    .text.SD_ioctl:00000000 $t
+C:\Users\milek\AppData\Local\Temp\ccbRbTaw.s:392    .text.SD_ioctl:00000000 SD_ioctl
+C:\Users\milek\AppData\Local\Temp\ccbRbTaw.s:419    .text.SD_ioctl:00000018 $d
+C:\Users\milek\AppData\Local\Temp\ccbRbTaw.s:423    .text.SD_ioctl:0000001c $t
+C:\Users\milek\AppData\Local\Temp\ccbRbTaw.s:504    .text.SD_ioctl:00000058 $d
+C:\Users\milek\AppData\Local\Temp\ccbRbTaw.s:509    .text.BSP_SD_WriteCpltCallback:00000000 $t
+C:\Users\milek\AppData\Local\Temp\ccbRbTaw.s:516    .text.BSP_SD_WriteCpltCallback:00000000 BSP_SD_WriteCpltCallback
+C:\Users\milek\AppData\Local\Temp\ccbRbTaw.s:539    .text.BSP_SD_WriteCpltCallback:00000014 $d
+C:\Users\milek\AppData\Local\Temp\ccbRbTaw.s:544    .text.BSP_SD_ReadCpltCallback:00000000 $t
+C:\Users\milek\AppData\Local\Temp\ccbRbTaw.s:551    .text.BSP_SD_ReadCpltCallback:00000000 BSP_SD_ReadCpltCallback
+C:\Users\milek\AppData\Local\Temp\ccbRbTaw.s:574    .text.BSP_SD_ReadCpltCallback:00000014 $d
+C:\Users\milek\AppData\Local\Temp\ccbRbTaw.s:602    .rodata.SD_Driver:00000000 SD_Driver
+C:\Users\milek\AppData\Local\Temp\ccbRbTaw.s:580    .rodata:00000000 $d
+C:\Users\milek\AppData\Local\Temp\ccbRbTaw.s:586    .bss.SDQueueID:00000000 $d
+C:\Users\milek\AppData\Local\Temp\ccbRbTaw.s:590    .bss.SDQueueID:00000000 SDQueueID
+C:\Users\milek\AppData\Local\Temp\ccbRbTaw.s:596    .data.Stat:00000000 Stat
+C:\Users\milek\AppData\Local\Temp\ccbRbTaw.s:599    .rodata.SD_Driver:00000000 $d
 
 UNDEFINED SYMBOLS
 BSP_SD_GetCardState

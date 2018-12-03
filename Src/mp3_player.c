@@ -1,24 +1,26 @@
 #include "mp3_player.h"
-#include "mp3dec.h"
+#include "lib\helix\pub\mp3dec.h"
 #include <stdio.h>
+#include <string.h>
 #include "fatfs.h"
 #include "stm32746g_discovery_audio.h"
 #include "term_io.h"
 #include "dbgu.h"
 #include "ansi.h"
 
-#define EOF 1
+//#define EOF 1
 
 /* ------------------------------------------------------------------- */
 
 static HMP3Decoder hMP3Decoder;
 Mp3_Player_State state;
 
-uint8_t output_buffer[AUDIO_OUT_BUFFER_SIZE]; // check if correct type and lenth?
+short output_buffer[AUDIO_OUT_BUFFER_SIZE]; // check if correct type and lenth?
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 uint8_t input_buffer[READ_BUFFER_SIZE];
 static uint8_t *read_pointer;
 static BSP_BUFFER_STATE out_buf_offs = BUFFER_OFFSET_NONE;
-volatile FIL input_file;
+FIL input_file;
 static int bytes_left=0;
 static int bytes_left_before_decoding=0;
 static int in_buf_offs;
@@ -27,33 +29,55 @@ static int decode_result;
 
 /* ------------------------------------------------------------------- */
 void BSP_init(void);
-void mp3_player_init(FIL);
-void mp3_player_fsm(FIL);
-void mp3_player_play(FIL);
-int mp3_player_process_frame(FIL *);
-int fill_input_buffer(FIL *);
+void mp3_player_init(void);
+void mp3_player_fsm(const char*);
+void mp3_player_play();
+int mp3_player_process_frame();
+int fill_input_buffer();
 
 /* ------------------------------------------------------------------- */
 
 // Main Finite State Machine of the player
-void mp3_player_fsm(FIL* file)
+void mp3_player_fsm(const char* path)
 {
-	input_file = *file;
-	BSP_init();
-	state = PLAY;
+    BSP_init();
+    state = NEXT;
 
-	while(1) 
+    DIR directory;
+    f_opendir(&directory, path);
+
+	while(1)
 	{
-		switch(state) 
+		switch(state)
 		{
 			case PLAY:
-				mp3_player_play(file);
+				mp3_player_play();
+                f_close(&input_file);
 				break;
 			case NEXT:
-				// play zwroci NEXT, NEXT przesunie wskaznik pliku i zwroci PLAY etc
+			    ;
+			    FILINFO info;
+				if (f_readdir(&directory, &info) != FR_OK) {
+                    xprintf("Error reading from directory");
+                    return;
+				}
+                if (info.fname[0] == 0) {
+                    f_closedir(&directory);
+                    f_opendir(&directory, path);
+                    continue;
+                }
+                if (strstr(info.fname, ".mp3")) {
+                    if (f_open(&input_file, info.fname, FA_READ) != FR_OK) {
+                        xprintf("Error opening file");
+                        return;
+                    }
+                    state = PLAY;
+                }
 				break;
 			case FINISH:
 				return;
+            default:
+                return;
 		}
 	}
 
@@ -70,14 +94,9 @@ void BSP_init(void) {
 		xprintf("Audio Init Error\n");
 	}
 }
-// Initialize used resources
-void mp3_player_init(void)
-{
-	hMP3Decoder = MP3InitDecoder();
-}
 
 // Play state handler
-void mp3_player_play(FIL* file)
+void mp3_player_play(void)
 {
 	// open file from disk (get it from fileset)
 	// Check if is valid Mp3 file
@@ -87,7 +106,7 @@ void mp3_player_play(FIL* file)
 	// Disable DMA transer to audio_out
 	// close file and free decoder object
 
-	mp3_player_init();
+	hMP3Decoder = MP3InitDecoder();
 
 //	if(checktype(fileset->current) == unsported) {
 //		return NEXT;
@@ -97,7 +116,7 @@ void mp3_player_play(FIL* file)
 //		return FINISH;
 //	}
 
-	if(mp3_player_proccess_frame(&input_file) == 0) {
+	if(mp3_player_process_frame() == 0) {
 		state = PLAY;
 		BSP_AUDIO_OUT_Play((uint16_t*)&output_buffer[0], AUDIO_OUT_BUFFER_SIZE);
 		while(1) {
@@ -113,29 +132,25 @@ void mp3_player_play(FIL* file)
 		state = NEXT;
 	}
 
-	f_close(&input_file);
 	bytes_left = 0;
 	read_pointer = NULL;
 	MP3FreeDecoder(hMP3Decoder);
-	
-	return state;
-	
 }
 
 // Process mp3 file
-int mp3_player_process_frame(FIL *mp3_file)
+int mp3_player_process_frame(void)
 {
 	MP3FrameInfo mp3FrameInfo;
 
 	if (read_pointer == NULL) {
-		if(fill_inbuffer(mp3_file) != 0){
+		if(fill_input_buffer() != 0){
 			return EOF;
 		}
 	}
 
 	in_buf_offs = MP3FindSyncWord(read_pointer, bytes_left);
 	while(in_buf_offs < 0) {
-		if(fill_inbuffer(mp3_file) != 0)
+		if(fill_input_buffer() != 0)
 			return EOF;
 		if(bytes_left > 0){
 			bytes_left -= 1;
@@ -151,8 +166,8 @@ int mp3_player_process_frame(FIL *mp3_file)
 			mp3FrameInfo.nChans == 2 &&
 			mp3FrameInfo.version == 0)
 	{
-	} 
-	else 
+	}
+	else
 	{
 		if(bytes_left > 0)
 		{
@@ -162,9 +177,9 @@ int mp3_player_process_frame(FIL *mp3_file)
 		return 0;
 	}
 
-	if (bytes_left < MAINBUF_SIZE) 
+	if (bytes_left < MAINBUF_SIZE)
 	{
-		if(fill_inbuffer(mp3_file) != 0)
+		if(fill_input_buffer() != 0)
 			return EOF;
 	}
 
@@ -190,7 +205,7 @@ int mp3_player_process_frame(FIL *mp3_file)
 		{
 		case ERR_MP3_INDATA_UNDERFLOW:
 			bytes_left = 0;
-			if(fill_inbuffer(mp3_file) != 0)
+			if(fill_input_buffer() != 0)
 				return EOF;
 			break;
 		case ERR_MP3_MAINDATA_UNDERFLOW:
@@ -209,27 +224,27 @@ void BSP_AUDIO_OUT_TransferComplete_CallBack(void)
 {
     out_buf_offs = BUFFER_OFFSET_FULL;
 
-	if(mp3_player_proccess_frame(&input_file) != 0) // zwroci EOF gdy skonczy sie plik
+	if(mp3_player_process_frame() != 0) // zwroci EOF gdy skonczy sie plik
 	{
-		BSP_AUDIO_OUT_Stop(CODEC_PDWN_SW); 
+		BSP_AUDIO_OUT_Stop(CODEC_PDWN_SW);
 		state = NEXT;
 	}
 }
 
 // Callback when all of audio out buffer is transefered
 void BSP_AUDIO_OUT_HalfTransfer_CallBack(void)
-{ 
+{
     out_buf_offs = BUFFER_OFFSET_HALF;
 
-	if(mp3_player_proccess_frame(&input_file) != 0) // zwroci EOF gdy skonczy sie plik
+	if(mp3_player_process_frame() != 0) // zwroci EOF gdy skonczy sie plik
 	{
-		BSP_AUDIO_OUT_Stop(CODEC_PDWN_SW); 
+		BSP_AUDIO_OUT_Stop(CODEC_PDWN_SW);
 		state = NEXT;
 	}
 }
 
 // Fill the input buffer with mp3 data from the USB for the decoder
-int fill_input_buffer(FIL *input_file) {
+int fill_input_buffer() {
 
 	unsigned int bytes_read;
 	unsigned int bytes_to_read;
@@ -240,7 +255,7 @@ int fill_input_buffer(FIL *input_file) {
 
 	bytes_to_read = READ_BUFFER_SIZE - bytes_left;
 
-	f_read(input_file, (BYTE *)input_buffer + bytes_left, bytes_to_read, &bytes_read);
+	f_read(&input_file, (BYTE *)input_buffer + bytes_left, bytes_to_read, &bytes_read);
 
 	if (bytes_read == bytes_to_read){
 		read_pointer = input_buffer;

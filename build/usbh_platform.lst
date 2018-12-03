@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccCA4TuI.s 			page 1
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccrijjRz.s 			page 1
 
 
    1              		.cpu cortex-m7
@@ -25,7 +25,7 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccCA4TuI.s 			page 1
   22              		.thumb_func
   23              		.fpu fpv5-sp-d16
   25              	MX_DriverVbusFS:
-  26              	.LFB136:
+  26              	.LFB138:
   27              		.file 1 "Src/usbh_platform.c"
    1:Src/usbh_platform.c **** /**
    2:Src/usbh_platform.c ****   ******************************************************************************
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccCA4TuI.s 			page 1
   29:Src/usbh_platform.c ****   *    microprocessor devices manufactured by or for STMicroelectronics.
   30:Src/usbh_platform.c ****   * 5. Redistribution and use of this software other than as permitted under 
   31:Src/usbh_platform.c ****   *    this license is void and will automatically terminate your rights under 
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccCA4TuI.s 			page 2
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccrijjRz.s 			page 2
 
 
   32:Src/usbh_platform.c ****   *    this license. 
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccCA4TuI.s 			page 1
   73:Src/usbh_platform.c ****   else
   74:Src/usbh_platform.c ****   {
   75:Src/usbh_platform.c ****     /* Drive low Charge pump */
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccCA4TuI.s 			page 3
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccrijjRz.s 			page 3
 
 
   76:Src/usbh_platform.c ****     data = GPIO_PIN_RESET;
@@ -135,40 +135,41 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccCA4TuI.s 			page 1
   48              	.LVL3:
   49 000a FFF7FEFF 		bl	HAL_GPIO_WritePin
   50              	.LVL4:
-  51 000e 08BD     		pop	{r3, pc}
-  52              	.LVL5:
-  53              	.L5:
+  80:Src/usbh_platform.c **** }
+  51              		.loc 1 80 0
+  52 000e 08BD     		pop	{r3, pc}
+  53              	.LVL5:
+  54              	.L5:
   71:Src/usbh_platform.c ****   }
-  54              		.loc 1 71 0
-  55 0010 0122     		movs	r2, #1
-  56 0012 F8E7     		b	.L2
-  57              	.L7:
-  58              		.align	2
-  59              	.L6:
-  60 0014 000C0240 		.word	1073875968
-  61              		.cfi_endproc
-  62              	.LFE136:
-  64              		.text
-  65              	.Letext0:
-  66              		.file 2 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\machine\\_default_types.h"
-  67              		.file 3 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\_stdint.h"
-  68              		.file 4 "Drivers/CMSIS/Include/core_cm7.h"
-  69              		.file 5 "Drivers/CMSIS/Device/ST/STM32F7xx/Include/system_stm32f7xx.h"
-  70              		.file 6 "Drivers/CMSIS/Device/ST/STM32F7xx/Include/stm32f746xx.h"
-  71              		.file 7 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\lock.h"
-  72              		.file 8 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\_types.h"
-  73              		.file 9 "c:\\gcc_toolchain\\6_2017-q1-update\\lib\\gcc\\arm-none-eabi\\6.3.1\\include\\stddef.h"
-  74              		.file 10 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\reent.h"
-  75              		.file 11 "Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_gpio.h"
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccCA4TuI.s 			page 4
+  55              		.loc 1 71 0
+  56 0010 0122     		movs	r2, #1
+  57 0012 F8E7     		b	.L2
+  58              	.L7:
+  59              		.align	2
+  60              	.L6:
+  61 0014 000C0240 		.word	1073875968
+  62              		.cfi_endproc
+  63              	.LFE138:
+  65              		.text
+  66              	.Letext0:
+  67              		.file 2 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\machine\\_default
+  68              		.file 3 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\_stdint.h"
+  69              		.file 4 "Drivers/CMSIS/Include/core_cm7.h"
+  70              		.file 5 "Drivers/CMSIS/Device/ST/STM32F7xx/Include/system_stm32f7xx.h"
+  71              		.file 6 "Drivers/CMSIS/Device/ST/STM32F7xx/Include/stm32f746xx.h"
+  72              		.file 7 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\lock.h"
+  73              		.file 8 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\_types.h"
+  74              		.file 9 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\lib\\gcc\\arm-none-eabi\\7.3.1\\include\\
+  75              		.file 10 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\reent.h"
+  76              		.file 11 "Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_gpio.h"
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccrijjRz.s 			page 4
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 usbh_platform.c
-C:\Users\Student\AppData\Local\Temp\ccCA4TuI.s:18     .text.MX_DriverVbusFS:00000000 $t
-C:\Users\Student\AppData\Local\Temp\ccCA4TuI.s:25     .text.MX_DriverVbusFS:00000000 MX_DriverVbusFS
-C:\Users\Student\AppData\Local\Temp\ccCA4TuI.s:60     .text.MX_DriverVbusFS:00000014 $d
-                     .debug_frame:00000010 $d
+C:\Users\milek\AppData\Local\Temp\ccrijjRz.s:18     .text.MX_DriverVbusFS:00000000 $t
+C:\Users\milek\AppData\Local\Temp\ccrijjRz.s:25     .text.MX_DriverVbusFS:00000000 MX_DriverVbusFS
+C:\Users\milek\AppData\Local\Temp\ccrijjRz.s:61     .text.MX_DriverVbusFS:00000014 $d
 
 UNDEFINED SYMBOLS
 HAL_GPIO_WritePin

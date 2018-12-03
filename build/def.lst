@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccmFnxUZ.s 			page 1
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccFWW8yJ.s 			page 1
 
 
    1              		.cpu cortex-m7
@@ -25,7 +25,7 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccmFnxUZ.s 			page 1
   22              		.thumb_func
   23              		.fpu fpv5-sp-d16
   25              	lwip_htons:
-  26              	.LFB152:
+  26              	.LFB154:
   27              		.file 1 "Middlewares/Third_Party/LwIP/src/core/def.c"
    1:Middlewares/Third_Party/LwIP/src/core/def.c **** /**
    2:Middlewares/Third_Party/LwIP/src/core/def.c ****  * @file
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccmFnxUZ.s 			page 1
   29:Middlewares/Third_Party/LwIP/src/core/def.c **** /*
   30:Middlewares/Third_Party/LwIP/src/core/def.c ****  * Copyright (c) 2001-2004 Swedish Institute of Computer Science.
   31:Middlewares/Third_Party/LwIP/src/core/def.c ****  * All rights reserved.
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccmFnxUZ.s 			page 2
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccFWW8yJ.s 			page 2
 
 
   32:Middlewares/Third_Party/LwIP/src/core/def.c ****  *
@@ -118,14 +118,14 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccmFnxUZ.s 			page 1
   35 0000 40BA     		rev16	r0, r0
   36              	.LVL1:
   79:Middlewares/Third_Party/LwIP/src/core/def.c **** }
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccmFnxUZ.s 			page 3
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccFWW8yJ.s 			page 3
 
 
   37              		.loc 1 79 0
   38 0002 80B2     		uxth	r0, r0
   39 0004 7047     		bx	lr
   40              		.cfi_endproc
-  41              	.LFE152:
+  41              	.LFE154:
   43              		.section	.text.lwip_htonl,"ax",%progbits
   44              		.align	1
   45              		.global	lwip_htonl
@@ -134,7 +134,7 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccmFnxUZ.s 			page 1
   48              		.thumb_func
   49              		.fpu fpv5-sp-d16
   51              	lwip_htonl:
-  52              	.LFB153:
+  52              	.LFB155:
   80:Middlewares/Third_Party/LwIP/src/core/def.c **** #endif /* lwip_htons */
   81:Middlewares/Third_Party/LwIP/src/core/def.c **** 
   82:Middlewares/Third_Party/LwIP/src/core/def.c **** #if !defined(lwip_htonl)
@@ -167,7 +167,7 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccmFnxUZ.s 			page 1
   68              	.LVL3:
   69 0016 7047     		bx	lr
   70              		.cfi_endproc
-  71              	.LFE153:
+  71              	.LFE155:
   73              		.section	.text.lwip_strnstr,"ax",%progbits
   74              		.align	1
   75              		.global	lwip_strnstr
@@ -176,9 +176,9 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccmFnxUZ.s 			page 1
   78              		.thumb_func
   79              		.fpu fpv5-sp-d16
   81              	lwip_strnstr:
-  82              	.LFB154:
+  82              	.LFB156:
   94:Middlewares/Third_Party/LwIP/src/core/def.c **** #endif /* lwip_htonl */
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccmFnxUZ.s 			page 4
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccFWW8yJ.s 			page 4
 
 
   95:Middlewares/Third_Party/LwIP/src/core/def.c **** 
@@ -207,7 +207,7 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccmFnxUZ.s 			page 1
   94              		.cfi_offset 7, -12
   95              		.cfi_offset 8, -8
   96              		.cfi_offset 14, -4
-  97 0004 0646     		mov	r6, r0
+  97 0004 0746     		mov	r7, r0
   98 0006 0D46     		mov	r5, r1
   99 0008 9046     		mov	r8, r2
  107:Middlewares/Third_Party/LwIP/src/core/def.c ****   const char* p;
@@ -219,117 +219,120 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccmFnxUZ.s 			page 1
  104              	.LVL6:
  109:Middlewares/Third_Party/LwIP/src/core/def.c ****   if (tokenlen == 0) {
  105              		.loc 1 109 0
- 106 0010 D0B1     		cbz	r0, .L8
- 107 0012 0746     		mov	r7, r0
- 108 0014 3446     		mov	r4, r6
- 109 0016 00E0     		b	.L5
- 110              	.LVL7:
- 111              	.L6:
+ 106 0010 B8B1     		cbz	r0, .L8
+ 107 0012 0646     		mov	r6, r0
  110:Middlewares/Third_Party/LwIP/src/core/def.c ****     return LWIP_CONST_CAST(char *, buffer);
  111:Middlewares/Third_Party/LwIP/src/core/def.c ****   }
  112:Middlewares/Third_Party/LwIP/src/core/def.c ****   for (p = buffer; *p && (p + tokenlen <= buffer + n); p++) {
- 112              		.loc 1 112 0 discriminator 2
- 113 0018 0134     		adds	r4, r4, #1
- 114              	.LVL8:
- 115              	.L5:
- 116              		.loc 1 112 0 is_stmt 0 discriminator 1
- 117 001a 2278     		ldrb	r2, [r4]	@ zero_extendqisi2
- 118 001c BAB1     		cbz	r2, .L10
- 119              		.loc 1 112 0 discriminator 3
- 120 001e E319     		adds	r3, r4, r7
- 121 0020 06EB0801 		add	r1, r6, r8
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccmFnxUZ.s 			page 5
+ 108              		.loc 1 112 0
+ 109 0014 3C46     		mov	r4, r7
+ 110 0016 00E0     		b	.L5
+ 111              	.LVL7:
+ 112              	.L6:
+ 113              		.loc 1 112 0 is_stmt 0 discriminator 2
+ 114 0018 0134     		adds	r4, r4, #1
+ 115              	.LVL8:
+ 116              	.L5:
+ 117              		.loc 1 112 0 discriminator 1
+ 118 001a 2278     		ldrb	r2, [r4]	@ zero_extendqisi2
+ 119 001c AAB1     		cbz	r2, .L9
+ 120              		.loc 1 112 0 discriminator 3
+ 121 001e A319     		adds	r3, r4, r6
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccFWW8yJ.s 			page 5
 
 
- 122 0024 8B42     		cmp	r3, r1
- 123 0026 0CD8     		bhi	.L12
+ 122 0020 07EB0801 		add	r1, r7, r8
+ 123 0024 8B42     		cmp	r3, r1
+ 124 0026 0AD8     		bhi	.L11
  113:Middlewares/Third_Party/LwIP/src/core/def.c ****     if ((*p == *token) && (strncmp(p, token, tokenlen) == 0)) {
- 124              		.loc 1 113 0 is_stmt 1
- 125 0028 2B78     		ldrb	r3, [r5]	@ zero_extendqisi2
- 126 002a 9A42     		cmp	r2, r3
- 127 002c F4D1     		bne	.L6
- 128              		.loc 1 113 0 is_stmt 0 discriminator 1
- 129 002e 3A46     		mov	r2, r7
- 130 0030 2946     		mov	r1, r5
- 131 0032 2046     		mov	r0, r4
- 132 0034 FFF7FEFF 		bl	strncmp
- 133              	.LVL9:
- 134 0038 0028     		cmp	r0, #0
- 135 003a EDD1     		bne	.L6
+ 125              		.loc 1 113 0 is_stmt 1
+ 126 0028 2B78     		ldrb	r3, [r5]	@ zero_extendqisi2
+ 127 002a 9342     		cmp	r3, r2
+ 128 002c F4D1     		bne	.L6
+ 129              		.loc 1 113 0 is_stmt 0 discriminator 1
+ 130 002e 3246     		mov	r2, r6
+ 131 0030 2946     		mov	r1, r5
+ 132 0032 2046     		mov	r0, r4
+ 133 0034 FFF7FEFF 		bl	strncmp
+ 134              	.LVL9:
+ 135 0038 0028     		cmp	r0, #0
+ 136 003a EDD1     		bne	.L6
+ 137 003c 02E0     		b	.L3
+ 138              	.L11:
  114:Middlewares/Third_Party/LwIP/src/core/def.c ****       return LWIP_CONST_CAST(char *, p);
- 136              		.loc 1 114 0 is_stmt 1
- 137 003c 2046     		mov	r0, r4
- 138 003e BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
- 139              	.LVL10:
- 140              	.L12:
  115:Middlewares/Third_Party/LwIP/src/core/def.c ****     }
  116:Middlewares/Third_Party/LwIP/src/core/def.c ****   }
  117:Middlewares/Third_Party/LwIP/src/core/def.c ****   return NULL;
- 141              		.loc 1 117 0
- 142 0042 0020     		movs	r0, #0
- 143 0044 BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
- 144              	.LVL11:
- 145              	.L8:
+ 139              		.loc 1 117 0 is_stmt 1
+ 140 003e 0024     		movs	r4, #0
+ 141              	.LVL10:
+ 142 0040 00E0     		b	.L3
+ 143              	.LVL11:
+ 144              	.L8:
  110:Middlewares/Third_Party/LwIP/src/core/def.c ****   }
- 146              		.loc 1 110 0
- 147 0048 3046     		mov	r0, r6
- 148              	.LVL12:
- 149 004a BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
- 150              	.LVL13:
- 151              	.L10:
- 152              		.loc 1 117 0
- 153 004e 0020     		movs	r0, #0
+ 145              		.loc 1 110 0
+ 146 0042 3C46     		mov	r4, r7
+ 147              	.LVL12:
+ 148              	.L3:
  118:Middlewares/Third_Party/LwIP/src/core/def.c **** }
- 154              		.loc 1 118 0
- 155 0050 BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
- 156              		.cfi_endproc
- 157              	.LFE154:
- 159              		.section	.text.lwip_stricmp,"ax",%progbits
- 160              		.align	1
- 161              		.global	lwip_stricmp
- 162              		.syntax unified
- 163              		.thumb
- 164              		.thumb_func
- 165              		.fpu fpv5-sp-d16
- 167              	lwip_stricmp:
- 168              	.LFB155:
+ 149              		.loc 1 118 0
+ 150 0044 2046     		mov	r0, r4
+ 151 0046 BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 152              	.LVL13:
+ 153              	.L9:
+ 117:Middlewares/Third_Party/LwIP/src/core/def.c **** }
+ 154              		.loc 1 117 0
+ 155 004a 0024     		movs	r4, #0
+ 156              	.LVL14:
+ 157 004c FAE7     		b	.L3
+ 158              		.cfi_endproc
+ 159              	.LFE156:
+ 161              		.section	.text.lwip_stricmp,"ax",%progbits
+ 162              		.align	1
+ 163              		.global	lwip_stricmp
+ 164              		.syntax unified
+ 165              		.thumb
+ 166              		.thumb_func
+ 167              		.fpu fpv5-sp-d16
+ 169              	lwip_stricmp:
+ 170              	.LFB157:
  119:Middlewares/Third_Party/LwIP/src/core/def.c **** #endif
  120:Middlewares/Third_Party/LwIP/src/core/def.c **** 
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccFWW8yJ.s 			page 6
+
+
  121:Middlewares/Third_Party/LwIP/src/core/def.c **** #ifndef lwip_stricmp
  122:Middlewares/Third_Party/LwIP/src/core/def.c **** /**
  123:Middlewares/Third_Party/LwIP/src/core/def.c ****  * @ingroup sys_nonstandard
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccmFnxUZ.s 			page 6
-
-
  124:Middlewares/Third_Party/LwIP/src/core/def.c ****  * lwIP default implementation for stricmp() non-standard function.
  125:Middlewares/Third_Party/LwIP/src/core/def.c ****  * This can be \#defined to stricmp() depending on your platform port.
  126:Middlewares/Third_Party/LwIP/src/core/def.c ****  */
  127:Middlewares/Third_Party/LwIP/src/core/def.c **** int
  128:Middlewares/Third_Party/LwIP/src/core/def.c **** lwip_stricmp(const char* str1, const char* str2)
  129:Middlewares/Third_Party/LwIP/src/core/def.c **** {
- 169              		.loc 1 129 0
- 170              		.cfi_startproc
- 171              		@ args = 0, pretend = 0, frame = 0
- 172              		@ frame_needed = 0, uses_anonymous_args = 0
- 173              		@ link register save eliminated.
- 174              	.LVL14:
- 175 0000 30B4     		push	{r4, r5}
- 176              	.LCFI1:
- 177              		.cfi_def_cfa_offset 8
- 178              		.cfi_offset 4, -8
- 179              		.cfi_offset 5, -4
- 180 0002 02E0     		b	.L16
- 181              	.LVL15:
- 182              	.L14:
+ 171              		.loc 1 129 0
+ 172              		.cfi_startproc
+ 173              		@ args = 0, pretend = 0, frame = 0
+ 174              		@ frame_needed = 0, uses_anonymous_args = 0
+ 175              		@ link register save eliminated.
+ 176              	.LVL15:
+ 177 0000 30B4     		push	{r4, r5}
+ 178              	.LCFI1:
+ 179              		.cfi_def_cfa_offset 8
+ 180              		.cfi_offset 4, -8
+ 181              		.cfi_offset 5, -4
+ 182 0002 02E0     		b	.L15
+ 183              	.LVL16:
+ 184              	.L13:
  130:Middlewares/Third_Party/LwIP/src/core/def.c ****   char c1, c2;
  131:Middlewares/Third_Party/LwIP/src/core/def.c **** 
  132:Middlewares/Third_Party/LwIP/src/core/def.c ****   do {
  133:Middlewares/Third_Party/LwIP/src/core/def.c ****     c1 = *str1++;
- 183              		.loc 1 133 0
- 184 0004 2846     		mov	r0, r5
+ 185              		.loc 1 133 0
+ 186 0004 2846     		mov	r0, r5
  134:Middlewares/Third_Party/LwIP/src/core/def.c ****     c2 = *str2++;
- 185              		.loc 1 134 0
- 186 0006 2146     		mov	r1, r4
+ 187              		.loc 1 134 0
+ 188 0006 2146     		mov	r1, r4
  135:Middlewares/Third_Party/LwIP/src/core/def.c ****     if (c1 != c2) {
  136:Middlewares/Third_Party/LwIP/src/core/def.c ****       char c1_upc = c1 | 0x20;
  137:Middlewares/Third_Party/LwIP/src/core/def.c ****       if ((c1_upc >= 'a') && (c1_upc <= 'z')) {
@@ -347,98 +350,98 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccmFnxUZ.s 			page 1
  149:Middlewares/Third_Party/LwIP/src/core/def.c ****       }
  150:Middlewares/Third_Party/LwIP/src/core/def.c ****     }
  151:Middlewares/Third_Party/LwIP/src/core/def.c ****   } while (c1 != 0);
- 187              		.loc 1 151 0
- 188 0008 92B1     		cbz	r2, .L20
- 189              	.LVL16:
- 190              	.L16:
+ 189              		.loc 1 151 0
+ 190 0008 92B1     		cbz	r2, .L19
+ 191              	.LVL17:
+ 192              	.L15:
  133:Middlewares/Third_Party/LwIP/src/core/def.c ****     c2 = *str2++;
- 191              		.loc 1 133 0
- 192 000a 451C     		adds	r5, r0, #1
- 193              	.LVL17:
- 194 000c 0278     		ldrb	r2, [r0]	@ zero_extendqisi2
+ 193              		.loc 1 133 0
+ 194 000a 451C     		adds	r5, r0, #1
  195              	.LVL18:
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccFWW8yJ.s 			page 7
+
+
+ 196 000c 0278     		ldrb	r2, [r0]	@ zero_extendqisi2
+ 197              	.LVL19:
  134:Middlewares/Third_Party/LwIP/src/core/def.c ****     c2 = *str2++;
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccmFnxUZ.s 			page 7
-
-
- 196              		.loc 1 134 0
- 197 000e 4C1C     		adds	r4, r1, #1
- 198              	.LVL19:
- 199 0010 0B78     		ldrb	r3, [r1]	@ zero_extendqisi2
+ 198              		.loc 1 134 0
+ 199 000e 4C1C     		adds	r4, r1, #1
  200              	.LVL20:
+ 201 0010 0B78     		ldrb	r3, [r1]	@ zero_extendqisi2
+ 202              	.LVL21:
  135:Middlewares/Third_Party/LwIP/src/core/def.c ****     if (c1 != c2) {
- 201              		.loc 1 135 0
- 202 0012 9A42     		cmp	r2, r3
- 203 0014 F6D0     		beq	.L14
- 204              	.LBB2:
+ 203              		.loc 1 135 0
+ 204 0012 9A42     		cmp	r2, r3
+ 205 0014 F6D0     		beq	.L13
+ 206              	.LBB2:
  136:Middlewares/Third_Party/LwIP/src/core/def.c ****       if ((c1_upc >= 'a') && (c1_upc <= 'z')) {
- 205              		.loc 1 136 0
- 206 0016 42F02000 		orr	r0, r2, #32
- 207              	.LVL21:
+ 207              		.loc 1 136 0
+ 208 0016 42F02000 		orr	r0, r2, #32
+ 209              	.LVL22:
  137:Middlewares/Third_Party/LwIP/src/core/def.c ****         /* characters are not equal an one is in the alphabet range:
- 208              		.loc 1 137 0
- 209 001a A0F16101 		sub	r1, r0, #97
- 210 001e C9B2     		uxtb	r1, r1
- 211 0020 1929     		cmp	r1, #25
- 212 0022 08D8     		bhi	.L17
- 213              	.LBB3:
+ 210              		.loc 1 137 0
+ 211 001a A0F16101 		sub	r1, r0, #97
+ 212 001e C9B2     		uxtb	r1, r1
+ 213 0020 1929     		cmp	r1, #25
+ 214 0022 08D8     		bhi	.L16
+ 215              	.LBB3:
  140:Middlewares/Third_Party/LwIP/src/core/def.c ****         if (c1_upc != c2_upc) {
- 214              		.loc 1 140 0
- 215 0024 43F02003 		orr	r3, r3, #32
- 216              	.LVL22:
+ 216              		.loc 1 140 0
+ 217 0024 43F02003 		orr	r3, r3, #32
+ 218              	.LVL23:
  141:Middlewares/Third_Party/LwIP/src/core/def.c ****           /* still not equal */
- 217              		.loc 1 141 0
- 218 0028 9842     		cmp	r0, r3
- 219 002a EBD0     		beq	.L14
+ 219              		.loc 1 141 0
+ 220 0028 9842     		cmp	r0, r3
+ 221 002a EBD0     		beq	.L13
  144:Middlewares/Third_Party/LwIP/src/core/def.c ****         }
- 220              		.loc 1 144 0
- 221 002c 0120     		movs	r0, #1
- 222              	.LVL23:
- 223 002e 00E0     		b	.L13
+ 222              		.loc 1 144 0
+ 223 002c 0120     		movs	r0, #1
  224              	.LVL24:
- 225              	.L20:
- 226              	.LBE3:
- 227              	.LBE2:
+ 225 002e 00E0     		b	.L12
+ 226              	.LVL25:
+ 227              	.L19:
+ 228              	.LBE3:
+ 229              	.LBE2:
  152:Middlewares/Third_Party/LwIP/src/core/def.c ****   return 0;
- 228              		.loc 1 152 0
- 229 0030 0020     		movs	r0, #0
- 230              	.LVL25:
- 231              	.L13:
+ 230              		.loc 1 152 0
+ 231 0030 0020     		movs	r0, #0
+ 232              	.LVL26:
+ 233              	.L12:
  153:Middlewares/Third_Party/LwIP/src/core/def.c **** }
- 232              		.loc 1 153 0
- 233 0032 30BC     		pop	{r4, r5}
- 234              	.LCFI2:
- 235              		.cfi_remember_state
- 236              		.cfi_restore 5
- 237              		.cfi_restore 4
- 238              		.cfi_def_cfa_offset 0
- 239              	.LVL26:
- 240 0034 7047     		bx	lr
+ 234              		.loc 1 153 0
+ 235 0032 30BC     		pop	{r4, r5}
+ 236              	.LCFI2:
+ 237              		.cfi_remember_state
+ 238              		.cfi_restore 5
+ 239              		.cfi_restore 4
+ 240              		.cfi_def_cfa_offset 0
  241              	.LVL27:
- 242              	.L17:
- 243              	.LCFI3:
- 244              		.cfi_restore_state
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccmFnxUZ.s 			page 8
+ 242 0034 7047     		bx	lr
+ 243              	.LVL28:
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccFWW8yJ.s 			page 8
 
 
- 245              	.LBB4:
+ 244              	.L16:
+ 245              	.LCFI3:
+ 246              		.cfi_restore_state
+ 247              	.LBB4:
  148:Middlewares/Third_Party/LwIP/src/core/def.c ****       }
- 246              		.loc 1 148 0
- 247 0036 0120     		movs	r0, #1
- 248              	.LVL28:
- 249 0038 FBE7     		b	.L13
- 250              	.LBE4:
- 251              		.cfi_endproc
- 252              	.LFE155:
- 254              		.section	.text.lwip_strnicmp,"ax",%progbits
- 255              		.align	1
- 256              		.global	lwip_strnicmp
- 257              		.syntax unified
- 258              		.thumb
- 259              		.thumb_func
- 260              		.fpu fpv5-sp-d16
- 262              	lwip_strnicmp:
- 263              	.LFB156:
+ 248              		.loc 1 148 0
+ 249 0036 0120     		movs	r0, #1
+ 250              	.LVL29:
+ 251 0038 FBE7     		b	.L12
+ 252              	.LBE4:
+ 253              		.cfi_endproc
+ 254              	.LFE157:
+ 256              		.section	.text.lwip_strnicmp,"ax",%progbits
+ 257              		.align	1
+ 258              		.global	lwip_strnicmp
+ 259              		.syntax unified
+ 260              		.thumb
+ 261              		.thumb_func
+ 262              		.fpu fpv5-sp-d16
+ 264              	lwip_strnicmp:
+ 265              	.LFB158:
  154:Middlewares/Third_Party/LwIP/src/core/def.c **** #endif
  155:Middlewares/Third_Party/LwIP/src/core/def.c **** 
  156:Middlewares/Third_Party/LwIP/src/core/def.c **** #ifndef lwip_strnicmp
@@ -450,21 +453,21 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccmFnxUZ.s 			page 1
  162:Middlewares/Third_Party/LwIP/src/core/def.c **** int
  163:Middlewares/Third_Party/LwIP/src/core/def.c **** lwip_strnicmp(const char* str1, const char* str2, size_t len)
  164:Middlewares/Third_Party/LwIP/src/core/def.c **** {
- 264              		.loc 1 164 0
- 265              		.cfi_startproc
- 266              		@ args = 0, pretend = 0, frame = 0
- 267              		@ frame_needed = 0, uses_anonymous_args = 0
- 268              		@ link register save eliminated.
- 269              	.LVL29:
- 270 0000 70B4     		push	{r4, r5, r6}
- 271              	.LCFI4:
- 272              		.cfi_def_cfa_offset 12
- 273              		.cfi_offset 4, -12
- 274              		.cfi_offset 5, -8
- 275              		.cfi_offset 6, -4
- 276 0002 05E0     		b	.L24
- 277              	.LVL30:
- 278              	.L22:
+ 266              		.loc 1 164 0
+ 267              		.cfi_startproc
+ 268              		@ args = 0, pretend = 0, frame = 0
+ 269              		@ frame_needed = 0, uses_anonymous_args = 0
+ 270              		@ link register save eliminated.
+ 271              	.LVL30:
+ 272 0000 70B4     		push	{r4, r5, r6}
+ 273              	.LCFI4:
+ 274              		.cfi_def_cfa_offset 12
+ 275              		.cfi_offset 4, -12
+ 276              		.cfi_offset 5, -8
+ 277              		.cfi_offset 6, -4
+ 278 0002 05E0     		b	.L23
+ 279              	.LVL31:
+ 280              	.L21:
  165:Middlewares/Third_Party/LwIP/src/core/def.c ****   char c1, c2;
  166:Middlewares/Third_Party/LwIP/src/core/def.c **** 
  167:Middlewares/Third_Party/LwIP/src/core/def.c ****   do {
@@ -475,12 +478,12 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccmFnxUZ.s 			page 1
  172:Middlewares/Third_Party/LwIP/src/core/def.c ****       if ((c1_upc >= 'a') && (c1_upc <= 'z')) {
  173:Middlewares/Third_Party/LwIP/src/core/def.c ****         /* characters are not equal an one is in the alphabet range:
  174:Middlewares/Third_Party/LwIP/src/core/def.c ****         downcase both chars and check again */
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccFWW8yJ.s 			page 9
+
+
  175:Middlewares/Third_Party/LwIP/src/core/def.c ****         char c2_upc = c2 | 0x20;
  176:Middlewares/Third_Party/LwIP/src/core/def.c ****         if (c1_upc != c2_upc) {
  177:Middlewares/Third_Party/LwIP/src/core/def.c ****           /* still not equal */
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccmFnxUZ.s 			page 9
-
-
  178:Middlewares/Third_Party/LwIP/src/core/def.c ****           /* don't care for < or > */
  179:Middlewares/Third_Party/LwIP/src/core/def.c ****           return 1;
  180:Middlewares/Third_Party/LwIP/src/core/def.c ****         }
@@ -490,117 +493,117 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccmFnxUZ.s 			page 1
  184:Middlewares/Third_Party/LwIP/src/core/def.c ****       }
  185:Middlewares/Third_Party/LwIP/src/core/def.c ****     }
  186:Middlewares/Third_Party/LwIP/src/core/def.c ****   } while (len-- && c1 != 0);
- 279              		.loc 1 186 0
- 280 0004 531E     		subs	r3, r2, #1
- 281              	.LVL31:
- 282 0006 D2B1     		cbz	r2, .L27
+ 281              		.loc 1 186 0
+ 282 0004 531E     		subs	r3, r2, #1
+ 283              	.LVL32:
+ 284 0006 D2B1     		cbz	r2, .L26
  168:Middlewares/Third_Party/LwIP/src/core/def.c ****     c2 = *str2++;
- 283              		.loc 1 168 0 discriminator 1
- 284 0008 3046     		mov	r0, r6
+ 285              		.loc 1 168 0 discriminator 1
+ 286 0008 3046     		mov	r0, r6
  169:Middlewares/Third_Party/LwIP/src/core/def.c ****     if (c1 != c2) {
- 285              		.loc 1 169 0 discriminator 1
- 286 000a 2946     		mov	r1, r5
- 287              		.loc 1 186 0 discriminator 1
- 288 000c 9CB1     		cbz	r4, .L30
- 289              	.LVL32:
- 290              		.loc 1 186 0 is_stmt 0
- 291 000e 1A46     		mov	r2, r3
- 292              	.LVL33:
- 293              	.L24:
+ 287              		.loc 1 169 0 discriminator 1
+ 288 000a 2946     		mov	r1, r5
+ 289              		.loc 1 186 0 discriminator 1
+ 290 000c 9CB1     		cbz	r4, .L29
+ 291              	.LVL33:
+ 292              		.loc 1 186 0 is_stmt 0
+ 293 000e 1A46     		mov	r2, r3
+ 294              	.LVL34:
+ 295              	.L23:
  168:Middlewares/Third_Party/LwIP/src/core/def.c ****     c2 = *str2++;
- 294              		.loc 1 168 0 is_stmt 1
- 295 0010 461C     		adds	r6, r0, #1
- 296              	.LVL34:
- 297 0012 0478     		ldrb	r4, [r0]	@ zero_extendqisi2
+ 296              		.loc 1 168 0 is_stmt 1
+ 297 0010 461C     		adds	r6, r0, #1
  298              	.LVL35:
+ 299 0012 0478     		ldrb	r4, [r0]	@ zero_extendqisi2
+ 300              	.LVL36:
  169:Middlewares/Third_Party/LwIP/src/core/def.c ****     if (c1 != c2) {
- 299              		.loc 1 169 0
- 300 0014 4D1C     		adds	r5, r1, #1
- 301              	.LVL36:
- 302 0016 0B78     		ldrb	r3, [r1]	@ zero_extendqisi2
+ 301              		.loc 1 169 0
+ 302 0014 4D1C     		adds	r5, r1, #1
  303              	.LVL37:
+ 304 0016 0B78     		ldrb	r3, [r1]	@ zero_extendqisi2
+ 305              	.LVL38:
  170:Middlewares/Third_Party/LwIP/src/core/def.c ****       char c1_upc = c1 | 0x20;
- 304              		.loc 1 170 0
- 305 0018 9C42     		cmp	r4, r3
- 306 001a F3D0     		beq	.L22
- 307              	.LBB5:
+ 306              		.loc 1 170 0
+ 307 0018 9C42     		cmp	r4, r3
+ 308 001a F3D0     		beq	.L21
+ 309              	.LBB5:
  171:Middlewares/Third_Party/LwIP/src/core/def.c ****       if ((c1_upc >= 'a') && (c1_upc <= 'z')) {
- 308              		.loc 1 171 0
- 309 001c 44F02000 		orr	r0, r4, #32
- 310              	.LVL38:
+ 310              		.loc 1 171 0
+ 311 001c 44F02000 		orr	r0, r4, #32
+ 312              	.LVL39:
  172:Middlewares/Third_Party/LwIP/src/core/def.c ****         /* characters are not equal an one is in the alphabet range:
- 311              		.loc 1 172 0
- 312 0020 A0F16101 		sub	r1, r0, #97
- 313 0024 C9B2     		uxtb	r1, r1
- 314 0026 1929     		cmp	r1, #25
- 315 0028 07D8     		bhi	.L25
- 316              	.LBB6:
+ 313              		.loc 1 172 0
+ 314 0020 A0F16101 		sub	r1, r0, #97
+ 315 0024 C9B2     		uxtb	r1, r1
+ 316 0026 1929     		cmp	r1, #25
+ 317 0028 07D8     		bhi	.L24
+ 318              	.LBB6:
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccFWW8yJ.s 			page 10
+
+
  175:Middlewares/Third_Party/LwIP/src/core/def.c ****         if (c1_upc != c2_upc) {
- 317              		.loc 1 175 0
- 318 002a 43F02003 		orr	r3, r3, #32
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccmFnxUZ.s 			page 10
-
-
- 319              	.LVL39:
+ 319              		.loc 1 175 0
+ 320 002a 43F02003 		orr	r3, r3, #32
+ 321              	.LVL40:
  176:Middlewares/Third_Party/LwIP/src/core/def.c ****           /* still not equal */
- 320              		.loc 1 176 0
- 321 002e 9842     		cmp	r0, r3
- 322 0030 E8D0     		beq	.L22
+ 322              		.loc 1 176 0
+ 323 002e 9842     		cmp	r0, r3
+ 324 0030 E8D0     		beq	.L21
  179:Middlewares/Third_Party/LwIP/src/core/def.c ****         }
- 323              		.loc 1 179 0
- 324 0032 0120     		movs	r0, #1
- 325              	.LVL40:
- 326 0034 04E0     		b	.L21
+ 325              		.loc 1 179 0
+ 326 0032 0120     		movs	r0, #1
  327              	.LVL41:
- 328              	.L30:
- 329              	.LBE6:
- 330              	.LBE5:
+ 328 0034 04E0     		b	.L20
+ 329              	.LVL42:
+ 330              	.L29:
+ 331              	.LBE6:
+ 332              	.LBE5:
  187:Middlewares/Third_Party/LwIP/src/core/def.c ****   return 0;
- 331              		.loc 1 187 0
- 332 0036 0020     		movs	r0, #0
- 333              	.LVL42:
- 334 0038 02E0     		b	.L21
+ 333              		.loc 1 187 0
+ 334 0036 0020     		movs	r0, #0
  335              	.LVL43:
- 336              	.L25:
- 337              	.LBB7:
+ 336 0038 02E0     		b	.L20
+ 337              	.LVL44:
+ 338              	.L24:
+ 339              	.LBB7:
  183:Middlewares/Third_Party/LwIP/src/core/def.c ****       }
- 338              		.loc 1 183 0
- 339 003a 0120     		movs	r0, #1
- 340              	.LVL44:
- 341 003c 00E0     		b	.L21
+ 340              		.loc 1 183 0
+ 341 003a 0120     		movs	r0, #1
  342              	.LVL45:
- 343              	.L27:
- 344              	.LBE7:
- 345              		.loc 1 187 0
- 346 003e 0020     		movs	r0, #0
- 347              	.LVL46:
- 348              	.L21:
+ 343 003c 00E0     		b	.L20
+ 344              	.LVL46:
+ 345              	.L26:
+ 346              	.LBE7:
+ 347              		.loc 1 187 0
+ 348 003e 0020     		movs	r0, #0
+ 349              	.LVL47:
+ 350              	.L20:
  188:Middlewares/Third_Party/LwIP/src/core/def.c **** }
- 349              		.loc 1 188 0
- 350 0040 70BC     		pop	{r4, r5, r6}
- 351              	.LCFI5:
- 352              		.cfi_restore 6
- 353              		.cfi_restore 5
- 354              		.cfi_restore 4
- 355              		.cfi_def_cfa_offset 0
- 356              	.LVL47:
- 357 0042 7047     		bx	lr
- 358              		.cfi_endproc
- 359              	.LFE156:
- 361              		.section	.text.lwip_itoa,"ax",%progbits
- 362              		.align	1
- 363              		.global	lwip_itoa
- 364              		.syntax unified
- 365              		.thumb
- 366              		.thumb_func
- 367              		.fpu fpv5-sp-d16
- 369              	lwip_itoa:
- 370              	.LFB157:
+ 351              		.loc 1 188 0
+ 352 0040 70BC     		pop	{r4, r5, r6}
+ 353              	.LCFI5:
+ 354              		.cfi_restore 6
+ 355              		.cfi_restore 5
+ 356              		.cfi_restore 4
+ 357              		.cfi_def_cfa_offset 0
+ 358              	.LVL48:
+ 359 0042 7047     		bx	lr
+ 360              		.cfi_endproc
+ 361              	.LFE158:
+ 363              		.section	.text.lwip_itoa,"ax",%progbits
+ 364              		.align	1
+ 365              		.global	lwip_itoa
+ 366              		.syntax unified
+ 367              		.thumb
+ 368              		.thumb_func
+ 369              		.fpu fpv5-sp-d16
+ 371              	lwip_itoa:
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccFWW8yJ.s 			page 11
+
+
+ 372              	.LFB159:
  189:Middlewares/Third_Party/LwIP/src/core/def.c **** #endif
  190:Middlewares/Third_Party/LwIP/src/core/def.c **** 
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccmFnxUZ.s 			page 11
-
-
  191:Middlewares/Third_Party/LwIP/src/core/def.c **** #ifndef lwip_itoa
  192:Middlewares/Third_Party/LwIP/src/core/def.c **** /**
  193:Middlewares/Third_Party/LwIP/src/core/def.c ****  * @ingroup sys_nonstandard
@@ -610,26 +613,26 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccmFnxUZ.s 			page 1
  197:Middlewares/Third_Party/LwIP/src/core/def.c **** void
  198:Middlewares/Third_Party/LwIP/src/core/def.c **** lwip_itoa(char* result, size_t bufsize, int number)
  199:Middlewares/Third_Party/LwIP/src/core/def.c **** {
- 371              		.loc 1 199 0
- 372              		.cfi_startproc
- 373              		@ args = 0, pretend = 0, frame = 0
- 374              		@ frame_needed = 0, uses_anonymous_args = 0
- 375              		@ link register save eliminated.
- 376              	.LVL48:
- 377 0000 70B4     		push	{r4, r5, r6}
- 378              	.LCFI6:
- 379              		.cfi_def_cfa_offset 12
- 380              		.cfi_offset 4, -12
- 381              		.cfi_offset 5, -8
- 382              		.cfi_offset 6, -4
- 383              	.LVL49:
+ 373              		.loc 1 199 0
+ 374              		.cfi_startproc
+ 375              		@ args = 0, pretend = 0, frame = 0
+ 376              		@ frame_needed = 0, uses_anonymous_args = 0
+ 377              		@ link register save eliminated.
+ 378              	.LVL49:
+ 379 0000 70B4     		push	{r4, r5, r6}
+ 380              	.LCFI6:
+ 381              		.cfi_def_cfa_offset 12
+ 382              		.cfi_offset 4, -12
+ 383              		.cfi_offset 5, -8
+ 384              		.cfi_offset 6, -4
+ 385              	.LVL50:
  200:Middlewares/Third_Party/LwIP/src/core/def.c ****   const int base = 10;
  201:Middlewares/Third_Party/LwIP/src/core/def.c ****   char* ptr = result, *ptr1 = result, tmp_char;
- 384              		.loc 1 201 0
- 385 0002 0446     		mov	r4, r0
- 386 0004 01E0     		b	.L32
- 387              	.LVL50:
- 388              	.L36:
+ 386              		.loc 1 201 0
+ 387 0002 0446     		mov	r4, r0
+ 388 0004 01E0     		b	.L31
+ 389              	.LVL51:
+ 390              	.L35:
  202:Middlewares/Third_Party/LwIP/src/core/def.c ****   int tmp_value;
  203:Middlewares/Third_Party/LwIP/src/core/def.c ****   LWIP_UNUSED_ARG(bufsize);
  204:Middlewares/Third_Party/LwIP/src/core/def.c **** 
@@ -637,157 +640,156 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccmFnxUZ.s 			page 1
  206:Middlewares/Third_Party/LwIP/src/core/def.c ****     tmp_value = number;
  207:Middlewares/Third_Party/LwIP/src/core/def.c ****     number /= base;
  208:Middlewares/Third_Party/LwIP/src/core/def.c ****     *ptr++ = "zyxwvutsrqponmlkjihgfedcba9876543210123456789abcdefghijklmnopqrstuvwxyz"[35 + (tmp_va
- 389              		.loc 1 208 0
- 390 0006 2C46     		mov	r4, r5
+ 391              		.loc 1 208 0
+ 392 0006 2C46     		mov	r4, r5
  207:Middlewares/Third_Party/LwIP/src/core/def.c ****     *ptr++ = "zyxwvutsrqponmlkjihgfedcba9876543210123456789abcdefghijklmnopqrstuvwxyz"[35 + (tmp_va
- 391              		.loc 1 207 0
- 392 0008 0A46     		mov	r2, r1
- 393              	.LVL51:
- 394              	.L32:
+ 393              		.loc 1 207 0
+ 394 0008 0A46     		mov	r2, r1
+ 395              	.LVL52:
+ 396              	.L31:
  207:Middlewares/Third_Party/LwIP/src/core/def.c ****     *ptr++ = "zyxwvutsrqponmlkjihgfedcba9876543210123456789abcdefghijklmnopqrstuvwxyz"[35 + (tmp_va
- 395              		.loc 1 207 0 is_stmt 0 discriminator 1
- 396 000a 144B     		ldr	r3, .L39
- 397 000c 83FB0213 		smull	r1, r3, r3, r2
- 398 0010 D117     		asrs	r1, r2, #31
- 399 0012 C1EBA301 		rsb	r1, r1, r3, asr #2
- 400              	.LVL52:
- 401              		.loc 1 208 0 is_stmt 1 discriminator 1
- 402 0016 651C     		adds	r5, r4, #1
- 403              	.LVL53:
- 404 0018 6FF00903 		mvn	r3, #9
- 405 001c 03FB0123 		mla	r3, r3, r1, r2
- 406 0020 2333     		adds	r3, r3, #35
- 407 0022 0F4E     		ldr	r6, .L39+4
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccmFnxUZ.s 			page 12
+ 397              		.loc 1 207 0 is_stmt 0 discriminator 1
+ 398 000a 144B     		ldr	r3, .L38
+ 399 000c 83FB0213 		smull	r1, r3, r3, r2
+ 400 0010 D117     		asrs	r1, r2, #31
+ 401 0012 C1EBA301 		rsb	r1, r1, r3, asr #2
+ 402              	.LVL53:
+ 403              		.loc 1 208 0 is_stmt 1 discriminator 1
+ 404 0016 6FF00903 		mvn	r3, #9
+ 405 001a 03FB0123 		mla	r3, r3, r1, r2
+ 406 001e 2333     		adds	r3, r3, #35
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccFWW8yJ.s 			page 12
 
 
- 408 0024 F35C     		ldrb	r3, [r6, r3]	@ zero_extendqisi2
- 409 0026 2370     		strb	r3, [r4]
+ 407 0020 651C     		adds	r5, r4, #1
+ 408              	.LVL54:
+ 409 0022 0F4E     		ldr	r6, .L38+4
+ 410 0024 F35C     		ldrb	r3, [r6, r3]	@ zero_extendqisi2
+ 411 0026 2370     		strb	r3, [r4]
  209:Middlewares/Third_Party/LwIP/src/core/def.c ****   } while(number);
- 410              		.loc 1 209 0 discriminator 1
- 411 0028 0029     		cmp	r1, #0
- 412 002a ECD1     		bne	.L36
+ 412              		.loc 1 209 0 discriminator 1
+ 413 0028 0029     		cmp	r1, #0
+ 414 002a ECD1     		bne	.L35
  210:Middlewares/Third_Party/LwIP/src/core/def.c **** 
  211:Middlewares/Third_Party/LwIP/src/core/def.c ****    /* Apply negative sign */
  212:Middlewares/Third_Party/LwIP/src/core/def.c ****   if (tmp_value < 0) {
- 413              		.loc 1 212 0
- 414 002c 002A     		cmp	r2, #0
- 415 002e 03DB     		blt	.L38
- 416              	.L33:
+ 415              		.loc 1 212 0
+ 416 002c 002A     		cmp	r2, #0
+ 417 002e 03DB     		blt	.L37
+ 418              	.L32:
  213:Middlewares/Third_Party/LwIP/src/core/def.c ****      *ptr++ = '-';
  214:Middlewares/Third_Party/LwIP/src/core/def.c ****   }
  215:Middlewares/Third_Party/LwIP/src/core/def.c ****   *ptr-- = '\0';
- 417              		.loc 1 215 0
- 418 0030 6B1E     		subs	r3, r5, #1
- 419              	.LVL54:
- 420 0032 0022     		movs	r2, #0
+ 419              		.loc 1 215 0
+ 420 0030 6B1E     		subs	r3, r5, #1
  421              	.LVL55:
- 422 0034 2A70     		strb	r2, [r5]
+ 422 0032 0022     		movs	r2, #0
+ 423              	.LVL56:
+ 424 0034 2A70     		strb	r2, [r5]
  216:Middlewares/Third_Party/LwIP/src/core/def.c ****   while(ptr1 < ptr) {
- 423              		.loc 1 216 0
- 424 0036 0DE0     		b	.L34
- 425              	.LVL56:
- 426              	.L38:
+ 425              		.loc 1 216 0
+ 426 0036 0DE0     		b	.L33
+ 427              	.LVL57:
+ 428              	.L37:
  213:Middlewares/Third_Party/LwIP/src/core/def.c ****      *ptr++ = '-';
- 427              		.loc 1 213 0
- 428 0038 2D23     		movs	r3, #45
- 429 003a 2B70     		strb	r3, [r5]
- 430 003c A51C     		adds	r5, r4, #2
- 431              	.LVL57:
- 432 003e F7E7     		b	.L33
- 433              	.LVL58:
- 434              	.L35:
+ 429              		.loc 1 213 0
+ 430 0038 A51C     		adds	r5, r4, #2
+ 431              	.LVL58:
+ 432 003a 2D23     		movs	r3, #45
+ 433 003c 6370     		strb	r3, [r4, #1]
+ 434 003e F7E7     		b	.L32
+ 435              	.LVL59:
+ 436              	.L34:
  217:Middlewares/Third_Party/LwIP/src/core/def.c ****     tmp_char = *ptr;
- 435              		.loc 1 217 0
- 436 0040 1A46     		mov	r2, r3
- 437 0042 12F80149 		ldrb	r4, [r2], #-1	@ zero_extendqisi2
- 438              	.LVL59:
+ 437              		.loc 1 217 0
+ 438 0040 1A46     		mov	r2, r3
+ 439 0042 12F80149 		ldrb	r4, [r2], #-1	@ zero_extendqisi2
+ 440              	.LVL60:
  218:Middlewares/Third_Party/LwIP/src/core/def.c ****     *ptr--= *ptr1;
- 439              		.loc 1 218 0
- 440 0046 0146     		mov	r1, r0
- 441 0048 11F8015B 		ldrb	r5, [r1], #1	@ zero_extendqisi2
- 442 004c 1D70     		strb	r5, [r3]
- 443              	.LVL60:
+ 441              		.loc 1 218 0
+ 442 0046 0146     		mov	r1, r0
+ 443 0048 11F8015B 		ldrb	r5, [r1], #1	@ zero_extendqisi2
+ 444 004c 1D70     		strb	r5, [r3]
+ 445              	.LVL61:
  219:Middlewares/Third_Party/LwIP/src/core/def.c ****     *ptr1++ = tmp_char;
- 444              		.loc 1 219 0
- 445 004e 0470     		strb	r4, [r0]
- 446 0050 0846     		mov	r0, r1
+ 446              		.loc 1 219 0
+ 447 004e 0470     		strb	r4, [r0]
+ 448 0050 0846     		mov	r0, r1
  218:Middlewares/Third_Party/LwIP/src/core/def.c ****     *ptr--= *ptr1;
- 447              		.loc 1 218 0
- 448 0052 1346     		mov	r3, r2
- 449              	.LVL61:
- 450              	.L34:
+ 449              		.loc 1 218 0
+ 450 0052 1346     		mov	r3, r2
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccFWW8yJ.s 			page 13
+
+
+ 451              	.LVL62:
+ 452              	.L33:
  216:Middlewares/Third_Party/LwIP/src/core/def.c ****     tmp_char = *ptr;
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccmFnxUZ.s 			page 13
-
-
- 451              		.loc 1 216 0
- 452 0054 8342     		cmp	r3, r0
- 453 0056 F3D8     		bhi	.L35
+ 453              		.loc 1 216 0
+ 454 0054 8342     		cmp	r3, r0
+ 455 0056 F3D8     		bhi	.L34
  220:Middlewares/Third_Party/LwIP/src/core/def.c ****   }
  221:Middlewares/Third_Party/LwIP/src/core/def.c **** }
- 454              		.loc 1 221 0
- 455 0058 70BC     		pop	{r4, r5, r6}
- 456              	.LCFI7:
- 457              		.cfi_restore 6
- 458              		.cfi_restore 5
- 459              		.cfi_restore 4
- 460              		.cfi_def_cfa_offset 0
- 461 005a 7047     		bx	lr
- 462              	.L40:
- 463              		.align	2
+ 456              		.loc 1 221 0
+ 457 0058 70BC     		pop	{r4, r5, r6}
+ 458              	.LCFI7:
+ 459              		.cfi_restore 6
+ 460              		.cfi_restore 5
+ 461              		.cfi_restore 4
+ 462              		.cfi_def_cfa_offset 0
+ 463 005a 7047     		bx	lr
  464              	.L39:
- 465 005c 67666666 		.word	1717986919
- 466 0060 00000000 		.word	.LC0
- 467              		.cfi_endproc
- 468              	.LFE157:
- 470              		.section	.rodata.lwip_itoa.str1.4,"aMS",%progbits,1
- 471              		.align	2
- 472              	.LC0:
- 473 0000 7A797877 		.ascii	"zyxwvutsrqponmlkjihgfedcba9876543210123456789abcdef"
- 473      76757473 
- 473      7271706F 
- 473      6E6D6C6B 
- 473      6A696867 
- 474 0033 6768696A 		.ascii	"ghijklmnopqrstuvwxyz\000"
- 474      6B6C6D6E 
- 474      6F707172 
- 474      73747576 
- 474      7778797A 
- 475              		.text
- 476              	.Letext0:
- 477              		.file 2 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\machine\\_default_types.h"
- 478              		.file 3 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\_stdint.h"
- 479              		.file 4 "Drivers/CMSIS/Include/core_cm7.h"
- 480              		.file 5 "Drivers/CMSIS/Device/ST/STM32F7xx/Include/system_stm32f7xx.h"
- 481              		.file 6 "c:\\gcc_toolchain\\6_2017-q1-update\\lib\\gcc\\arm-none-eabi\\6.3.1\\include\\stddef.h"
- 482              		.file 7 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\lock.h"
- 483              		.file 8 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\_types.h"
- 484              		.file 9 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\reent.h"
- 485              		.file 10 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\stdlib.h"
- 486              		.file 11 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\time.h"
- 487              		.file 12 "Middlewares/Third_Party/LwIP/src/include/lwip/arch.h"
- 488              		.file 13 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\string.h"
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccmFnxUZ.s 			page 14
+ 465              		.align	2
+ 466              	.L38:
+ 467 005c 67666666 		.word	1717986919
+ 468 0060 00000000 		.word	.LC0
+ 469              		.cfi_endproc
+ 470              	.LFE159:
+ 472              		.section	.rodata.lwip_itoa.str1.4,"aMS",%progbits,1
+ 473              		.align	2
+ 474              	.LC0:
+ 475 0000 7A797877 		.ascii	"zyxwvutsrqponmlkjihgfedcba9876543210123456789abcdef"
+ 475      76757473 
+ 475      7271706F 
+ 475      6E6D6C6B 
+ 475      6A696867 
+ 476 0033 6768696A 		.ascii	"ghijklmnopqrstuvwxyz\000"
+ 476      6B6C6D6E 
+ 476      6F707172 
+ 476      73747576 
+ 476      7778797A 
+ 477              		.text
+ 478              	.Letext0:
+ 479              		.file 2 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\machine\\_default
+ 480              		.file 3 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 481              		.file 4 "Drivers/CMSIS/Include/core_cm7.h"
+ 482              		.file 5 "Drivers/CMSIS/Device/ST/STM32F7xx/Include/system_stm32f7xx.h"
+ 483              		.file 6 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\lib\\gcc\\arm-none-eabi\\7.3.1\\include\\
+ 484              		.file 7 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\lock.h"
+ 485              		.file 8 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\_types.h"
+ 486              		.file 9 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\reent.h"
+ 487              		.file 10 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\stdlib.h"
+ 488              		.file 11 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\time.h"
+ 489              		.file 12 "Middlewares/Third_Party/LwIP/src/include/lwip/arch.h"
+ 490              		.file 13 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\string.h"
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccFWW8yJ.s 			page 14
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 def.c
-C:\Users\Student\AppData\Local\Temp\ccmFnxUZ.s:18     .text.lwip_htons:00000000 $t
-C:\Users\Student\AppData\Local\Temp\ccmFnxUZ.s:25     .text.lwip_htons:00000000 lwip_htons
-C:\Users\Student\AppData\Local\Temp\ccmFnxUZ.s:44     .text.lwip_htonl:00000000 $t
-C:\Users\Student\AppData\Local\Temp\ccmFnxUZ.s:51     .text.lwip_htonl:00000000 lwip_htonl
-C:\Users\Student\AppData\Local\Temp\ccmFnxUZ.s:74     .text.lwip_strnstr:00000000 $t
-C:\Users\Student\AppData\Local\Temp\ccmFnxUZ.s:81     .text.lwip_strnstr:00000000 lwip_strnstr
-C:\Users\Student\AppData\Local\Temp\ccmFnxUZ.s:160    .text.lwip_stricmp:00000000 $t
-C:\Users\Student\AppData\Local\Temp\ccmFnxUZ.s:167    .text.lwip_stricmp:00000000 lwip_stricmp
-C:\Users\Student\AppData\Local\Temp\ccmFnxUZ.s:255    .text.lwip_strnicmp:00000000 $t
-C:\Users\Student\AppData\Local\Temp\ccmFnxUZ.s:262    .text.lwip_strnicmp:00000000 lwip_strnicmp
-C:\Users\Student\AppData\Local\Temp\ccmFnxUZ.s:362    .text.lwip_itoa:00000000 $t
-C:\Users\Student\AppData\Local\Temp\ccmFnxUZ.s:369    .text.lwip_itoa:00000000 lwip_itoa
-C:\Users\Student\AppData\Local\Temp\ccmFnxUZ.s:465    .text.lwip_itoa:0000005c $d
-C:\Users\Student\AppData\Local\Temp\ccmFnxUZ.s:471    .rodata.lwip_itoa.str1.4:00000000 $d
-                     .debug_frame:00000010 $d
+C:\Users\milek\AppData\Local\Temp\ccFWW8yJ.s:18     .text.lwip_htons:00000000 $t
+C:\Users\milek\AppData\Local\Temp\ccFWW8yJ.s:25     .text.lwip_htons:00000000 lwip_htons
+C:\Users\milek\AppData\Local\Temp\ccFWW8yJ.s:44     .text.lwip_htonl:00000000 $t
+C:\Users\milek\AppData\Local\Temp\ccFWW8yJ.s:51     .text.lwip_htonl:00000000 lwip_htonl
+C:\Users\milek\AppData\Local\Temp\ccFWW8yJ.s:74     .text.lwip_strnstr:00000000 $t
+C:\Users\milek\AppData\Local\Temp\ccFWW8yJ.s:81     .text.lwip_strnstr:00000000 lwip_strnstr
+C:\Users\milek\AppData\Local\Temp\ccFWW8yJ.s:162    .text.lwip_stricmp:00000000 $t
+C:\Users\milek\AppData\Local\Temp\ccFWW8yJ.s:169    .text.lwip_stricmp:00000000 lwip_stricmp
+C:\Users\milek\AppData\Local\Temp\ccFWW8yJ.s:257    .text.lwip_strnicmp:00000000 $t
+C:\Users\milek\AppData\Local\Temp\ccFWW8yJ.s:264    .text.lwip_strnicmp:00000000 lwip_strnicmp
+C:\Users\milek\AppData\Local\Temp\ccFWW8yJ.s:364    .text.lwip_itoa:00000000 $t
+C:\Users\milek\AppData\Local\Temp\ccFWW8yJ.s:371    .text.lwip_itoa:00000000 lwip_itoa
+C:\Users\milek\AppData\Local\Temp\ccFWW8yJ.s:467    .text.lwip_itoa:0000005c $d
+C:\Users\milek\AppData\Local\Temp\ccFWW8yJ.s:473    .rodata.lwip_itoa.str1.4:00000000 $d
 
 UNDEFINED SYMBOLS
 strlen

@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchy9syT.s 			page 1
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccF8XB3p.s 			page 1
 
 
    1              		.cpu cortex-m7
@@ -25,7 +25,7 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchy9syT.s 			page 1
   22              		.thumb_func
   23              		.fpu fpv5-sp-d16
   25              	USBH_MSC_SCSI_TestUnitReady:
-  26              	.LFB141:
+  26              	.LFB143:
   27              		.file 1 "Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c"
    1:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** /**
    2:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****   ******************************************************************************
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchy9syT.s 			page 1
   29:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****   *
   30:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****   * THIS SOFTWARE IS PROVIDED BY STMICROELECTRONICS AND CONTRIBUTORS "AS IS"
   31:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****   * AND ANY EXPRESS, IMPLIED OR STATUTORY WARRANTIES, INCLUDING, BUT NOT
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchy9syT.s 			page 2
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccF8XB3p.s 			page 2
 
 
   32:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****   * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchy9syT.s 			page 1
   86:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****   * @{
   87:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****   */
   88:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** /**
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchy9syT.s 			page 3
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccF8XB3p.s 			page 3
 
 
   89:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****   * @}
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchy9syT.s 			page 1
  132:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****   USBH_StatusTypeDef    error = USBH_FAIL ;
  133:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****   MSC_HandleTypeDef *MSC_Handle =  (MSC_HandleTypeDef *) phost->pActiveClass->pData;
   39              		.loc 1 133 0
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchy9syT.s 			page 4
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccF8XB3p.s 			page 4
 
 
   40 0002 D0F87833 		ldr	r3, [r0, #888]
@@ -196,20 +196,51 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchy9syT.s 			page 1
   49              		.loc 1 132 0
   50 0014 0220     		movs	r0, #2
   51              	.LVL3:
+  52 0016 16E0     		b	.L2
+  53              	.LVL4:
+  54              	.L3:
  136:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****   {
  137:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****   case BOT_CMD_SEND:
  138:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** 
  139:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     /*Prepare the CBW and relevent field*/
  140:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     MSC_Handle->hbot.cbw.field.DataTransferLength = DATA_LEN_MODE_TEST_UNIT_READY;
+  55              		.loc 1 140 0
+  56 0018 0022     		movs	r2, #0
+  57 001a DA65     		str	r2, [r3, #92]
  141:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     MSC_Handle->hbot.cbw.field.Flags = USB_EP_DIR_OUT;
+  58              		.loc 1 141 0
+  59 001c 83F86020 		strb	r2, [r3, #96]
  142:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     MSC_Handle->hbot.cbw.field.CBLength = CBW_LENGTH;
+  60              		.loc 1 142 0
+  61 0020 0A21     		movs	r1, #10
+  62              	.LVL5:
+  63 0022 83F86210 		strb	r1, [r3, #98]
  143:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** 
  144:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     USBH_memset(MSC_Handle->hbot.cbw.field.CB, 0, CBW_CB_LENGTH);
+  64              		.loc 1 144 0
+  65 0026 C3F86320 		str	r2, [r3, #99]	@ unaligned
+  66 002a C3F86720 		str	r2, [r3, #103]	@ unaligned
+  67 002e C3F86B20 		str	r2, [r3, #107]	@ unaligned
+  68 0032 C3F86F20 		str	r2, [r3, #111]	@ unaligned
  145:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     MSC_Handle->hbot.cbw.field.CB[0]  = OPCODE_TEST_UNIT_READY;
+  69              		.loc 1 145 0
+  70 0036 83F86320 		strb	r2, [r3, #99]
  146:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** 
  147:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     MSC_Handle->hbot.state = BOT_SEND_CBW;
+  71              		.loc 1 147 0
+  72 003a 0120     		movs	r0, #1
+  73              	.LVL6:
+  74 003c 83F85000 		strb	r0, [r3, #80]
  148:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     MSC_Handle->hbot.cmd_state = BOT_CMD_WAIT;
+  75              		.loc 1 148 0
+  76 0040 0222     		movs	r2, #2
+  77 0042 83F85220 		strb	r2, [r3, #82]
+  78              	.LVL7:
+  79              	.L2:
  149:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     error = USBH_BUSY;
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccF8XB3p.s 			page 5
+
+
  150:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     break;
  151:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** 
  152:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****   case BOT_CMD_WAIT:
@@ -222,46 +253,7 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchy9syT.s 			page 1
  159:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** 
  160:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****   return error;
  161:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** }
-  52              		.loc 1 161 0
-  53 0016 08BD     		pop	{r3, pc}
-  54              	.LVL4:
-  55              	.L3:
- 140:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     MSC_Handle->hbot.cbw.field.Flags = USB_EP_DIR_OUT;
-  56              		.loc 1 140 0
-  57 0018 0022     		movs	r2, #0
-  58 001a DA65     		str	r2, [r3, #92]
- 141:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     MSC_Handle->hbot.cbw.field.CBLength = CBW_LENGTH;
-  59              		.loc 1 141 0
-  60 001c 83F86020 		strb	r2, [r3, #96]
- 142:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** 
-  61              		.loc 1 142 0
-  62 0020 0A21     		movs	r1, #10
-  63              	.LVL5:
-  64 0022 83F86210 		strb	r1, [r3, #98]
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchy9syT.s 			page 5
-
-
- 144:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     MSC_Handle->hbot.cbw.field.CB[0]  = OPCODE_TEST_UNIT_READY;
-  65              		.loc 1 144 0
-  66 0026 C3F86320 		str	r2, [r3, #99]	@ unaligned
-  67 002a C3F86720 		str	r2, [r3, #103]	@ unaligned
-  68 002e C3F86B20 		str	r2, [r3, #107]	@ unaligned
-  69 0032 C3F86F20 		str	r2, [r3, #111]	@ unaligned
- 145:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** 
-  70              		.loc 1 145 0
-  71 0036 83F86320 		strb	r2, [r3, #99]
- 147:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     MSC_Handle->hbot.cmd_state = BOT_CMD_WAIT;
-  72              		.loc 1 147 0
-  73 003a 0120     		movs	r0, #1
-  74              	.LVL6:
-  75 003c 83F85000 		strb	r0, [r3, #80]
- 148:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     error = USBH_BUSY;
-  76              		.loc 1 148 0
-  77 0040 0222     		movs	r2, #2
-  78 0042 83F85220 		strb	r2, [r3, #82]
-  79              	.LVL7:
- 150:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** 
-  80              		.loc 1 150 0
+  80              		.loc 1 161 0
   81 0046 08BD     		pop	{r3, pc}
   82              	.LVL8:
   83              	.L4:
@@ -271,9 +263,9 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchy9syT.s 			page 1
   86              	.LVL9:
  154:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** 
   87              		.loc 1 154 0
-  88 004c 08BD     		pop	{r3, pc}
+  88 004c FBE7     		b	.L2
   89              		.cfi_endproc
-  90              	.LFE141:
+  90              	.LFE143:
   92              		.section	.text.USBH_MSC_SCSI_ReadCapacity,"ax",%progbits
   93              		.align	1
   94              		.global	USBH_MSC_SCSI_ReadCapacity
@@ -282,7 +274,7 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchy9syT.s 			page 1
   97              		.thumb_func
   98              		.fpu fpv5-sp-d16
  100              	USBH_MSC_SCSI_ReadCapacity:
- 101              	.LFB142:
+ 101              	.LFB144:
  162:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** 
  163:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** /**
  164:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****   * @brief  USBH_MSC_SCSI_ReadCapacity
@@ -298,9 +290,6 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchy9syT.s 			page 1
  174:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** {
  102              		.loc 1 174 0
  103              		.cfi_startproc
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchy9syT.s 			page 6
-
-
  104              		@ args = 0, pretend = 0, frame = 0
  105              		@ frame_needed = 0, uses_anonymous_args = 0
  106              	.LVL10:
@@ -309,6 +298,9 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchy9syT.s 			page 1
  109              		.cfi_def_cfa_offset 16
  110              		.cfi_offset 3, -16
  111              		.cfi_offset 4, -12
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccF8XB3p.s 			page 6
+
+
  112              		.cfi_offset 5, -8
  113              		.cfi_offset 14, -4
  114              	.LVL11:
@@ -358,9 +350,6 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchy9syT.s 			page 1
  188:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     MSC_Handle->hbot.cbw.field.CB[0]  = OPCODE_READ_CAPACITY10;
  144              		.loc 1 188 0
  145 003a 2523     		movs	r3, #37
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchy9syT.s 			page 7
-
-
  146 003c 84F86330 		strb	r3, [r4, #99]
  189:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** 
  190:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     MSC_Handle->hbot.state = BOT_SEND_CBW;
@@ -369,6 +358,9 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchy9syT.s 			page 1
  149 0042 84F85030 		strb	r3, [r4, #80]
  191:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** 
  192:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     MSC_Handle->hbot.cmd_state = BOT_CMD_WAIT;
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccF8XB3p.s 			page 7
+
+
  150              		.loc 1 192 0
  151 0046 0222     		movs	r2, #2
  152              	.LVL13:
@@ -418,9 +410,6 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchy9syT.s 			page 1
  169 005e 0346     		mov	r3, r0
  170 0060 0028     		cmp	r0, #0
  171 0062 F7D1     		bne	.L9
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchy9syT.s 			page 8
-
-
  204:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****                            ((uint32_t)MSC_Handle->hbot.pbuf[1] << 16U) | ((uint32_t)MSC_Handle->hbo
  172              		.loc 1 204 0
  173 0064 D4F88C10 		ldr	r1, [r4, #140]
@@ -429,6 +418,9 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchy9syT.s 			page 1
  176              	.LVL17:
  177 006c 42EA0022 		orr	r2, r2, r0, lsl #8
  205:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** 
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccF8XB3p.s 			page 8
+
+
  178              		.loc 1 205 0
  179 0070 4878     		ldrb	r0, [r1, #1]	@ zero_extendqisi2
  204:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****                            ((uint32_t)MSC_Handle->hbot.pbuf[1] << 16U) | ((uint32_t)MSC_Handle->hbo
@@ -450,7 +442,7 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchy9syT.s 			page 1
  192 008a AA80     		strh	r2, [r5, #4]	@ movhi
  193 008c E2E7     		b	.L9
  194              		.cfi_endproc
- 195              	.LFE142:
+ 195              	.LFE144:
  197              		.section	.text.USBH_MSC_SCSI_Inquiry,"ax",%progbits
  198              		.align	1
  199              		.global	USBH_MSC_SCSI_Inquiry
@@ -459,7 +451,7 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchy9syT.s 			page 1
  202              		.thumb_func
  203              		.fpu fpv5-sp-d16
  205              	USBH_MSC_SCSI_Inquiry:
- 206              	.LFB143:
+ 206              	.LFB145:
  218:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** 
  219:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** /**
  220:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****   * @brief  USBH_MSC_SCSI_Inquiry
@@ -478,9 +470,6 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchy9syT.s 			page 1
  210              		@ frame_needed = 0, uses_anonymous_args = 0
  211              	.LVL18:
  212 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchy9syT.s 			page 9
-
-
  213              	.LCFI2:
  214              		.cfi_def_cfa_offset 24
  215              		.cfi_offset 3, -24
@@ -489,6 +478,9 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchy9syT.s 			page 1
  218              		.cfi_offset 6, -12
  219              		.cfi_offset 7, -8
  220              		.cfi_offset 14, -4
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccF8XB3p.s 			page 9
+
+
  221              	.LVL19:
  230:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****   USBH_StatusTypeDef error = USBH_FAIL;
  231:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****   MSC_HandleTypeDef *MSC_Handle = (MSC_HandleTypeDef *) phost->pActiveClass->pData;
@@ -503,11 +495,11 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchy9syT.s 			page 1
  228 000c 012B     		cmp	r3, #1
  229 000e 03D0     		beq	.L17
  230 0010 022B     		cmp	r3, #2
- 231 0012 28D0     		beq	.L18
+ 231 0012 26D0     		beq	.L18
  230:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****   USBH_StatusTypeDef error = USBH_FAIL;
  232              		.loc 1 230 0
  233 0014 0225     		movs	r5, #2
- 234 0016 24E0     		b	.L16
+ 234 0016 22E0     		b	.L16
  235              	.L17:
  234:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****   {
  235:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****   case BOT_CMD_SEND:
@@ -530,49 +522,48 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchy9syT.s 			page 1
  242:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     USBH_memset(MSC_Handle->hbot.cbw.field.CB, 0, CBW_LENGTH);
  246              		.loc 1 242 0
  247 0028 0023     		movs	r3, #0
- 248 002a C4F86730 		str	r3, [r4, #103]	@ unaligned
- 249 002e A4F86B30 		strh	r3, [r4, #107]	@ unaligned
+ 248 002a C4F86930 		str	r3, [r4, #105]	@ unaligned
  243:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     MSC_Handle->hbot.cbw.field.CB[0]  = OPCODE_INQUIRY;
- 250              		.loc 1 243 0
- 251 0032 1220     		movs	r0, #18
- 252              	.LVL22:
- 253 0034 84F86300 		strb	r0, [r4, #99]
+ 249              		.loc 1 243 0
+ 250 002e 1220     		movs	r0, #18
+ 251              	.LVL22:
+ 252 0030 84F86300 		strb	r0, [r4, #99]
  244:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     MSC_Handle->hbot.cbw.field.CB[1]  = (lun << 5);
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchy9syT.s 			page 10
-
-
- 254              		.loc 1 244 0
- 255 0038 4901     		lsls	r1, r1, #5
- 256              	.LVL23:
- 257 003a 84F86410 		strb	r1, [r4, #100]
+ 253              		.loc 1 244 0
+ 254 0034 4901     		lsls	r1, r1, #5
+ 255              	.LVL23:
+ 256 0036 84F86410 		strb	r1, [r4, #100]
  245:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     MSC_Handle->hbot.cbw.field.CB[2]  = 0U;
- 258              		.loc 1 245 0
- 259 003e 84F86530 		strb	r3, [r4, #101]
+ 257              		.loc 1 245 0
+ 258 003a 84F86530 		strb	r3, [r4, #101]
  246:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     MSC_Handle->hbot.cbw.field.CB[3]  = 0U;
- 260              		.loc 1 246 0
- 261 0042 84F86630 		strb	r3, [r4, #102]
+ 259              		.loc 1 246 0
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccF8XB3p.s 			page 10
+
+
+ 260 003e 84F86630 		strb	r3, [r4, #102]
  247:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     MSC_Handle->hbot.cbw.field.CB[4]  = 0x24U;
- 262              		.loc 1 247 0
- 263 0046 84F86720 		strb	r2, [r4, #103]
+ 261              		.loc 1 247 0
+ 262 0042 84F86720 		strb	r2, [r4, #103]
  248:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     MSC_Handle->hbot.cbw.field.CB[5]  = 0U;
- 264              		.loc 1 248 0
- 265 004a 84F86830 		strb	r3, [r4, #104]
+ 263              		.loc 1 248 0
+ 264 0046 84F86830 		strb	r3, [r4, #104]
  249:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** 
  250:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     MSC_Handle->hbot.state = BOT_SEND_CBW;
- 266              		.loc 1 250 0
- 267 004e 0125     		movs	r5, #1
- 268 0050 84F85050 		strb	r5, [r4, #80]
+ 265              		.loc 1 250 0
+ 266 004a 0125     		movs	r5, #1
+ 267 004c 84F85050 		strb	r5, [r4, #80]
  251:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** 
  252:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     MSC_Handle->hbot.cmd_state = BOT_CMD_WAIT;
- 269              		.loc 1 252 0
- 270 0054 0223     		movs	r3, #2
- 271 0056 84F85230 		strb	r3, [r4, #82]
+ 268              		.loc 1 252 0
+ 269 0050 0223     		movs	r3, #2
+ 270 0052 84F85230 		strb	r3, [r4, #82]
  253:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     MSC_Handle->hbot.pbuf = (uint8_t *)(void *)MSC_Handle->hbot.data;
- 272              		.loc 1 253 0
- 273 005a 04F11003 		add	r3, r4, #16
- 274 005e C4F88C30 		str	r3, [r4, #140]
- 275              	.LVL24:
- 276              	.L16:
+ 271              		.loc 1 253 0
+ 272 0056 04F11003 		add	r3, r4, #16
+ 273 005a C4F88C30 		str	r3, [r4, #140]
+ 274              	.LVL24:
+ 275              	.L16:
  254:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     error = USBH_BUSY;
  255:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     break;
  256:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** 
@@ -598,9 +589,6 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchy9syT.s 			page 1
  276:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** 
  277:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****       USBH_memcpy (inquiry->vendor_id, &MSC_Handle->hbot.pbuf[8], 8U);
  278:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****       USBH_memcpy (inquiry->product_id, &MSC_Handle->hbot.pbuf[16], 16U);
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchy9syT.s 			page 11
-
-
  279:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****       USBH_memcpy (inquiry->revision_id, &MSC_Handle->hbot.pbuf[32], 4U);
  280:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     }
  281:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     break;
@@ -610,97 +598,100 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchy9syT.s 			page 1
  285:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****   }
  286:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** 
  287:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****   return error;
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccF8XB3p.s 			page 11
+
+
  288:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** }
- 277              		.loc 1 288 0
- 278 0062 2846     		mov	r0, r5
- 279 0064 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
- 280              	.LVL25:
- 281              	.L18:
- 282 0066 1646     		mov	r6, r2
+ 276              		.loc 1 288 0
+ 277 005e 2846     		mov	r0, r5
+ 278 0060 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 279              	.LVL25:
+ 280              	.L18:
+ 281 0062 1646     		mov	r6, r2
  259:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** 
- 283              		.loc 1 259 0
- 284 0068 FFF7FEFF 		bl	USBH_MSC_BOT_Process
- 285              	.LVL26:
+ 282              		.loc 1 259 0
+ 283 0064 FFF7FEFF 		bl	USBH_MSC_BOT_Process
+ 284              	.LVL26:
  261:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     {
- 286              		.loc 1 261 0
- 287 006c 0546     		mov	r5, r0
- 288 006e 0028     		cmp	r0, #0
- 289 0070 F7D1     		bne	.L16
+ 285              		.loc 1 261 0
+ 286 0068 0546     		mov	r5, r0
+ 287 006a 0028     		cmp	r0, #0
+ 288 006c F7D1     		bne	.L16
  263:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****       /*assign Inquiry Data */
- 290              		.loc 1 263 0
- 291 0072 2222     		movs	r2, #34
- 292 0074 0021     		movs	r1, #0
- 293 0076 3046     		mov	r0, r6
- 294              	.LVL27:
- 295 0078 FFF7FEFF 		bl	memset
- 296              	.LVL28:
+ 289              		.loc 1 263 0
+ 290 006e 2222     		movs	r2, #34
+ 291 0070 0021     		movs	r1, #0
+ 292 0072 3046     		mov	r0, r6
+ 293              	.LVL27:
+ 294 0074 FFF7FEFF 		bl	memset
+ 295              	.LVL28:
  265:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****       inquiry->PeripheralQualifier = MSC_Handle->hbot.pbuf[0] >> 5U;
- 297              		.loc 1 265 0
- 298 007c D4F88C30 		ldr	r3, [r4, #140]
- 299 0080 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 300 0082 03F01F03 		and	r3, r3, #31
- 301 0086 7370     		strb	r3, [r6, #1]
+ 296              		.loc 1 265 0
+ 297 0078 D4F88C30 		ldr	r3, [r4, #140]
+ 298 007c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 299 007e 03F01F03 		and	r3, r3, #31
+ 300 0082 7370     		strb	r3, [r6, #1]
  266:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** 
- 302              		.loc 1 266 0
- 303 0088 D4F88C30 		ldr	r3, [r4, #140]
- 304 008c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 305 008e 5B09     		lsrs	r3, r3, #5
- 306 0090 3370     		strb	r3, [r6]
+ 301              		.loc 1 266 0
+ 302 0084 D4F88C30 		ldr	r3, [r4, #140]
+ 303 0088 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 304 008a 5B09     		lsrs	r3, r3, #5
+ 305 008c 3370     		strb	r3, [r6]
  268:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****       {
- 307              		.loc 1 268 0
- 308 0092 D4F88C30 		ldr	r3, [r4, #140]
- 309 0096 93F90130 		ldrsb	r3, [r3, #1]
- 310 009a 002B     		cmp	r3, #0
- 311 009c 1BDB     		blt	.L24
+ 306              		.loc 1 268 0
+ 307 008e D4F88C30 		ldr	r3, [r4, #140]
+ 308 0092 93F90130 		ldrsb	r3, [r3, #1]
+ 309 0096 002B     		cmp	r3, #0
+ 310 0098 1BDB     		blt	.L24
  274:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****       }
- 312              		.loc 1 274 0
- 313 009e 0023     		movs	r3, #0
- 314 00a0 B370     		strb	r3, [r6, #2]
- 315              	.L20:
+ 311              		.loc 1 274 0
+ 312 009a 0023     		movs	r3, #0
+ 313 009c B370     		strb	r3, [r6, #2]
+ 314              	.L20:
  277:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****       USBH_memcpy (inquiry->product_id, &MSC_Handle->hbot.pbuf[16], 16U);
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchy9syT.s 			page 12
-
-
- 316              		.loc 1 277 0
- 317 00a2 D4F88C30 		ldr	r3, [r4, #140]
- 318 00a6 53F8082F 		ldr	r2, [r3, #8]!	@ unaligned
- 319 00aa 5B68     		ldr	r3, [r3, #4]	@ unaligned
- 320 00ac C6F80320 		str	r2, [r6, #3]	@ unaligned
- 321 00b0 C6F80730 		str	r3, [r6, #7]	@ unaligned
+ 315              		.loc 1 277 0
+ 316 009e D4F88C30 		ldr	r3, [r4, #140]
+ 317 00a2 53F8082F 		ldr	r2, [r3, #8]!	@ unaligned
+ 318 00a6 5B68     		ldr	r3, [r3, #4]	@ unaligned
+ 319 00a8 C6F80320 		str	r2, [r6, #3]	@ unaligned
+ 320 00ac C6F80730 		str	r3, [r6, #7]	@ unaligned
  278:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****       USBH_memcpy (inquiry->revision_id, &MSC_Handle->hbot.pbuf[32], 4U);
- 322              		.loc 1 278 0
- 323 00b4 D4F88C30 		ldr	r3, [r4, #140]
- 324 00b8 53F8107F 		ldr	r7, [r3, #16]!	@ unaligned
- 325 00bc 5868     		ldr	r0, [r3, #4]	@ unaligned
- 326 00be 9968     		ldr	r1, [r3, #8]	@ unaligned
- 327 00c0 DB68     		ldr	r3, [r3, #12]	@ unaligned
- 328 00c2 F760     		str	r7, [r6, #12]	@ unaligned
- 329 00c4 3061     		str	r0, [r6, #16]	@ unaligned
- 330 00c6 7161     		str	r1, [r6, #20]	@ unaligned
- 331 00c8 B361     		str	r3, [r6, #24]	@ unaligned
+ 321              		.loc 1 278 0
+ 322 00b0 D4F88C30 		ldr	r3, [r4, #140]
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccF8XB3p.s 			page 12
+
+
+ 323 00b4 53F8107F 		ldr	r7, [r3, #16]!	@ unaligned
+ 324 00b8 5868     		ldr	r0, [r3, #4]	@ unaligned
+ 325 00ba 9968     		ldr	r1, [r3, #8]	@ unaligned
+ 326 00bc DB68     		ldr	r3, [r3, #12]	@ unaligned
+ 327 00be F760     		str	r7, [r6, #12]	@ unaligned
+ 328 00c0 3061     		str	r0, [r6, #16]	@ unaligned
+ 329 00c2 7161     		str	r1, [r6, #20]	@ unaligned
+ 330 00c4 B361     		str	r3, [r6, #24]	@ unaligned
  279:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     }
- 332              		.loc 1 279 0
- 333 00ca D4F88C30 		ldr	r3, [r4, #140]
- 334 00ce 1B6A     		ldr	r3, [r3, #32]	@ unaligned
- 335 00d0 C6F81D30 		str	r3, [r6, #29]	@ unaligned
- 336 00d4 C5E7     		b	.L16
- 337              	.L24:
+ 331              		.loc 1 279 0
+ 332 00c6 D4F88C30 		ldr	r3, [r4, #140]
+ 333 00ca 1B6A     		ldr	r3, [r3, #32]	@ unaligned
+ 334 00cc C6F81D30 		str	r3, [r6, #29]	@ unaligned
+ 335 00d0 C5E7     		b	.L16
+ 336              	.L24:
  270:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****       }
- 338              		.loc 1 270 0
- 339 00d6 0123     		movs	r3, #1
- 340 00d8 B370     		strb	r3, [r6, #2]
- 341 00da E2E7     		b	.L20
- 342              		.cfi_endproc
- 343              	.LFE143:
- 345              		.section	.text.USBH_MSC_SCSI_RequestSense,"ax",%progbits
- 346              		.align	1
- 347              		.global	USBH_MSC_SCSI_RequestSense
- 348              		.syntax unified
- 349              		.thumb
- 350              		.thumb_func
- 351              		.fpu fpv5-sp-d16
- 353              	USBH_MSC_SCSI_RequestSense:
- 354              	.LFB144:
+ 337              		.loc 1 270 0
+ 338 00d2 0123     		movs	r3, #1
+ 339 00d4 B370     		strb	r3, [r6, #2]
+ 340 00d6 E2E7     		b	.L20
+ 341              		.cfi_endproc
+ 342              	.LFE145:
+ 344              		.section	.text.USBH_MSC_SCSI_RequestSense,"ax",%progbits
+ 345              		.align	1
+ 346              		.global	USBH_MSC_SCSI_RequestSense
+ 347              		.syntax unified
+ 348              		.thumb
+ 349              		.thumb_func
+ 350              		.fpu fpv5-sp-d16
+ 352              	USBH_MSC_SCSI_RequestSense:
+ 353              	.LFB146:
  289:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** 
  290:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** /**
  291:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****   * @brief  USBH_MSC_SCSI_RequestSense
@@ -714,105 +705,105 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchy9syT.s 			page 1
  299:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****                                                uint8_t lun,
  300:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****                                                SCSI_SenseTypeDef *sense_data)
  301:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** {
- 355              		.loc 1 301 0
- 356              		.cfi_startproc
- 357              		@ args = 0, pretend = 0, frame = 0
- 358              		@ frame_needed = 0, uses_anonymous_args = 0
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchy9syT.s 			page 13
+ 354              		.loc 1 301 0
+ 355              		.cfi_startproc
+ 356              		@ args = 0, pretend = 0, frame = 0
+ 357              		@ frame_needed = 0, uses_anonymous_args = 0
+ 358              	.LVL29:
+ 359 0000 38B5     		push	{r3, r4, r5, lr}
+ 360              	.LCFI3:
+ 361              		.cfi_def_cfa_offset 16
+ 362              		.cfi_offset 3, -16
+ 363              		.cfi_offset 4, -12
+ 364              		.cfi_offset 5, -8
+ 365              		.cfi_offset 14, -4
+ 366              	.LVL30:
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccF8XB3p.s 			page 13
 
 
- 359              	.LVL29:
- 360 0000 38B5     		push	{r3, r4, r5, lr}
- 361              	.LCFI3:
- 362              		.cfi_def_cfa_offset 16
- 363              		.cfi_offset 3, -16
- 364              		.cfi_offset 4, -12
- 365              		.cfi_offset 5, -8
- 366              		.cfi_offset 14, -4
- 367              	.LVL30:
  302:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****   USBH_StatusTypeDef    error = USBH_FAIL ;
  303:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****   MSC_HandleTypeDef *MSC_Handle =  (MSC_HandleTypeDef *) phost->pActiveClass->pData;
- 368              		.loc 1 303 0
- 369 0002 D0F87833 		ldr	r3, [r0, #888]
- 370 0006 DC69     		ldr	r4, [r3, #28]
- 371              	.LVL31:
+ 367              		.loc 1 303 0
+ 368 0002 D0F87833 		ldr	r3, [r0, #888]
+ 369 0006 DC69     		ldr	r4, [r3, #28]
+ 370              	.LVL31:
  304:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** 
  305:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****   switch(MSC_Handle->hbot.cmd_state)
- 372              		.loc 1 305 0
- 373 0008 94F85230 		ldrb	r3, [r4, #82]	@ zero_extendqisi2
- 374 000c 012B     		cmp	r3, #1
- 375 000e 03D0     		beq	.L27
- 376 0010 022B     		cmp	r3, #2
- 377 0012 2AD0     		beq	.L28
+ 371              		.loc 1 305 0
+ 372 0008 94F85230 		ldrb	r3, [r4, #82]	@ zero_extendqisi2
+ 373 000c 012B     		cmp	r3, #1
+ 374 000e 03D0     		beq	.L27
+ 375 0010 022B     		cmp	r3, #2
+ 376 0012 2AD0     		beq	.L28
  302:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****   USBH_StatusTypeDef    error = USBH_FAIL ;
- 378              		.loc 1 302 0
- 379 0014 0223     		movs	r3, #2
- 380 0016 26E0     		b	.L26
- 381              	.L27:
+ 377              		.loc 1 302 0
+ 378 0014 0223     		movs	r3, #2
+ 379 0016 26E0     		b	.L26
+ 380              	.L27:
  306:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****   {
  307:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****   case BOT_CMD_SEND:
  308:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** 
  309:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     /*Prepare the CBW and relevent field*/
  310:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     MSC_Handle->hbot.cbw.field.DataTransferLength = DATA_LEN_REQUEST_SENSE;
- 382              		.loc 1 310 0
- 383 0018 0E20     		movs	r0, #14
- 384              	.LVL32:
- 385 001a E065     		str	r0, [r4, #92]
+ 381              		.loc 1 310 0
+ 382 0018 0E22     		movs	r2, #14
+ 383              	.LVL32:
+ 384 001a E265     		str	r2, [r4, #92]
  311:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     MSC_Handle->hbot.cbw.field.Flags = USB_EP_DIR_IN;
- 386              		.loc 1 311 0
- 387 001c 8023     		movs	r3, #128
- 388 001e 84F86030 		strb	r3, [r4, #96]
+ 385              		.loc 1 311 0
+ 386 001c 8023     		movs	r3, #128
+ 387 001e 84F86030 		strb	r3, [r4, #96]
  312:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     MSC_Handle->hbot.cbw.field.CBLength = CBW_LENGTH;
- 389              		.loc 1 312 0
- 390 0022 0A23     		movs	r3, #10
- 391 0024 84F86230 		strb	r3, [r4, #98]
+ 388              		.loc 1 312 0
+ 389 0022 0A23     		movs	r3, #10
+ 390 0024 84F86230 		strb	r3, [r4, #98]
  313:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** 
  314:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     USBH_memset(MSC_Handle->hbot.cbw.field.CB, 0, CBW_CB_LENGTH);
- 392              		.loc 1 314 0
- 393 0028 0023     		movs	r3, #0
- 394 002a C4F86730 		str	r3, [r4, #103]	@ unaligned
- 395 002e C4F86B30 		str	r3, [r4, #107]	@ unaligned
- 396 0032 C4F86F30 		str	r3, [r4, #111]	@ unaligned
+ 391              		.loc 1 314 0
+ 392 0028 0023     		movs	r3, #0
+ 393 002a C4F86930 		str	r3, [r4, #105]	@ unaligned
+ 394 002e C4F86D30 		str	r3, [r4, #109]	@ unaligned
+ 395 0032 A4F87130 		strh	r3, [r4, #113]	@ unaligned
  315:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     MSC_Handle->hbot.cbw.field.CB[0]  = OPCODE_REQUEST_SENSE;
- 397              		.loc 1 315 0
- 398 0036 0322     		movs	r2, #3
- 399              	.LVL33:
- 400 0038 84F86320 		strb	r2, [r4, #99]
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchy9syT.s 			page 14
-
-
+ 396              		.loc 1 315 0
+ 397 0036 0320     		movs	r0, #3
+ 398              	.LVL33:
+ 399 0038 84F86300 		strb	r0, [r4, #99]
  316:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     MSC_Handle->hbot.cbw.field.CB[1]  = (lun << 5);
- 401              		.loc 1 316 0
- 402 003c 4901     		lsls	r1, r1, #5
- 403              	.LVL34:
- 404 003e 84F86410 		strb	r1, [r4, #100]
+ 400              		.loc 1 316 0
+ 401 003c 4901     		lsls	r1, r1, #5
+ 402              	.LVL34:
+ 403 003e 84F86410 		strb	r1, [r4, #100]
  317:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     MSC_Handle->hbot.cbw.field.CB[2]  = 0U;
- 405              		.loc 1 317 0
- 406 0042 84F86530 		strb	r3, [r4, #101]
+ 404              		.loc 1 317 0
+ 405 0042 84F86530 		strb	r3, [r4, #101]
  318:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     MSC_Handle->hbot.cbw.field.CB[3]  = 0U;
- 407              		.loc 1 318 0
- 408 0046 84F86630 		strb	r3, [r4, #102]
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccF8XB3p.s 			page 14
+
+
+ 406              		.loc 1 318 0
+ 407 0046 84F86630 		strb	r3, [r4, #102]
  319:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     MSC_Handle->hbot.cbw.field.CB[4]  = DATA_LEN_REQUEST_SENSE;
- 409              		.loc 1 319 0
- 410 004a 84F86700 		strb	r0, [r4, #103]
+ 408              		.loc 1 319 0
+ 409 004a 84F86720 		strb	r2, [r4, #103]
  320:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     MSC_Handle->hbot.cbw.field.CB[5]  = 0U;
- 411              		.loc 1 320 0
- 412 004e 84F86830 		strb	r3, [r4, #104]
+ 410              		.loc 1 320 0
+ 411 004e 84F86830 		strb	r3, [r4, #104]
  321:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** 
  322:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     MSC_Handle->hbot.state = BOT_SEND_CBW;
- 413              		.loc 1 322 0
- 414 0052 0123     		movs	r3, #1
- 415 0054 84F85030 		strb	r3, [r4, #80]
+ 412              		.loc 1 322 0
+ 413 0052 0123     		movs	r3, #1
+ 414 0054 84F85030 		strb	r3, [r4, #80]
  323:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     MSC_Handle->hbot.cmd_state = BOT_CMD_WAIT;
- 416              		.loc 1 323 0
- 417 0058 0222     		movs	r2, #2
- 418 005a 84F85220 		strb	r2, [r4, #82]
+ 415              		.loc 1 323 0
+ 416 0058 0222     		movs	r2, #2
+ 417 005a 84F85220 		strb	r2, [r4, #82]
  324:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     MSC_Handle->hbot.pbuf = (uint8_t *)(void *)MSC_Handle->hbot.data;
- 419              		.loc 1 324 0
- 420 005e 04F11002 		add	r2, r4, #16
- 421 0062 C4F88C20 		str	r2, [r4, #140]
- 422              	.LVL35:
- 423              	.L26:
+ 418              		.loc 1 324 0
+ 419 005e 04F11002 		add	r2, r4, #16
+ 420 0062 C4F88C20 		str	r2, [r4, #140]
+ 421              	.LVL35:
+ 422              	.L26:
  325:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     error = USBH_BUSY;
  326:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     break;
  327:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** 
@@ -834,52 +825,52 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchy9syT.s 			page 1
  343:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** 
  344:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****   return error;
  345:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** }
- 424              		.loc 1 345 0
- 425 0066 1846     		mov	r0, r3
- 426 0068 38BD     		pop	{r3, r4, r5, pc}
- 427              	.LVL36:
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchy9syT.s 			page 15
-
-
- 428              	.L28:
- 429 006a 1546     		mov	r5, r2
+ 423              		.loc 1 345 0
+ 424 0066 1846     		mov	r0, r3
+ 425 0068 38BD     		pop	{r3, r4, r5, pc}
+ 426              	.LVL36:
+ 427              	.L28:
+ 428 006a 1546     		mov	r5, r2
  330:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** 
- 430              		.loc 1 330 0
- 431 006c FFF7FEFF 		bl	USBH_MSC_BOT_Process
- 432              	.LVL37:
+ 429              		.loc 1 330 0
+ 430 006c FFF7FEFF 		bl	USBH_MSC_BOT_Process
+ 431              	.LVL37:
  332:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     {
- 433              		.loc 1 332 0
- 434 0070 0346     		mov	r3, r0
- 435 0072 0028     		cmp	r0, #0
- 436 0074 F7D1     		bne	.L26
+ 432              		.loc 1 332 0
+ 433 0070 0346     		mov	r3, r0
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccF8XB3p.s 			page 15
+
+
+ 434 0072 0028     		cmp	r0, #0
+ 435 0074 F7D1     		bne	.L26
  334:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****       sense_data->asc  = MSC_Handle->hbot.pbuf[12];
- 437              		.loc 1 334 0
- 438 0076 D4F88C20 		ldr	r2, [r4, #140]
- 439 007a 9278     		ldrb	r2, [r2, #2]	@ zero_extendqisi2
- 440 007c 02F00F02 		and	r2, r2, #15
- 441 0080 2A70     		strb	r2, [r5]
+ 436              		.loc 1 334 0
+ 437 0076 D4F88C20 		ldr	r2, [r4, #140]
+ 438 007a 9278     		ldrb	r2, [r2, #2]	@ zero_extendqisi2
+ 439 007c 02F00F02 		and	r2, r2, #15
+ 440 0080 2A70     		strb	r2, [r5]
  335:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****       sense_data->ascq = MSC_Handle->hbot.pbuf[13];
- 442              		.loc 1 335 0
- 443 0082 D4F88C20 		ldr	r2, [r4, #140]
- 444 0086 127B     		ldrb	r2, [r2, #12]	@ zero_extendqisi2
- 445 0088 6A70     		strb	r2, [r5, #1]
+ 441              		.loc 1 335 0
+ 442 0082 D4F88C20 		ldr	r2, [r4, #140]
+ 443 0086 127B     		ldrb	r2, [r2, #12]	@ zero_extendqisi2
+ 444 0088 6A70     		strb	r2, [r5, #1]
  336:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     }
- 446              		.loc 1 336 0
- 447 008a D4F88C20 		ldr	r2, [r4, #140]
- 448 008e 527B     		ldrb	r2, [r2, #13]	@ zero_extendqisi2
- 449 0090 AA70     		strb	r2, [r5, #2]
- 450 0092 E8E7     		b	.L26
- 451              		.cfi_endproc
- 452              	.LFE144:
- 454              		.section	.text.USBH_MSC_SCSI_Write,"ax",%progbits
- 455              		.align	1
- 456              		.global	USBH_MSC_SCSI_Write
- 457              		.syntax unified
- 458              		.thumb
- 459              		.thumb_func
- 460              		.fpu fpv5-sp-d16
- 462              	USBH_MSC_SCSI_Write:
- 463              	.LFB145:
+ 445              		.loc 1 336 0
+ 446 008a D4F88C20 		ldr	r2, [r4, #140]
+ 447 008e 527B     		ldrb	r2, [r2, #13]	@ zero_extendqisi2
+ 448 0090 AA70     		strb	r2, [r5, #2]
+ 449 0092 E8E7     		b	.L26
+ 450              		.cfi_endproc
+ 451              	.LFE146:
+ 453              		.section	.text.USBH_MSC_SCSI_Write,"ax",%progbits
+ 454              		.align	1
+ 455              		.global	USBH_MSC_SCSI_Write
+ 456              		.syntax unified
+ 457              		.thumb
+ 458              		.thumb_func
+ 459              		.fpu fpv5-sp-d16
+ 461              	USBH_MSC_SCSI_Write:
+ 462              	.LFB147:
  346:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** 
  347:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** /**
  348:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****   * @brief  USBH_MSC_SCSI_Write
@@ -897,130 +888,124 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchy9syT.s 			page 1
  360:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****                                      uint8_t *pbuf,
  361:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****                                      uint32_t length)
  362:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** {
- 464              		.loc 1 362 0
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchy9syT.s 			page 16
+ 463              		.loc 1 362 0
+ 464              		.cfi_startproc
+ 465              		@ args = 4, pretend = 0, frame = 0
+ 466              		@ frame_needed = 0, uses_anonymous_args = 0
+ 467              	.LVL38:
+ 468 0000 38B5     		push	{r3, r4, r5, lr}
+ 469              	.LCFI4:
+ 470              		.cfi_def_cfa_offset 16
+ 471              		.cfi_offset 3, -16
+ 472              		.cfi_offset 4, -12
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccF8XB3p.s 			page 16
 
 
- 465              		.cfi_startproc
- 466              		@ args = 4, pretend = 0, frame = 8
- 467              		@ frame_needed = 0, uses_anonymous_args = 0
- 468              	.LVL38:
- 469 0000 10B5     		push	{r4, lr}
- 470              	.LCFI4:
- 471              		.cfi_def_cfa_offset 8
- 472              		.cfi_offset 4, -8
- 473              		.cfi_offset 14, -4
- 474 0002 82B0     		sub	sp, sp, #8
- 475              	.LCFI5:
- 476              		.cfi_def_cfa_offset 16
- 477 0004 0192     		str	r2, [sp, #4]
- 478              	.LVL39:
+ 473              		.cfi_offset 5, -8
+ 474              		.cfi_offset 14, -4
+ 475              	.LVL39:
  363:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****   USBH_StatusTypeDef    error = USBH_FAIL ;
  364:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** 
  365:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****   MSC_HandleTypeDef *MSC_Handle =  (MSC_HandleTypeDef *) phost->pActiveClass->pData;
- 479              		.loc 1 365 0
- 480 0006 D0F87823 		ldr	r2, [r0, #888]
- 481              	.LVL40:
- 482 000a D269     		ldr	r2, [r2, #28]
- 483              	.LVL41:
+ 476              		.loc 1 365 0
+ 477 0002 D0F87843 		ldr	r4, [r0, #888]
+ 478 0006 E469     		ldr	r4, [r4, #28]
+ 479              	.LVL40:
  366:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** 
  367:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****   switch(MSC_Handle->hbot.cmd_state)
- 484              		.loc 1 367 0
- 485 000c 92F85240 		ldrb	r4, [r2, #82]	@ zero_extendqisi2
- 486 0010 012C     		cmp	r4, #1
- 487 0012 03D0     		beq	.L34
- 488 0014 022C     		cmp	r4, #2
- 489 0016 3AD0     		beq	.L35
+ 480              		.loc 1 367 0
+ 481 0008 94F85250 		ldrb	r5, [r4, #82]	@ zero_extendqisi2
+ 482 000c 012D     		cmp	r5, #1
+ 483 000e 03D0     		beq	.L34
+ 484 0010 022D     		cmp	r5, #2
+ 485 0012 37D0     		beq	.L35
  363:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****   USBH_StatusTypeDef    error = USBH_FAIL ;
- 490              		.loc 1 363 0
- 491 0018 0220     		movs	r0, #2
- 492              	.LVL42:
- 493 001a 36E0     		b	.L33
- 494              	.LVL43:
- 495              	.L34:
+ 486              		.loc 1 363 0
+ 487 0014 0220     		movs	r0, #2
+ 488              	.LVL41:
+ 489 0016 34E0     		b	.L33
+ 490              	.LVL42:
+ 491              	.L34:
  368:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****   {
  369:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****   case BOT_CMD_SEND:
  370:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** 
  371:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     /*Prepare the CBW and relevent field*/
  372:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     MSC_Handle->hbot.cbw.field.DataTransferLength = length * MSC_Handle->unit[0].capacity.block_siz
- 496              		.loc 1 372 0
- 497 001c B2F89800 		ldrh	r0, [r2, #152]
- 498              	.LVL44:
- 499 0020 0499     		ldr	r1, [sp, #16]
- 500              	.LVL45:
- 501 0022 01FB00F1 		mul	r1, r1, r0
- 502 0026 D165     		str	r1, [r2, #92]
+ 492              		.loc 1 372 0
+ 493 0018 B4F89810 		ldrh	r1, [r4, #152]
+ 494              	.LVL43:
+ 495 001c 0498     		ldr	r0, [sp, #16]
+ 496              	.LVL44:
+ 497 001e 00FB01F1 		mul	r1, r0, r1
+ 498 0022 E165     		str	r1, [r4, #92]
  373:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     MSC_Handle->hbot.cbw.field.Flags = USB_EP_DIR_OUT;
- 503              		.loc 1 373 0
- 504 0028 0021     		movs	r1, #0
- 505 002a 82F86010 		strb	r1, [r2, #96]
+ 499              		.loc 1 373 0
+ 500 0024 0021     		movs	r1, #0
+ 501 0026 84F86010 		strb	r1, [r4, #96]
  374:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     MSC_Handle->hbot.cbw.field.CBLength = CBW_LENGTH;
- 506              		.loc 1 374 0
- 507 002e 0A20     		movs	r0, #10
- 508 0030 82F86200 		strb	r0, [r2, #98]
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchy9syT.s 			page 17
-
-
+ 502              		.loc 1 374 0
+ 503 002a 0A20     		movs	r0, #10
+ 504 002c 84F86200 		strb	r0, [r4, #98]
  375:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** 
  376:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     USBH_memset(MSC_Handle->hbot.cbw.field.CB, 0, CBW_CB_LENGTH);
- 509              		.loc 1 376 0
- 510 0034 C2F86310 		str	r1, [r2, #99]	@ unaligned
- 511              	.LVL46:
- 512 0038 C2F86710 		str	r1, [r2, #103]	@ unaligned
- 513 003c C2F86B10 		str	r1, [r2, #107]	@ unaligned
- 514 0040 C2F86F10 		str	r1, [r2, #111]	@ unaligned
+ 505              		.loc 1 376 0
+ 506 0030 C4F86310 		str	r1, [r4, #99]	@ unaligned
+ 507 0034 C4F86710 		str	r1, [r4, #103]	@ unaligned
+ 508 0038 C4F86B10 		str	r1, [r4, #107]	@ unaligned
+ 509 003c C4F86F10 		str	r1, [r4, #111]	@ unaligned
  377:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     MSC_Handle->hbot.cbw.field.CB[0]  = OPCODE_WRITE10;
- 515              		.loc 1 377 0
- 516 0044 2A21     		movs	r1, #42
- 517 0046 82F86310 		strb	r1, [r2, #99]
+ 510              		.loc 1 377 0
+ 511 0040 2A21     		movs	r1, #42
+ 512 0042 84F86310 		strb	r1, [r4, #99]
  378:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** 
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccF8XB3p.s 			page 17
+
+
  379:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     /*logical block address*/
  380:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     MSC_Handle->hbot.cbw.field.CB[2]  = (((uint8_t*)(void *)&address)[3]);
- 518              		.loc 1 380 0
- 519 004a 9DF80710 		ldrb	r1, [sp, #7]	@ zero_extendqisi2
- 520 004e 82F86510 		strb	r1, [r2, #101]
+ 513              		.loc 1 380 0
+ 514 0046 C2F30761 		ubfx	r1, r2, #24, #8
+ 515 004a 84F86510 		strb	r1, [r4, #101]
  381:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     MSC_Handle->hbot.cbw.field.CB[3]  = (((uint8_t*)(void *)&address)[2]);
- 521              		.loc 1 381 0
- 522 0052 9DF80610 		ldrb	r1, [sp, #6]	@ zero_extendqisi2
- 523 0056 82F86610 		strb	r1, [r2, #102]
+ 516              		.loc 1 381 0
+ 517 004e C2F30741 		ubfx	r1, r2, #16, #8
+ 518 0052 84F86610 		strb	r1, [r4, #102]
  382:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     MSC_Handle->hbot.cbw.field.CB[4]  = (((uint8_t*)(void *)&address)[1]);
- 524              		.loc 1 382 0
- 525 005a 9DF80510 		ldrb	r1, [sp, #5]	@ zero_extendqisi2
- 526 005e 82F86710 		strb	r1, [r2, #103]
+ 519              		.loc 1 382 0
+ 520 0056 C2F30721 		ubfx	r1, r2, #8, #8
+ 521 005a 84F86710 		strb	r1, [r4, #103]
  383:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     MSC_Handle->hbot.cbw.field.CB[5]  = (((uint8_t*)(void *)&address)[0]);
- 527              		.loc 1 383 0
- 528 0062 9DF80410 		ldrb	r1, [sp, #4]	@ zero_extendqisi2
- 529 0066 82F86810 		strb	r1, [r2, #104]
+ 522              		.loc 1 383 0
+ 523 005e 84F86820 		strb	r2, [r4, #104]
  384:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** 
  385:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** 
  386:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     /*Transfer length */
  387:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     MSC_Handle->hbot.cbw.field.CB[7]  = (((uint8_t *)(void *)&length)[1]) ;
- 530              		.loc 1 387 0
- 531 006a 9DF81110 		ldrb	r1, [sp, #17]	@ zero_extendqisi2
- 532 006e 82F86A10 		strb	r1, [r2, #106]
+ 524              		.loc 1 387 0
+ 525 0062 049A     		ldr	r2, [sp, #16]
+ 526              	.LVL45:
+ 527 0064 C2F30722 		ubfx	r2, r2, #8, #8
+ 528 0068 84F86A20 		strb	r2, [r4, #106]
  388:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     MSC_Handle->hbot.cbw.field.CB[8]  = (((uint8_t *)(void *)&length)[0]) ;
- 533              		.loc 1 388 0
- 534 0072 9DF81010 		ldrb	r1, [sp, #16]	@ zero_extendqisi2
- 535 0076 82F86B10 		strb	r1, [r2, #107]
+ 529              		.loc 1 388 0
+ 530 006c 049A     		ldr	r2, [sp, #16]
+ 531 006e 84F86B20 		strb	r2, [r4, #107]
  389:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** 
  390:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** 
  391:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     MSC_Handle->hbot.state = BOT_SEND_CBW;
- 536              		.loc 1 391 0
- 537 007a 0120     		movs	r0, #1
- 538 007c 82F85000 		strb	r0, [r2, #80]
+ 532              		.loc 1 391 0
+ 533 0072 0120     		movs	r0, #1
+ 534 0074 84F85000 		strb	r0, [r4, #80]
  392:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     MSC_Handle->hbot.cmd_state = BOT_CMD_WAIT;
- 539              		.loc 1 392 0
- 540 0080 0221     		movs	r1, #2
- 541 0082 82F85210 		strb	r1, [r2, #82]
+ 535              		.loc 1 392 0
+ 536 0078 0222     		movs	r2, #2
+ 537 007a 84F85220 		strb	r2, [r4, #82]
  393:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     MSC_Handle->hbot.pbuf = pbuf;
- 542              		.loc 1 393 0
- 543 0086 C2F88C30 		str	r3, [r2, #140]
- 544              	.LVL47:
- 545              	.L33:
+ 538              		.loc 1 393 0
+ 539 007e C4F88C30 		str	r3, [r4, #140]
+ 540              	.LVL46:
+ 541              	.L33:
  394:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     error = USBH_BUSY;
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchy9syT.s 			page 18
-
-
  395:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     break;
  396:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** 
  397:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****   case BOT_CMD_WAIT:
@@ -1033,35 +1018,31 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchy9syT.s 			page 1
  404:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** 
  405:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****   return error;
  406:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** }
- 546              		.loc 1 406 0
- 547 008a 02B0     		add	sp, sp, #8
- 548              	.LCFI6:
- 549              		.cfi_remember_state
- 550              		.cfi_def_cfa_offset 8
- 551              		@ sp needed
- 552 008c 10BD     		pop	{r4, pc}
- 553              	.LVL48:
- 554              	.L35:
- 555              	.LCFI7:
- 556              		.cfi_restore_state
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccF8XB3p.s 			page 18
+
+
+ 542              		.loc 1 406 0
+ 543 0082 38BD     		pop	{r3, r4, r5, pc}
+ 544              	.LVL47:
+ 545              	.L35:
  398:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     break;
- 557              		.loc 1 398 0
- 558 008e FFF7FEFF 		bl	USBH_MSC_BOT_Process
- 559              	.LVL49:
+ 546              		.loc 1 398 0
+ 547 0084 FFF7FEFF 		bl	USBH_MSC_BOT_Process
+ 548              	.LVL48:
  399:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** 
- 560              		.loc 1 399 0
- 561 0092 FAE7     		b	.L33
- 562              		.cfi_endproc
- 563              	.LFE145:
- 565              		.section	.text.USBH_MSC_SCSI_Read,"ax",%progbits
- 566              		.align	1
- 567              		.global	USBH_MSC_SCSI_Read
- 568              		.syntax unified
- 569              		.thumb
- 570              		.thumb_func
- 571              		.fpu fpv5-sp-d16
- 573              	USBH_MSC_SCSI_Read:
- 574              	.LFB146:
+ 549              		.loc 1 399 0
+ 550 0088 FBE7     		b	.L33
+ 551              		.cfi_endproc
+ 552              	.LFE147:
+ 554              		.section	.text.USBH_MSC_SCSI_Read,"ax",%progbits
+ 555              		.align	1
+ 556              		.global	USBH_MSC_SCSI_Read
+ 557              		.syntax unified
+ 558              		.thumb
+ 559              		.thumb_func
+ 560              		.fpu fpv5-sp-d16
+ 562              	USBH_MSC_SCSI_Read:
+ 563              	.LFB148:
  407:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** 
  408:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** /**
  409:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****   * @brief  USBH_MSC_SCSI_Read
@@ -1078,130 +1059,124 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchy9syT.s 			page 1
  420:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****                                      uint32_t address,
  421:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****                                      uint8_t *pbuf,
  422:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****                                      uint32_t length)
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchy9syT.s 			page 19
-
-
  423:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** {
- 575              		.loc 1 423 0
- 576              		.cfi_startproc
- 577              		@ args = 4, pretend = 0, frame = 8
- 578              		@ frame_needed = 0, uses_anonymous_args = 0
- 579              	.LVL50:
- 580 0000 10B5     		push	{r4, lr}
- 581              	.LCFI8:
- 582              		.cfi_def_cfa_offset 8
- 583              		.cfi_offset 4, -8
- 584              		.cfi_offset 14, -4
- 585 0002 82B0     		sub	sp, sp, #8
- 586              	.LCFI9:
- 587              		.cfi_def_cfa_offset 16
- 588 0004 0192     		str	r2, [sp, #4]
- 589              	.LVL51:
+ 564              		.loc 1 423 0
+ 565              		.cfi_startproc
+ 566              		@ args = 4, pretend = 0, frame = 0
+ 567              		@ frame_needed = 0, uses_anonymous_args = 0
+ 568              	.LVL49:
+ 569 0000 38B5     		push	{r3, r4, r5, lr}
+ 570              	.LCFI5:
+ 571              		.cfi_def_cfa_offset 16
+ 572              		.cfi_offset 3, -16
+ 573              		.cfi_offset 4, -12
+ 574              		.cfi_offset 5, -8
+ 575              		.cfi_offset 14, -4
+ 576              	.LVL50:
  424:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****   USBH_StatusTypeDef    error = USBH_FAIL ;
  425:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****   MSC_HandleTypeDef *MSC_Handle = (MSC_HandleTypeDef *) phost->pActiveClass->pData;
- 590              		.loc 1 425 0
- 591 0006 D0F87823 		ldr	r2, [r0, #888]
- 592              	.LVL52:
- 593 000a D269     		ldr	r2, [r2, #28]
- 594              	.LVL53:
+ 577              		.loc 1 425 0
+ 578 0002 D0F87843 		ldr	r4, [r0, #888]
+ 579 0006 E469     		ldr	r4, [r4, #28]
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccF8XB3p.s 			page 19
+
+
+ 580              	.LVL51:
  426:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** 
  427:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****   switch(MSC_Handle->hbot.cmd_state)
- 595              		.loc 1 427 0
- 596 000c 92F85240 		ldrb	r4, [r2, #82]	@ zero_extendqisi2
- 597 0010 012C     		cmp	r4, #1
- 598 0012 03D0     		beq	.L41
- 599 0014 022C     		cmp	r4, #2
- 600 0016 3BD0     		beq	.L42
+ 581              		.loc 1 427 0
+ 582 0008 94F85250 		ldrb	r5, [r4, #82]	@ zero_extendqisi2
+ 583 000c 012D     		cmp	r5, #1
+ 584 000e 03D0     		beq	.L41
+ 585 0010 022D     		cmp	r5, #2
+ 586 0012 38D0     		beq	.L42
  424:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****   USBH_StatusTypeDef    error = USBH_FAIL ;
- 601              		.loc 1 424 0
- 602 0018 0220     		movs	r0, #2
- 603              	.LVL54:
- 604 001a 37E0     		b	.L40
- 605              	.LVL55:
- 606              	.L41:
+ 587              		.loc 1 424 0
+ 588 0014 0220     		movs	r0, #2
+ 589              	.LVL52:
+ 590 0016 35E0     		b	.L40
+ 591              	.LVL53:
+ 592              	.L41:
  428:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****   {
  429:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****   case BOT_CMD_SEND:
  430:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** 
  431:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     /*Prepare the CBW and relevent field*/
  432:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     MSC_Handle->hbot.cbw.field.DataTransferLength = length * MSC_Handle->unit[0].capacity.block_siz
- 607              		.loc 1 432 0
- 608 001c B2F89800 		ldrh	r0, [r2, #152]
- 609              	.LVL56:
- 610 0020 0499     		ldr	r1, [sp, #16]
- 611              	.LVL57:
- 612 0022 01FB00F1 		mul	r1, r1, r0
- 613 0026 D165     		str	r1, [r2, #92]
+ 593              		.loc 1 432 0
+ 594 0018 B4F89810 		ldrh	r1, [r4, #152]
+ 595              	.LVL54:
+ 596 001c 0498     		ldr	r0, [sp, #16]
+ 597              	.LVL55:
+ 598 001e 00FB01F1 		mul	r1, r0, r1
+ 599 0022 E165     		str	r1, [r4, #92]
  433:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     MSC_Handle->hbot.cbw.field.Flags = USB_EP_DIR_IN;
- 614              		.loc 1 433 0
- 615 0028 8021     		movs	r1, #128
- 616 002a 82F86010 		strb	r1, [r2, #96]
+ 600              		.loc 1 433 0
+ 601 0024 8021     		movs	r1, #128
+ 602 0026 84F86010 		strb	r1, [r4, #96]
  434:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     MSC_Handle->hbot.cbw.field.CBLength = CBW_LENGTH;
- 617              		.loc 1 434 0
- 618 002e 0A21     		movs	r1, #10
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchy9syT.s 			page 20
-
-
- 619 0030 82F86210 		strb	r1, [r2, #98]
+ 603              		.loc 1 434 0
+ 604 002a 0A21     		movs	r1, #10
+ 605 002c 84F86210 		strb	r1, [r4, #98]
  435:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** 
  436:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     USBH_memset(MSC_Handle->hbot.cbw.field.CB, 0, CBW_CB_LENGTH);
- 620              		.loc 1 436 0
- 621 0034 0021     		movs	r1, #0
- 622 0036 C2F86310 		str	r1, [r2, #99]	@ unaligned
- 623              	.LVL58:
- 624 003a C2F86710 		str	r1, [r2, #103]	@ unaligned
- 625 003e C2F86B10 		str	r1, [r2, #107]	@ unaligned
- 626 0042 C2F86F10 		str	r1, [r2, #111]	@ unaligned
+ 606              		.loc 1 436 0
+ 607 0030 0021     		movs	r1, #0
+ 608 0032 C4F86310 		str	r1, [r4, #99]	@ unaligned
+ 609 0036 C4F86710 		str	r1, [r4, #103]	@ unaligned
+ 610 003a C4F86B10 		str	r1, [r4, #107]	@ unaligned
+ 611 003e C4F86F10 		str	r1, [r4, #111]	@ unaligned
  437:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     MSC_Handle->hbot.cbw.field.CB[0]  = OPCODE_READ10;
- 627              		.loc 1 437 0
- 628 0046 2821     		movs	r1, #40
- 629 0048 82F86310 		strb	r1, [r2, #99]
+ 612              		.loc 1 437 0
+ 613 0042 2821     		movs	r1, #40
+ 614 0044 84F86310 		strb	r1, [r4, #99]
  438:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** 
  439:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     /*logical block address*/
  440:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     MSC_Handle->hbot.cbw.field.CB[2]  = (((uint8_t*)(void *)&address)[3]);
- 630              		.loc 1 440 0
- 631 004c 9DF80710 		ldrb	r1, [sp, #7]	@ zero_extendqisi2
- 632 0050 82F86510 		strb	r1, [r2, #101]
+ 615              		.loc 1 440 0
+ 616 0048 C2F30761 		ubfx	r1, r2, #24, #8
+ 617 004c 84F86510 		strb	r1, [r4, #101]
  441:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     MSC_Handle->hbot.cbw.field.CB[3]  = (((uint8_t*)(void *)&address)[2]);
- 633              		.loc 1 441 0
- 634 0054 9DF80610 		ldrb	r1, [sp, #6]	@ zero_extendqisi2
- 635 0058 82F86610 		strb	r1, [r2, #102]
+ 618              		.loc 1 441 0
+ 619 0050 C2F30741 		ubfx	r1, r2, #16, #8
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccF8XB3p.s 			page 20
+
+
+ 620 0054 84F86610 		strb	r1, [r4, #102]
  442:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     MSC_Handle->hbot.cbw.field.CB[4]  = (((uint8_t*)(void *)&address)[1]);
- 636              		.loc 1 442 0
- 637 005c 9DF80510 		ldrb	r1, [sp, #5]	@ zero_extendqisi2
- 638 0060 82F86710 		strb	r1, [r2, #103]
+ 621              		.loc 1 442 0
+ 622 0058 C2F30721 		ubfx	r1, r2, #8, #8
+ 623 005c 84F86710 		strb	r1, [r4, #103]
  443:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     MSC_Handle->hbot.cbw.field.CB[5]  = (((uint8_t*)(void *)&address)[0]);
- 639              		.loc 1 443 0
- 640 0064 9DF80410 		ldrb	r1, [sp, #4]	@ zero_extendqisi2
- 641 0068 82F86810 		strb	r1, [r2, #104]
+ 624              		.loc 1 443 0
+ 625 0060 84F86820 		strb	r2, [r4, #104]
  444:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** 
  445:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** 
  446:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     /*Transfer length */
  447:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     MSC_Handle->hbot.cbw.field.CB[7]  = (((uint8_t *)(void *)&length)[1]) ;
- 642              		.loc 1 447 0
- 643 006c 9DF81110 		ldrb	r1, [sp, #17]	@ zero_extendqisi2
- 644 0070 82F86A10 		strb	r1, [r2, #106]
+ 626              		.loc 1 447 0
+ 627 0064 049A     		ldr	r2, [sp, #16]
+ 628              	.LVL56:
+ 629 0066 C2F30722 		ubfx	r2, r2, #8, #8
+ 630 006a 84F86A20 		strb	r2, [r4, #106]
  448:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     MSC_Handle->hbot.cbw.field.CB[8]  = (((uint8_t *)(void *)&length)[0]) ;
- 645              		.loc 1 448 0
- 646 0074 9DF81010 		ldrb	r1, [sp, #16]	@ zero_extendqisi2
- 647 0078 82F86B10 		strb	r1, [r2, #107]
+ 631              		.loc 1 448 0
+ 632 006e 049A     		ldr	r2, [sp, #16]
+ 633 0070 84F86B20 		strb	r2, [r4, #107]
  449:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** 
  450:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** 
  451:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     MSC_Handle->hbot.state = BOT_SEND_CBW;
- 648              		.loc 1 451 0
- 649 007c 0120     		movs	r0, #1
- 650 007e 82F85000 		strb	r0, [r2, #80]
+ 634              		.loc 1 451 0
+ 635 0074 0120     		movs	r0, #1
+ 636 0076 84F85000 		strb	r0, [r4, #80]
  452:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     MSC_Handle->hbot.cmd_state = BOT_CMD_WAIT;
- 651              		.loc 1 452 0
- 652 0082 0221     		movs	r1, #2
- 653 0084 82F85210 		strb	r1, [r2, #82]
+ 637              		.loc 1 452 0
+ 638 007a 0222     		movs	r2, #2
+ 639 007c 84F85220 		strb	r2, [r4, #82]
  453:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     MSC_Handle->hbot.pbuf = pbuf;
- 654              		.loc 1 453 0
- 655 0088 C2F88C30 		str	r3, [r2, #140]
- 656              	.LVL59:
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchy9syT.s 			page 21
-
-
- 657              	.L40:
+ 640              		.loc 1 453 0
+ 641 0080 C4F88C30 		str	r3, [r4, #140]
+ 642              	.LVL57:
+ 643              	.L40:
  454:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     error = USBH_BUSY;
  455:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     break;
  456:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** 
@@ -1215,63 +1190,59 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchy9syT.s 			page 1
  464:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** 
  465:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****   return error;
  466:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** }
- 658              		.loc 1 466 0
- 659 008c 02B0     		add	sp, sp, #8
- 660              	.LCFI10:
- 661              		.cfi_remember_state
- 662              		.cfi_def_cfa_offset 8
- 663              		@ sp needed
- 664 008e 10BD     		pop	{r4, pc}
- 665              	.LVL60:
- 666              	.L42:
- 667              	.LCFI11:
- 668              		.cfi_restore_state
+ 644              		.loc 1 466 0
+ 645 0084 38BD     		pop	{r3, r4, r5, pc}
+ 646              	.LVL58:
+ 647              	.L42:
  458:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c ****     break;
- 669              		.loc 1 458 0
- 670 0090 FFF7FEFF 		bl	USBH_MSC_BOT_Process
- 671              	.LVL61:
+ 648              		.loc 1 458 0
+ 649 0086 FFF7FEFF 		bl	USBH_MSC_BOT_Process
+ 650              	.LVL59:
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccF8XB3p.s 			page 21
+
+
  459:Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c **** 
- 672              		.loc 1 459 0
- 673 0094 FAE7     		b	.L40
- 674              		.cfi_endproc
- 675              	.LFE146:
- 677              		.text
- 678              	.Letext0:
- 679              		.file 2 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\machine\\_default_types.h"
- 680              		.file 3 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\lock.h"
- 681              		.file 4 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\_types.h"
- 682              		.file 5 "c:\\gcc_toolchain\\6_2017-q1-update\\lib\\gcc\\arm-none-eabi\\6.3.1\\include\\stddef.h"
- 683              		.file 6 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\reent.h"
- 684              		.file 7 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\_stdint.h"
- 685              		.file 8 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\stdlib.h"
- 686              		.file 9 "Drivers/CMSIS/Include/core_cm7.h"
- 687              		.file 10 "Drivers/CMSIS/Device/ST/STM32F7xx/Include/system_stm32f7xx.h"
- 688              		.file 11 "Middlewares/Third_Party/FreeRTOS/Source/include/task.h"
- 689              		.file 12 "Middlewares/Third_Party/FreeRTOS/Source/include/queue.h"
- 690              		.file 13 "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h"
- 691              		.file 14 "Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_def.h"
- 692              		.file 15 "Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_ctlreq.h"
- 693              		.file 16 "Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc_bot.h"
- 694              		.file 17 "Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc_scsi.h"
- 695              		.file 18 "Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc.h"
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchy9syT.s 			page 22
+ 651              		.loc 1 459 0
+ 652 008a FBE7     		b	.L40
+ 653              		.cfi_endproc
+ 654              	.LFE148:
+ 656              		.text
+ 657              	.Letext0:
+ 658              		.file 2 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\machine\\_default
+ 659              		.file 3 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\lock.h"
+ 660              		.file 4 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\_types.h"
+ 661              		.file 5 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\lib\\gcc\\arm-none-eabi\\7.3.1\\include\\
+ 662              		.file 6 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\reent.h"
+ 663              		.file 7 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 664              		.file 8 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\stdlib.h"
+ 665              		.file 9 "Drivers/CMSIS/Include/core_cm7.h"
+ 666              		.file 10 "Drivers/CMSIS/Device/ST/STM32F7xx/Include/system_stm32f7xx.h"
+ 667              		.file 11 "Middlewares/Third_Party/FreeRTOS/Source/include/task.h"
+ 668              		.file 12 "Middlewares/Third_Party/FreeRTOS/Source/include/queue.h"
+ 669              		.file 13 "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h"
+ 670              		.file 14 "Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_def.h"
+ 671              		.file 15 "Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_ctlreq.h"
+ 672              		.file 16 "Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc_bot.h"
+ 673              		.file 17 "Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc_scsi.h"
+ 674              		.file 18 "Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc.h"
+ 675              		.file 19 "<built-in>"
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccF8XB3p.s 			page 22
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 usbh_msc_scsi.c
-C:\Users\Student\AppData\Local\Temp\cchy9syT.s:18     .text.USBH_MSC_SCSI_TestUnitReady:00000000 $t
-C:\Users\Student\AppData\Local\Temp\cchy9syT.s:25     .text.USBH_MSC_SCSI_TestUnitReady:00000000 USBH_MSC_SCSI_TestUnitReady
-C:\Users\Student\AppData\Local\Temp\cchy9syT.s:93     .text.USBH_MSC_SCSI_ReadCapacity:00000000 $t
-C:\Users\Student\AppData\Local\Temp\cchy9syT.s:100    .text.USBH_MSC_SCSI_ReadCapacity:00000000 USBH_MSC_SCSI_ReadCapacity
-C:\Users\Student\AppData\Local\Temp\cchy9syT.s:198    .text.USBH_MSC_SCSI_Inquiry:00000000 $t
-C:\Users\Student\AppData\Local\Temp\cchy9syT.s:205    .text.USBH_MSC_SCSI_Inquiry:00000000 USBH_MSC_SCSI_Inquiry
-C:\Users\Student\AppData\Local\Temp\cchy9syT.s:346    .text.USBH_MSC_SCSI_RequestSense:00000000 $t
-C:\Users\Student\AppData\Local\Temp\cchy9syT.s:353    .text.USBH_MSC_SCSI_RequestSense:00000000 USBH_MSC_SCSI_RequestSense
-C:\Users\Student\AppData\Local\Temp\cchy9syT.s:455    .text.USBH_MSC_SCSI_Write:00000000 $t
-C:\Users\Student\AppData\Local\Temp\cchy9syT.s:462    .text.USBH_MSC_SCSI_Write:00000000 USBH_MSC_SCSI_Write
-C:\Users\Student\AppData\Local\Temp\cchy9syT.s:566    .text.USBH_MSC_SCSI_Read:00000000 $t
-C:\Users\Student\AppData\Local\Temp\cchy9syT.s:573    .text.USBH_MSC_SCSI_Read:00000000 USBH_MSC_SCSI_Read
-                     .debug_frame:00000010 $d
+C:\Users\milek\AppData\Local\Temp\ccF8XB3p.s:18     .text.USBH_MSC_SCSI_TestUnitReady:00000000 $t
+C:\Users\milek\AppData\Local\Temp\ccF8XB3p.s:25     .text.USBH_MSC_SCSI_TestUnitReady:00000000 USBH_MSC_SCSI_TestUnitReady
+C:\Users\milek\AppData\Local\Temp\ccF8XB3p.s:93     .text.USBH_MSC_SCSI_ReadCapacity:00000000 $t
+C:\Users\milek\AppData\Local\Temp\ccF8XB3p.s:100    .text.USBH_MSC_SCSI_ReadCapacity:00000000 USBH_MSC_SCSI_ReadCapacity
+C:\Users\milek\AppData\Local\Temp\ccF8XB3p.s:198    .text.USBH_MSC_SCSI_Inquiry:00000000 $t
+C:\Users\milek\AppData\Local\Temp\ccF8XB3p.s:205    .text.USBH_MSC_SCSI_Inquiry:00000000 USBH_MSC_SCSI_Inquiry
+C:\Users\milek\AppData\Local\Temp\ccF8XB3p.s:345    .text.USBH_MSC_SCSI_RequestSense:00000000 $t
+C:\Users\milek\AppData\Local\Temp\ccF8XB3p.s:352    .text.USBH_MSC_SCSI_RequestSense:00000000 USBH_MSC_SCSI_RequestSense
+C:\Users\milek\AppData\Local\Temp\ccF8XB3p.s:454    .text.USBH_MSC_SCSI_Write:00000000 $t
+C:\Users\milek\AppData\Local\Temp\ccF8XB3p.s:461    .text.USBH_MSC_SCSI_Write:00000000 USBH_MSC_SCSI_Write
+C:\Users\milek\AppData\Local\Temp\ccF8XB3p.s:555    .text.USBH_MSC_SCSI_Read:00000000 $t
+C:\Users\milek\AppData\Local\Temp\ccF8XB3p.s:562    .text.USBH_MSC_SCSI_Read:00000000 USBH_MSC_SCSI_Read
 
 UNDEFINED SYMBOLS
 USBH_MSC_BOT_Process

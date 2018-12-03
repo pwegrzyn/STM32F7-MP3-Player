@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccDSSkVW.s 			page 1
+ARM GAS  C:\Users\milek\AppData\Local\Temp\cci4pDxc.s 			page 1
 
 
    1              		.cpu cortex-m7
@@ -25,7 +25,7 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccDSSkVW.s 			page 1
   22              		.thumb_func
   23              		.fpu fpv5-sp-d16
   25              	MX_FATFS_Init:
-  26              	.LFB141:
+  26              	.LFB143:
   27              		.file 1 "Src/fatfs.c"
    1:Src/fatfs.c   **** /**
    2:Src/fatfs.c   ****   ******************************************************************************
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccDSSkVW.s 			page 1
   29:Src/fatfs.c   ****   * 5. Redistribution and use of this software other than as permitted under 
   30:Src/fatfs.c   ****   *    this license is void and will automatically terminate your rights under 
   31:Src/fatfs.c   ****   *    this license. 
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccDSSkVW.s 			page 2
+ARM GAS  C:\Users\milek\AppData\Local\Temp\cci4pDxc.s 			page 2
 
 
   32:Src/fatfs.c   ****   *
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccDSSkVW.s 			page 1
   46 000e 1870     		strb	r0, [r3]
   68:Src/fatfs.c   ****   /*## FatFS: Link the USBH driver ###########################*/
   69:Src/fatfs.c   ****   retUSBH = FATFS_LinkDriver(&USBH_Driver, USBHPath);
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccDSSkVW.s 			page 3
+ARM GAS  C:\Users\milek\AppData\Local\Temp\cci4pDxc.s 			page 3
 
 
   47              		.loc 1 69 0
@@ -161,36 +161,37 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccDSSkVW.s 			page 1
   75 003e 3046     		mov	r0, r6
   76 0040 FFF7FEFF 		bl	f_mount
   77              	.LVL5:
-  78 0044 70BD     		pop	{r4, r5, r6, pc}
-  79              	.L4:
-  80 0046 00BF     		.align	2
-  81              	.L3:
-  82 0048 00000000 		.word	SDPath
-  83 004c 00000000 		.word	SD_Driver
-  84 0050 00000000 		.word	retSD
-  85 0054 00000000 		.word	USBHPath
-  86 0058 00000000 		.word	USBH_Driver
-  87 005c 00000000 		.word	retUSBH
-  88 0060 00000000 		.word	.LC0
-  89 0064 14000000 		.word	.LC1
-  90 0068 00000000 		.word	SDFatFS
-  91              		.cfi_endproc
-  92              	.LFE141:
-  94              		.section	.text.get_fattime,"ax",%progbits
-  95              		.align	1
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccDSSkVW.s 			page 4
-
-
-  96              		.global	get_fattime
-  97              		.syntax unified
-  98              		.thumb
-  99              		.thumb_func
- 100              		.fpu fpv5-sp-d16
- 102              	get_fattime:
- 103              	.LFB142:
   79:Src/fatfs.c   ****   
   80:Src/fatfs.c   ****   /* USER CODE END Init */
   81:Src/fatfs.c   **** }
+  78              		.loc 1 81 0
+  79 0044 70BD     		pop	{r4, r5, r6, pc}
+  80              	.L4:
+  81 0046 00BF     		.align	2
+  82              	.L3:
+  83 0048 00000000 		.word	SDPath
+  84 004c 00000000 		.word	SD_Driver
+  85 0050 00000000 		.word	retSD
+  86 0054 00000000 		.word	USBHPath
+  87 0058 00000000 		.word	USBH_Driver
+  88 005c 00000000 		.word	retUSBH
+  89 0060 00000000 		.word	.LC0
+  90 0064 14000000 		.word	.LC1
+  91 0068 00000000 		.word	SDFatFS
+ARM GAS  C:\Users\milek\AppData\Local\Temp\cci4pDxc.s 			page 4
+
+
+  92              		.cfi_endproc
+  93              	.LFE143:
+  95              		.section	.text.get_fattime,"ax",%progbits
+  96              		.align	1
+  97              		.global	get_fattime
+  98              		.syntax unified
+  99              		.thumb
+ 100              		.thumb_func
+ 101              		.fpu fpv5-sp-d16
+ 103              	get_fattime:
+ 104              	.LFB144:
   82:Src/fatfs.c   **** 
   83:Src/fatfs.c   **** /**
   84:Src/fatfs.c   ****   * @brief  Gets Time from RTC 
@@ -199,91 +200,90 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccDSSkVW.s 			page 1
   87:Src/fatfs.c   ****   */
   88:Src/fatfs.c   **** DWORD get_fattime(void)
   89:Src/fatfs.c   **** {
- 104              		.loc 1 89 0
- 105              		.cfi_startproc
- 106              		@ args = 0, pretend = 0, frame = 0
- 107              		@ frame_needed = 0, uses_anonymous_args = 0
- 108              		@ link register save eliminated.
+ 105              		.loc 1 89 0
+ 106              		.cfi_startproc
+ 107              		@ args = 0, pretend = 0, frame = 0
+ 108              		@ frame_needed = 0, uses_anonymous_args = 0
+ 109              		@ link register save eliminated.
   90:Src/fatfs.c   ****   /* USER CODE BEGIN get_fattime */
   91:Src/fatfs.c   ****   return 0;
   92:Src/fatfs.c   ****   /* USER CODE END get_fattime */  
   93:Src/fatfs.c   **** }
- 109              		.loc 1 93 0
- 110 0000 0020     		movs	r0, #0
- 111 0002 7047     		bx	lr
- 112              		.cfi_endproc
- 113              	.LFE142:
- 115              		.comm	USBHFile,560,4
- 116              		.comm	USBHFatFS,572,4
- 117              		.comm	USBHPath,4,4
- 118              		.comm	retUSBH,1,1
- 119              		.comm	SDFile,560,4
- 120              		.comm	SDFatFS,572,4
- 121              		.comm	SDPath,4,4
- 122              		.comm	retSD,1,1
- 123              		.section	.rodata.MX_FATFS_Init.str1.4,"aMS",%progbits,1
- 124              		.align	2
- 125              	.LC0:
- 126 0000 53442063 		.ascii	"SD card path: %s\012\000"
- 126      61726420 
- 126      70617468 
- 126      3A202573 
- 126      0A00
- 127 0012 0000     		.space	2
- 128              	.LC1:
- 129 0014 55534220 		.ascii	"USB path: %s\012\000"
- 129      70617468 
- 129      3A202573 
- 129      0A00
- 130              		.text
- 131              	.Letext0:
- 132              		.file 2 "Middlewares/Third_Party/FatFs/src/integer.h"
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccDSSkVW.s 			page 5
+ 110              		.loc 1 93 0
+ 111 0000 0020     		movs	r0, #0
+ 112 0002 7047     		bx	lr
+ 113              		.cfi_endproc
+ 114              	.LFE144:
+ 116              		.comm	USBHFile,560,4
+ 117              		.comm	USBHFatFS,572,4
+ 118              		.comm	USBHPath,4,4
+ 119              		.comm	retUSBH,1,1
+ 120              		.comm	SDFile,560,4
+ 121              		.comm	SDFatFS,572,4
+ 122              		.comm	SDPath,4,4
+ 123              		.comm	retSD,1,1
+ 124              		.section	.rodata.MX_FATFS_Init.str1.4,"aMS",%progbits,1
+ 125              		.align	2
+ 126              	.LC0:
+ 127 0000 53442063 		.ascii	"SD card path: %s\012\000"
+ 127      61726420 
+ 127      70617468 
+ 127      3A202573 
+ 127      0A00
+ 128 0012 0000     		.space	2
+ 129              	.LC1:
+ 130 0014 55534220 		.ascii	"USB path: %s\012\000"
+ 130      70617468 
+ 130      3A202573 
+ 130      0A00
+ 131              		.text
+ 132              	.Letext0:
+ARM GAS  C:\Users\milek\AppData\Local\Temp\cci4pDxc.s 			page 5
 
 
- 133              		.file 3 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\machine\\_default_types.h"
- 134              		.file 4 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\_stdint.h"
- 135              		.file 5 "Drivers/CMSIS/Include/core_cm7.h"
- 136              		.file 6 "Drivers/CMSIS/Device/ST/STM32F7xx/Include/system_stm32f7xx.h"
- 137              		.file 7 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\lock.h"
- 138              		.file 8 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\_types.h"
- 139              		.file 9 "c:\\gcc_toolchain\\6_2017-q1-update\\lib\\gcc\\arm-none-eabi\\6.3.1\\include\\stddef.h"
- 140              		.file 10 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\reent.h"
- 141              		.file 11 "Middlewares/Third_Party/FreeRTOS/Source/include/task.h"
- 142              		.file 12 "Middlewares/Third_Party/FreeRTOS/Source/include/queue.h"
- 143              		.file 13 "Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h"
- 144              		.file 14 "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h"
- 145              		.file 15 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\stdlib.h"
- 146              		.file 16 "Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_def.h"
- 147              		.file 17 "Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_ctlreq.h"
- 148              		.file 18 "Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc.h"
- 149              		.file 19 "Middlewares/Third_Party/FatFs/src/ff.h"
- 150              		.file 20 "Middlewares/Third_Party/FatFs/src/diskio.h"
- 151              		.file 21 "Middlewares/Third_Party/FatFs/src/ff_gen_drv.h"
- 152              		.file 22 "Inc/sd_diskio.h"
- 153              		.file 23 "Inc/usbh_diskio.h"
- 154              		.file 24 "Inc/fatfs.h"
- 155              		.file 25 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\stdio.h"
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccDSSkVW.s 			page 6
+ 133              		.file 2 "Middlewares/Third_Party/FatFs/src/integer.h"
+ 134              		.file 3 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\machine\\_default
+ 135              		.file 4 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 136              		.file 5 "Drivers/CMSIS/Include/core_cm7.h"
+ 137              		.file 6 "Drivers/CMSIS/Device/ST/STM32F7xx/Include/system_stm32f7xx.h"
+ 138              		.file 7 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\lock.h"
+ 139              		.file 8 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\_types.h"
+ 140              		.file 9 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\lib\\gcc\\arm-none-eabi\\7.3.1\\include\\
+ 141              		.file 10 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\reent.h"
+ 142              		.file 11 "Middlewares/Third_Party/FreeRTOS/Source/include/task.h"
+ 143              		.file 12 "Middlewares/Third_Party/FreeRTOS/Source/include/queue.h"
+ 144              		.file 13 "Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h"
+ 145              		.file 14 "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h"
+ 146              		.file 15 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\stdlib.h"
+ 147              		.file 16 "Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_def.h"
+ 148              		.file 17 "Middlewares/ST/STM32_USB_Host_Library/Core/Inc/usbh_ctlreq.h"
+ 149              		.file 18 "Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc.h"
+ 150              		.file 19 "Middlewares/Third_Party/FatFs/src/ff.h"
+ 151              		.file 20 "Middlewares/Third_Party/FatFs/src/diskio.h"
+ 152              		.file 21 "Middlewares/Third_Party/FatFs/src/ff_gen_drv.h"
+ 153              		.file 22 "Inc/sd_diskio.h"
+ 154              		.file 23 "Inc/usbh_diskio.h"
+ 155              		.file 24 "Inc/fatfs.h"
+ 156              		.file 25 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\stdio.h"
+ARM GAS  C:\Users\milek\AppData\Local\Temp\cci4pDxc.s 			page 6
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 fatfs.c
-C:\Users\Student\AppData\Local\Temp\ccDSSkVW.s:18     .text.MX_FATFS_Init:00000000 $t
-C:\Users\Student\AppData\Local\Temp\ccDSSkVW.s:25     .text.MX_FATFS_Init:00000000 MX_FATFS_Init
-C:\Users\Student\AppData\Local\Temp\ccDSSkVW.s:82     .text.MX_FATFS_Init:00000048 $d
+C:\Users\milek\AppData\Local\Temp\cci4pDxc.s:18     .text.MX_FATFS_Init:00000000 $t
+C:\Users\milek\AppData\Local\Temp\cci4pDxc.s:25     .text.MX_FATFS_Init:00000000 MX_FATFS_Init
+C:\Users\milek\AppData\Local\Temp\cci4pDxc.s:83     .text.MX_FATFS_Init:00000048 $d
                             *COM*:00000004 SDPath
                             *COM*:00000001 retSD
                             *COM*:00000004 USBHPath
                             *COM*:00000001 retUSBH
                             *COM*:0000023c SDFatFS
-C:\Users\Student\AppData\Local\Temp\ccDSSkVW.s:95     .text.get_fattime:00000000 $t
-C:\Users\Student\AppData\Local\Temp\ccDSSkVW.s:102    .text.get_fattime:00000000 get_fattime
+C:\Users\milek\AppData\Local\Temp\cci4pDxc.s:96     .text.get_fattime:00000000 $t
+C:\Users\milek\AppData\Local\Temp\cci4pDxc.s:103    .text.get_fattime:00000000 get_fattime
                             *COM*:00000230 USBHFile
                             *COM*:0000023c USBHFatFS
                             *COM*:00000230 SDFile
-C:\Users\Student\AppData\Local\Temp\ccDSSkVW.s:124    .rodata.MX_FATFS_Init.str1.4:00000000 $d
-                     .debug_frame:00000010 $d
+C:\Users\milek\AppData\Local\Temp\cci4pDxc.s:125    .rodata.MX_FATFS_Init.str1.4:00000000 $d
 
 UNDEFINED SYMBOLS
 FATFS_LinkDriver

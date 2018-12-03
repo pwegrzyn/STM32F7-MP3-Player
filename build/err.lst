@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccCeDYWY.s 			page 1
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccaHro9M.s 			page 1
 
 
    1              		.cpu cortex-m7
@@ -25,7 +25,7 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccCeDYWY.s 			page 1
   22              		.thumb_func
   23              		.fpu fpv5-sp-d16
   25              	err_to_errno:
-  26              	.LFB157:
+  26              	.LFB159:
   27              		.file 1 "Middlewares/Third_Party/LwIP/src/api/err.c"
    1:Middlewares/Third_Party/LwIP/src/api/err.c **** /**
    2:Middlewares/Third_Party/LwIP/src/api/err.c ****  * @file
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccCeDYWY.s 			page 1
   29:Middlewares/Third_Party/LwIP/src/api/err.c ****  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
   30:Middlewares/Third_Party/LwIP/src/api/err.c ****  * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
   31:Middlewares/Third_Party/LwIP/src/api/err.c ****  * OF SUCH DAMAGE.
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccCeDYWY.s 			page 2
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccaHro9M.s 			page 2
 
 
   32:Middlewares/Third_Party/LwIP/src/api/err.c ****  *
@@ -110,88 +110,82 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\ccCeDYWY.s 			page 1
   34              		.loc 1 71 0
   35 0000 0028     		cmp	r0, #0
   36              	.LVL1:
-  37 0002 01DD     		ble	.L5
+  37 0002 06DC     		bgt	.L3
+  38              		.loc 1 71 0 is_stmt 0 discriminator 1
+  39 0004 4042     		negs	r0, r0
+  40 0006 1028     		cmp	r0, #16
+  41 0008 05DC     		bgt	.L4
   72:Middlewares/Third_Party/LwIP/src/api/err.c ****     return EIO;
-  38              		.loc 1 72 0
-  39 0004 0520     		movs	r0, #5
-  40 0006 7047     		bx	lr
-  41              	.L5:
-  71:Middlewares/Third_Party/LwIP/src/api/err.c ****   if ((err > 0) || (-err >= (err_t)LWIP_ARRAYSIZE(err_to_errno_table))) {
-  42              		.loc 1 71 0 discriminator 1
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccCeDYWY.s 			page 3
-
-
-  43 0008 4042     		negs	r0, r0
-  44 000a 1028     		cmp	r0, #16
-  45 000c 01DD     		ble	.L6
-  46              		.loc 1 72 0
-  47 000e 0520     		movs	r0, #5
   73:Middlewares/Third_Party/LwIP/src/api/err.c ****   }
   74:Middlewares/Third_Party/LwIP/src/api/err.c ****   return err_to_errno_table[-err];
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccaHro9M.s 			page 3
+
+
+  42              		.loc 1 74 0 is_stmt 1
+  43 000a 044B     		ldr	r3, .L5
+  44 000c 53F82000 		ldr	r0, [r3, r0, lsl #2]
+  45 0010 7047     		bx	lr
+  46              	.L3:
+  72:Middlewares/Third_Party/LwIP/src/api/err.c ****     return EIO;
+  47              		.loc 1 72 0
+  48 0012 0520     		movs	r0, #5
+  49 0014 7047     		bx	lr
+  50              	.L4:
+  51 0016 0520     		movs	r0, #5
   75:Middlewares/Third_Party/LwIP/src/api/err.c **** }
-  48              		.loc 1 75 0
-  49 0010 7047     		bx	lr
-  50              	.L6:
-  74:Middlewares/Third_Party/LwIP/src/api/err.c **** }
-  51              		.loc 1 74 0
-  52 0012 024B     		ldr	r3, .L7
-  53 0014 53F82000 		ldr	r0, [r3, r0, lsl #2]
-  54 0018 7047     		bx	lr
-  55              	.L8:
-  56 001a 00BF     		.align	2
-  57              	.L7:
-  58 001c 00000000 		.word	.LANCHOR0
-  59              		.cfi_endproc
-  60              	.LFE157:
-  62              		.section	.rodata.err_to_errno_table,"a",%progbits
-  63              		.align	2
-  64              		.set	.LANCHOR0,. + 0
-  67              	err_to_errno_table:
-  68 0000 00000000 		.word	0
-  69 0004 0C000000 		.word	12
-  70 0008 69000000 		.word	105
-  71 000c 0B000000 		.word	11
-  72 0010 71000000 		.word	113
-  73 0014 73000000 		.word	115
-  74 0018 16000000 		.word	22
-  75 001c 0B000000 		.word	11
-  76 0020 62000000 		.word	98
-  77 0024 72000000 		.word	114
-  78 0028 6A000000 		.word	106
-  79 002c 6B000000 		.word	107
-  80 0030 FFFFFFFF 		.word	-1
-  81 0034 67000000 		.word	103
-  82 0038 68000000 		.word	104
-  83 003c 6B000000 		.word	107
-  84 0040 05000000 		.word	5
-  85              		.text
-  86              	.Letext0:
-  87              		.file 2 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\machine\\_default_types.h"
-  88              		.file 3 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\_stdint.h"
-  89              		.file 4 "Drivers/CMSIS/Include/core_cm7.h"
-  90              		.file 5 "Drivers/CMSIS/Device/ST/STM32F7xx/Include/system_stm32f7xx.h"
-  91              		.file 6 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\lock.h"
-  92              		.file 7 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\_types.h"
-  93              		.file 8 "c:\\gcc_toolchain\\6_2017-q1-update\\lib\\gcc\\arm-none-eabi\\6.3.1\\include\\stddef.h"
-  94              		.file 9 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\reent.h"
-  95              		.file 10 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\stdlib.h"
-  96              		.file 11 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\time.h"
-  97              		.file 12 "Middlewares/Third_Party/LwIP/src/include/lwip/arch.h"
-  98              		.file 13 "Middlewares/Third_Party/LwIP/src/include/lwip/err.h"
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccCeDYWY.s 			page 4
-
-
-  99              		.file 14 "Middlewares/Third_Party/LwIP/src/include/lwip/errno.h"
-ARM GAS  C:\Users\Student\AppData\Local\Temp\ccCeDYWY.s 			page 5
+  52              		.loc 1 75 0
+  53 0018 7047     		bx	lr
+  54              	.L6:
+  55 001a 00BF     		.align	2
+  56              	.L5:
+  57 001c 00000000 		.word	.LANCHOR0
+  58              		.cfi_endproc
+  59              	.LFE159:
+  61              		.section	.rodata.err_to_errno_table,"a",%progbits
+  62              		.align	2
+  63              		.set	.LANCHOR0,. + 0
+  66              	err_to_errno_table:
+  67 0000 00000000 		.word	0
+  68 0004 0C000000 		.word	12
+  69 0008 69000000 		.word	105
+  70 000c 0B000000 		.word	11
+  71 0010 71000000 		.word	113
+  72 0014 73000000 		.word	115
+  73 0018 16000000 		.word	22
+  74 001c 0B000000 		.word	11
+  75 0020 62000000 		.word	98
+  76 0024 72000000 		.word	114
+  77 0028 6A000000 		.word	106
+  78 002c 6B000000 		.word	107
+  79 0030 FFFFFFFF 		.word	-1
+  80 0034 67000000 		.word	103
+  81 0038 68000000 		.word	104
+  82 003c 6B000000 		.word	107
+  83 0040 05000000 		.word	5
+  84              		.text
+  85              	.Letext0:
+  86              		.file 2 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\machine\\_default
+  87              		.file 3 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\_stdint.h"
+  88              		.file 4 "Drivers/CMSIS/Include/core_cm7.h"
+  89              		.file 5 "Drivers/CMSIS/Device/ST/STM32F7xx/Include/system_stm32f7xx.h"
+  90              		.file 6 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\lock.h"
+  91              		.file 7 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\_types.h"
+  92              		.file 8 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\lib\\gcc\\arm-none-eabi\\7.3.1\\include\\
+  93              		.file 9 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\reent.h"
+  94              		.file 10 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\stdlib.h"
+  95              		.file 11 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\time.h"
+  96              		.file 12 "Middlewares/Third_Party/LwIP/src/include/lwip/arch.h"
+  97              		.file 13 "Middlewares/Third_Party/LwIP/src/include/lwip/err.h"
+  98              		.file 14 "Middlewares/Third_Party/LwIP/src/include/lwip/errno.h"
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccaHro9M.s 			page 4
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 err.c
-C:\Users\Student\AppData\Local\Temp\ccCeDYWY.s:18     .text.err_to_errno:00000000 $t
-C:\Users\Student\AppData\Local\Temp\ccCeDYWY.s:25     .text.err_to_errno:00000000 err_to_errno
-C:\Users\Student\AppData\Local\Temp\ccCeDYWY.s:58     .text.err_to_errno:0000001c $d
-C:\Users\Student\AppData\Local\Temp\ccCeDYWY.s:63     .rodata.err_to_errno_table:00000000 $d
-C:\Users\Student\AppData\Local\Temp\ccCeDYWY.s:67     .rodata.err_to_errno_table:00000000 err_to_errno_table
-                     .debug_frame:00000010 $d
+C:\Users\milek\AppData\Local\Temp\ccaHro9M.s:18     .text.err_to_errno:00000000 $t
+C:\Users\milek\AppData\Local\Temp\ccaHro9M.s:25     .text.err_to_errno:00000000 err_to_errno
+C:\Users\milek\AppData\Local\Temp\ccaHro9M.s:57     .text.err_to_errno:0000001c $d
+C:\Users\milek\AppData\Local\Temp\ccaHro9M.s:62     .rodata.err_to_errno_table:00000000 $d
+C:\Users\milek\AppData\Local\Temp\ccaHro9M.s:66     .rodata.err_to_errno_table:00000000 err_to_errno_table
 
 NO UNDEFINED SYMBOLS

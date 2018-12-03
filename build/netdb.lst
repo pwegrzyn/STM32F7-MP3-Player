@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchVARgp.s 			page 1
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccm0WwNc.s 			page 1
 
 
    1              		.cpu cortex-m7
@@ -25,7 +25,7 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchVARgp.s 			page 1
   22              		.thumb_func
   23              		.fpu fpv5-sp-d16
   25              	lwip_gethostbyname:
-  26              	.LFB157:
+  26              	.LFB159:
   27              		.file 1 "Middlewares/Third_Party/LwIP/src/api/netdb.c"
    1:Middlewares/Third_Party/LwIP/src/api/netdb.c **** /**
    2:Middlewares/Third_Party/LwIP/src/api/netdb.c ****  * @file
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchVARgp.s 			page 1
   29:Middlewares/Third_Party/LwIP/src/api/netdb.c ****  * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
   30:Middlewares/Third_Party/LwIP/src/api/netdb.c ****  * OF SUCH DAMAGE.
   31:Middlewares/Third_Party/LwIP/src/api/netdb.c ****  *
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchVARgp.s 			page 2
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccm0WwNc.s 			page 2
 
 
   32:Middlewares/Third_Party/LwIP/src/api/netdb.c ****  * This file is part of the lwIP TCP/IP stack.
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchVARgp.s 			page 1
   86:Middlewares/Third_Party/LwIP/src/api/netdb.c **** struct hostent*
   87:Middlewares/Third_Party/LwIP/src/api/netdb.c **** lwip_gethostbyname(const char *name)
   88:Middlewares/Third_Party/LwIP/src/api/netdb.c **** {
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchVARgp.s 			page 3
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccm0WwNc.s 			page 3
 
 
   28              		.loc 1 88 0
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchVARgp.s 			page 1
   60 001a 6560     		str	r5, [r4, #4]
  111:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   strncpy(s_hostname, name, DNS_MAX_NAME_LENGTH);
   61              		.loc 1 111 0
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchVARgp.s 			page 4
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccm0WwNc.s 			page 4
 
 
   62 001c 0E4E     		ldr	r6, .L6+8
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchVARgp.s 			page 1
  140:Middlewares/Third_Party/LwIP/src/api/netdb.c **** #else
  141:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   return &s_hostent;
  142:Middlewares/Third_Party/LwIP/src/api/netdb.c **** #endif /* LWIP_DNS_API_HOSTENT_STORAGE */
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchVARgp.s 			page 5
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccm0WwNc.s 			page 5
 
 
  143:Middlewares/Third_Party/LwIP/src/api/netdb.c **** }
@@ -255,8 +255,8 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchVARgp.s 			page 1
   98              		.cfi_restore_state
  103:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     return NULL;
   99              		.loc 1 103 0
- 100 0046 D222     		movs	r2, #210
- 101 0048 064B     		ldr	r3, .L6+20
+ 100 0046 074B     		ldr	r3, .L6+20
+ 101 0048 D222     		movs	r2, #210
  102 004a 1A60     		str	r2, [r3]
  104:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   }
  103              		.loc 1 104 0
@@ -273,7 +273,7 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchVARgp.s 			page 1
  114 0060 00000000 		.word	.LANCHOR4
  115 0064 00000000 		.word	h_errno
  116              		.cfi_endproc
- 117              	.LFE157:
+ 117              	.LFE159:
  119              		.section	.text.lwip_gethostbyname_r,"ax",%progbits
  120              		.align	1
  121              		.global	lwip_gethostbyname_r
@@ -282,7 +282,7 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchVARgp.s 			page 1
  124              		.thumb_func
  125              		.fpu fpv5-sp-d16
  127              	lwip_gethostbyname_r:
- 128              	.LFB158:
+ 128              	.LFB160:
  144:Middlewares/Third_Party/LwIP/src/api/netdb.c **** 
  145:Middlewares/Third_Party/LwIP/src/api/netdb.c **** /**
  146:Middlewares/Third_Party/LwIP/src/api/netdb.c ****  * Thread-safe variant of lwip_gethostbyname: instead of using a static
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchVARgp.s 			page 1
  156:Middlewares/Third_Party/LwIP/src/api/netdb.c ****  * @param h_errnop pointer to an int where to store errors (instead of modifying
  157:Middlewares/Third_Party/LwIP/src/api/netdb.c ****  *                 the global h_errno)
  158:Middlewares/Third_Party/LwIP/src/api/netdb.c ****  * @return 0 on success, non-zero on error, additional error information
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchVARgp.s 			page 6
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccm0WwNc.s 			page 6
 
 
  159:Middlewares/Third_Party/LwIP/src/api/netdb.c ****  *         is stored in *h_errnop instead of h_errno to be thread-safe
@@ -338,7 +338,7 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchVARgp.s 			page 1
  171:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   if (h_errnop == NULL) {
  151              		.loc 1 171 0
  152 000a 002E     		cmp	r6, #0
- 153 000c 3AD0     		beq	.L18
+ 153 000c 40D0     		beq	.L18
  154              	.L9:
  155              	.LVL7:
  172:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     /* ensure h_errnop is never NULL */
@@ -348,7 +348,7 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchVARgp.s 			page 1
  176:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   if (result == NULL) {
  156              		.loc 1 176 0
  157 000e 002F     		cmp	r7, #0
- 158 0010 3AD0     		beq	.L19
+ 158 0010 40D0     		beq	.L19
  177:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     /* not all arguments given */
  178:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     *h_errnop = EINVAL;
  179:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     return -1;
@@ -358,69 +358,73 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchVARgp.s 			page 1
  159              		.loc 1 182 0
  160 0012 0024     		movs	r4, #0
  161 0014 3C60     		str	r4, [r7]
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchVARgp.s 			page 7
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccm0WwNc.s 			page 7
 
 
  183:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   if ((name == NULL) || (ret == NULL) || (buf == NULL)) {
  162              		.loc 1 183 0
- 163 0016 A142     		cmp	r1, r4
- 164 0018 18BF     		it	ne
- 165 001a A042     		cmpne	r0, r4
- 166 001c 39D0     		beq	.L12
- 167              		.loc 1 183 0 is_stmt 0 discriminator 1
- 168 001e 002A     		cmp	r2, #0
- 169 0020 37D0     		beq	.L12
- 170 0022 9A46     		mov	r10, r3
- 171 0024 1446     		mov	r4, r2
- 172 0026 0D46     		mov	r5, r1
- 173 0028 8046     		mov	r8, r0
+ 163 0016 B1FA81FC 		clz	ip, r1
+ 164 001a 4FEA5C1C 		lsr	ip, ip, #5
+ 165 001e A042     		cmp	r0, r4
+ 166 0020 14BF     		ite	ne
+ 167 0022 6446     		movne	r4, ip
+ 168 0024 0124     		moveq	r4, #1
+ 169 0026 002C     		cmp	r4, #0
+ 170 0028 39D1     		bne	.L12
+ 171              		.loc 1 183 0 is_stmt 0 discriminator 1
+ 172 002a 002A     		cmp	r2, #0
+ 173 002c 37D0     		beq	.L12
+ 174 002e 9946     		mov	r9, r3
+ 175 0030 1446     		mov	r4, r2
+ 176 0032 0D46     		mov	r5, r1
+ 177 0034 8246     		mov	r10, r0
  184:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     /* not all arguments given */
  185:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     *h_errnop = EINVAL;
  186:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     return -1;
  187:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   }
  188:Middlewares/Third_Party/LwIP/src/api/netdb.c **** 
  189:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   namelen = strlen(name);
- 174              		.loc 1 189 0 is_stmt 1
- 175 002a FFF7FEFF 		bl	strlen
- 176              	.LVL8:
- 177 002e 8146     		mov	r9, r0
- 178              	.LVL9:
+ 178              		.loc 1 189 0 is_stmt 1
+ 179 0036 FFF7FEFF 		bl	strlen
+ 180              	.LVL8:
+ 181 003a 8046     		mov	r8, r0
+ 182              	.LVL9:
  190:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   if (buflen < (sizeof(struct gethostbyname_r_helper) + namelen + 1 + (MEM_ALIGNMENT - 1))) {
- 179              		.loc 1 190 0
- 180 0030 00F11403 		add	r3, r0, #20
- 181 0034 5345     		cmp	r3, r10
- 182 0036 31D8     		bhi	.L20
+ 183              		.loc 1 190 0
+ 184 003c 00F11403 		add	r3, r0, #20
+ 185 0040 4B45     		cmp	r3, r9
+ 186 0042 31D8     		bhi	.L20
  191:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     /* buf can't hold the data needed + a copy of name */
  192:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     *h_errnop = ERANGE;
  193:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     return -1;
  194:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   }
  195:Middlewares/Third_Party/LwIP/src/api/netdb.c **** 
  196:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   h = (struct gethostbyname_r_helper*)LWIP_MEM_ALIGN(buf);
- 183              		.loc 1 196 0
- 184 0038 0334     		adds	r4, r4, #3
- 185              	.LVL10:
- 186 003a 24F00304 		bic	r4, r4, #3
- 187              	.LVL11:
+ 187              		.loc 1 196 0
+ 188 0044 0334     		adds	r4, r4, #3
+ 189              	.LVL10:
+ 190 0046 24F00304 		bic	r4, r4, #3
+ 191              	.LVL11:
  197:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   hostname = ((char*)h) + sizeof(struct gethostbyname_r_helper);
- 188              		.loc 1 197 0
- 189 003e 04F1100A 		add	r10, r4, #16
- 190              	.LVL12:
+ 192              		.loc 1 197 0
+ 193 004a 04F11009 		add	r9, r4, #16
+ 194              	.LVL12:
  198:Middlewares/Third_Party/LwIP/src/api/netdb.c **** 
  199:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   /* query host IP address */
  200:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   err = netconn_gethostbyname(name, &h->addr);
- 191              		.loc 1 200 0
- 192 0042 04F1080B 		add	fp, r4, #8
- 193 0046 5946     		mov	r1, fp
- 194 0048 4046     		mov	r0, r8
- 195              	.LVL13:
- 196 004a FFF7FEFF 		bl	netconn_gethostbyname
- 197              	.LVL14:
+ 195              		.loc 1 200 0
+ 196 004e 04F1080B 		add	fp, r4, #8
+ 197 0052 5946     		mov	r1, fp
+ 198 0054 5046     		mov	r0, r10
+ 199              	.LVL13:
+ 200 0056 FFF7FEFF 		bl	netconn_gethostbyname
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccm0WwNc.s 			page 8
+
+
+ 201              	.LVL14:
  201:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   if (err != ERR_OK) {
- 198              		.loc 1 201 0
- 199 004e 50BB     		cbnz	r0, .L21
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchVARgp.s 			page 8
-
-
+ 202              		.loc 1 201 0
+ 203 005a 50BB     		cbnz	r0, .L21
  202:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     LWIP_DEBUGF(DNS_DEBUG, ("lwip_gethostbyname(%s) failed, err=%d\n", name, err));
  203:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     *h_errnop = HOST_NOT_FOUND;
  204:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     return -1;
@@ -428,135 +432,135 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchVARgp.s 			page 1
  206:Middlewares/Third_Party/LwIP/src/api/netdb.c **** 
  207:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   /* copy the hostname into buf */
  208:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   MEMCPY(hostname, name, namelen);
- 200              		.loc 1 208 0
- 201 0050 4A46     		mov	r2, r9
- 202 0052 4146     		mov	r1, r8
- 203 0054 5046     		mov	r0, r10
- 204              	.LVL15:
- 205 0056 FFF7FEFF 		bl	memcpy
- 206              	.LVL16:
+ 204              		.loc 1 208 0
+ 205 005c 4246     		mov	r2, r8
+ 206 005e 5146     		mov	r1, r10
+ 207 0060 4846     		mov	r0, r9
+ 208              	.LVL15:
+ 209 0062 FFF7FEFF 		bl	memcpy
+ 210              	.LVL16:
  209:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   hostname[namelen] = 0;
- 207              		.loc 1 209 0
- 208 005a 0020     		movs	r0, #0
- 209 005c 0AF80900 		strb	r0, [r10, r9]
+ 211              		.loc 1 209 0
+ 212 0066 0020     		movs	r0, #0
+ 213 0068 09F80800 		strb	r0, [r9, r8]
  210:Middlewares/Third_Party/LwIP/src/api/netdb.c **** 
  211:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   /* fill hostent */
  212:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   h->addr_list[0] = &h->addr;
- 210              		.loc 1 212 0
- 211 0060 C4F800B0 		str	fp, [r4]
+ 214              		.loc 1 212 0
+ 215 006c C4F800B0 		str	fp, [r4]
  213:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   h->addr_list[1] = NULL;
- 212              		.loc 1 213 0
- 213 0064 6060     		str	r0, [r4, #4]
+ 216              		.loc 1 213 0
+ 217 0070 6060     		str	r0, [r4, #4]
  214:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   h->aliases = NULL;
- 214              		.loc 1 214 0
- 215 0066 2346     		mov	r3, r4
- 216 0068 43F80C0F 		str	r0, [r3, #12]!
+ 218              		.loc 1 214 0
+ 219 0072 2346     		mov	r3, r4
+ 220 0074 43F80C0F 		str	r0, [r3, #12]!
  215:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   ret->h_name = hostname;
- 217              		.loc 1 215 0
- 218 006c C5F800A0 		str	r10, [r5]
+ 221              		.loc 1 215 0
+ 222 0078 C5F80090 		str	r9, [r5]
  216:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   ret->h_aliases = &h->aliases;
- 219              		.loc 1 216 0
- 220 0070 6B60     		str	r3, [r5, #4]
+ 223              		.loc 1 216 0
+ 224 007c 6B60     		str	r3, [r5, #4]
  217:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   ret->h_addrtype = AF_INET;
- 221              		.loc 1 217 0
- 222 0072 0223     		movs	r3, #2
- 223 0074 AB60     		str	r3, [r5, #8]
+ 225              		.loc 1 217 0
+ 226 007e 0223     		movs	r3, #2
+ 227 0080 AB60     		str	r3, [r5, #8]
  218:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   ret->h_length = sizeof(ip_addr_t);
- 224              		.loc 1 218 0
- 225 0076 0423     		movs	r3, #4
- 226 0078 EB60     		str	r3, [r5, #12]
+ 228              		.loc 1 218 0
+ 229 0082 0423     		movs	r3, #4
+ 230 0084 EB60     		str	r3, [r5, #12]
  219:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   ret->h_addr_list = (char**)&h->addr_list;
- 227              		.loc 1 219 0
- 228 007a 2C61     		str	r4, [r5, #16]
+ 231              		.loc 1 219 0
+ 232 0086 2C61     		str	r4, [r5, #16]
  220:Middlewares/Third_Party/LwIP/src/api/netdb.c **** 
  221:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   /* set result != NULL */
  222:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   *result = ret;
- 229              		.loc 1 222 0
- 230 007c 3D60     		str	r5, [r7]
- 231              	.LVL17:
- 232              	.L8:
+ 233              		.loc 1 222 0
+ 234 0088 3D60     		str	r5, [r7]
+ 235              	.LVL17:
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccm0WwNc.s 			page 9
+
+
+ 236              	.L8:
  223:Middlewares/Third_Party/LwIP/src/api/netdb.c **** 
  224:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   /* return success */
  225:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   return 0;
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchVARgp.s 			page 9
-
-
  226:Middlewares/Third_Party/LwIP/src/api/netdb.c **** }
- 233              		.loc 1 226 0
- 234 007e 03B0     		add	sp, sp, #12
- 235              	.LCFI6:
- 236              		.cfi_remember_state
- 237              		.cfi_def_cfa_offset 36
- 238              		@ sp needed
- 239 0080 BDE8F08F 		pop	{r4, r5, r6, r7, r8, r9, r10, fp, pc}
- 240              	.LVL18:
- 241              	.L18:
- 242              	.LCFI7:
- 243              		.cfi_restore_state
+ 237              		.loc 1 226 0
+ 238 008a 03B0     		add	sp, sp, #12
+ 239              	.LCFI6:
+ 240              		.cfi_remember_state
+ 241              		.cfi_def_cfa_offset 36
+ 242              		@ sp needed
+ 243 008c BDE8F08F 		pop	{r4, r5, r6, r7, r8, r9, r10, fp, pc}
+ 244              	.LVL18:
+ 245              	.L18:
+ 246              	.LCFI7:
+ 247              		.cfi_restore_state
  173:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   }
- 244              		.loc 1 173 0
- 245 0084 01AE     		add	r6, sp, #4
- 246 0086 C2E7     		b	.L9
- 247              	.LVL19:
- 248              	.L19:
+ 248              		.loc 1 173 0
+ 249 0090 01AE     		add	r6, sp, #4
+ 250 0092 BCE7     		b	.L9
+ 251              	.LVL19:
+ 252              	.L19:
  178:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     return -1;
- 249              		.loc 1 178 0
- 250 0088 1623     		movs	r3, #22
- 251              	.LVL20:
- 252 008a 3360     		str	r3, [r6]
+ 253              		.loc 1 178 0
+ 254 0094 1623     		movs	r3, #22
+ 255              	.LVL20:
+ 256 0096 3360     		str	r3, [r6]
  179:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   }
- 253              		.loc 1 179 0
- 254 008c 4FF0FF30 		mov	r0, #-1
- 255              	.LVL21:
- 256 0090 F5E7     		b	.L8
- 257              	.LVL22:
- 258              	.L12:
+ 257              		.loc 1 179 0
+ 258 0098 4FF0FF30 		mov	r0, #-1
+ 259              	.LVL21:
+ 260 009c F5E7     		b	.L8
+ 261              	.LVL22:
+ 262              	.L12:
  185:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     return -1;
- 259              		.loc 1 185 0
- 260 0092 1623     		movs	r3, #22
- 261              	.LVL23:
- 262 0094 3360     		str	r3, [r6]
+ 263              		.loc 1 185 0
+ 264 009e 1623     		movs	r3, #22
+ 265              	.LVL23:
+ 266 00a0 3360     		str	r3, [r6]
  186:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   }
- 263              		.loc 1 186 0
- 264 0096 4FF0FF30 		mov	r0, #-1
- 265              	.LVL24:
- 266 009a F0E7     		b	.L8
- 267              	.LVL25:
- 268              	.L20:
+ 267              		.loc 1 186 0
+ 268 00a2 4FF0FF30 		mov	r0, #-1
+ 269              	.LVL24:
+ 270 00a6 F0E7     		b	.L8
+ 271              	.LVL25:
+ 272              	.L20:
  192:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     return -1;
- 269              		.loc 1 192 0
- 270 009c 2223     		movs	r3, #34
- 271 009e 3360     		str	r3, [r6]
+ 273              		.loc 1 192 0
+ 274 00a8 2223     		movs	r3, #34
+ 275 00aa 3360     		str	r3, [r6]
  193:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   }
- 272              		.loc 1 193 0
- 273 00a0 4FF0FF30 		mov	r0, #-1
- 274              	.LVL26:
- 275 00a4 EBE7     		b	.L8
- 276              	.LVL27:
- 277              	.L21:
+ 276              		.loc 1 193 0
+ 277 00ac 4FF0FF30 		mov	r0, #-1
+ 278              	.LVL26:
+ 279 00b0 EBE7     		b	.L8
+ 280              	.LVL27:
+ 281              	.L21:
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccm0WwNc.s 			page 10
+
+
  203:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     return -1;
- 278              		.loc 1 203 0
- 279 00a6 D223     		movs	r3, #210
- 280 00a8 3360     		str	r3, [r6]
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchVARgp.s 			page 10
-
-
+ 282              		.loc 1 203 0
+ 283 00b2 D223     		movs	r3, #210
+ 284 00b4 3360     		str	r3, [r6]
  204:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   }
- 281              		.loc 1 204 0
- 282 00aa 4FF0FF30 		mov	r0, #-1
- 283              	.LVL28:
- 284 00ae E6E7     		b	.L8
- 285              		.cfi_endproc
- 286              	.LFE158:
- 288              		.section	.text.lwip_freeaddrinfo,"ax",%progbits
- 289              		.align	1
- 290              		.global	lwip_freeaddrinfo
- 291              		.syntax unified
- 292              		.thumb
- 293              		.thumb_func
- 294              		.fpu fpv5-sp-d16
- 296              	lwip_freeaddrinfo:
- 297              	.LFB159:
+ 285              		.loc 1 204 0
+ 286 00b6 4FF0FF30 		mov	r0, #-1
+ 287              	.LVL28:
+ 288 00ba E6E7     		b	.L8
+ 289              		.cfi_endproc
+ 290              	.LFE160:
+ 292              		.section	.text.lwip_freeaddrinfo,"ax",%progbits
+ 293              		.align	1
+ 294              		.global	lwip_freeaddrinfo
+ 295              		.syntax unified
+ 296              		.thumb
+ 297              		.thumb_func
+ 298              		.fpu fpv5-sp-d16
+ 300              	lwip_freeaddrinfo:
+ 301              	.LFB161:
  227:Middlewares/Third_Party/LwIP/src/api/netdb.c **** 
  228:Middlewares/Third_Party/LwIP/src/api/netdb.c **** /**
  229:Middlewares/Third_Party/LwIP/src/api/netdb.c ****  * Frees one or more addrinfo structures returned by getaddrinfo(), along with
@@ -568,67 +572,67 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchVARgp.s 			page 1
  235:Middlewares/Third_Party/LwIP/src/api/netdb.c **** void
  236:Middlewares/Third_Party/LwIP/src/api/netdb.c **** lwip_freeaddrinfo(struct addrinfo *ai)
  237:Middlewares/Third_Party/LwIP/src/api/netdb.c **** {
- 298              		.loc 1 237 0
- 299              		.cfi_startproc
- 300              		@ args = 0, pretend = 0, frame = 0
- 301              		@ frame_needed = 0, uses_anonymous_args = 0
- 302              	.LVL29:
- 303 0000 0146     		mov	r1, r0
+ 302              		.loc 1 237 0
+ 303              		.cfi_startproc
+ 304              		@ args = 0, pretend = 0, frame = 0
+ 305              		@ frame_needed = 0, uses_anonymous_args = 0
+ 306              	.LVL29:
+ 307 0000 0146     		mov	r1, r0
  238:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   struct addrinfo *next;
  239:Middlewares/Third_Party/LwIP/src/api/netdb.c **** 
  240:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   while (ai != NULL) {
- 304              		.loc 1 240 0
- 305 0002 40B1     		cbz	r0, .L28
+ 308              		.loc 1 240 0
+ 309 0002 40B1     		cbz	r0, .L28
  237:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   struct addrinfo *next;
- 306              		.loc 1 237 0
- 307 0004 10B5     		push	{r4, lr}
- 308              	.LCFI8:
- 309              		.cfi_def_cfa_offset 8
- 310              		.cfi_offset 4, -8
- 311              		.cfi_offset 14, -4
- 312              	.LVL30:
- 313              	.L24:
+ 310              		.loc 1 237 0
+ 311 0004 10B5     		push	{r4, lr}
+ 312              	.LCFI8:
+ 313              		.cfi_def_cfa_offset 8
+ 314              		.cfi_offset 4, -8
+ 315              		.cfi_offset 14, -4
+ 316              	.LVL30:
+ 317              	.L24:
  241:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     next = ai->ai_next;
- 314              		.loc 1 241 0
- 315 0006 CC69     		ldr	r4, [r1, #28]
- 316              	.LVL31:
+ 318              		.loc 1 241 0
+ 319 0006 CC69     		ldr	r4, [r1, #28]
+ 320              	.LVL31:
  242:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     memp_free(MEMP_NETDB, ai);
- 317              		.loc 1 242 0
- 318 0008 0B20     		movs	r0, #11
- 319 000a FFF7FEFF 		bl	memp_free
- 320              	.LVL32:
+ 321              		.loc 1 242 0
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccm0WwNc.s 			page 11
+
+
+ 322 0008 0B20     		movs	r0, #11
+ 323 000a FFF7FEFF 		bl	memp_free
+ 324              	.LVL32:
  243:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     ai = next;
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchVARgp.s 			page 11
-
-
- 321              		.loc 1 243 0
- 322 000e 2146     		mov	r1, r4
+ 325              		.loc 1 243 0
+ 326 000e 2146     		mov	r1, r4
  240:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     next = ai->ai_next;
- 323              		.loc 1 240 0
- 324 0010 002C     		cmp	r4, #0
- 325 0012 F8D1     		bne	.L24
+ 327              		.loc 1 240 0
+ 328 0010 002C     		cmp	r4, #0
+ 329 0012 F8D1     		bne	.L24
  244:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   }
  245:Middlewares/Third_Party/LwIP/src/api/netdb.c **** }
- 326              		.loc 1 245 0
- 327 0014 10BD     		pop	{r4, pc}
- 328              	.LVL33:
- 329              	.L28:
- 330              	.LCFI9:
- 331              		.cfi_def_cfa_offset 0
- 332              		.cfi_restore 4
- 333              		.cfi_restore 14
- 334 0016 7047     		bx	lr
- 335              		.cfi_endproc
- 336              	.LFE159:
- 338              		.section	.text.lwip_getaddrinfo,"ax",%progbits
- 339              		.align	1
- 340              		.global	lwip_getaddrinfo
- 341              		.syntax unified
- 342              		.thumb
- 343              		.thumb_func
- 344              		.fpu fpv5-sp-d16
- 346              	lwip_getaddrinfo:
- 347              	.LFB160:
+ 330              		.loc 1 245 0
+ 331 0014 10BD     		pop	{r4, pc}
+ 332              	.LVL33:
+ 333              	.L28:
+ 334              	.LCFI9:
+ 335              		.cfi_def_cfa_offset 0
+ 336              		.cfi_restore 4
+ 337              		.cfi_restore 14
+ 338 0016 7047     		bx	lr
+ 339              		.cfi_endproc
+ 340              	.LFE161:
+ 342              		.section	.text.lwip_getaddrinfo,"ax",%progbits
+ 343              		.align	1
+ 344              		.global	lwip_getaddrinfo
+ 345              		.syntax unified
+ 346              		.thumb
+ 347              		.thumb_func
+ 348              		.fpu fpv5-sp-d16
+ 350              	lwip_getaddrinfo:
+ 351              	.LFB162:
  246:Middlewares/Third_Party/LwIP/src/api/netdb.c **** 
  247:Middlewares/Third_Party/LwIP/src/api/netdb.c **** /**
  248:Middlewares/Third_Party/LwIP/src/api/netdb.c ****  * Translates the name of a service location (for example, a host name) and/or
@@ -654,15 +658,15 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchVARgp.s 			page 1
  268:Middlewares/Third_Party/LwIP/src/api/netdb.c **** int
  269:Middlewares/Third_Party/LwIP/src/api/netdb.c **** lwip_getaddrinfo(const char *nodename, const char *servname,
  270:Middlewares/Third_Party/LwIP/src/api/netdb.c ****        const struct addrinfo *hints, struct addrinfo **res)
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccm0WwNc.s 			page 12
+
+
  271:Middlewares/Third_Party/LwIP/src/api/netdb.c **** {
- 348              		.loc 1 271 0
- 349              		.cfi_startproc
- 350              		@ args = 0, pretend = 0, frame = 8
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchVARgp.s 			page 12
-
-
- 351              		@ frame_needed = 0, uses_anonymous_args = 0
- 352              	.LVL34:
+ 352              		.loc 1 271 0
+ 353              		.cfi_startproc
+ 354              		@ args = 0, pretend = 0, frame = 8
+ 355              		@ frame_needed = 0, uses_anonymous_args = 0
+ 356              	.LVL34:
  272:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   err_t err;
  273:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   ip_addr_t addr;
  274:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   struct addrinfo *ai;
@@ -673,55 +677,76 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchVARgp.s 			page 1
  279:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   int ai_family;
  280:Middlewares/Third_Party/LwIP/src/api/netdb.c **** 
  281:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   if (res == NULL) {
- 353              		.loc 1 281 0
- 354 0000 002B     		cmp	r3, #0
- 355 0002 00F0A580 		beq	.L41
+ 357              		.loc 1 281 0
+ 358 0000 002B     		cmp	r3, #0
+ 359 0002 00F0A380 		beq	.L41
  271:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   err_t err;
- 356              		.loc 1 271 0
- 357 0006 2DE9F04F 		push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
- 358              	.LCFI10:
- 359              		.cfi_def_cfa_offset 36
- 360              		.cfi_offset 4, -36
- 361              		.cfi_offset 5, -32
- 362              		.cfi_offset 6, -28
- 363              		.cfi_offset 7, -24
- 364              		.cfi_offset 8, -20
- 365              		.cfi_offset 9, -16
- 366              		.cfi_offset 10, -12
- 367              		.cfi_offset 11, -8
- 368              		.cfi_offset 14, -4
- 369 000a 83B0     		sub	sp, sp, #12
- 370              	.LCFI11:
- 371              		.cfi_def_cfa_offset 48
- 372 000c 1D46     		mov	r5, r3
+ 360              		.loc 1 271 0
+ 361 0006 2DE9F04F 		push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
+ 362              	.LCFI10:
+ 363              		.cfi_def_cfa_offset 36
+ 364              		.cfi_offset 4, -36
+ 365              		.cfi_offset 5, -32
+ 366              		.cfi_offset 6, -28
+ 367              		.cfi_offset 7, -24
+ 368              		.cfi_offset 8, -20
+ 369              		.cfi_offset 9, -16
+ 370              		.cfi_offset 10, -12
+ 371              		.cfi_offset 11, -8
+ 372              		.cfi_offset 14, -4
+ 373 000a 83B0     		sub	sp, sp, #12
+ 374              	.LCFI11:
+ 375              		.cfi_def_cfa_offset 48
+ 376 000c 1C46     		mov	r4, r3
  282:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     return EAI_FAIL;
  283:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   }
  284:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   *res = NULL;
- 373              		.loc 1 284 0
- 374 000e 0023     		movs	r3, #0
- 375              	.LVL35:
- 376 0010 2B60     		str	r3, [r5]
+ 377              		.loc 1 284 0
+ 378 000e 0023     		movs	r3, #0
+ 379              	.LVL35:
+ 380 0010 2360     		str	r3, [r4]
  285:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   if ((nodename == NULL) && (servname == NULL)) {
- 377              		.loc 1 285 0
- 378 0012 9842     		cmp	r0, r3
- 379 0014 08BF     		it	eq
- 380 0016 9942     		cmpeq	r1, r3
- 381 0018 03D1     		bne	.L55
+ 381              		.loc 1 285 0
+ 382 0012 B1FA81F3 		clz	r3, r1
+ 383 0016 5B09     		lsrs	r3, r3, #5
+ 384 0018 0028     		cmp	r0, #0
+ 385 001a 18BF     		it	ne
+ 386 001c 0023     		movne	r3, #0
+ 387 001e 002B     		cmp	r3, #0
+ 388 0020 40F09680 		bne	.L42
  286:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     return EAI_NONAME;
- 382              		.loc 1 286 0
- 383 001a C820     		movs	r0, #200
- 384              	.LVL36:
- 385              	.L29:
  287:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   }
  288:Middlewares/Third_Party/LwIP/src/api/netdb.c **** 
  289:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   if (hints != NULL) {
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccm0WwNc.s 			page 13
+
+
+ 389              		.loc 1 289 0
+ 390 0024 4AB1     		cbz	r2, .L31
  290:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     ai_family = hints->ai_family;
+ 391              		.loc 1 290 0
+ 392 0026 5568     		ldr	r5, [r2, #4]
+ 393              	.LVL36:
  291:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     if ((ai_family != AF_UNSPEC)
  292:Middlewares/Third_Party/LwIP/src/api/netdb.c **** #if LWIP_IPV4
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchVARgp.s 			page 13
-
-
  293:Middlewares/Third_Party/LwIP/src/api/netdb.c ****       && (ai_family != AF_INET)
+ 394              		.loc 1 293 0
+ 395 0028 AB1E     		subs	r3, r5, #2
+ 396 002a 18BF     		it	ne
+ 397 002c 0123     		movne	r3, #1
+ 398 002e 002D     		cmp	r5, #0
+ 399 0030 08BF     		it	eq
+ 400 0032 0023     		moveq	r3, #0
+ 291:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     if ((ai_family != AF_UNSPEC)
+ 401              		.loc 1 291 0
+ 402 0034 002B     		cmp	r3, #0
+ 403 0036 40F08F80 		bne	.L43
+ 404              	.LVL37:
+ 405              	.L31:
+ 406 003a 2546     		mov	r5, r4
+ 407 003c 1446     		mov	r4, r2
+ 408              	.LVL38:
+ 409 003e 0746     		mov	r7, r0
  294:Middlewares/Third_Party/LwIP/src/api/netdb.c **** #endif /* LWIP_IPV4 */
  295:Middlewares/Third_Party/LwIP/src/api/netdb.c **** #if LWIP_IPV6
  296:Middlewares/Third_Party/LwIP/src/api/netdb.c ****       && (ai_family != AF_INET6)
@@ -734,17 +759,55 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchVARgp.s 			page 1
  303:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   }
  304:Middlewares/Third_Party/LwIP/src/api/netdb.c **** 
  305:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   if (servname != NULL) {
+ 410              		.loc 1 305 0
+ 411 0040 51B1     		cbz	r1, .L44
  306:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     /* service name specified: convert to port number
  307:Middlewares/Third_Party/LwIP/src/api/netdb.c ****      * @todo?: currently, only ASCII integers (port numbers) are supported (AI_NUMERICSERV)! */
  308:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     port_nr = atoi(servname);
+ 412              		.loc 1 308 0
+ 413 0042 0846     		mov	r0, r1
+ 414              	.LVL39:
+ 415 0044 FFF7FEFF 		bl	atoi
+ 416              	.LVL40:
+ 417 0048 8146     		mov	r9, r0
+ 418              	.LVL41:
  309:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     if ((port_nr <= 0) || (port_nr > 0xffff)) {
+ 419              		.loc 1 309 0
+ 420 004a 421E     		subs	r2, r0, #1
+ 421 004c 4FF6FE73 		movw	r3, #65534
+ 422 0050 9A42     		cmp	r2, r3
+ 423 0052 03D9     		bls	.L32
  310:Middlewares/Third_Party/LwIP/src/api/netdb.c ****       return EAI_SERVICE;
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccm0WwNc.s 			page 14
+
+
+ 424              		.loc 1 310 0
+ 425 0054 C920     		movs	r0, #201
+ 426              	.LVL42:
+ 427 0056 7CE0     		b	.L29
+ 428              	.LVL43:
+ 429              	.L44:
+ 276:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   size_t total_size;
+ 430              		.loc 1 276 0
+ 431 0058 4FF00009 		mov	r9, #0
+ 432              	.LVL44:
+ 433              	.L32:
  311:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     }
  312:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   }
  313:Middlewares/Third_Party/LwIP/src/api/netdb.c **** 
  314:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   if (nodename != NULL) {
+ 434              		.loc 1 314 0
+ 435 005c 002F     		cmp	r7, #0
+ 436 005e 55D0     		beq	.L33
  315:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     /* service location specified, try to resolve */
  316:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     if ((hints != NULL) && (hints->ai_flags & AI_NUMERICHOST)) {
+ 437              		.loc 1 316 0
+ 438 0060 1CB1     		cbz	r4, .L34
+ 439              		.loc 1 316 0 is_stmt 0 discriminator 1
+ 440 0062 2368     		ldr	r3, [r4]
+ 441 0064 13F0040F 		tst	r3, #4
+ 442 0068 48D1     		bne	.L55
+ 443              	.L34:
  317:Middlewares/Third_Party/LwIP/src/api/netdb.c ****       /* no DNS lookup, just parse for an address string */
  318:Middlewares/Third_Party/LwIP/src/api/netdb.c ****       if (!ipaddr_aton(nodename, &addr)) {
  319:Middlewares/Third_Party/LwIP/src/api/netdb.c ****         return EAI_NONAME;
@@ -766,7 +829,20 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchVARgp.s 			page 1
  335:Middlewares/Third_Party/LwIP/src/api/netdb.c ****       }
  336:Middlewares/Third_Party/LwIP/src/api/netdb.c **** #endif /* LWIP_IPV4 && LWIP_IPV6 */
  337:Middlewares/Third_Party/LwIP/src/api/netdb.c ****       err = netconn_gethostbyname_addrtype(nodename, &addr, type);
+ 444              		.loc 1 337 0 is_stmt 1
+ 445 006a 01A9     		add	r1, sp, #4
+ 446 006c 3846     		mov	r0, r7
+ 447 006e FFF7FEFF 		bl	netconn_gethostbyname
+ 448              	.LVL45:
  338:Middlewares/Third_Party/LwIP/src/api/netdb.c ****       if (err != ERR_OK) {
+ 449              		.loc 1 338 0
+ 450 0072 0028     		cmp	r0, #0
+ 451 0074 72D1     		bne	.L56
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccm0WwNc.s 			page 15
+
+
+ 452              	.LVL46:
+ 453              	.L35:
  339:Middlewares/Third_Party/LwIP/src/api/netdb.c ****         return EAI_FAIL;
  340:Middlewares/Third_Party/LwIP/src/api/netdb.c ****       }
  341:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     }
@@ -778,30 +854,69 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchVARgp.s 			page 1
  347:Middlewares/Third_Party/LwIP/src/api/netdb.c ****       ip_addr_set_loopback(ai_family == AF_INET6, &addr);
  348:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     }
  349:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   }
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchVARgp.s 			page 14
-
-
  350:Middlewares/Third_Party/LwIP/src/api/netdb.c **** 
  351:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   total_size = sizeof(struct addrinfo) + sizeof(struct sockaddr_storage);
  352:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   if (nodename != NULL) {
+ 454              		.loc 1 352 0
+ 455 0076 002F     		cmp	r7, #0
+ 456 0078 63D0     		beq	.L48
  353:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     namelen = strlen(nodename);
+ 457              		.loc 1 353 0
+ 458 007a 3846     		mov	r0, r7
+ 459 007c FFF7FEFF 		bl	strlen
+ 460              	.LVL47:
+ 461 0080 8046     		mov	r8, r0
+ 462              	.LVL48:
  354:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     if (namelen > DNS_MAX_NAME_LENGTH) {
+ 463              		.loc 1 354 0
+ 464 0082 B0F5807F 		cmp	r0, #256
+ 465 0086 6BD8     		bhi	.L49
  355:Middlewares/Third_Party/LwIP/src/api/netdb.c ****       /* invalid name length */
  356:Middlewares/Third_Party/LwIP/src/api/netdb.c ****       return EAI_FAIL;
  357:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     }
  358:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     LWIP_ASSERT("namelen is too long", total_size + namelen + 1 > total_size);
+ 466              		.loc 1 358 0
+ 467 0088 10F1310A 		adds	r10, r0, #49
+ 468 008c 49D2     		bcs	.L57
+ 469              	.LVL49:
+ 470              	.L38:
  359:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     total_size += namelen + 1;
  360:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   }
  361:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   /* If this fails, please report to lwip-devel! :-) */
  362:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   LWIP_ASSERT("total_size <= NETDB_ELEM_SIZE: please report this!",
+ 471              		.loc 1 362 0
+ 472 008e BAF5997F 		cmp	r10, #306
+ 473 0092 4ED2     		bcs	.L58
+ 474              	.LVL50:
+ 475              	.L37:
  363:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     total_size <= NETDB_ELEM_SIZE);
  364:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   ai = (struct addrinfo *)memp_malloc(MEMP_NETDB);
+ 476              		.loc 1 364 0
+ 477 0094 0B20     		movs	r0, #11
+ 478 0096 FFF7FEFF 		bl	memp_malloc
+ 479              	.LVL51:
  365:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   if (ai == NULL) {
+ 480              		.loc 1 365 0
+ 481 009a 0646     		mov	r6, r0
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccm0WwNc.s 			page 16
+
+
+ 482 009c 0028     		cmp	r0, #0
+ 483 009e 61D0     		beq	.L50
  366:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     return EAI_MEMORY;
  367:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   }
  368:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   memset(ai, 0, total_size);
+ 484              		.loc 1 368 0
+ 485 00a0 5246     		mov	r2, r10
+ 486 00a2 0021     		movs	r1, #0
+ 487 00a4 FFF7FEFF 		bl	memset
+ 488              	.LVL52:
  369:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   /* cast through void* to get rid of alignment warnings */
  370:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   sa = (struct sockaddr_storage *)(void*)((u8_t*)ai + sizeof(struct addrinfo));
+ 489              		.loc 1 370 0
+ 490 00a8 06F1200B 		add	fp, r6, #32
+ 491              	.LVL53:
+ 492              	.LBB2:
  371:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   if (IP_IS_V6_VAL(addr)) {
  372:Middlewares/Third_Party/LwIP/src/api/netdb.c **** #if LWIP_IPV6
  373:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     struct sockaddr_in6 *sa6 = (struct sockaddr_in6*)sa;
@@ -817,497 +932,370 @@ ARM GAS  C:\Users\Student\AppData\Local\Temp\cchVARgp.s 			page 1
  383:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     struct sockaddr_in *sa4 = (struct sockaddr_in*)sa;
  384:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     /* set up sockaddr */
  385:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     inet_addr_from_ip4addr(&sa4->sin_addr, ip_2_ip4(&addr));
+ 493              		.loc 1 385 0
+ 494 00ac 019B     		ldr	r3, [sp, #4]
+ 495 00ae 7362     		str	r3, [r6, #36]
  386:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     sa4->sin_family = AF_INET;
+ 496              		.loc 1 386 0
+ 497 00b0 4FF0020A 		mov	r10, #2
+ 498 00b4 86F821A0 		strb	r10, [r6, #33]
  387:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     sa4->sin_len = sizeof(struct sockaddr_in);
+ 499              		.loc 1 387 0
+ 500 00b8 1023     		movs	r3, #16
+ 501 00ba 86F82030 		strb	r3, [r6, #32]
  388:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     sa4->sin_port = lwip_htons((u16_t)port_nr);
+ 502              		.loc 1 388 0
+ 503 00be 1FFA89F0 		uxth	r0, r9
+ 504 00c2 FFF7FEFF 		bl	lwip_htons
+ 505              	.LVL54:
+ 506 00c6 7084     		strh	r0, [r6, #34]	@ movhi
  389:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     ai->ai_family = AF_INET;
+ 507              		.loc 1 389 0
+ 508 00c8 C6F804A0 		str	r10, [r6, #4]
+ 509              	.LBE2:
  390:Middlewares/Third_Party/LwIP/src/api/netdb.c **** #endif /* LWIP_IPV4 */
  391:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   }
  392:Middlewares/Third_Party/LwIP/src/api/netdb.c **** 
  393:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   /* set up addrinfo */
  394:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   if (hints != NULL) {
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccm0WwNc.s 			page 17
+
+
+ 510              		.loc 1 394 0
+ 511 00cc 1CB1     		cbz	r4, .L39
  395:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     /* copy socktype & protocol from hints if specified */
  396:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     ai->ai_socktype = hints->ai_socktype;
+ 512              		.loc 1 396 0
+ 513 00ce A368     		ldr	r3, [r4, #8]
+ 514 00d0 B360     		str	r3, [r6, #8]
  397:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     ai->ai_protocol = hints->ai_protocol;
+ 515              		.loc 1 397 0
+ 516 00d2 E368     		ldr	r3, [r4, #12]
+ 517 00d4 F360     		str	r3, [r6, #12]
+ 518              	.L39:
  398:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   }
  399:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   if (nodename != NULL) {
+ 519              		.loc 1 399 0
+ 520 00d6 57B1     		cbz	r7, .L40
  400:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     /* copy nodename to canonname if specified */
  401:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     ai->ai_canonname = ((char*)ai + sizeof(struct addrinfo) + sizeof(struct sockaddr_storage));
+ 521              		.loc 1 401 0
+ 522 00d8 06F13004 		add	r4, r6, #48
+ 523              	.LVL55:
+ 524 00dc B461     		str	r4, [r6, #24]
  402:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     MEMCPY(ai->ai_canonname, nodename, namelen);
+ 525              		.loc 1 402 0
+ 526 00de 4246     		mov	r2, r8
+ 527 00e0 3946     		mov	r1, r7
+ 528 00e2 2046     		mov	r0, r4
+ 529 00e4 FFF7FEFF 		bl	memcpy
+ 530              	.LVL56:
  403:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     ai->ai_canonname[namelen] = 0;
+ 531              		.loc 1 403 0
+ 532 00e8 0023     		movs	r3, #0
+ 533 00ea 04F80830 		strb	r3, [r4, r8]
+ 534              	.L40:
  404:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   }
  405:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   ai->ai_addrlen = sizeof(struct sockaddr_storage);
+ 535              		.loc 1 405 0
+ 536 00ee 1023     		movs	r3, #16
+ 537 00f0 3361     		str	r3, [r6, #16]
  406:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   ai->ai_addr = (struct sockaddr*)sa;
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchVARgp.s 			page 15
-
-
+ 538              		.loc 1 406 0
+ 539 00f2 C6F814B0 		str	fp, [r6, #20]
  407:Middlewares/Third_Party/LwIP/src/api/netdb.c **** 
  408:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   *res = ai;
+ 540              		.loc 1 408 0
+ 541 00f6 2E60     		str	r6, [r5]
  409:Middlewares/Third_Party/LwIP/src/api/netdb.c **** 
  410:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   return 0;
- 411:Middlewares/Third_Party/LwIP/src/api/netdb.c **** }
- 386              		.loc 1 411 0
- 387 001c 03B0     		add	sp, sp, #12
- 388              	.LCFI12:
- 389              		.cfi_remember_state
- 390              		.cfi_def_cfa_offset 36
- 391              		@ sp needed
- 392 001e BDE8F08F 		pop	{r4, r5, r6, r7, r8, r9, r10, fp, pc}
- 393              	.LVL37:
- 394              	.L55:
- 395              	.LCFI13:
- 396              		.cfi_restore_state
- 289:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     ai_family = hints->ai_family;
- 397              		.loc 1 289 0
- 398 0022 32B1     		cbz	r2, .L31
- 290:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     if ((ai_family != AF_UNSPEC)
- 399              		.loc 1 290 0
- 400 0024 5368     		ldr	r3, [r2, #4]
- 401              	.LVL38:
- 291:Middlewares/Third_Party/LwIP/src/api/netdb.c **** #if LWIP_IPV4
- 402              		.loc 1 291 0
- 403 0026 002B     		cmp	r3, #0
- 404 0028 18BF     		it	ne
- 405 002a 022B     		cmpne	r3, #2
- 406 002c 01D0     		beq	.L31
- 299:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     }
- 407              		.loc 1 299 0
- 408 002e CC20     		movs	r0, #204
- 409              	.LVL39:
- 410 0030 F4E7     		b	.L29
- 411              	.LVL40:
- 412              	.L31:
- 413 0032 1646     		mov	r6, r2
- 414 0034 0446     		mov	r4, r0
- 305:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     /* service name specified: convert to port number
- 415              		.loc 1 305 0
- 416 0036 51B1     		cbz	r1, .L44
- 308:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     if ((port_nr <= 0) || (port_nr > 0xffff)) {
- 417              		.loc 1 308 0
- 418 0038 0846     		mov	r0, r1
- 419              	.LVL41:
- 420 003a FFF7FEFF 		bl	atoi
- 421              	.LVL42:
- 422 003e 0746     		mov	r7, r0
- 423              	.LVL43:
- 309:Middlewares/Third_Party/LwIP/src/api/netdb.c ****       return EAI_SERVICE;
- 424              		.loc 1 309 0
- 425 0040 421E     		subs	r2, r0, #1
- 426 0042 4FF6FE73 		movw	r3, #65534
- 427 0046 9A42     		cmp	r2, r3
- 428 0048 02D9     		bls	.L32
- 310:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     }
- 429              		.loc 1 310 0
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchVARgp.s 			page 16
-
-
- 430 004a C920     		movs	r0, #201
- 431              	.LVL44:
- 432 004c E6E7     		b	.L29
- 433              	.LVL45:
- 434              	.L44:
- 276:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   size_t total_size;
- 435              		.loc 1 276 0
- 436 004e 0027     		movs	r7, #0
- 437              	.LVL46:
- 438              	.L32:
- 314:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     /* service location specified, try to resolve */
- 439              		.loc 1 314 0
- 440 0050 94B1     		cbz	r4, .L33
- 316:Middlewares/Third_Party/LwIP/src/api/netdb.c ****       /* no DNS lookup, just parse for an address string */
- 441              		.loc 1 316 0
- 442 0052 1EB1     		cbz	r6, .L34
- 316:Middlewares/Third_Party/LwIP/src/api/netdb.c ****       /* no DNS lookup, just parse for an address string */
- 443              		.loc 1 316 0 is_stmt 0 discriminator 1
- 444 0054 3368     		ldr	r3, [r6]
- 445 0056 13F0040F 		tst	r3, #4
- 446 005a 06D1     		bne	.L56
- 447              	.L34:
- 337:Middlewares/Third_Party/LwIP/src/api/netdb.c ****       if (err != ERR_OK) {
- 448              		.loc 1 337 0 is_stmt 1
- 449 005c 01A9     		add	r1, sp, #4
- 450 005e 2046     		mov	r0, r4
- 451 0060 FFF7FEFF 		bl	netconn_gethostbyname
- 452              	.LVL47:
- 338:Middlewares/Third_Party/LwIP/src/api/netdb.c ****         return EAI_FAIL;
- 453              		.loc 1 338 0
- 454 0064 90B1     		cbz	r0, .L35
- 339:Middlewares/Third_Party/LwIP/src/api/netdb.c ****       }
- 455              		.loc 1 339 0
- 456 0066 CA20     		movs	r0, #202
- 457              	.LVL48:
- 458 0068 D8E7     		b	.L29
- 459              	.L56:
+ 542              		.loc 1 410 0
+ 543 00f8 0020     		movs	r0, #0
+ 544 00fa 2AE0     		b	.L29
+ 545              	.LVL57:
+ 546              	.L55:
  318:Middlewares/Third_Party/LwIP/src/api/netdb.c ****         return EAI_NONAME;
- 460              		.loc 1 318 0
- 461 006a 01A9     		add	r1, sp, #4
- 462 006c 2046     		mov	r0, r4
- 463 006e FFF7FEFF 		bl	ip4addr_aton
- 464              	.LVL49:
- 465 0072 58B9     		cbnz	r0, .L35
+ 547              		.loc 1 318 0
+ 548 00fc 01A9     		add	r1, sp, #4
+ 549 00fe 3846     		mov	r0, r7
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccm0WwNc.s 			page 18
+
+
+ 550 0100 FFF7FEFF 		bl	ip4addr_aton
+ 551              	.LVL58:
+ 552 0104 0028     		cmp	r0, #0
+ 553 0106 B6D1     		bne	.L35
  319:Middlewares/Third_Party/LwIP/src/api/netdb.c ****       }
- 466              		.loc 1 319 0
- 467 0074 C820     		movs	r0, #200
- 468 0076 D1E7     		b	.L29
- 469              	.L33:
+ 554              		.loc 1 319 0
+ 555 0108 C820     		movs	r0, #200
+ 556 010a 22E0     		b	.L29
+ 557              	.L33:
  344:Middlewares/Third_Party/LwIP/src/api/netdb.c ****       ip_addr_set_any(ai_family == AF_INET6, &addr);
- 470              		.loc 1 344 0
- 471 0078 36B1     		cbz	r6, .L36
+ 558              		.loc 1 344 0
+ 559 010c 34B1     		cbz	r4, .L36
  344:Middlewares/Third_Party/LwIP/src/api/netdb.c ****       ip_addr_set_any(ai_family == AF_INET6, &addr);
- 472              		.loc 1 344 0 is_stmt 0 discriminator 1
- 473 007a 3368     		ldr	r3, [r6]
- 474 007c 13F0010F 		tst	r3, #1
- 475 0080 02D0     		beq	.L36
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchVARgp.s 			page 17
-
-
+ 560              		.loc 1 344 0 is_stmt 0 discriminator 1
+ 561 010e 2368     		ldr	r3, [r4]
+ 562 0110 13F0010F 		tst	r3, #1
+ 563 0114 02D0     		beq	.L36
  345:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     } else {
- 476              		.loc 1 345 0 is_stmt 1
- 477 0082 0023     		movs	r3, #0
- 478 0084 0193     		str	r3, [sp, #4]
- 479 0086 01E0     		b	.L35
- 480              	.L36:
+ 564              		.loc 1 345 0 is_stmt 1
+ 565 0116 0023     		movs	r3, #0
+ 566 0118 0193     		str	r3, [sp, #4]
+ 567 011a ACE7     		b	.L35
+ 568              	.L36:
  347:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     }
- 481              		.loc 1 347 0
- 482 0088 334B     		ldr	r3, .L60
- 483 008a 0193     		str	r3, [sp, #4]
- 484              	.L35:
- 485              	.LVL50:
- 352:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     namelen = strlen(nodename);
- 486              		.loc 1 352 0
- 487 008c 002C     		cmp	r4, #0
- 488 008e 52D0     		beq	.L48
- 353:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     if (namelen > DNS_MAX_NAME_LENGTH) {
- 489              		.loc 1 353 0
- 490 0090 2046     		mov	r0, r4
- 491 0092 FFF7FEFF 		bl	strlen
- 492              	.LVL51:
- 493 0096 8146     		mov	r9, r0
- 494              	.LVL52:
- 354:Middlewares/Third_Party/LwIP/src/api/netdb.c ****       /* invalid name length */
- 495              		.loc 1 354 0
- 496 0098 B0F5807F 		cmp	r0, #256
- 497 009c 01D9     		bls	.L57
- 356:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     }
- 498              		.loc 1 356 0
- 499 009e CA20     		movs	r0, #202
- 500              	.LVL53:
- 501 00a0 BCE7     		b	.L29
- 502              	.LVL54:
- 503              	.L57:
+ 569              		.loc 1 347 0
+ 570 011c 124B     		ldr	r3, .L59
+ 571 011e 0193     		str	r3, [sp, #4]
+ 572 0120 A9E7     		b	.L35
+ 573              	.LVL59:
+ 574              	.L57:
  358:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     total_size += namelen + 1;
- 504              		.loc 1 358 0
- 505 00a2 00F1310A 		add	r10, r0, #49
- 506 00a6 BAF1300F 		cmp	r10, #48
- 507 00aa 3CD9     		bls	.L58
- 508              	.LVL55:
- 509              	.L37:
- 362:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     total_size <= NETDB_ELEM_SIZE);
- 510              		.loc 1 362 0
- 511 00ac BAF5997F 		cmp	r10, #306
- 512 00b0 46D2     		bcs	.L59
- 513              	.L38:
- 364:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   if (ai == NULL) {
- 514              		.loc 1 364 0
- 515 00b2 0B20     		movs	r0, #11
- 516 00b4 FFF7FEFF 		bl	memp_malloc
- 517              	.LVL56:
- 365:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     return EAI_MEMORY;
- 518              		.loc 1 365 0
- 519 00b8 8046     		mov	r8, r0
- 520 00ba 0028     		cmp	r0, #0
- 521 00bc 4AD0     		beq	.L50
- 368:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   /* cast through void* to get rid of alignment warnings */
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchVARgp.s 			page 18
-
-
- 522              		.loc 1 368 0
- 523 00be 5246     		mov	r2, r10
- 524 00c0 0021     		movs	r1, #0
- 525 00c2 FFF7FEFF 		bl	memset
- 526              	.LVL57:
- 370:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   if (IP_IS_V6_VAL(addr)) {
- 527              		.loc 1 370 0
- 528 00c6 08F1200B 		add	fp, r8, #32
- 529              	.LVL58:
- 530              	.LBB2:
- 385:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     sa4->sin_family = AF_INET;
- 531              		.loc 1 385 0
- 532 00ca 019B     		ldr	r3, [sp, #4]
- 533 00cc C8F82430 		str	r3, [r8, #36]
- 386:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     sa4->sin_len = sizeof(struct sockaddr_in);
- 534              		.loc 1 386 0
- 535 00d0 4FF0020A 		mov	r10, #2
- 536              	.LVL59:
- 537 00d4 88F821A0 		strb	r10, [r8, #33]
- 387:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     sa4->sin_port = lwip_htons((u16_t)port_nr);
- 538              		.loc 1 387 0
- 539 00d8 1023     		movs	r3, #16
- 540 00da 88F82030 		strb	r3, [r8, #32]
- 388:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     ai->ai_family = AF_INET;
- 541              		.loc 1 388 0
- 542 00de B8B2     		uxth	r0, r7
- 543 00e0 FFF7FEFF 		bl	lwip_htons
- 544              	.LVL60:
- 545 00e4 A8F82200 		strh	r0, [r8, #34]	@ movhi
- 389:Middlewares/Third_Party/LwIP/src/api/netdb.c **** #endif /* LWIP_IPV4 */
- 546              		.loc 1 389 0
- 547 00e8 C8F804A0 		str	r10, [r8, #4]
- 548              	.LBE2:
- 394:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     /* copy socktype & protocol from hints if specified */
- 549              		.loc 1 394 0
- 550 00ec 2EB1     		cbz	r6, .L39
- 396:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     ai->ai_protocol = hints->ai_protocol;
- 551              		.loc 1 396 0
- 552 00ee B368     		ldr	r3, [r6, #8]
- 553 00f0 C8F80830 		str	r3, [r8, #8]
- 397:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   }
- 554              		.loc 1 397 0
- 555 00f4 F368     		ldr	r3, [r6, #12]
- 556 00f6 C8F80C30 		str	r3, [r8, #12]
- 557              	.L39:
- 399:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     /* copy nodename to canonname if specified */
- 558              		.loc 1 399 0
- 559 00fa 5CB1     		cbz	r4, .L40
- 401:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     MEMCPY(ai->ai_canonname, nodename, namelen);
- 560              		.loc 1 401 0
- 561 00fc 08F13006 		add	r6, r8, #48
- 562              	.LVL61:
- 563 0100 C8F81860 		str	r6, [r8, #24]
- 402:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     ai->ai_canonname[namelen] = 0;
- 564              		.loc 1 402 0
- 565 0104 4A46     		mov	r2, r9
- 566 0106 2146     		mov	r1, r4
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchVARgp.s 			page 19
-
-
- 567 0108 3046     		mov	r0, r6
- 568 010a FFF7FEFF 		bl	memcpy
- 569              	.LVL62:
- 403:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   }
- 570              		.loc 1 403 0
- 571 010e 0023     		movs	r3, #0
- 572 0110 06F80930 		strb	r3, [r6, r9]
- 573              	.L40:
- 405:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   ai->ai_addr = (struct sockaddr*)sa;
- 574              		.loc 1 405 0
- 575 0114 1023     		movs	r3, #16
- 576 0116 C8F81030 		str	r3, [r8, #16]
- 406:Middlewares/Third_Party/LwIP/src/api/netdb.c **** 
- 577              		.loc 1 406 0
- 578 011a C8F814B0 		str	fp, [r8, #20]
- 408:Middlewares/Third_Party/LwIP/src/api/netdb.c **** 
- 579              		.loc 1 408 0
- 580 011e C5F80080 		str	r8, [r5]
- 410:Middlewares/Third_Party/LwIP/src/api/netdb.c **** }
- 581              		.loc 1 410 0
- 582 0122 0020     		movs	r0, #0
- 583 0124 7AE7     		b	.L29
- 584              	.LVL63:
+ 575              		.loc 1 358 0 discriminator 1
+ 576 0122 124B     		ldr	r3, .L59+4
+ 577 0124 4FF4B372 		mov	r2, #358
+ 578 0128 1149     		ldr	r1, .L59+8
+ 579 012a 1248     		ldr	r0, .L59+12
+ 580              	.LVL60:
+ 581 012c FFF7FEFF 		bl	printf
+ 582              	.LVL61:
+ 583 0130 ADE7     		b	.L38
+ 584              	.LVL62:
  585              	.L58:
- 358:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     total_size += namelen + 1;
- 586              		.loc 1 358 0 discriminator 1
- 587 0126 0D4B     		ldr	r3, .L60+4
- 588 0128 4FF4B372 		mov	r2, #358
- 589 012c 0C49     		ldr	r1, .L60+8
- 590 012e 0D48     		ldr	r0, .L60+12
- 591              	.LVL64:
- 592 0130 FFF7FEFF 		bl	printf
- 593              	.LVL65:
- 594 0134 BAE7     		b	.L37
- 595              	.LVL66:
- 596              	.L48:
- 278:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   int ai_family;
- 597              		.loc 1 278 0
- 598 0136 4FF00009 		mov	r9, #0
- 351:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   if (nodename != NULL) {
- 599              		.loc 1 351 0
- 600 013a 4FF0300A 		mov	r10, #48
- 601 013e B5E7     		b	.L37
- 602              	.LVL67:
- 603              	.L59:
  362:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     total_size <= NETDB_ELEM_SIZE);
- 604              		.loc 1 362 0 discriminator 1
- 605 0140 064B     		ldr	r3, .L60+4
- 606 0142 40F26B12 		movw	r2, #363
- 607 0146 0849     		ldr	r1, .L60+16
- 608 0148 0648     		ldr	r0, .L60+12
- 609 014a FFF7FEFF 		bl	printf
- 610              	.LVL68:
- 611 014e B0E7     		b	.L38
- 612              	.LVL69:
- 613              	.L41:
- 614              	.LCFI14:
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchVARgp.s 			page 20
+ 586              		.loc 1 362 0 discriminator 1
+ 587 0132 0E4B     		ldr	r3, .L59+4
+ 588 0134 40F26B12 		movw	r2, #363
+ 589 0138 0F49     		ldr	r1, .L59+16
+ 590 013a 0E48     		ldr	r0, .L59+12
+ 591 013c FFF7FEFF 		bl	printf
+ 592              	.LVL63:
+ 593 0140 A8E7     		b	.L37
+ 594              	.LVL64:
+ 595              	.L48:
+ 278:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   int ai_family;
+ 596              		.loc 1 278 0
+ 597 0142 4FF00008 		mov	r8, #0
+ 351:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   if (nodename != NULL) {
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccm0WwNc.s 			page 19
 
 
- 615              		.cfi_def_cfa_offset 0
- 616              		.cfi_restore 4
- 617              		.cfi_restore 5
- 618              		.cfi_restore 6
- 619              		.cfi_restore 7
- 620              		.cfi_restore 8
- 621              		.cfi_restore 9
- 622              		.cfi_restore 10
- 623              		.cfi_restore 11
- 624              		.cfi_restore 14
+ 598              		.loc 1 351 0
+ 599 0146 4FF0300A 		mov	r10, #48
+ 600 014a A3E7     		b	.L37
+ 601              	.LVL65:
+ 602              	.L41:
+ 603              	.LCFI12:
+ 604              		.cfi_def_cfa_offset 0
+ 605              		.cfi_restore 4
+ 606              		.cfi_restore 5
+ 607              		.cfi_restore 6
+ 608              		.cfi_restore 7
+ 609              		.cfi_restore 8
+ 610              		.cfi_restore 9
+ 611              		.cfi_restore 10
+ 612              		.cfi_restore 11
+ 613              		.cfi_restore 14
  282:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   }
- 625              		.loc 1 282 0
- 626 0150 CA20     		movs	r0, #202
- 627              	.LVL70:
- 628 0152 7047     		bx	lr
- 629              	.LVL71:
- 630              	.L50:
- 631              	.LCFI15:
- 632              		.cfi_def_cfa_offset 48
- 633              		.cfi_offset 4, -36
- 634              		.cfi_offset 5, -32
- 635              		.cfi_offset 6, -28
- 636              		.cfi_offset 7, -24
- 637              		.cfi_offset 8, -20
- 638              		.cfi_offset 9, -16
- 639              		.cfi_offset 10, -12
- 640              		.cfi_offset 11, -8
- 641              		.cfi_offset 14, -4
+ 614              		.loc 1 282 0
+ 615 014c CA20     		movs	r0, #202
+ 616              	.LVL66:
+ 411:Middlewares/Third_Party/LwIP/src/api/netdb.c **** }
+ 617              		.loc 1 411 0
+ 618 014e 7047     		bx	lr
+ 619              	.LVL67:
+ 620              	.L42:
+ 621              	.LCFI13:
+ 622              		.cfi_def_cfa_offset 48
+ 623              		.cfi_offset 4, -36
+ 624              		.cfi_offset 5, -32
+ 625              		.cfi_offset 6, -28
+ 626              		.cfi_offset 7, -24
+ 627              		.cfi_offset 8, -20
+ 628              		.cfi_offset 9, -16
+ 629              		.cfi_offset 10, -12
+ 630              		.cfi_offset 11, -8
+ 631              		.cfi_offset 14, -4
+ 286:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   }
+ 632              		.loc 1 286 0
+ 633 0150 C820     		movs	r0, #200
+ 634              	.LVL68:
+ 635              	.L29:
+ 636              		.loc 1 411 0
+ 637 0152 03B0     		add	sp, sp, #12
+ 638              	.LCFI14:
+ 639              		.cfi_remember_state
+ 640              		.cfi_def_cfa_offset 36
+ 641              		@ sp needed
+ 642 0154 BDE8F08F 		pop	{r4, r5, r6, r7, r8, r9, r10, fp, pc}
+ 643              	.LVL69:
+ 644              	.L43:
+ 645              	.LCFI15:
+ 646              		.cfi_restore_state
+ 299:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     }
+ 647              		.loc 1 299 0
+ 648 0158 CC20     		movs	r0, #204
+ 649              	.LVL70:
+ 650 015a FAE7     		b	.L29
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccm0WwNc.s 			page 20
+
+
+ 651              	.LVL71:
+ 652              	.L56:
+ 339:Middlewares/Third_Party/LwIP/src/api/netdb.c ****       }
+ 653              		.loc 1 339 0
+ 654 015c CA20     		movs	r0, #202
+ 655              	.LVL72:
+ 656 015e F8E7     		b	.L29
+ 657              	.LVL73:
+ 658              	.L49:
+ 356:Middlewares/Third_Party/LwIP/src/api/netdb.c ****     }
+ 659              		.loc 1 356 0
+ 660 0160 CA20     		movs	r0, #202
+ 661              	.LVL74:
+ 662 0162 F6E7     		b	.L29
+ 663              	.LVL75:
+ 664              	.L50:
  366:Middlewares/Third_Party/LwIP/src/api/netdb.c ****   }
- 642              		.loc 1 366 0
- 643 0154 CB20     		movs	r0, #203
- 644              	.LVL72:
- 645 0156 61E7     		b	.L29
- 646              	.L61:
- 647              		.align	2
- 648              	.L60:
- 649 0158 7F000001 		.word	16777343
- 650 015c 00000000 		.word	.LC0
- 651 0160 30000000 		.word	.LC1
- 652 0164 44000000 		.word	.LC2
- 653 0168 6C000000 		.word	.LC3
- 654              		.cfi_endproc
- 655              	.LFE160:
- 657              		.comm	h_errno,4,4
- 658              		.section	.bss.s_aliases.13835,"aw",%nobits
- 659              		.align	2
- 660              		.set	.LANCHOR4,. + 0
- 663              	s_aliases.13835:
- 664 0000 00000000 		.space	4
- 665              		.section	.bss.s_hostent.13834,"aw",%nobits
- 666              		.align	2
- 667              		.set	.LANCHOR0,. + 0
- 670              	s_hostent.13834:
- 671 0000 00000000 		.space	20
- 671      00000000 
- 671      00000000 
- 671      00000000 
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchVARgp.s 			page 21
+ 665              		.loc 1 366 0
+ 666 0164 CB20     		movs	r0, #203
+ 667              	.LVL76:
+ 668 0166 F4E7     		b	.L29
+ 669              	.L60:
+ 670              		.align	2
+ 671              	.L59:
+ 672 0168 7F000001 		.word	16777343
+ 673 016c 00000000 		.word	.LC0
+ 674 0170 30000000 		.word	.LC1
+ 675 0174 44000000 		.word	.LC2
+ 676 0178 6C000000 		.word	.LC3
+ 677              		.cfi_endproc
+ 678              	.LFE162:
+ 680              		.comm	h_errno,4,4
+ 681              		.section	.bss.s_aliases.14076,"aw",%nobits
+ 682              		.align	2
+ 683              		.set	.LANCHOR4,. + 0
+ 686              	s_aliases.14076:
+ 687 0000 00000000 		.space	4
+ 688              		.section	.bss.s_hostent.14075,"aw",%nobits
+ 689              		.align	2
+ 690              		.set	.LANCHOR0,. + 0
+ 693              	s_hostent.14075:
+ 694 0000 00000000 		.space	20
+ 694      00000000 
+ 694      00000000 
+ 694      00000000 
+ 694      00000000 
+ 695              		.section	.bss.s_hostent_addr.14077,"aw",%nobits
+ 696              		.align	2
+ 697              		.set	.LANCHOR1,. + 0
+ 700              	s_hostent_addr.14077:
+ 701 0000 00000000 		.space	4
+ 702              		.section	.bss.s_hostname.14079,"aw",%nobits
+ 703              		.align	2
+ 704              		.set	.LANCHOR3,. + 0
+ 707              	s_hostname.14079:
+ 708 0000 00000000 		.space	257
+ 708      00000000 
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccm0WwNc.s 			page 21
 
 
- 671      00000000 
- 672              		.section	.bss.s_hostent_addr.13836,"aw",%nobits
- 673              		.align	2
- 674              		.set	.LANCHOR1,. + 0
- 677              	s_hostent_addr.13836:
- 678 0000 00000000 		.space	4
- 679              		.section	.bss.s_hostname.13838,"aw",%nobits
- 680              		.align	2
- 681              		.set	.LANCHOR3,. + 0
- 684              	s_hostname.13838:
- 685 0000 00000000 		.space	257
- 685      00000000 
- 685      00000000 
- 685      00000000 
- 685      00000000 
- 686              		.section	.bss.s_phostent_addr.13837,"aw",%nobits
- 687              		.align	2
- 688              		.set	.LANCHOR2,. + 0
- 691              	s_phostent_addr.13837:
- 692 0000 00000000 		.space	8
- 692      00000000 
- 693              		.section	.rodata.lwip_getaddrinfo.str1.4,"aMS",%progbits,1
- 694              		.align	2
- 695              	.LC0:
- 696 0000 4D696464 		.ascii	"Middlewares/Third_Party/LwIP/src/api/netdb.c\000"
- 696      6C657761 
- 696      7265732F 
- 696      54686972 
- 696      645F5061 
- 697 002d 000000   		.space	3
- 698              	.LC1:
- 699 0030 6E616D65 		.ascii	"namelen is too long\000"
- 699      6C656E20 
- 699      69732074 
- 699      6F6F206C 
- 699      6F6E6700 
- 700              	.LC2:
- 701 0044 41737365 		.ascii	"Assertion \"%s\" failed at line %d in %s\012\000"
- 701      7274696F 
- 701      6E202225 
- 701      73222066 
- 701      61696C65 
- 702              	.LC3:
- 703 006c 746F7461 		.ascii	"total_size <= NETDB_ELEM_SIZE: please report this!\000"
- 703      6C5F7369 
- 703      7A65203C 
- 703      3D204E45 
- 703      5444425F 
- 704              		.text
- 705              	.Letext0:
- 706              		.file 2 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\machine\\_default_types.h"
- 707              		.file 3 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\_stdint.h"
- 708              		.file 4 "Drivers/CMSIS/Include/core_cm7.h"
- 709              		.file 5 "Drivers/CMSIS/Device/ST/STM32F7xx/Include/system_stm32f7xx.h"
- 710              		.file 6 "c:\\gcc_toolchain\\6_2017-q1-update\\lib\\gcc\\arm-none-eabi\\6.3.1\\include\\stddef.h"
- 711              		.file 7 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\lock.h"
- 712              		.file 8 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\_types.h"
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchVARgp.s 			page 22
+ 708      00000000 
+ 708      00000000 
+ 708      00000000 
+ 709              		.section	.bss.s_phostent_addr.14078,"aw",%nobits
+ 710              		.align	2
+ 711              		.set	.LANCHOR2,. + 0
+ 714              	s_phostent_addr.14078:
+ 715 0000 00000000 		.space	8
+ 715      00000000 
+ 716              		.section	.rodata.lwip_getaddrinfo.str1.4,"aMS",%progbits,1
+ 717              		.align	2
+ 718              	.LC0:
+ 719 0000 4D696464 		.ascii	"Middlewares/Third_Party/LwIP/src/api/netdb.c\000"
+ 719      6C657761 
+ 719      7265732F 
+ 719      54686972 
+ 719      645F5061 
+ 720 002d 000000   		.space	3
+ 721              	.LC1:
+ 722 0030 6E616D65 		.ascii	"namelen is too long\000"
+ 722      6C656E20 
+ 722      69732074 
+ 722      6F6F206C 
+ 722      6F6E6700 
+ 723              	.LC2:
+ 724 0044 41737365 		.ascii	"Assertion \"%s\" failed at line %d in %s\012\000"
+ 724      7274696F 
+ 724      6E202225 
+ 724      73222066 
+ 724      61696C65 
+ 725              	.LC3:
+ 726 006c 746F7461 		.ascii	"total_size <= NETDB_ELEM_SIZE: please report this!\000"
+ 726      6C5F7369 
+ 726      7A65203C 
+ 726      3D204E45 
+ 726      5444425F 
+ 727              		.text
+ 728              	.Letext0:
+ 729              		.file 2 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\machine\\_default
+ 730              		.file 3 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 731              		.file 4 "Drivers/CMSIS/Include/core_cm7.h"
+ 732              		.file 5 "Drivers/CMSIS/Device/ST/STM32F7xx/Include/system_stm32f7xx.h"
+ 733              		.file 6 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\lib\\gcc\\arm-none-eabi\\7.3.1\\include\\
+ 734              		.file 7 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\lock.h"
+ 735              		.file 8 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\_types.h"
+ 736              		.file 9 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\reent.h"
+ 737              		.file 10 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\types.h"
+ 738              		.file 11 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\stdlib.h"
+ 739              		.file 12 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\time.h"
+ 740              		.file 13 "Middlewares/Third_Party/LwIP/src/include/lwip/arch.h"
+ 741              		.file 14 "Middlewares/Third_Party/LwIP/src/include/lwip/ip4_addr.h"
+ 742              		.file 15 "Middlewares/Third_Party/LwIP/src/include/lwip/ip_addr.h"
+ 743              		.file 16 "Middlewares/Third_Party/LwIP/src/include/lwip/inet.h"
+ 744              		.file 17 "Middlewares/Third_Party/LwIP/src/include/lwip/err.h"
+ 745              		.file 18 "Middlewares/Third_Party/LwIP/src/include/lwip/errno.h"
+ 746              		.file 19 "Middlewares/Third_Party/LwIP/src/include/lwip/sockets.h"
+ 747              		.file 20 "Middlewares/Third_Party/LwIP/src/include/lwip/netdb.h"
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccm0WwNc.s 			page 22
 
 
- 713              		.file 9 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\reent.h"
- 714              		.file 10 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\types.h"
- 715              		.file 11 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\stdlib.h"
- 716              		.file 12 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\time.h"
- 717              		.file 13 "Middlewares/Third_Party/LwIP/src/include/lwip/arch.h"
- 718              		.file 14 "Middlewares/Third_Party/LwIP/src/include/lwip/ip4_addr.h"
- 719              		.file 15 "Middlewares/Third_Party/LwIP/src/include/lwip/ip_addr.h"
- 720              		.file 16 "Middlewares/Third_Party/LwIP/src/include/lwip/inet.h"
- 721              		.file 17 "Middlewares/Third_Party/LwIP/src/include/lwip/err.h"
- 722              		.file 18 "Middlewares/Third_Party/LwIP/src/include/lwip/errno.h"
- 723              		.file 19 "Middlewares/Third_Party/LwIP/src/include/lwip/sockets.h"
- 724              		.file 20 "Middlewares/Third_Party/LwIP/src/include/lwip/netdb.h"
- 725              		.file 21 "Middlewares/Third_Party/LwIP/src/include/lwip/memp.h"
- 726              		.file 22 "Middlewares/Third_Party/LwIP/src/include/lwip/priv/memp_priv.h"
- 727              		.file 23 "Middlewares/Third_Party/LwIP/src/include/lwip/dns.h"
- 728              		.file 24 "Middlewares/Third_Party/LwIP/src/include/lwip/def.h"
- 729              		.file 25 "Middlewares/Third_Party/LwIP/src/include/lwip/api.h"
- 730              		.file 26 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\string.h"
- 731              		.file 27 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\stdio.h"
-ARM GAS  C:\Users\Student\AppData\Local\Temp\cchVARgp.s 			page 23
+ 748              		.file 21 "Middlewares/Third_Party/LwIP/src/include/lwip/memp.h"
+ 749              		.file 22 "Middlewares/Third_Party/LwIP/src/include/lwip/priv/memp_priv.h"
+ 750              		.file 23 "Middlewares/Third_Party/LwIP/src/include/lwip/dns.h"
+ 751              		.file 24 "Middlewares/Third_Party/LwIP/src/include/lwip/def.h"
+ 752              		.file 25 "Middlewares/Third_Party/LwIP/src/include/lwip/api.h"
+ 753              		.file 26 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\string.h"
+ 754              		.file 27 "<built-in>"
+ 755              		.file 28 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\stdio.h"
+ARM GAS  C:\Users\milek\AppData\Local\Temp\ccm0WwNc.s 			page 23
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 netdb.c
-C:\Users\Student\AppData\Local\Temp\cchVARgp.s:18     .text.lwip_gethostbyname:00000000 $t
-C:\Users\Student\AppData\Local\Temp\cchVARgp.s:25     .text.lwip_gethostbyname:00000000 lwip_gethostbyname
-C:\Users\Student\AppData\Local\Temp\cchVARgp.s:110    .text.lwip_gethostbyname:00000050 $d
+C:\Users\milek\AppData\Local\Temp\ccm0WwNc.s:18     .text.lwip_gethostbyname:00000000 $t
+C:\Users\milek\AppData\Local\Temp\ccm0WwNc.s:25     .text.lwip_gethostbyname:00000000 lwip_gethostbyname
+C:\Users\milek\AppData\Local\Temp\ccm0WwNc.s:110    .text.lwip_gethostbyname:00000050 $d
                             *COM*:00000004 h_errno
-C:\Users\Student\AppData\Local\Temp\cchVARgp.s:120    .text.lwip_gethostbyname_r:00000000 $t
-C:\Users\Student\AppData\Local\Temp\cchVARgp.s:127    .text.lwip_gethostbyname_r:00000000 lwip_gethostbyname_r
-C:\Users\Student\AppData\Local\Temp\cchVARgp.s:289    .text.lwip_freeaddrinfo:00000000 $t
-C:\Users\Student\AppData\Local\Temp\cchVARgp.s:296    .text.lwip_freeaddrinfo:00000000 lwip_freeaddrinfo
-C:\Users\Student\AppData\Local\Temp\cchVARgp.s:339    .text.lwip_getaddrinfo:00000000 $t
-C:\Users\Student\AppData\Local\Temp\cchVARgp.s:346    .text.lwip_getaddrinfo:00000000 lwip_getaddrinfo
-C:\Users\Student\AppData\Local\Temp\cchVARgp.s:649    .text.lwip_getaddrinfo:00000158 $d
-C:\Users\Student\AppData\Local\Temp\cchVARgp.s:659    .bss.s_aliases.13835:00000000 $d
-C:\Users\Student\AppData\Local\Temp\cchVARgp.s:663    .bss.s_aliases.13835:00000000 s_aliases.13835
-C:\Users\Student\AppData\Local\Temp\cchVARgp.s:666    .bss.s_hostent.13834:00000000 $d
-C:\Users\Student\AppData\Local\Temp\cchVARgp.s:670    .bss.s_hostent.13834:00000000 s_hostent.13834
-C:\Users\Student\AppData\Local\Temp\cchVARgp.s:673    .bss.s_hostent_addr.13836:00000000 $d
-C:\Users\Student\AppData\Local\Temp\cchVARgp.s:677    .bss.s_hostent_addr.13836:00000000 s_hostent_addr.13836
-C:\Users\Student\AppData\Local\Temp\cchVARgp.s:680    .bss.s_hostname.13838:00000000 $d
-C:\Users\Student\AppData\Local\Temp\cchVARgp.s:684    .bss.s_hostname.13838:00000000 s_hostname.13838
-C:\Users\Student\AppData\Local\Temp\cchVARgp.s:687    .bss.s_phostent_addr.13837:00000000 $d
-C:\Users\Student\AppData\Local\Temp\cchVARgp.s:691    .bss.s_phostent_addr.13837:00000000 s_phostent_addr.13837
-C:\Users\Student\AppData\Local\Temp\cchVARgp.s:694    .rodata.lwip_getaddrinfo.str1.4:00000000 $d
-                     .debug_frame:00000010 $d
+C:\Users\milek\AppData\Local\Temp\ccm0WwNc.s:120    .text.lwip_gethostbyname_r:00000000 $t
+C:\Users\milek\AppData\Local\Temp\ccm0WwNc.s:127    .text.lwip_gethostbyname_r:00000000 lwip_gethostbyname_r
+C:\Users\milek\AppData\Local\Temp\ccm0WwNc.s:293    .text.lwip_freeaddrinfo:00000000 $t
+C:\Users\milek\AppData\Local\Temp\ccm0WwNc.s:300    .text.lwip_freeaddrinfo:00000000 lwip_freeaddrinfo
+C:\Users\milek\AppData\Local\Temp\ccm0WwNc.s:343    .text.lwip_getaddrinfo:00000000 $t
+C:\Users\milek\AppData\Local\Temp\ccm0WwNc.s:350    .text.lwip_getaddrinfo:00000000 lwip_getaddrinfo
+C:\Users\milek\AppData\Local\Temp\ccm0WwNc.s:672    .text.lwip_getaddrinfo:00000168 $d
+C:\Users\milek\AppData\Local\Temp\ccm0WwNc.s:682    .bss.s_aliases.14076:00000000 $d
+C:\Users\milek\AppData\Local\Temp\ccm0WwNc.s:686    .bss.s_aliases.14076:00000000 s_aliases.14076
+C:\Users\milek\AppData\Local\Temp\ccm0WwNc.s:689    .bss.s_hostent.14075:00000000 $d
+C:\Users\milek\AppData\Local\Temp\ccm0WwNc.s:693    .bss.s_hostent.14075:00000000 s_hostent.14075
+C:\Users\milek\AppData\Local\Temp\ccm0WwNc.s:696    .bss.s_hostent_addr.14077:00000000 $d
+C:\Users\milek\AppData\Local\Temp\ccm0WwNc.s:700    .bss.s_hostent_addr.14077:00000000 s_hostent_addr.14077
+C:\Users\milek\AppData\Local\Temp\ccm0WwNc.s:703    .bss.s_hostname.14079:00000000 $d
+C:\Users\milek\AppData\Local\Temp\ccm0WwNc.s:707    .bss.s_hostname.14079:00000000 s_hostname.14079
+C:\Users\milek\AppData\Local\Temp\ccm0WwNc.s:710    .bss.s_phostent_addr.14078:00000000 $d
+C:\Users\milek\AppData\Local\Temp\ccm0WwNc.s:714    .bss.s_phostent_addr.14078:00000000 s_phostent_addr.14078
+C:\Users\milek\AppData\Local\Temp\ccm0WwNc.s:717    .rodata.lwip_getaddrinfo.str1.4:00000000 $d
 
 UNDEFINED SYMBOLS
 netconn_gethostbyname
@@ -1316,8 +1304,8 @@ strlen
 memcpy
 memp_free
 atoi
-ip4addr_aton
 memp_malloc
 memset
 lwip_htons
+ip4addr_aton
 printf
