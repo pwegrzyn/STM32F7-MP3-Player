@@ -1,0 +1,1061 @@
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccZkMhf9.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"dequant.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.xmp3fixpt_Dequantize,"ax",%progbits
+  18              		.align	1
+  19              		.global	xmp3fixpt_Dequantize
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  23              		.fpu fpv5-sp-d16
+  25              	xmp3fixpt_Dequantize:
+  26              	.LFB5:
+  27              		.file 1 "lib/helix/real/dequant.c"
+   1:lib/helix/real/dequant.c **** /* ***** BEGIN LICENSE BLOCK ***** 
+   2:lib/helix/real/dequant.c ****  * Version: RCSL 1.0/RPSL 1.0 
+   3:lib/helix/real/dequant.c ****  *  
+   4:lib/helix/real/dequant.c ****  * Portions Copyright (c) 1995-2002 RealNetworks, Inc. All Rights Reserved. 
+   5:lib/helix/real/dequant.c ****  *      
+   6:lib/helix/real/dequant.c ****  * The contents of this file, and the files included with this file, are 
+   7:lib/helix/real/dequant.c ****  * subject to the current version of the RealNetworks Public Source License 
+   8:lib/helix/real/dequant.c ****  * Version 1.0 (the "RPSL") available at 
+   9:lib/helix/real/dequant.c ****  * http://www.helixcommunity.org/content/rpsl unless you have licensed 
+  10:lib/helix/real/dequant.c ****  * the file under the RealNetworks Community Source License Version 1.0 
+  11:lib/helix/real/dequant.c ****  * (the "RCSL") available at http://www.helixcommunity.org/content/rcsl, 
+  12:lib/helix/real/dequant.c ****  * in which case the RCSL will apply. You may also obtain the license terms 
+  13:lib/helix/real/dequant.c ****  * directly from RealNetworks.  You may not use this file except in 
+  14:lib/helix/real/dequant.c ****  * compliance with the RPSL or, if you have a valid RCSL with RealNetworks 
+  15:lib/helix/real/dequant.c ****  * applicable to this file, the RCSL.  Please see the applicable RPSL or 
+  16:lib/helix/real/dequant.c ****  * RCSL for the rights, obligations and limitations governing use of the 
+  17:lib/helix/real/dequant.c ****  * contents of the file.  
+  18:lib/helix/real/dequant.c ****  *  
+  19:lib/helix/real/dequant.c ****  * This file is part of the Helix DNA Technology. RealNetworks is the 
+  20:lib/helix/real/dequant.c ****  * developer of the Original Code and owns the copyrights in the portions 
+  21:lib/helix/real/dequant.c ****  * it created. 
+  22:lib/helix/real/dequant.c ****  *  
+  23:lib/helix/real/dequant.c ****  * This file, and the files included with this file, is distributed and made 
+  24:lib/helix/real/dequant.c ****  * available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER 
+  25:lib/helix/real/dequant.c ****  * EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS ALL SUCH WARRANTIES, 
+  26:lib/helix/real/dequant.c ****  * INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF MERCHANTABILITY, FITNESS 
+  27:lib/helix/real/dequant.c ****  * FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT. 
+  28:lib/helix/real/dequant.c ****  * 
+  29:lib/helix/real/dequant.c ****  * Technology Compatibility Kit Test Suite(s) Location: 
+  30:lib/helix/real/dequant.c ****  *    http://www.helixcommunity.org/content/tck 
+  31:lib/helix/real/dequant.c ****  * 
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccZkMhf9.s 			page 2
+
+
+  32:lib/helix/real/dequant.c ****  * Contributor(s): 
+  33:lib/helix/real/dequant.c ****  *  
+  34:lib/helix/real/dequant.c ****  * ***** END LICENSE BLOCK ***** */ 
+  35:lib/helix/real/dequant.c **** 
+  36:lib/helix/real/dequant.c **** /**************************************************************************************
+  37:lib/helix/real/dequant.c ****  * Fixed-point MP3 decoder
+  38:lib/helix/real/dequant.c ****  * Jon Recker (jrecker@real.com), Ken Cooke (kenc@real.com)
+  39:lib/helix/real/dequant.c ****  * June 2003
+  40:lib/helix/real/dequant.c ****  *
+  41:lib/helix/real/dequant.c ****  * dequant.c - dequantization, stereo processing (intensity, mid-side), short-block
+  42:lib/helix/real/dequant.c ****  *               coefficient reordering
+  43:lib/helix/real/dequant.c ****  **************************************************************************************/
+  44:lib/helix/real/dequant.c **** 
+  45:lib/helix/real/dequant.c **** #include "coder.h"
+  46:lib/helix/real/dequant.c **** #include "assembly.h"
+  47:lib/helix/real/dequant.c **** 
+  48:lib/helix/real/dequant.c **** /**************************************************************************************
+  49:lib/helix/real/dequant.c ****  * Function:    Dequantize
+  50:lib/helix/real/dequant.c ****  *
+  51:lib/helix/real/dequant.c ****  * Description: dequantize coefficients, decode stereo, reorder short blocks
+  52:lib/helix/real/dequant.c ****  *                (one granule-worth)
+  53:lib/helix/real/dequant.c ****  *
+  54:lib/helix/real/dequant.c ****  * Inputs:      MP3DecInfo structure filled by UnpackFrameHeader(), UnpackSideInfo(),
+  55:lib/helix/real/dequant.c ****  *                UnpackScaleFactors(), and DecodeHuffman() (for this granule)
+  56:lib/helix/real/dequant.c ****  *              index of current granule
+  57:lib/helix/real/dequant.c ****  *
+  58:lib/helix/real/dequant.c ****  * Outputs:     dequantized and reordered coefficients in hi->huffDecBuf 
+  59:lib/helix/real/dequant.c ****  *                (one granule-worth, all channels), format = Q26
+  60:lib/helix/real/dequant.c ****  *              operates in-place on huffDecBuf but also needs di->workBuf
+  61:lib/helix/real/dequant.c ****  *              updated hi->nonZeroBound index for both channels
+  62:lib/helix/real/dequant.c ****  *
+  63:lib/helix/real/dequant.c ****  * Return:      0 on success, -1 if null input pointers
+  64:lib/helix/real/dequant.c ****  *
+  65:lib/helix/real/dequant.c ****  * Notes:       In calling output Q(DQ_FRACBITS_OUT), we assume an implicit bias 
+  66:lib/helix/real/dequant.c ****  *                of 2^15. Some (floating-point) reference implementations factor this 
+  67:lib/helix/real/dequant.c ****  *                into the 2^(0.25 * gain) scaling explicitly. But to avoid precision 
+  68:lib/helix/real/dequant.c ****  *                loss, we don't do that. Instead take it into account in the final 
+  69:lib/helix/real/dequant.c ****  *                round to PCM (>> by 15 less than we otherwise would have).
+  70:lib/helix/real/dequant.c ****  *              Equivalently, we can think of the dequantized coefficients as 
+  71:lib/helix/real/dequant.c ****  *                Q(DQ_FRACBITS_OUT - 15) with no implicit bias. 
+  72:lib/helix/real/dequant.c ****  **************************************************************************************/
+  73:lib/helix/real/dequant.c **** int Dequantize(MP3DecInfo *mp3DecInfo, int gr)
+  74:lib/helix/real/dequant.c **** {
+  28              		.loc 1 74 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 16
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              	.LVL0:
+  75:lib/helix/real/dequant.c **** 	int i, ch, nSamps, mOut[2];
+  76:lib/helix/real/dequant.c **** 	FrameHeader *fh;
+  77:lib/helix/real/dequant.c **** 	SideInfo *si;
+  78:lib/helix/real/dequant.c **** 	ScaleFactorInfo *sfi;
+  79:lib/helix/real/dequant.c **** 	HuffmanInfo *hi;
+  80:lib/helix/real/dequant.c **** 	DequantInfo *di;
+  81:lib/helix/real/dequant.c **** 	CriticalBandInfo *cbi;
+  82:lib/helix/real/dequant.c **** 
+  83:lib/helix/real/dequant.c **** 	/* validate pointers */
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccZkMhf9.s 			page 3
+
+
+  84:lib/helix/real/dequant.c **** 	if (!mp3DecInfo || !mp3DecInfo->FrameHeaderPS || !mp3DecInfo->SideInfoPS || !mp3DecInfo->ScaleFact
+  33              		.loc 1 84 0
+  34 0000 0028     		cmp	r0, #0
+  35 0002 00F02D81 		beq	.L21
+  74:lib/helix/real/dequant.c **** 	int i, ch, nSamps, mOut[2];
+  36              		.loc 1 74 0 discriminator 1
+  37 0006 2DE9F04F 		push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
+  38              	.LCFI0:
+  39              		.cfi_def_cfa_offset 36
+  40              		.cfi_offset 4, -36
+  41              		.cfi_offset 5, -32
+  42              		.cfi_offset 6, -28
+  43              		.cfi_offset 7, -24
+  44              		.cfi_offset 8, -20
+  45              		.cfi_offset 9, -16
+  46              		.cfi_offset 10, -12
+  47              		.cfi_offset 11, -8
+  48              		.cfi_offset 14, -4
+  49 000a 8BB0     		sub	sp, sp, #44
+  50              	.LCFI1:
+  51              		.cfi_def_cfa_offset 80
+  52 000c 0746     		mov	r7, r0
+  53              		.loc 1 84 0 discriminator 1
+  54 000e D0F80080 		ldr	r8, [r0]
+  55 0012 B8F1000F 		cmp	r8, #0
+  56 0016 00F02681 		beq	.L22
+  57              		.loc 1 84 0 is_stmt 0 discriminator 2
+  58 001a D0F804A0 		ldr	r10, [r0, #4]
+  59 001e BAF1000F 		cmp	r10, #0
+  60 0022 00F02381 		beq	.L23
+  61              		.loc 1 84 0 discriminator 3
+  62 0026 D0F808B0 		ldr	fp, [r0, #8]
+  63 002a BBF1000F 		cmp	fp, #0
+  64 002e 00F02081 		beq	.L24
+  85:lib/helix/real/dequant.c **** 		!mp3DecInfo->HuffmanInfoPS || !mp3DecInfo->DequantInfoPS)
+  65              		.loc 1 85 0 is_stmt 1 discriminator 4
+  66 0032 C568     		ldr	r5, [r0, #12]
+  84:lib/helix/real/dequant.c **** 		!mp3DecInfo->HuffmanInfoPS || !mp3DecInfo->DequantInfoPS)
+  67              		.loc 1 84 0 discriminator 4
+  68 0034 002D     		cmp	r5, #0
+  69 0036 00F01F81 		beq	.L25
+  70              		.loc 1 85 0
+  71 003a D0F81090 		ldr	r9, [r0, #16]
+  72 003e B9F1000F 		cmp	r9, #0
+  73 0042 00F01C81 		beq	.L26
+  74 0046 0E46     		mov	r6, r1
+  75              	.LVL1:
+  86:lib/helix/real/dequant.c **** 		return -1;
+  87:lib/helix/real/dequant.c **** 
+  88:lib/helix/real/dequant.c **** 	fh = (FrameHeader *)(mp3DecInfo->FrameHeaderPS);
+  89:lib/helix/real/dequant.c **** 
+  90:lib/helix/real/dequant.c **** 	/* si is an array of up to 4 structs, stored as gr0ch0, gr0ch1, gr1ch0, gr1ch1 */
+  91:lib/helix/real/dequant.c **** 	si = (SideInfo *)(mp3DecInfo->SideInfoPS);
+  92:lib/helix/real/dequant.c **** 	sfi = (ScaleFactorInfo *)(mp3DecInfo->ScaleFactorInfoPS);
+  93:lib/helix/real/dequant.c **** 	hi = (HuffmanInfo *)mp3DecInfo->HuffmanInfoPS;
+  94:lib/helix/real/dequant.c **** 	di = (DequantInfo *)mp3DecInfo->DequantInfoPS;
+  95:lib/helix/real/dequant.c **** 	cbi = di->cbi;
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccZkMhf9.s 			page 4
+
+
+  76              		.loc 1 95 0
+  77 0048 09F54673 		add	r3, r9, #792
+  78 004c 0793     		str	r3, [sp, #28]
+  79              	.LVL2:
+  96:lib/helix/real/dequant.c **** 	mOut[0] = mOut[1] = 0;
+  80              		.loc 1 96 0
+  81 004e 0024     		movs	r4, #0
+  82 0050 0994     		str	r4, [sp, #36]
+  83 0052 0894     		str	r4, [sp, #32]
+  84              	.LVL3:
+  97:lib/helix/real/dequant.c **** 
+  98:lib/helix/real/dequant.c **** 	/* dequantize all the samples in each channel */
+  99:lib/helix/real/dequant.c **** 	for (ch = 0; ch < mp3DecInfo->nChans; ch++) {
+  85              		.loc 1 99 0
+  86 0054 2DE0     		b	.L3
+  87              	.LVL4:
+  88              	.L4:
+ 100:lib/helix/real/dequant.c **** 		hi->gb[ch] = DequantChannel(hi->huffDecBuf[ch], di->workBuf, &hi->nonZeroBound[ch], fh,
+  89              		.loc 1 100 0 discriminator 3
+  90 0056 E100     		lsls	r1, r4, #3
+  91 0058 0B19     		adds	r3, r1, r4
+  92 005a 1802     		lsls	r0, r3, #8
+ 101:lib/helix/real/dequant.c **** 			&si->sis[gr][ch], &sfi->sfis[gr][ch], &cbi[ch]);
+  93              		.loc 1 101 0 discriminator 3
+  94 005c 04EB4402 		add	r2, r4, r4, lsl #1
+  95 0060 D300     		lsls	r3, r2, #3
+ 100:lib/helix/real/dequant.c **** 		hi->gb[ch] = DequantChannel(hi->huffDecBuf[ch], di->workBuf, &hi->nonZeroBound[ch], fh,
+  96              		.loc 1 100 0 discriminator 3
+  97 0062 04F59062 		add	r2, r4, #1152
+  98 0066 0692     		str	r2, [sp, #24]
+  99 0068 079A     		ldr	r2, [sp, #28]
+ 100 006a 1344     		add	r3, r3, r2
+ 101 006c 0293     		str	r3, [sp, #8]
+ 102 006e C4EB441C 		rsb	ip, r4, r4, lsl #5
+ 103 0072 4FEA4C03 		lsl	r3, ip, #1
+ 104 0076 C6EB461E 		rsb	lr, r6, r6, lsl #5
+ 105 007a 4FEA8E0C 		lsl	ip, lr, #2
+ 106 007e 6344     		add	r3, r3, ip
+ 107 0080 5B44     		add	r3, r3, fp
+ 108 0082 0193     		str	r3, [sp, #4]
+ 109 0084 2144     		add	r1, r1, r4
+ 110 0086 CB00     		lsls	r3, r1, #3
+ 111 0088 06EBC60C 		add	ip, r6, r6, lsl #3
+ 112 008c 4FEA0C11 		lsl	r1, ip, #4
+ 113 0090 0B44     		add	r3, r3, r1
+ 114 0092 2833     		adds	r3, r3, #40
+ 115 0094 5344     		add	r3, r3, r10
+ 116 0096 0093     		str	r3, [sp]
+ 117 0098 4346     		mov	r3, r8
+ 118 009a 069A     		ldr	r2, [sp, #24]
+ 119 009c 05EB8202 		add	r2, r5, r2, lsl #2
+ 120 00a0 4946     		mov	r1, r9
+ 121 00a2 2844     		add	r0, r0, r5
+ 122 00a4 FFF7FEFF 		bl	xmp3fixpt_DequantChannel
+ 123              	.LVL5:
+ 124 00a8 04F28243 		addw	r3, r4, #1154
+ 125 00ac 45F82300 		str	r0, [r5, r3, lsl #2]
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccZkMhf9.s 			page 5
+
+
+  99:lib/helix/real/dequant.c **** 		hi->gb[ch] = DequantChannel(hi->huffDecBuf[ch], di->workBuf, &hi->nonZeroBound[ch], fh,
+ 126              		.loc 1 99 0 discriminator 3
+ 127 00b0 0134     		adds	r4, r4, #1
+ 128              	.LVL6:
+ 129              	.L3:
+  99:lib/helix/real/dequant.c **** 		hi->gb[ch] = DequantChannel(hi->huffDecBuf[ch], di->workBuf, &hi->nonZeroBound[ch], fh,
+ 130              		.loc 1 99 0 is_stmt 0 discriminator 1
+ 131 00b2 D7F8BC37 		ldr	r3, [r7, #1980]
+ 132 00b6 A342     		cmp	r3, r4
+ 133 00b8 CDDC     		bgt	.L4
+ 102:lib/helix/real/dequant.c **** 	}
+ 103:lib/helix/real/dequant.c **** 
+ 104:lib/helix/real/dequant.c **** 	/* joint stereo processing assumes one guard bit in input samples
+ 105:lib/helix/real/dequant.c **** 	 * it's extremely rare not to have at least one gb, so if this is the case
+ 106:lib/helix/real/dequant.c **** 	 *   just make a pass over the data and clip to [-2^30+1, 2^30-1]
+ 107:lib/helix/real/dequant.c **** 	 * in practice this may never happen
+ 108:lib/helix/real/dequant.c **** 	 */
+ 109:lib/helix/real/dequant.c **** 	if (fh->modeExt && (hi->gb[0] < 1 || hi->gb[1] < 1)) {
+ 134              		.loc 1 109 0 is_stmt 1
+ 135 00ba D8F82030 		ldr	r3, [r8, #32]
+ 136 00be 4BB1     		cbz	r3, .L5
+ 137              		.loc 1 109 0 is_stmt 0 discriminator 1
+ 138 00c0 41F20823 		movw	r3, #4616
+ 139 00c4 EB58     		ldr	r3, [r5, r3]
+ 140 00c6 002B     		cmp	r3, #0
+ 141 00c8 2FDD     		ble	.L27
+ 142              		.loc 1 109 0 discriminator 2
+ 143 00ca 41F20C23 		movw	r3, #4620
+ 144 00ce EB58     		ldr	r3, [r5, r3]
+ 145 00d0 002B     		cmp	r3, #0
+ 146 00d2 2CDD     		ble	.L33
+ 147              	.L5:
+ 110:lib/helix/real/dequant.c **** 		for (i = 0; i < hi->nonZeroBound[0]; i++) {
+ 111:lib/helix/real/dequant.c **** 			if (hi->huffDecBuf[0][i] < -0x3fffffff)	 hi->huffDecBuf[0][i] = -0x3fffffff;
+ 112:lib/helix/real/dequant.c **** 			if (hi->huffDecBuf[0][i] >  0x3fffffff)	 hi->huffDecBuf[0][i] =  0x3fffffff;
+ 113:lib/helix/real/dequant.c **** 		}
+ 114:lib/helix/real/dequant.c **** 		for (i = 0; i < hi->nonZeroBound[1]; i++) {
+ 115:lib/helix/real/dequant.c **** 			if (hi->huffDecBuf[1][i] < -0x3fffffff)	 hi->huffDecBuf[1][i] = -0x3fffffff;
+ 116:lib/helix/real/dequant.c **** 			if (hi->huffDecBuf[1][i] >  0x3fffffff)	 hi->huffDecBuf[1][i] =  0x3fffffff;
+ 117:lib/helix/real/dequant.c **** 		}
+ 118:lib/helix/real/dequant.c **** 	}
+ 119:lib/helix/real/dequant.c **** 
+ 120:lib/helix/real/dequant.c **** 	/* do mid-side stereo processing, if enabled */
+ 121:lib/helix/real/dequant.c **** 	if (fh->modeExt >> 1) {
+ 148              		.loc 1 121 0 is_stmt 1
+ 149 00d4 D8F82030 		ldr	r3, [r8, #32]
+ 150 00d8 5A08     		lsrs	r2, r3, #1
+ 151 00da 65D0     		beq	.L15
+ 122:lib/helix/real/dequant.c **** 		if (fh->modeExt & 0x01) {
+ 152              		.loc 1 122 0
+ 153 00dc 13F0010F 		tst	r3, #1
+ 154 00e0 55D0     		beq	.L16
+ 123:lib/helix/real/dequant.c **** 			/* intensity stereo enabled - run mid-side up to start of right zero region */
+ 124:lib/helix/real/dequant.c **** 			if (cbi[1].cbType == 0)
+ 155              		.loc 1 124 0
+ 156 00e2 D9F83033 		ldr	r3, [r9, #816]
+ 157 00e6 002B     		cmp	r3, #0
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccZkMhf9.s 			page 6
+
+
+ 158 00e8 45D1     		bne	.L17
+ 125:lib/helix/real/dequant.c **** 				nSamps = fh->sfBand->l[cbi[1].cbEndL + 1];
+ 159              		.loc 1 125 0
+ 160 00ea D8F83420 		ldr	r2, [r8, #52]
+ 161 00ee D9F84433 		ldr	r3, [r9, #836]
+ 162 00f2 0133     		adds	r3, r3, #1
+ 163 00f4 32F91310 		ldrsh	r1, [r2, r3, lsl #1]
+ 164              	.LVL7:
+ 165 00f8 52E0     		b	.L18
+ 166              	.LVL8:
+ 167              	.L8:
+ 110:lib/helix/real/dequant.c **** 			if (hi->huffDecBuf[0][i] < -0x3fffffff)	 hi->huffDecBuf[0][i] = -0x3fffffff;
+ 168              		.loc 1 110 0 discriminator 2
+ 169 00fa 0133     		adds	r3, r3, #1
+ 170              	.LVL9:
+ 171              	.L9:
+ 110:lib/helix/real/dequant.c **** 			if (hi->huffDecBuf[0][i] < -0x3fffffff)	 hi->huffDecBuf[0][i] = -0x3fffffff;
+ 172              		.loc 1 110 0 is_stmt 0 discriminator 1
+ 173 00fc 05F59052 		add	r2, r5, #4608
+ 174 0100 1268     		ldr	r2, [r2]
+ 175 0102 9A42     		cmp	r2, r3
+ 176 0104 15DD     		ble	.L34
+ 111:lib/helix/real/dequant.c **** 			if (hi->huffDecBuf[0][i] >  0x3fffffff)	 hi->huffDecBuf[0][i] =  0x3fffffff;
+ 177              		.loc 1 111 0 is_stmt 1
+ 178 0106 55F82320 		ldr	r2, [r5, r3, lsl #2]
+ 179 010a B2F1404F 		cmp	r2, #-1073741824
+ 180 010e 02DC     		bgt	.L7
+ 111:lib/helix/real/dequant.c **** 			if (hi->huffDecBuf[0][i] >  0x3fffffff)	 hi->huffDecBuf[0][i] =  0x3fffffff;
+ 181              		.loc 1 111 0 is_stmt 0 discriminator 1
+ 182 0110 5C4A     		ldr	r2, .L35
+ 183 0112 45F82320 		str	r2, [r5, r3, lsl #2]
+ 184              	.L7:
+ 112:lib/helix/real/dequant.c **** 		}
+ 185              		.loc 1 112 0 is_stmt 1
+ 186 0116 55F82320 		ldr	r2, [r5, r3, lsl #2]
+ 187 011a B2F1804F 		cmp	r2, #1073741824
+ 188 011e ECDB     		blt	.L8
+ 112:lib/helix/real/dequant.c **** 		}
+ 189              		.loc 1 112 0 is_stmt 0 discriminator 1
+ 190 0120 6FF04042 		mvn	r2, #-1073741824
+ 191 0124 45F82320 		str	r2, [r5, r3, lsl #2]
+ 192 0128 E7E7     		b	.L8
+ 193              	.LVL10:
+ 194              	.L27:
+ 195 012a 0023     		movs	r3, #0
+ 196 012c E6E7     		b	.L9
+ 197              	.L33:
+ 198 012e 0023     		movs	r3, #0
+ 199 0130 E4E7     		b	.L9
+ 200              	.LVL11:
+ 201              	.L34:
+ 114:lib/helix/real/dequant.c **** 			if (hi->huffDecBuf[1][i] < -0x3fffffff)	 hi->huffDecBuf[1][i] = -0x3fffffff;
+ 202              		.loc 1 114 0 is_stmt 1
+ 203 0132 0023     		movs	r3, #0
+ 204              	.LVL12:
+ 205 0134 00E0     		b	.L11
+ 206              	.LVL13:
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccZkMhf9.s 			page 7
+
+
+ 207              	.L13:
+ 114:lib/helix/real/dequant.c **** 			if (hi->huffDecBuf[1][i] < -0x3fffffff)	 hi->huffDecBuf[1][i] = -0x3fffffff;
+ 208              		.loc 1 114 0 is_stmt 0 discriminator 2
+ 209 0136 0133     		adds	r3, r3, #1
+ 210              	.LVL14:
+ 211              	.L11:
+ 114:lib/helix/real/dequant.c **** 			if (hi->huffDecBuf[1][i] < -0x3fffffff)	 hi->huffDecBuf[1][i] = -0x3fffffff;
+ 212              		.loc 1 114 0 discriminator 1
+ 213 0138 41F20422 		movw	r2, #4612
+ 214 013c AA58     		ldr	r2, [r5, r2]
+ 215 013e 9A42     		cmp	r2, r3
+ 216 0140 C8DD     		ble	.L5
+ 115:lib/helix/real/dequant.c **** 			if (hi->huffDecBuf[1][i] >  0x3fffffff)	 hi->huffDecBuf[1][i] =  0x3fffffff;
+ 217              		.loc 1 115 0 is_stmt 1
+ 218 0142 03F51072 		add	r2, r3, #576
+ 219 0146 55F82220 		ldr	r2, [r5, r2, lsl #2]
+ 220 014a B2F1404F 		cmp	r2, #-1073741824
+ 221 014e 04DC     		bgt	.L12
+ 115:lib/helix/real/dequant.c **** 			if (hi->huffDecBuf[1][i] >  0x3fffffff)	 hi->huffDecBuf[1][i] =  0x3fffffff;
+ 222              		.loc 1 115 0 is_stmt 0 discriminator 1
+ 223 0150 03F51072 		add	r2, r3, #576
+ 224 0154 4B49     		ldr	r1, .L35
+ 225 0156 45F82210 		str	r1, [r5, r2, lsl #2]
+ 226              	.L12:
+ 116:lib/helix/real/dequant.c **** 		}
+ 227              		.loc 1 116 0 is_stmt 1
+ 228 015a 03F51072 		add	r2, r3, #576
+ 229 015e 55F82220 		ldr	r2, [r5, r2, lsl #2]
+ 230 0162 B2F1804F 		cmp	r2, #1073741824
+ 231 0166 E6DB     		blt	.L13
+ 116:lib/helix/real/dequant.c **** 		}
+ 232              		.loc 1 116 0 is_stmt 0 discriminator 1
+ 233 0168 03F51072 		add	r2, r3, #576
+ 234 016c 6FF04041 		mvn	r1, #-1073741824
+ 235 0170 45F82210 		str	r1, [r5, r2, lsl #2]
+ 236 0174 DFE7     		b	.L13
+ 237              	.LVL15:
+ 238              	.L17:
+ 126:lib/helix/real/dequant.c **** 			else 
+ 127:lib/helix/real/dequant.c **** 				nSamps = 3 * fh->sfBand->s[cbi[1].cbEndSMax + 1];
+ 239              		.loc 1 127 0 is_stmt 1
+ 240 0176 D8F83430 		ldr	r3, [r8, #52]
+ 241 017a D9F84023 		ldr	r2, [r9, #832]
+ 242 017e 1532     		adds	r2, r2, #21
+ 243 0180 03EB4203 		add	r3, r3, r2, lsl #1
+ 244 0184 B3F90610 		ldrsh	r1, [r3, #6]
+ 245 0188 01EB4101 		add	r1, r1, r1, lsl #1
+ 246              	.LVL16:
+ 247 018c 08E0     		b	.L18
+ 248              	.LVL17:
+ 249              	.L16:
+ 128:lib/helix/real/dequant.c **** 		} else {
+ 129:lib/helix/real/dequant.c **** 			/* intensity stereo disabled - run mid-side on whole spectrum */
+ 130:lib/helix/real/dequant.c **** 			nSamps = MAX(hi->nonZeroBound[0], hi->nonZeroBound[1]);
+ 250              		.loc 1 130 0
+ 251 018e 41F20423 		movw	r3, #4612
+ 252 0192 E958     		ldr	r1, [r5, r3]
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccZkMhf9.s 			page 8
+
+
+ 253 0194 05F59053 		add	r3, r5, #4608
+ 254 0198 1B68     		ldr	r3, [r3]
+ 255 019a 9942     		cmp	r1, r3
+ 256 019c B8BF     		it	lt
+ 257 019e 1946     		movlt	r1, r3
+ 258              	.LVL18:
+ 259              	.L18:
+ 131:lib/helix/real/dequant.c **** 		}
+ 132:lib/helix/real/dequant.c **** 		MidSideProc(hi->huffDecBuf, nSamps, mOut);
+ 260              		.loc 1 132 0
+ 261 01a0 08AA     		add	r2, sp, #32
+ 262 01a2 2846     		mov	r0, r5
+ 263 01a4 FFF7FEFF 		bl	xmp3fixpt_MidSideProc
+ 264              	.LVL19:
+ 265              	.L15:
+ 133:lib/helix/real/dequant.c **** 	}
+ 134:lib/helix/real/dequant.c **** 
+ 135:lib/helix/real/dequant.c **** 	/* do intensity stereo processing, if enabled */
+ 136:lib/helix/real/dequant.c **** 	if (fh->modeExt & 0x01) {
+ 266              		.loc 1 136 0
+ 267 01a8 D8F82020 		ldr	r2, [r8, #32]
+ 268 01ac 12F0010F 		tst	r2, #1
+ 269 01b0 1CD0     		beq	.L19
+ 137:lib/helix/real/dequant.c **** 		nSamps = hi->nonZeroBound[0];
+ 270              		.loc 1 137 0
+ 271 01b2 05F59053 		add	r3, r5, #4608
+ 272 01b6 1968     		ldr	r1, [r3]
+ 273              	.LVL20:
+ 138:lib/helix/real/dequant.c **** 		if (fh->ver == MPEG1) {
+ 274              		.loc 1 138 0
+ 275 01b8 98F80030 		ldrb	r3, [r8]	@ zero_extendqisi2
+ 276 01bc 002B     		cmp	r3, #0
+ 277 01be 35D1     		bne	.L20
+ 139:lib/helix/real/dequant.c **** 			IntensityProcMPEG1(hi->huffDecBuf, nSamps, fh, &sfi->sfis[gr][1], di->cbi, 
+ 278              		.loc 1 139 0
+ 279 01c0 C6EB4610 		rsb	r0, r6, r6, lsl #5
+ 280 01c4 8300     		lsls	r3, r0, #2
+ 281 01c6 3E33     		adds	r3, r3, #62
+ 282 01c8 08A8     		add	r0, sp, #32
+ 283 01ca 0390     		str	r0, [sp, #12]
+ 284 01cc 06EBC606 		add	r6, r6, r6, lsl #3
+ 285              	.LVL21:
+ 286 01d0 3001     		lsls	r0, r6, #4
+ 287 01d2 8244     		add	r10, r10, r0
+ 288              	.LVL22:
+ 289 01d4 DAF88800 		ldr	r0, [r10, #136]
+ 290 01d8 0290     		str	r0, [sp, #8]
+ 291 01da 5210     		asrs	r2, r2, #1
+ 292 01dc 0192     		str	r2, [sp, #4]
+ 293 01de 079A     		ldr	r2, [sp, #28]
+ 294 01e0 0092     		str	r2, [sp]
+ 295 01e2 5B44     		add	r3, r3, fp
+ 296 01e4 4246     		mov	r2, r8
+ 297 01e6 2846     		mov	r0, r5
+ 298 01e8 FFF7FEFF 		bl	xmp3fixpt_IntensityProcMPEG1
+ 299              	.LVL23:
+ 300              	.L19:
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccZkMhf9.s 			page 9
+
+
+ 140:lib/helix/real/dequant.c **** 				fh->modeExt >> 1, si->sis[gr][1].mixedBlock, mOut);
+ 141:lib/helix/real/dequant.c **** 		} else {
+ 142:lib/helix/real/dequant.c **** 			IntensityProcMPEG2(hi->huffDecBuf, nSamps, fh, &sfi->sfis[gr][1], di->cbi, &sfi->sfjs,
+ 143:lib/helix/real/dequant.c **** 				fh->modeExt >> 1, si->sis[gr][1].mixedBlock, mOut);
+ 144:lib/helix/real/dequant.c **** 		}
+ 145:lib/helix/real/dequant.c **** 	}
+ 146:lib/helix/real/dequant.c **** 
+ 147:lib/helix/real/dequant.c **** 	/* adjust guard bit count and nonZeroBound if we did any stereo processing */
+ 148:lib/helix/real/dequant.c **** 	if (fh->modeExt) {
+ 301              		.loc 1 148 0
+ 302 01ec D8F82000 		ldr	r0, [r8, #32]
+ 303 01f0 C8B1     		cbz	r0, .L1
+ 149:lib/helix/real/dequant.c **** 		hi->gb[0] = CLZ(mOut[0]) - 1;
+ 304              		.loc 1 149 0
+ 305 01f2 089B     		ldr	r3, [sp, #32]
+ 306              	.LVL24:
+ 307              	.LBB6:
+ 308              	.LBB7:
+ 309              		.file 2 "lib/helix/real/assembly.h"
+   1:lib/helix/real/assembly.h **** /* ***** BEGIN LICENSE BLOCK ***** 
+   2:lib/helix/real/assembly.h ****  * Version: RCSL 1.0/RPSL 1.0 
+   3:lib/helix/real/assembly.h ****  *  
+   4:lib/helix/real/assembly.h ****  * Portions Copyright (c) 1995-2002 RealNetworks, Inc. All Rights Reserved. 
+   5:lib/helix/real/assembly.h ****  *      
+   6:lib/helix/real/assembly.h ****  * The contents of this file, and the files included with this file, are 
+   7:lib/helix/real/assembly.h ****  * subject to the current version of the RealNetworks Public Source License 
+   8:lib/helix/real/assembly.h ****  * Version 1.0 (the "RPSL") available at 
+   9:lib/helix/real/assembly.h ****  * http://www.helixcommunity.org/content/rpsl unless you have licensed 
+  10:lib/helix/real/assembly.h ****  * the file under the RealNetworks Community Source License Version 1.0 
+  11:lib/helix/real/assembly.h ****  * (the "RCSL") available at http://www.helixcommunity.org/content/rcsl, 
+  12:lib/helix/real/assembly.h ****  * in which case the RCSL will apply. You may also obtain the license terms 
+  13:lib/helix/real/assembly.h ****  * directly from RealNetworks.  You may not use this file except in 
+  14:lib/helix/real/assembly.h ****  * compliance with the RPSL or, if you have a valid RCSL with RealNetworks 
+  15:lib/helix/real/assembly.h ****  * applicable to this file, the RCSL.  Please see the applicable RPSL or 
+  16:lib/helix/real/assembly.h ****  * RCSL for the rights, obligations and limitations governing use of the 
+  17:lib/helix/real/assembly.h ****  * contents of the file.  
+  18:lib/helix/real/assembly.h ****  *  
+  19:lib/helix/real/assembly.h ****  * This file is part of the Helix DNA Technology. RealNetworks is the 
+  20:lib/helix/real/assembly.h ****  * developer of the Original Code and owns the copyrights in the portions 
+  21:lib/helix/real/assembly.h ****  * it created. 
+  22:lib/helix/real/assembly.h ****  *  
+  23:lib/helix/real/assembly.h ****  * This file, and the files included with this file, is distributed and made 
+  24:lib/helix/real/assembly.h ****  * available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER 
+  25:lib/helix/real/assembly.h ****  * EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS ALL SUCH WARRANTIES, 
+  26:lib/helix/real/assembly.h ****  * INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF MERCHANTABILITY, FITNESS 
+  27:lib/helix/real/assembly.h ****  * FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT. 
+  28:lib/helix/real/assembly.h ****  * 
+  29:lib/helix/real/assembly.h ****  * Technology Compatibility Kit Test Suite(s) Location: 
+  30:lib/helix/real/assembly.h ****  *    http://www.helixcommunity.org/content/tck 
+  31:lib/helix/real/assembly.h ****  * 
+  32:lib/helix/real/assembly.h ****  * Contributor(s): 
+  33:lib/helix/real/assembly.h ****  *  
+  34:lib/helix/real/assembly.h ****  * ***** END LICENSE BLOCK ***** */ 
+  35:lib/helix/real/assembly.h **** 
+  36:lib/helix/real/assembly.h **** /**************************************************************************************
+  37:lib/helix/real/assembly.h ****  * Fixed-point MP3 decoder
+  38:lib/helix/real/assembly.h ****  * Jon Recker (jrecker@real.com), Ken Cooke (kenc@real.com)
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccZkMhf9.s 			page 10
+
+
+  39:lib/helix/real/assembly.h ****  * June 2003
+  40:lib/helix/real/assembly.h ****  *
+  41:lib/helix/real/assembly.h ****  * assembly.h - assembly language functions and prototypes for supported platforms
+  42:lib/helix/real/assembly.h ****  *
+  43:lib/helix/real/assembly.h ****  * - inline rountines with access to 64-bit multiply results 
+  44:lib/helix/real/assembly.h ****  * - x86 (_WIN32) and ARM (ARM_ADS, _WIN32_WCE) versions included
+  45:lib/helix/real/assembly.h ****  * - some inline functions are mix of asm and C for speed
+  46:lib/helix/real/assembly.h ****  * - some functions are in native asm files, so only the prototype is given here
+  47:lib/helix/real/assembly.h ****  *
+  48:lib/helix/real/assembly.h ****  * MULSHIFT32(x, y)    signed multiply of two 32-bit integers (x and y), returns top 32 bits of 64-
+  49:lib/helix/real/assembly.h ****  * FASTABS(x)          branchless absolute value of signed integer x
+  50:lib/helix/real/assembly.h ****  * CLZ(x)              count leading zeros in x
+  51:lib/helix/real/assembly.h ****  * MADD64(sum, x, y)   (Windows only) sum [64-bit] += x [32-bit] * y [32-bit]
+  52:lib/helix/real/assembly.h ****  * SHL64(sum, x, y)    (Windows only) 64-bit left shift using __int64
+  53:lib/helix/real/assembly.h ****  * SAR64(sum, x, y)    (Windows only) 64-bit right shift using __int64
+  54:lib/helix/real/assembly.h ****  */
+  55:lib/helix/real/assembly.h **** 
+  56:lib/helix/real/assembly.h **** #ifndef _ASSEMBLY_H
+  57:lib/helix/real/assembly.h **** #define _ASSEMBLY_H
+  58:lib/helix/real/assembly.h **** 
+  59:lib/helix/real/assembly.h **** #include "../platform.h"
+  60:lib/helix/real/assembly.h **** 
+  61:lib/helix/real/assembly.h **** #if (defined _WIN32 && !defined _WIN32_WCE) || (defined __WINS__ && defined _SYMBIAN) || defined(_O
+  62:lib/helix/real/assembly.h **** 
+  63:lib/helix/real/assembly.h **** #pragma warning( disable : 4035 )	/* complains about inline asm not returning a value */
+  64:lib/helix/real/assembly.h **** 
+  65:lib/helix/real/assembly.h **** static __inline int MULSHIFT32(int x, int y)	
+  66:lib/helix/real/assembly.h **** {
+  67:lib/helix/real/assembly.h ****     __asm {
+  68:lib/helix/real/assembly.h **** 		mov		eax, x
+  69:lib/helix/real/assembly.h **** 	    imul	y
+  70:lib/helix/real/assembly.h **** 	    mov		eax, edx
+  71:lib/helix/real/assembly.h **** 	}
+  72:lib/helix/real/assembly.h **** }
+  73:lib/helix/real/assembly.h **** 
+  74:lib/helix/real/assembly.h **** static __inline int FASTABS(int x) 
+  75:lib/helix/real/assembly.h **** {
+  76:lib/helix/real/assembly.h **** 	int sign;
+  77:lib/helix/real/assembly.h **** 
+  78:lib/helix/real/assembly.h **** 	sign = x >> (sizeof(int) * 8 - 1);
+  79:lib/helix/real/assembly.h **** 	x ^= sign;
+  80:lib/helix/real/assembly.h **** 	x -= sign;
+  81:lib/helix/real/assembly.h **** 
+  82:lib/helix/real/assembly.h **** 	return x;
+  83:lib/helix/real/assembly.h **** }
+  84:lib/helix/real/assembly.h **** 
+  85:lib/helix/real/assembly.h **** static __inline int CLZ(int x)
+  86:lib/helix/real/assembly.h **** {
+  87:lib/helix/real/assembly.h **** 	int numZeros;
+  88:lib/helix/real/assembly.h **** 
+  89:lib/helix/real/assembly.h **** 	if (!x)
+  90:lib/helix/real/assembly.h **** 		return (sizeof(int) * 8);
+  91:lib/helix/real/assembly.h **** 
+  92:lib/helix/real/assembly.h **** 	numZeros = 0;
+  93:lib/helix/real/assembly.h **** 	while (!(x & 0x80000000)) {
+  94:lib/helix/real/assembly.h **** 		numZeros++;
+  95:lib/helix/real/assembly.h **** 		x <<= 1;
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccZkMhf9.s 			page 11
+
+
+  96:lib/helix/real/assembly.h **** 	} 
+  97:lib/helix/real/assembly.h **** 
+  98:lib/helix/real/assembly.h **** 	return numZeros;
+  99:lib/helix/real/assembly.h **** }
+ 100:lib/helix/real/assembly.h **** 
+ 101:lib/helix/real/assembly.h **** /* MADD64, SHL64, SAR64:
+ 102:lib/helix/real/assembly.h ****  * write in assembly to avoid dependency on run-time lib for 64-bit shifts, muls
+ 103:lib/helix/real/assembly.h ****  *  (sometimes compiler thunks to function calls instead of code generating)
+ 104:lib/helix/real/assembly.h ****  * required for Symbian emulator
+ 105:lib/helix/real/assembly.h ****  */
+ 106:lib/helix/real/assembly.h **** #ifdef __CW32__
+ 107:lib/helix/real/assembly.h **** typedef long long Word64;
+ 108:lib/helix/real/assembly.h **** #else
+ 109:lib/helix/real/assembly.h **** typedef __int64 Word64;
+ 110:lib/helix/real/assembly.h **** #endif
+ 111:lib/helix/real/assembly.h **** 
+ 112:lib/helix/real/assembly.h **** static __inline Word64 MADD64(Word64 sum, int x, int y)
+ 113:lib/helix/real/assembly.h **** {
+ 114:lib/helix/real/assembly.h **** 	unsigned int sumLo = ((unsigned int *)&sum)[0];
+ 115:lib/helix/real/assembly.h **** 	int sumHi = ((int *)&sum)[1];
+ 116:lib/helix/real/assembly.h **** 
+ 117:lib/helix/real/assembly.h **** 	__asm {
+ 118:lib/helix/real/assembly.h **** 		mov		eax, x
+ 119:lib/helix/real/assembly.h **** 		imul	y
+ 120:lib/helix/real/assembly.h **** 		add		eax, sumLo
+ 121:lib/helix/real/assembly.h **** 		adc		edx, sumHi
+ 122:lib/helix/real/assembly.h **** 	}
+ 123:lib/helix/real/assembly.h **** 
+ 124:lib/helix/real/assembly.h **** 	/* equivalent to return (sum + ((__int64)x * y)); */
+ 125:lib/helix/real/assembly.h **** }
+ 126:lib/helix/real/assembly.h **** 
+ 127:lib/helix/real/assembly.h **** static __inline Word64 SHL64(Word64 x, int n)
+ 128:lib/helix/real/assembly.h **** {
+ 129:lib/helix/real/assembly.h **** 	unsigned int xLo = ((unsigned int *)&x)[0];
+ 130:lib/helix/real/assembly.h **** 	int xHi = ((int *)&x)[1];
+ 131:lib/helix/real/assembly.h **** 	unsigned char nb = (unsigned char)n;
+ 132:lib/helix/real/assembly.h **** 
+ 133:lib/helix/real/assembly.h **** 	if (n < 32) {
+ 134:lib/helix/real/assembly.h **** 		__asm {
+ 135:lib/helix/real/assembly.h **** 			mov		edx, xHi
+ 136:lib/helix/real/assembly.h **** 			mov		eax, xLo
+ 137:lib/helix/real/assembly.h **** 			mov		cl, nb
+ 138:lib/helix/real/assembly.h **** 			shld    edx, eax, cl
+ 139:lib/helix/real/assembly.h **** 			shl     eax, cl
+ 140:lib/helix/real/assembly.h **** 		}
+ 141:lib/helix/real/assembly.h **** 	} else if (n < 64) {
+ 142:lib/helix/real/assembly.h **** 		/* shl masks cl to 0x1f */
+ 143:lib/helix/real/assembly.h **** 		__asm {
+ 144:lib/helix/real/assembly.h **** 			mov		edx, xLo
+ 145:lib/helix/real/assembly.h **** 			mov		cl, nb
+ 146:lib/helix/real/assembly.h **** 			xor     eax, eax
+ 147:lib/helix/real/assembly.h **** 			shl     edx, cl
+ 148:lib/helix/real/assembly.h **** 		}
+ 149:lib/helix/real/assembly.h **** 	} else {
+ 150:lib/helix/real/assembly.h **** 		__asm {
+ 151:lib/helix/real/assembly.h **** 			xor		edx, edx
+ 152:lib/helix/real/assembly.h **** 			xor		eax, eax
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccZkMhf9.s 			page 12
+
+
+ 153:lib/helix/real/assembly.h **** 		}
+ 154:lib/helix/real/assembly.h **** 	}
+ 155:lib/helix/real/assembly.h **** }
+ 156:lib/helix/real/assembly.h **** 
+ 157:lib/helix/real/assembly.h **** static __inline Word64 SAR64(Word64 x, int n)
+ 158:lib/helix/real/assembly.h **** {
+ 159:lib/helix/real/assembly.h **** 	unsigned int xLo = ((unsigned int *)&x)[0];
+ 160:lib/helix/real/assembly.h **** 	int xHi = ((int *)&x)[1];
+ 161:lib/helix/real/assembly.h **** 	unsigned char nb = (unsigned char)n;
+ 162:lib/helix/real/assembly.h **** 
+ 163:lib/helix/real/assembly.h **** 	if (n < 32) {
+ 164:lib/helix/real/assembly.h **** 		__asm {
+ 165:lib/helix/real/assembly.h **** 			mov		edx, xHi
+ 166:lib/helix/real/assembly.h **** 			mov		eax, xLo
+ 167:lib/helix/real/assembly.h **** 			mov		cl, nb
+ 168:lib/helix/real/assembly.h **** 			shrd	eax, edx, cl
+ 169:lib/helix/real/assembly.h **** 			sar		edx, cl
+ 170:lib/helix/real/assembly.h **** 		}
+ 171:lib/helix/real/assembly.h **** 	} else if (n < 64) {
+ 172:lib/helix/real/assembly.h **** 		/* sar masks cl to 0x1f */
+ 173:lib/helix/real/assembly.h **** 		__asm {
+ 174:lib/helix/real/assembly.h **** 			mov		edx, xHi
+ 175:lib/helix/real/assembly.h **** 			mov		eax, xHi
+ 176:lib/helix/real/assembly.h **** 			mov		cl, nb
+ 177:lib/helix/real/assembly.h **** 			sar		edx, 31
+ 178:lib/helix/real/assembly.h **** 			sar		eax, cl
+ 179:lib/helix/real/assembly.h **** 		}
+ 180:lib/helix/real/assembly.h **** 	} else {
+ 181:lib/helix/real/assembly.h **** 		__asm {
+ 182:lib/helix/real/assembly.h **** 			sar		xHi, 31
+ 183:lib/helix/real/assembly.h **** 			mov		eax, xHi
+ 184:lib/helix/real/assembly.h **** 			mov		edx, xHi
+ 185:lib/helix/real/assembly.h **** 		}
+ 186:lib/helix/real/assembly.h **** 	}
+ 187:lib/helix/real/assembly.h **** }
+ 188:lib/helix/real/assembly.h **** 
+ 189:lib/helix/real/assembly.h **** #elif (defined _WIN32) && (defined _WIN32_WCE)
+ 190:lib/helix/real/assembly.h **** 
+ 191:lib/helix/real/assembly.h **** /* use asm function for now (EVC++ 3.0 does horrible job compiling __int64 version) */
+ 192:lib/helix/real/assembly.h **** #define MULSHIFT32	xmp3_MULSHIFT32
+ 193:lib/helix/real/assembly.h **** int MULSHIFT32(int x, int y);
+ 194:lib/helix/real/assembly.h **** 
+ 195:lib/helix/real/assembly.h **** static __inline int FASTABS(int x) 
+ 196:lib/helix/real/assembly.h **** {
+ 197:lib/helix/real/assembly.h **** 	int sign;
+ 198:lib/helix/real/assembly.h **** 
+ 199:lib/helix/real/assembly.h **** 	sign = x >> (sizeof(int) * 8 - 1);
+ 200:lib/helix/real/assembly.h **** 	x ^= sign;
+ 201:lib/helix/real/assembly.h **** 	x -= sign;
+ 202:lib/helix/real/assembly.h **** 
+ 203:lib/helix/real/assembly.h **** 	return x;
+ 204:lib/helix/real/assembly.h **** }
+ 205:lib/helix/real/assembly.h **** 
+ 206:lib/helix/real/assembly.h **** static __inline int CLZ(int x)
+ 207:lib/helix/real/assembly.h **** {
+ 208:lib/helix/real/assembly.h **** 	int numZeros;
+ 209:lib/helix/real/assembly.h **** 
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccZkMhf9.s 			page 13
+
+
+ 210:lib/helix/real/assembly.h **** 	if (!x)
+ 211:lib/helix/real/assembly.h **** 		return (sizeof(int) * 8);
+ 212:lib/helix/real/assembly.h **** 
+ 213:lib/helix/real/assembly.h **** 	numZeros = 0;
+ 214:lib/helix/real/assembly.h **** 	while (!(x & 0x80000000)) {
+ 215:lib/helix/real/assembly.h **** 		numZeros++;
+ 216:lib/helix/real/assembly.h **** 		x <<= 1;
+ 217:lib/helix/real/assembly.h **** 	} 
+ 218:lib/helix/real/assembly.h **** 
+ 219:lib/helix/real/assembly.h **** 	return numZeros;
+ 220:lib/helix/real/assembly.h **** }
+ 221:lib/helix/real/assembly.h **** 
+ 222:lib/helix/real/assembly.h **** #elif defined ARM_ADS
+ 223:lib/helix/real/assembly.h **** 
+ 224:lib/helix/real/assembly.h **** static __inline int MULSHIFT32(int x, int y)
+ 225:lib/helix/real/assembly.h **** {
+ 226:lib/helix/real/assembly.h ****     /* important rules for smull RdLo, RdHi, Rm, Rs:
+ 227:lib/helix/real/assembly.h ****      *     RdHi and Rm can't be the same register
+ 228:lib/helix/real/assembly.h ****      *     RdLo and Rm can't be the same register
+ 229:lib/helix/real/assembly.h ****      *     RdHi and RdLo can't be the same register
+ 230:lib/helix/real/assembly.h ****      * Note: Rs determines early termination (leading sign bits) so if you want to specify
+ 231:lib/helix/real/assembly.h ****      *   which operand is Rs, put it in the SECOND argument (y)
+ 232:lib/helix/real/assembly.h **** 	 * For inline assembly, x and y are not assumed to be R0, R1 so it shouldn't matter
+ 233:lib/helix/real/assembly.h **** 	 *   which one is returned. (If this were a function call, returning y (R1) would 
+ 234:lib/helix/real/assembly.h **** 	 *   require an extra "mov r0, r1")
+ 235:lib/helix/real/assembly.h ****      */
+ 236:lib/helix/real/assembly.h ****     int zlow;
+ 237:lib/helix/real/assembly.h ****     __asm {
+ 238:lib/helix/real/assembly.h ****     	smull zlow,y,x,y
+ 239:lib/helix/real/assembly.h ****    	}
+ 240:lib/helix/real/assembly.h **** 
+ 241:lib/helix/real/assembly.h ****     return y;
+ 242:lib/helix/real/assembly.h **** }
+ 243:lib/helix/real/assembly.h **** 
+ 244:lib/helix/real/assembly.h **** static __inline int FASTABS(int x) 
+ 245:lib/helix/real/assembly.h **** {
+ 246:lib/helix/real/assembly.h **** 	int t=0; /*Really is not necessary to initialiaze only to avoid warning*/
+ 247:lib/helix/real/assembly.h **** 
+ 248:lib/helix/real/assembly.h **** 	__asm {
+ 249:lib/helix/real/assembly.h **** 		eor	t, x, x, asr #31
+ 250:lib/helix/real/assembly.h **** 		sub	t, t, x, asr #31
+ 251:lib/helix/real/assembly.h **** 	}
+ 252:lib/helix/real/assembly.h **** 
+ 253:lib/helix/real/assembly.h **** 	return t;
+ 254:lib/helix/real/assembly.h **** }
+ 255:lib/helix/real/assembly.h **** 
+ 256:lib/helix/real/assembly.h **** static __inline int CLZ(int x)
+ 257:lib/helix/real/assembly.h **** {
+ 258:lib/helix/real/assembly.h **** 	int numZeros;
+ 259:lib/helix/real/assembly.h **** 
+ 260:lib/helix/real/assembly.h **** 	if (!x)
+ 261:lib/helix/real/assembly.h **** 		return (sizeof(int) * 8);
+ 262:lib/helix/real/assembly.h **** 
+ 263:lib/helix/real/assembly.h **** 	numZeros = 0;
+ 264:lib/helix/real/assembly.h **** 	while (!(x & 0x80000000)) {
+ 265:lib/helix/real/assembly.h **** 		numZeros++;
+ 266:lib/helix/real/assembly.h **** 		x <<= 1;
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccZkMhf9.s 			page 14
+
+
+ 267:lib/helix/real/assembly.h **** 	} 
+ 268:lib/helix/real/assembly.h **** 
+ 269:lib/helix/real/assembly.h **** 	return numZeros;
+ 270:lib/helix/real/assembly.h **** }
+ 271:lib/helix/real/assembly.h **** 
+ 272:lib/helix/real/assembly.h **** #elif defined(__GNUC__) && defined(ARM)
+ 273:lib/helix/real/assembly.h **** 
+ 274:lib/helix/real/assembly.h **** static __inline int MULSHIFT32(int x, int y)
+ 275:lib/helix/real/assembly.h **** {
+ 276:lib/helix/real/assembly.h ****     /* important rules for smull RdLo, RdHi, Rm, Rs:
+ 277:lib/helix/real/assembly.h ****      *     RdHi and Rm can't be the same register
+ 278:lib/helix/real/assembly.h ****      *     RdLo and Rm can't be the same register
+ 279:lib/helix/real/assembly.h ****      *     RdHi and RdLo can't be the same register
+ 280:lib/helix/real/assembly.h ****      * Note: Rs determines early termination (leading sign bits) so if you want to specify
+ 281:lib/helix/real/assembly.h ****      *   which operand is Rs, put it in the SECOND argument (y)
+ 282:lib/helix/real/assembly.h **** 	 * For inline assembly, x and y are not assumed to be R0, R1 so it shouldn't matter
+ 283:lib/helix/real/assembly.h **** 	 *   which one is returned. (If this were a function call, returning y (R1) would 
+ 284:lib/helix/real/assembly.h **** 	 *   require an extra "mov r0, r1")
+ 285:lib/helix/real/assembly.h ****      */
+ 286:lib/helix/real/assembly.h ****     int zlow;
+ 287:lib/helix/real/assembly.h ****     __asm__ volatile ("smull %0,%1,%2,%3" : "=&r" (zlow), "=r" (y) : "r" (x), "1" (y)) ;
+ 288:lib/helix/real/assembly.h **** 
+ 289:lib/helix/real/assembly.h ****     return y;
+ 290:lib/helix/real/assembly.h **** }
+ 291:lib/helix/real/assembly.h **** 
+ 292:lib/helix/real/assembly.h **** static __inline int FASTABS(int x) 
+ 293:lib/helix/real/assembly.h **** {
+ 294:lib/helix/real/assembly.h **** 	int t=0; /*Really is not necessary to initialiaze only to avoid warning*/
+ 295:lib/helix/real/assembly.h **** 
+ 296:lib/helix/real/assembly.h **** 	__asm__ volatile (
+ 297:lib/helix/real/assembly.h **** 		"eor %0,%2,%2, asr #31;"
+ 298:lib/helix/real/assembly.h **** 		"sub %0,%1,%2, asr #31;"
+ 299:lib/helix/real/assembly.h **** 		: "=&r" (t) 
+ 300:lib/helix/real/assembly.h **** 		: "0" (t), "r" (x)
+ 301:lib/helix/real/assembly.h **** 	 );
+ 302:lib/helix/real/assembly.h **** 
+ 303:lib/helix/real/assembly.h **** 	return t;
+ 304:lib/helix/real/assembly.h **** }
+ 305:lib/helix/real/assembly.h **** 
+ 306:lib/helix/real/assembly.h **** static __inline int CLZ(int x)
+ 307:lib/helix/real/assembly.h **** {
+ 308:lib/helix/real/assembly.h **** 	int numZeros;
+ 309:lib/helix/real/assembly.h **** 
+ 310:lib/helix/real/assembly.h **** 	if (!x)
+ 311:lib/helix/real/assembly.h **** 		return (sizeof(int) * 8);
+ 312:lib/helix/real/assembly.h **** 
+ 313:lib/helix/real/assembly.h **** 	numZeros = 0;
+ 314:lib/helix/real/assembly.h **** 	while (!(x & 0x80000000)) {
+ 315:lib/helix/real/assembly.h **** 		numZeros++;
+ 316:lib/helix/real/assembly.h **** 		x <<= 1;
+ 317:lib/helix/real/assembly.h **** 	} 
+ 318:lib/helix/real/assembly.h **** 
+ 319:lib/helix/real/assembly.h **** 	return numZeros;
+ 320:lib/helix/real/assembly.h **** }
+ 321:lib/helix/real/assembly.h **** 
+ 322:lib/helix/real/assembly.h **** #elif defined(ARM_TEST)
+ 323:lib/helix/real/assembly.h **** static __inline__ int MULSHIFT32(int x, int y)
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccZkMhf9.s 			page 15
+
+
+ 324:lib/helix/real/assembly.h **** {
+ 325:lib/helix/real/assembly.h **** 	int zlow;
+ 326:lib/helix/real/assembly.h **** 	__asm__ volatile ("smull %0,%1,%2,%3" : "=&r" (zlow), "=r" (y) : "r" (x), "1" (y) : "cc");
+ 327:lib/helix/real/assembly.h **** 	return y;
+ 328:lib/helix/real/assembly.h **** }
+ 329:lib/helix/real/assembly.h **** 
+ 330:lib/helix/real/assembly.h **** static __inline int FASTABS(int x)
+ 331:lib/helix/real/assembly.h **** {
+ 332:lib/helix/real/assembly.h **** 	int sign;
+ 333:lib/helix/real/assembly.h **** 
+ 334:lib/helix/real/assembly.h **** 	sign = x >> (sizeof(int) * 8 - 1);
+ 335:lib/helix/real/assembly.h **** 	x ^= sign;
+ 336:lib/helix/real/assembly.h **** 	x -= sign;
+ 337:lib/helix/real/assembly.h **** 
+ 338:lib/helix/real/assembly.h **** 	return x;
+ 339:lib/helix/real/assembly.h **** }
+ 340:lib/helix/real/assembly.h **** 
+ 341:lib/helix/real/assembly.h **** static __inline int CLZ(int x)
+ 342:lib/helix/real/assembly.h **** {
+ 343:lib/helix/real/assembly.h **** 	int numZeros;
+ 344:lib/helix/real/assembly.h **** 
+ 345:lib/helix/real/assembly.h **** 	/*if (!x)
+ 346:lib/helix/real/assembly.h **** return (sizeof(int) * 8);
+ 347:lib/helix/real/assembly.h **** 
+ 348:lib/helix/real/assembly.h **** numZeros = 0;
+ 349:lib/helix/real/assembly.h **** while (!(x & 0x80000000)) {
+ 350:lib/helix/real/assembly.h **** numZeros++;
+ 351:lib/helix/real/assembly.h **** x <
+ 352:lib/helix/real/assembly.h **** }*/
+ 353:lib/helix/real/assembly.h **** 
+ 354:lib/helix/real/assembly.h **** 	__asm__ ("clz %0, %1" : "=r" (numZeros) : "r" (x) : "cc");
+ 310              		.loc 2 354 0
+ 311              		.syntax unified
+ 312              	@ 354 "lib/helix/real/assembly.h" 1
+ 313 01f4 B3FA83F3 		clz r3, r3
+ 314              	@ 0 "" 2
+ 315              	.LVL25:
+ 316              		.thumb
+ 317              		.syntax unified
+ 318              	.LBE7:
+ 319              	.LBE6:
+ 320              		.loc 1 149 0
+ 321 01f8 013B     		subs	r3, r3, #1
+ 322 01fa 41F20822 		movw	r2, #4616
+ 323 01fe AB50     		str	r3, [r5, r2]
+ 150:lib/helix/real/dequant.c **** 		hi->gb[1] = CLZ(mOut[1]) - 1;
+ 324              		.loc 1 150 0
+ 325 0200 099B     		ldr	r3, [sp, #36]
+ 326              	.LVL26:
+ 327              	.LBB8:
+ 328              	.LBB9:
+ 329              		.loc 2 354 0
+ 330              		.syntax unified
+ 331              	@ 354 "lib/helix/real/assembly.h" 1
+ 332 0202 B3FA83F3 		clz r3, r3
+ 333              	@ 0 "" 2
+ 334              	.LVL27:
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccZkMhf9.s 			page 16
+
+
+ 335              		.thumb
+ 336              		.syntax unified
+ 337              	.LBE9:
+ 338              	.LBE8:
+ 339              		.loc 1 150 0
+ 340 0206 013B     		subs	r3, r3, #1
+ 341 0208 41F20C22 		movw	r2, #4620
+ 342 020c AB50     		str	r3, [r5, r2]
+ 151:lib/helix/real/dequant.c **** 		nSamps = MAX(hi->nonZeroBound[0], hi->nonZeroBound[1]);
+ 343              		.loc 1 151 0
+ 344 020e 41F20422 		movw	r2, #4612
+ 345 0212 AB58     		ldr	r3, [r5, r2]
+ 346 0214 05F59051 		add	r1, r5, #4608
+ 347 0218 0868     		ldr	r0, [r1]
+ 348 021a 8342     		cmp	r3, r0
+ 349 021c B8BF     		it	lt
+ 350 021e 0346     		movlt	r3, r0
+ 351              	.LVL28:
+ 152:lib/helix/real/dequant.c **** 		hi->nonZeroBound[0] = nSamps;
+ 352              		.loc 1 152 0
+ 353 0220 0B60     		str	r3, [r1]
+ 153:lib/helix/real/dequant.c **** 		hi->nonZeroBound[1] = nSamps;
+ 354              		.loc 1 153 0
+ 355 0222 AB50     		str	r3, [r5, r2]
+ 154:lib/helix/real/dequant.c **** 	}
+ 155:lib/helix/real/dequant.c **** 
+ 156:lib/helix/real/dequant.c **** 	/* output format Q(DQ_FRACBITS_OUT) */
+ 157:lib/helix/real/dequant.c **** 	return 0;
+ 356              		.loc 1 157 0
+ 357 0224 0020     		movs	r0, #0
+ 358              	.LVL29:
+ 359              	.L1:
+ 158:lib/helix/real/dequant.c **** }
+ 360              		.loc 1 158 0
+ 361 0226 0BB0     		add	sp, sp, #44
+ 362              	.LCFI2:
+ 363              		.cfi_remember_state
+ 364              		.cfi_def_cfa_offset 36
+ 365              		@ sp needed
+ 366 0228 BDE8F08F 		pop	{r4, r5, r6, r7, r8, r9, r10, fp, pc}
+ 367              	.LVL30:
+ 368              	.L20:
+ 369              	.LCFI3:
+ 370              		.cfi_restore_state
+ 142:lib/helix/real/dequant.c **** 				fh->modeExt >> 1, si->sis[gr][1].mixedBlock, mOut);
+ 371              		.loc 1 142 0
+ 372 022c C6EB4610 		rsb	r0, r6, r6, lsl #5
+ 373 0230 8300     		lsls	r3, r0, #2
+ 374 0232 3E33     		adds	r3, r3, #62
+ 375 0234 08A8     		add	r0, sp, #32
+ 376 0236 0490     		str	r0, [sp, #16]
+ 377 0238 06EBC606 		add	r6, r6, r6, lsl #3
+ 378              	.LVL31:
+ 379 023c 3001     		lsls	r0, r6, #4
+ 380 023e 8244     		add	r10, r10, r0
+ 381              	.LVL32:
+ 382 0240 DAF88800 		ldr	r0, [r10, #136]
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccZkMhf9.s 			page 17
+
+
+ 383 0244 0390     		str	r0, [sp, #12]
+ 384 0246 5210     		asrs	r2, r2, #1
+ 385 0248 0292     		str	r2, [sp, #8]
+ 386 024a 0BF1F802 		add	r2, fp, #248
+ 387 024e 0192     		str	r2, [sp, #4]
+ 388 0250 079A     		ldr	r2, [sp, #28]
+ 389 0252 0092     		str	r2, [sp]
+ 390 0254 5B44     		add	r3, r3, fp
+ 391 0256 4246     		mov	r2, r8
+ 392 0258 2846     		mov	r0, r5
+ 393 025a FFF7FEFF 		bl	xmp3fixpt_IntensityProcMPEG2
+ 394              	.LVL33:
+ 395 025e C5E7     		b	.L19
+ 396              	.LVL34:
+ 397              	.L21:
+ 398              	.LCFI4:
+ 399              		.cfi_def_cfa_offset 0
+ 400              		.cfi_restore 4
+ 401              		.cfi_restore 5
+ 402              		.cfi_restore 6
+ 403              		.cfi_restore 7
+ 404              		.cfi_restore 8
+ 405              		.cfi_restore 9
+ 406              		.cfi_restore 10
+ 407              		.cfi_restore 11
+ 408              		.cfi_restore 14
+  86:lib/helix/real/dequant.c **** 
+ 409              		.loc 1 86 0
+ 410 0260 4FF0FF30 		mov	r0, #-1
+ 411              	.LVL35:
+ 412              		.loc 1 158 0
+ 413 0264 7047     		bx	lr
+ 414              	.LVL36:
+ 415              	.L22:
+ 416              	.LCFI5:
+ 417              		.cfi_def_cfa_offset 80
+ 418              		.cfi_offset 4, -36
+ 419              		.cfi_offset 5, -32
+ 420              		.cfi_offset 6, -28
+ 421              		.cfi_offset 7, -24
+ 422              		.cfi_offset 8, -20
+ 423              		.cfi_offset 9, -16
+ 424              		.cfi_offset 10, -12
+ 425              		.cfi_offset 11, -8
+ 426              		.cfi_offset 14, -4
+  86:lib/helix/real/dequant.c **** 
+ 427              		.loc 1 86 0
+ 428 0266 4FF0FF30 		mov	r0, #-1
+ 429              	.LVL37:
+ 430 026a DCE7     		b	.L1
+ 431              	.LVL38:
+ 432              	.L23:
+ 433 026c 4FF0FF30 		mov	r0, #-1
+ 434              	.LVL39:
+ 435 0270 D9E7     		b	.L1
+ 436              	.LVL40:
+ 437              	.L24:
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccZkMhf9.s 			page 18
+
+
+ 438 0272 4FF0FF30 		mov	r0, #-1
+ 439              	.LVL41:
+ 440 0276 D6E7     		b	.L1
+ 441              	.LVL42:
+ 442              	.L25:
+ 443 0278 4FF0FF30 		mov	r0, #-1
+ 444              	.LVL43:
+ 445 027c D3E7     		b	.L1
+ 446              	.LVL44:
+ 447              	.L26:
+ 448 027e 4FF0FF30 		mov	r0, #-1
+ 449              	.LVL45:
+ 450 0282 D0E7     		b	.L1
+ 451              	.L36:
+ 452              		.align	2
+ 453              	.L35:
+ 454 0284 010000C0 		.word	-1073741823
+ 455              		.cfi_endproc
+ 456              	.LFE5:
+ 458              		.text
+ 459              	.Letext0:
+ 460              		.file 3 "lib/helix/real/../pub/mp3common.h"
+ 461              		.file 4 "lib/helix/real/../pub/mp3dec.h"
+ 462              		.file 5 "lib/helix/real/coder.h"
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccZkMhf9.s 			page 19
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 dequant.c
+C:\Users\Patryk\AppData\Local\Temp\ccZkMhf9.s:18     .text.xmp3fixpt_Dequantize:00000000 $t
+C:\Users\Patryk\AppData\Local\Temp\ccZkMhf9.s:25     .text.xmp3fixpt_Dequantize:00000000 xmp3fixpt_Dequantize
+C:\Users\Patryk\AppData\Local\Temp\ccZkMhf9.s:454    .text.xmp3fixpt_Dequantize:00000284 $d
+
+UNDEFINED SYMBOLS
+xmp3fixpt_DequantChannel
+xmp3fixpt_MidSideProc
+xmp3fixpt_IntensityProcMPEG1
+xmp3fixpt_IntensityProcMPEG2

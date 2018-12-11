@@ -79,63 +79,20 @@ build/main.o: Src/main.c Inc/main.h \
  Middlewares/Third_Party/FatFs/src/ff_gen_drv.h \
  Middlewares/Third_Party/FatFs/src/diskio.h \
  Middlewares/Third_Party/FatFs/src/ff.h Inc/sd_diskio.h Inc/usbh_diskio.h \
- Inc/lwip.h Middlewares/Third_Party/LwIP/src/include/lwip/opt.h \
- Inc/lwipopts.h Middlewares/Third_Party/LwIP/src/include/lwip/debug.h \
- Middlewares/Third_Party/LwIP/src/include/lwip/arch.h \
- Middlewares/Third_Party/LwIP/system/arch/cc.h \
- Middlewares/Third_Party/LwIP/system/arch/cpu.h \
- Middlewares/Third_Party/LwIP/src/include/lwip/mem.h \
- Middlewares/Third_Party/LwIP/src/include/lwip/memp.h \
- Middlewares/Third_Party/LwIP/src/include/lwip/priv/memp_std.h \
- Middlewares/Third_Party/LwIP/src/include/lwip/priv/memp_priv.h \
- Middlewares/Third_Party/LwIP/src/include/lwip/stats.h \
- Middlewares/Third_Party/LwIP/src/include/netif/etharp.h \
- Middlewares/Third_Party/LwIP/src/include/lwip/etharp.h \
- Middlewares/Third_Party/LwIP/src/include/lwip/pbuf.h \
- Middlewares/Third_Party/LwIP/src/include/lwip/err.h \
- Middlewares/Third_Party/LwIP/src/include/lwip/ip4_addr.h \
- Middlewares/Third_Party/LwIP/src/include/lwip/def.h \
- Middlewares/Third_Party/LwIP/src/include/lwip/netif.h \
- Middlewares/Third_Party/LwIP/src/include/lwip/ip_addr.h \
- Middlewares/Third_Party/LwIP/src/include/lwip/ip6_addr.h \
- Middlewares/Third_Party/LwIP/src/include/lwip/def.h \
- Middlewares/Third_Party/LwIP/src/include/lwip/ip4.h \
- Middlewares/Third_Party/LwIP/src/include/lwip/prot/ip4.h \
- Middlewares/Third_Party/LwIP/src/include/lwip/prot/ethernet.h \
- Middlewares/Third_Party/LwIP/src/include/lwip/prot/etharp.h \
- Middlewares/Third_Party/LwIP/src/include/netif/ethernet.h \
- Middlewares/Third_Party/LwIP/src/include/lwip/dhcp.h \
- Middlewares/Third_Party/LwIP/src/include/lwip/udp.h \
- Middlewares/Third_Party/LwIP/src/include/lwip/ip.h \
- Middlewares/Third_Party/LwIP/src/include/lwip/ip6.h \
- Middlewares/Third_Party/LwIP/src/include/lwip/prot/ip.h \
- Middlewares/Third_Party/LwIP/src/include/lwip/prot/udp.h \
- Middlewares/Third_Party/LwIP/src/include/lwip/timeouts.h \
- Middlewares/Third_Party/LwIP/src/include/lwip/sys.h \
- Middlewares/Third_Party/LwIP/system/arch/sys_arch.h Inc/ethernetif.h \
- Middlewares/Third_Party/LwIP/src/include/lwip/tcpip.h Inc/usb_host.h \
- Inc/mp3_player.h Inc/fatfs.h \
- Middlewares/Third_Party/LwIP/src/include/lwip/errno.h \
+ Inc/usb_host.h Inc/mp3_player.h Inc/gui.h \
  Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_lcd.h \
- d:\sw\drivers\bsp\components\rk043fn48h\rk043fn48h.h \
+ Drivers/BSP/STM32746G-Discovery/../Components/rk043fn48h/rk043fn48h.h \
  Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.h \
  Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.h \
- d:\sw\utilities\fonts\fonts.h Utilities/Fonts/fonts.h \
+ c:\users\student\downloads\aaaaa13\utilities\fonts\fonts.h \
+ Utilities/Fonts/fonts.h \
  Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.h \
- d:\sw\drivers\bsp\components\ft5336\ft5336.h \
- d:\sw\drivers\bsp\components\common\ts.h \
+ Drivers/BSP/STM32746G-Discovery/../Components/ft5336/ft5336.h \
+ Drivers/BSP/STM32746G-Discovery/../Components/ft5336/../Common/ts.h \
  Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_audio.h \
- d:\sw\drivers\bsp\components\wm8994\wm8994.h \
- d:\sw\drivers\bsp\components\common\audio.h Inc/term_io.h Inc/dbgu.h \
- Inc/ansi.h Inc/dbgu.h Inc/ansi.h \
- Middlewares/Third_Party/LwIP/src/include/lwip/api.h \
- Middlewares/Third_Party/LwIP/src/include/lwip/netbuf.h \
- Middlewares/Third_Party/LwIP/src/include/lwip/apps/fs.h \
- Middlewares/Third_Party/LwIP/src/include/lwip/apps/httpd_opts.h \
- Middlewares/Third_Party/LwIP/src/include/lwip/netdb.h \
- Middlewares/Third_Party/LwIP/src/include/lwip/inet.h \
- Middlewares/Third_Party/LwIP/src/include/lwip/sockets.h \
- Middlewares/Third_Party/LwIP/src/include/lwip/errno.h \
+ Drivers/BSP/STM32746G-Discovery/../Components/wm8994/wm8994.h \
+ Drivers/BSP/STM32746G-Discovery/../Components/wm8994/../Common/audio.h \
+ Inc/term_io.h Inc/dbgu.h Inc/ansi.h Inc/dbgu.h Inc/ansi.h \
  Drivers/BSP/Components/wm8994/wm8994.h
 
 Inc/main.h:
@@ -316,113 +273,35 @@ Inc/sd_diskio.h:
 
 Inc/usbh_diskio.h:
 
-Inc/lwip.h:
-
-Middlewares/Third_Party/LwIP/src/include/lwip/opt.h:
-
-Inc/lwipopts.h:
-
-Middlewares/Third_Party/LwIP/src/include/lwip/debug.h:
-
-Middlewares/Third_Party/LwIP/src/include/lwip/arch.h:
-
-Middlewares/Third_Party/LwIP/system/arch/cc.h:
-
-Middlewares/Third_Party/LwIP/system/arch/cpu.h:
-
-Middlewares/Third_Party/LwIP/src/include/lwip/mem.h:
-
-Middlewares/Third_Party/LwIP/src/include/lwip/memp.h:
-
-Middlewares/Third_Party/LwIP/src/include/lwip/priv/memp_std.h:
-
-Middlewares/Third_Party/LwIP/src/include/lwip/priv/memp_priv.h:
-
-Middlewares/Third_Party/LwIP/src/include/lwip/stats.h:
-
-Middlewares/Third_Party/LwIP/src/include/netif/etharp.h:
-
-Middlewares/Third_Party/LwIP/src/include/lwip/etharp.h:
-
-Middlewares/Third_Party/LwIP/src/include/lwip/pbuf.h:
-
-Middlewares/Third_Party/LwIP/src/include/lwip/err.h:
-
-Middlewares/Third_Party/LwIP/src/include/lwip/ip4_addr.h:
-
-Middlewares/Third_Party/LwIP/src/include/lwip/def.h:
-
-Middlewares/Third_Party/LwIP/src/include/lwip/netif.h:
-
-Middlewares/Third_Party/LwIP/src/include/lwip/ip_addr.h:
-
-Middlewares/Third_Party/LwIP/src/include/lwip/ip6_addr.h:
-
-Middlewares/Third_Party/LwIP/src/include/lwip/def.h:
-
-Middlewares/Third_Party/LwIP/src/include/lwip/ip4.h:
-
-Middlewares/Third_Party/LwIP/src/include/lwip/prot/ip4.h:
-
-Middlewares/Third_Party/LwIP/src/include/lwip/prot/ethernet.h:
-
-Middlewares/Third_Party/LwIP/src/include/lwip/prot/etharp.h:
-
-Middlewares/Third_Party/LwIP/src/include/netif/ethernet.h:
-
-Middlewares/Third_Party/LwIP/src/include/lwip/dhcp.h:
-
-Middlewares/Third_Party/LwIP/src/include/lwip/udp.h:
-
-Middlewares/Third_Party/LwIP/src/include/lwip/ip.h:
-
-Middlewares/Third_Party/LwIP/src/include/lwip/ip6.h:
-
-Middlewares/Third_Party/LwIP/src/include/lwip/prot/ip.h:
-
-Middlewares/Third_Party/LwIP/src/include/lwip/prot/udp.h:
-
-Middlewares/Third_Party/LwIP/src/include/lwip/timeouts.h:
-
-Middlewares/Third_Party/LwIP/src/include/lwip/sys.h:
-
-Middlewares/Third_Party/LwIP/system/arch/sys_arch.h:
-
-Inc/ethernetif.h:
-
-Middlewares/Third_Party/LwIP/src/include/lwip/tcpip.h:
-
 Inc/usb_host.h:
 
 Inc/mp3_player.h:
 
-Inc/fatfs.h:
-
-Middlewares/Third_Party/LwIP/src/include/lwip/errno.h:
+Inc/gui.h:
 
 Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_lcd.h:
 
-d:\sw\drivers\bsp\components\rk043fn48h\rk043fn48h.h:
+Drivers/BSP/STM32746G-Discovery/../Components/rk043fn48h/rk043fn48h.h:
 
 Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.h:
 
 Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.h:
 
-d:\sw\utilities\fonts\fonts.h:
+c:\users\student\downloads\aaaaa13\utilities\fonts\fonts.h:
 
 Utilities/Fonts/fonts.h:
 
 Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.h:
 
-d:\sw\drivers\bsp\components\ft5336\ft5336.h:
+Drivers/BSP/STM32746G-Discovery/../Components/ft5336/ft5336.h:
 
-d:\sw\drivers\bsp\components\common\ts.h:
+Drivers/BSP/STM32746G-Discovery/../Components/ft5336/../Common/ts.h:
 
 Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_audio.h:
 
-d:\sw\drivers\bsp\components\wm8994\wm8994.h:
+Drivers/BSP/STM32746G-Discovery/../Components/wm8994/wm8994.h:
 
-d:\sw\drivers\bsp\components\common\audio.h:
+Drivers/BSP/STM32746G-Discovery/../Components/wm8994/../Common/audio.h:
 
 Inc/term_io.h:
 
@@ -433,21 +312,5 @@ Inc/ansi.h:
 Inc/dbgu.h:
 
 Inc/ansi.h:
-
-Middlewares/Third_Party/LwIP/src/include/lwip/api.h:
-
-Middlewares/Third_Party/LwIP/src/include/lwip/netbuf.h:
-
-Middlewares/Third_Party/LwIP/src/include/lwip/apps/fs.h:
-
-Middlewares/Third_Party/LwIP/src/include/lwip/apps/httpd_opts.h:
-
-Middlewares/Third_Party/LwIP/src/include/lwip/netdb.h:
-
-Middlewares/Third_Party/LwIP/src/include/lwip/inet.h:
-
-Middlewares/Third_Party/LwIP/src/include/lwip/sockets.h:
-
-Middlewares/Third_Party/LwIP/src/include/lwip/errno.h:
 
 Drivers/BSP/Components/wm8994/wm8994.h:

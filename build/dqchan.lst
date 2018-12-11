@@ -1,0 +1,1921 @@
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc2fCeYc.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"dqchan.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.DequantBlock,"ax",%progbits
+  18              		.align	1
+  19              		.syntax unified
+  20              		.thumb
+  21              		.thumb_func
+  22              		.fpu fpv5-sp-d16
+  24              	DequantBlock:
+  25              	.LFB5:
+  26              		.file 1 "lib/helix/real/dqchan.c"
+   1:lib/helix/real/dqchan.c **** /* ***** BEGIN LICENSE BLOCK ***** 
+   2:lib/helix/real/dqchan.c ****  * Version: RCSL 1.0/RPSL 1.0 
+   3:lib/helix/real/dqchan.c ****  *  
+   4:lib/helix/real/dqchan.c ****  * Portions Copyright (c) 1995-2002 RealNetworks, Inc. All Rights Reserved. 
+   5:lib/helix/real/dqchan.c ****  *      
+   6:lib/helix/real/dqchan.c ****  * The contents of this file, and the files included with this file, are 
+   7:lib/helix/real/dqchan.c ****  * subject to the current version of the RealNetworks Public Source License 
+   8:lib/helix/real/dqchan.c ****  * Version 1.0 (the "RPSL") available at 
+   9:lib/helix/real/dqchan.c ****  * http://www.helixcommunity.org/content/rpsl unless you have licensed 
+  10:lib/helix/real/dqchan.c ****  * the file under the RealNetworks Community Source License Version 1.0 
+  11:lib/helix/real/dqchan.c ****  * (the "RCSL") available at http://www.helixcommunity.org/content/rcsl, 
+  12:lib/helix/real/dqchan.c ****  * in which case the RCSL will apply. You may also obtain the license terms 
+  13:lib/helix/real/dqchan.c ****  * directly from RealNetworks.  You may not use this file except in 
+  14:lib/helix/real/dqchan.c ****  * compliance with the RPSL or, if you have a valid RCSL with RealNetworks 
+  15:lib/helix/real/dqchan.c ****  * applicable to this file, the RCSL.  Please see the applicable RPSL or 
+  16:lib/helix/real/dqchan.c ****  * RCSL for the rights, obligations and limitations governing use of the 
+  17:lib/helix/real/dqchan.c ****  * contents of the file.  
+  18:lib/helix/real/dqchan.c ****  *  
+  19:lib/helix/real/dqchan.c ****  * This file is part of the Helix DNA Technology. RealNetworks is the 
+  20:lib/helix/real/dqchan.c ****  * developer of the Original Code and owns the copyrights in the portions 
+  21:lib/helix/real/dqchan.c ****  * it created. 
+  22:lib/helix/real/dqchan.c ****  *  
+  23:lib/helix/real/dqchan.c ****  * This file, and the files included with this file, is distributed and made 
+  24:lib/helix/real/dqchan.c ****  * available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER 
+  25:lib/helix/real/dqchan.c ****  * EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS ALL SUCH WARRANTIES, 
+  26:lib/helix/real/dqchan.c ****  * INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF MERCHANTABILITY, FITNESS 
+  27:lib/helix/real/dqchan.c ****  * FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT. 
+  28:lib/helix/real/dqchan.c ****  * 
+  29:lib/helix/real/dqchan.c ****  * Technology Compatibility Kit Test Suite(s) Location: 
+  30:lib/helix/real/dqchan.c ****  *    http://www.helixcommunity.org/content/tck 
+  31:lib/helix/real/dqchan.c ****  * 
+  32:lib/helix/real/dqchan.c ****  * Contributor(s): 
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc2fCeYc.s 			page 2
+
+
+  33:lib/helix/real/dqchan.c ****  *  
+  34:lib/helix/real/dqchan.c ****  * ***** END LICENSE BLOCK ***** */ 
+  35:lib/helix/real/dqchan.c **** 
+  36:lib/helix/real/dqchan.c **** /**************************************************************************************
+  37:lib/helix/real/dqchan.c ****  * Fixed-point MP3 decoder
+  38:lib/helix/real/dqchan.c ****  * Jon Recker (jrecker@real.com), Ken Cooke (kenc@real.com)
+  39:lib/helix/real/dqchan.c ****  * August 2003
+  40:lib/helix/real/dqchan.c ****  *
+  41:lib/helix/real/dqchan.c ****  * dqchan.c - dequantization of transform coefficients
+  42:lib/helix/real/dqchan.c ****  **************************************************************************************/
+  43:lib/helix/real/dqchan.c **** 
+  44:lib/helix/real/dqchan.c **** #include "coder.h"
+  45:lib/helix/real/dqchan.c **** #include "assembly.h"
+  46:lib/helix/real/dqchan.c **** 
+  47:lib/helix/real/dqchan.c **** typedef int ARRAY3[3];	/* for short-block reordering */
+  48:lib/helix/real/dqchan.c **** 
+  49:lib/helix/real/dqchan.c **** /* optional pre-emphasis for high-frequency scale factor bands */
+  50:lib/helix/real/dqchan.c **** static const char preTab[22] = { 0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,2,2,3,3,3,2,0 };
+  51:lib/helix/real/dqchan.c **** 
+  52:lib/helix/real/dqchan.c **** /* pow(2,-i/4) for i=0..3, Q31 format */
+  53:lib/helix/real/dqchan.c **** static const int pow14[4] = { 
+  54:lib/helix/real/dqchan.c **** 	0x7fffffff, 0x6ba27e65, 0x5a82799a, 0x4c1bf829
+  55:lib/helix/real/dqchan.c **** };
+  56:lib/helix/real/dqchan.c **** 
+  57:lib/helix/real/dqchan.c **** /* pow(2,-i/4) * pow(j,4/3) for i=0..3 j=0..15, Q25 format */
+  58:lib/helix/real/dqchan.c **** static const int pow43_14[4][16] = {
+  59:lib/helix/real/dqchan.c **** {	0x00000000, 0x10000000, 0x285145f3, 0x453a5cdb, /* Q28 */
+  60:lib/helix/real/dqchan.c **** 	0x0cb2ff53, 0x111989d6, 0x15ce31c8, 0x1ac7f203, 
+  61:lib/helix/real/dqchan.c **** 	0x20000000, 0x257106b9, 0x2b16b4a3, 0x30ed74b4, 
+  62:lib/helix/real/dqchan.c **** 	0x36f23fa5, 0x3d227bd3, 0x437be656, 0x49fc823c, },
+  63:lib/helix/real/dqchan.c **** 
+  64:lib/helix/real/dqchan.c **** {	0x00000000, 0x0d744fcd, 0x21e71f26, 0x3a36abd9, 
+  65:lib/helix/real/dqchan.c **** 	0x0aadc084, 0x0e610e6e, 0x12560c1d, 0x168523cf, 
+  66:lib/helix/real/dqchan.c **** 	0x1ae89f99, 0x1f7c03a4, 0x243bae49, 0x29249c67, 
+  67:lib/helix/real/dqchan.c **** 	0x2e34420f, 0x33686f85, 0x38bf3dff, 0x3e370182, },
+  68:lib/helix/real/dqchan.c **** 
+  69:lib/helix/real/dqchan.c **** {	0x00000000, 0x0b504f33, 0x1c823e07, 0x30f39a55, 
+  70:lib/helix/real/dqchan.c **** 	0x08facd62, 0x0c176319, 0x0f6b3522, 0x12efe2ad, 
+  71:lib/helix/real/dqchan.c **** 	0x16a09e66, 0x1a79a317, 0x1e77e301, 0x2298d5b4, 
+  72:lib/helix/real/dqchan.c **** 	0x26da56fc, 0x2b3a902a, 0x2fb7e7e7, 0x3450f650, },
+  73:lib/helix/real/dqchan.c **** 
+  74:lib/helix/real/dqchan.c **** {	0x00000000, 0x09837f05, 0x17f910d7, 0x2929c7a9, 
+  75:lib/helix/real/dqchan.c **** 	0x078d0dfa, 0x0a2ae661, 0x0cf73154, 0x0fec91cb, 
+  76:lib/helix/real/dqchan.c **** 	0x1306fe0a, 0x16434a6c, 0x199ee595, 0x1d17ae3d, 
+  77:lib/helix/real/dqchan.c **** 	0x20abd76a, 0x2459d551, 0x28204fbb, 0x2bfe1808, },
+  78:lib/helix/real/dqchan.c **** };
+  79:lib/helix/real/dqchan.c **** 
+  80:lib/helix/real/dqchan.c **** /* pow(j,4/3) for j=16..63, Q23 format */
+  81:lib/helix/real/dqchan.c **** static const int pow43[] = {
+  82:lib/helix/real/dqchan.c **** 	0x1428a2fa, 0x15db1bd6, 0x1796302c, 0x19598d85, 
+  83:lib/helix/real/dqchan.c **** 	0x1b24e8bb, 0x1cf7fcfa, 0x1ed28af2, 0x20b4582a, 
+  84:lib/helix/real/dqchan.c **** 	0x229d2e6e, 0x248cdb55, 0x26832fda, 0x28800000, 
+  85:lib/helix/real/dqchan.c **** 	0x2a832287, 0x2c8c70a8, 0x2e9bc5d8, 0x30b0ff99, 
+  86:lib/helix/real/dqchan.c **** 	0x32cbfd4a, 0x34eca001, 0x3712ca62, 0x393e6088, 
+  87:lib/helix/real/dqchan.c **** 	0x3b6f47e0, 0x3da56717, 0x3fe0a5fc, 0x4220ed72, 
+  88:lib/helix/real/dqchan.c **** 	0x44662758, 0x46b03e7c, 0x48ff1e87, 0x4b52b3f3, 
+  89:lib/helix/real/dqchan.c **** 	0x4daaebfd, 0x5007b497, 0x5268fc62, 0x54ceb29c, 
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc2fCeYc.s 			page 3
+
+
+  90:lib/helix/real/dqchan.c **** 	0x5738c721, 0x59a72a59, 0x5c19cd35, 0x5e90a129, 
+  91:lib/helix/real/dqchan.c **** 	0x610b9821, 0x638aa47f, 0x660db90f, 0x6894c90b, 
+  92:lib/helix/real/dqchan.c **** 	0x6b1fc80c, 0x6daeaa0d, 0x70416360, 0x72d7e8b0, 
+  93:lib/helix/real/dqchan.c **** 	0x75722ef9, 0x78102b85, 0x7ab1d3ec, 0x7d571e09, 
+  94:lib/helix/real/dqchan.c **** };
+  95:lib/helix/real/dqchan.c **** 
+  96:lib/helix/real/dqchan.c **** /* sqrt(0.5) in Q31 format */
+  97:lib/helix/real/dqchan.c **** #define SQRTHALF 0x5a82799a
+  98:lib/helix/real/dqchan.c **** 
+  99:lib/helix/real/dqchan.c **** /*
+ 100:lib/helix/real/dqchan.c ****  * Minimax polynomial approximation to pow(x, 4/3), over the range
+ 101:lib/helix/real/dqchan.c ****  *  poly43lo: x = [0.5, 0.7071]
+ 102:lib/helix/real/dqchan.c ****  *  poly43hi: x = [0.7071, 1.0]
+ 103:lib/helix/real/dqchan.c ****  *
+ 104:lib/helix/real/dqchan.c ****  * Relative error < 1E-7
+ 105:lib/helix/real/dqchan.c ****  * Coefs are scaled by 4, 2, 1, 0.5, 0.25
+ 106:lib/helix/real/dqchan.c ****  */
+ 107:lib/helix/real/dqchan.c **** static const int poly43lo[5] = { 0x29a0bda9, 0xb02e4828, 0x5957aa1b, 0x236c498d, 0xff581859 };
+ 108:lib/helix/real/dqchan.c **** static const int poly43hi[5] = { 0x10852163, 0xd333f6a4, 0x46e9408b, 0x27c2cef0, 0xfef577b4 };
+ 109:lib/helix/real/dqchan.c **** 
+ 110:lib/helix/real/dqchan.c **** /* pow(2, i*4/3) as exp and frac */
+ 111:lib/helix/real/dqchan.c **** static const int pow2exp[8]  = { 14, 13, 11, 10, 9, 7, 6, 5 };
+ 112:lib/helix/real/dqchan.c **** 
+ 113:lib/helix/real/dqchan.c **** static const int pow2frac[8] = {
+ 114:lib/helix/real/dqchan.c **** 	0x6597fa94, 0x50a28be6, 0x7fffffff, 0x6597fa94, 
+ 115:lib/helix/real/dqchan.c **** 	0x50a28be6, 0x7fffffff, 0x6597fa94, 0x50a28be6
+ 116:lib/helix/real/dqchan.c **** };
+ 117:lib/helix/real/dqchan.c **** 
+ 118:lib/helix/real/dqchan.c **** /**************************************************************************************
+ 119:lib/helix/real/dqchan.c ****  * Function:    DequantBlock
+ 120:lib/helix/real/dqchan.c ****  *
+ 121:lib/helix/real/dqchan.c ****  * Description: Ken's highly-optimized, low memory dequantizer performing the operation
+ 122:lib/helix/real/dqchan.c ****  *              y = pow(x, 4.0/3.0) * pow(2, 25 - scale/4.0)
+ 123:lib/helix/real/dqchan.c ****  *
+ 124:lib/helix/real/dqchan.c ****  * Inputs:      input buffer of decode Huffman codewords (signed-magnitude)
+ 125:lib/helix/real/dqchan.c ****  *              output buffer of same length (in-place (outbuf = inbuf) is allowed)
+ 126:lib/helix/real/dqchan.c ****  *              number of samples
+ 127:lib/helix/real/dqchan.c ****  *              
+ 128:lib/helix/real/dqchan.c ****  * Outputs:     dequantized samples in Q25 format
+ 129:lib/helix/real/dqchan.c ****  *
+ 130:lib/helix/real/dqchan.c ****  * Return:      bitwise-OR of the unsigned outputs (for guard bit calculations)
+ 131:lib/helix/real/dqchan.c ****  **************************************************************************************/
+ 132:lib/helix/real/dqchan.c **** static int DequantBlock(int *inbuf, int *outbuf, int num, int scale)
+ 133:lib/helix/real/dqchan.c **** {
+  27              		.loc 1 133 0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 24
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31              	.LVL0:
+  32 0000 2DE9F04F 		push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
+  33              	.LCFI0:
+  34              		.cfi_def_cfa_offset 36
+  35              		.cfi_offset 4, -36
+  36              		.cfi_offset 5, -32
+  37              		.cfi_offset 6, -28
+  38              		.cfi_offset 7, -24
+  39              		.cfi_offset 8, -20
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc2fCeYc.s 			page 4
+
+
+  40              		.cfi_offset 9, -16
+  41              		.cfi_offset 10, -12
+  42              		.cfi_offset 11, -8
+  43              		.cfi_offset 14, -4
+  44 0004 87B0     		sub	sp, sp, #28
+  45              	.LCFI1:
+  46              		.cfi_def_cfa_offset 64
+  47 0006 0546     		mov	r5, r0
+  48              	.LVL1:
+ 134:lib/helix/real/dqchan.c **** 	int tab4[4];
+ 135:lib/helix/real/dqchan.c **** 	int scalef, scalei, shift;
+ 136:lib/helix/real/dqchan.c **** 	int sx, x, y;
+ 137:lib/helix/real/dqchan.c **** 	int mask = 0;
+ 138:lib/helix/real/dqchan.c **** 	const int *tab16, *coef;
+ 139:lib/helix/real/dqchan.c **** 
+ 140:lib/helix/real/dqchan.c **** 	tab16 = pow43_14[scale & 0x3];
+  49              		.loc 1 140 0
+  50 0008 03F00300 		and	r0, r3, #3
+  51              	.LVL2:
+  52 000c 544E     		ldr	r6, .L24
+  53 000e 06EB8016 		add	r6, r6, r0, lsl #6
+  54              	.LVL3:
+ 141:lib/helix/real/dqchan.c **** 	scalef = pow14[scale & 0x3];
+  55              		.loc 1 141 0
+  56 0012 544C     		ldr	r4, .L24+4
+  57 0014 54F82000 		ldr	r0, [r4, r0, lsl #2]
+  58 0018 0190     		str	r0, [sp, #4]
+  59              	.LVL4:
+ 142:lib/helix/real/dqchan.c **** 	scalei = MIN(scale >> 2, 31);	/* smallest input scale = -47, so smallest scalei = -12 */
+  60              		.loc 1 142 0
+  61 001a 4FEAA309 		asr	r9, r3, #2
+  62 001e CC46     		mov	ip, r9
+  63 0020 B9F11F0F 		cmp	r9, #31
+  64 0024 A8BF     		it	ge
+  65 0026 4FF01F0C 		movge	ip, #31
+  66              	.LVL5:
+ 143:lib/helix/real/dqchan.c **** 
+ 144:lib/helix/real/dqchan.c **** 	/* cache first 4 values */
+ 145:lib/helix/real/dqchan.c **** 	shift = MIN(scalei + 3, 31);
+  67              		.loc 1 145 0
+  68 002a 0CF10307 		add	r7, ip, #3
+  69              	.LVL6:
+ 146:lib/helix/real/dqchan.c **** 	shift = MAX(shift, 0);
+  70              		.loc 1 146 0
+  71 002e 87F30507 		usat	r7, #5, r7
+  72              	.LVL7:
+ 147:lib/helix/real/dqchan.c **** 	tab4[0] = 0;
+  73              		.loc 1 147 0
+  74 0032 0020     		movs	r0, #0
+  75              	.LVL8:
+  76 0034 0290     		str	r0, [sp, #8]
+ 148:lib/helix/real/dqchan.c **** 	tab4[1] = tab16[1] >> shift;
+  77              		.loc 1 148 0
+  78 0036 7468     		ldr	r4, [r6, #4]
+  79              	.LVL9:
+  80 0038 3C41     		asrs	r4, r4, r7
+  81 003a 0394     		str	r4, [sp, #12]
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc2fCeYc.s 			page 5
+
+
+ 149:lib/helix/real/dqchan.c **** 	tab4[2] = tab16[2] >> shift;
+  82              		.loc 1 149 0
+  83 003c B468     		ldr	r4, [r6, #8]
+  84 003e 3C41     		asrs	r4, r4, r7
+  85 0040 0494     		str	r4, [sp, #16]
+ 150:lib/helix/real/dqchan.c **** 	tab4[3] = tab16[3] >> shift;
+  86              		.loc 1 150 0
+  87 0042 F368     		ldr	r3, [r6, #12]
+  88              	.LVL10:
+  89 0044 3B41     		asrs	r3, r3, r7
+  90 0046 0593     		str	r3, [sp, #20]
+  91 0048 11E0     		b	.L14
+  92              	.LVL11:
+  93              	.L2:
+ 151:lib/helix/real/dqchan.c **** 
+ 152:lib/helix/real/dqchan.c **** 	do {
+ 153:lib/helix/real/dqchan.c **** 
+ 154:lib/helix/real/dqchan.c **** 		sx = *inbuf++;
+ 155:lib/helix/real/dqchan.c **** 		x = sx & 0x7fffffff;	/* sx = sign|mag */
+ 156:lib/helix/real/dqchan.c **** 
+ 157:lib/helix/real/dqchan.c **** 		if (x < 4) {
+ 158:lib/helix/real/dqchan.c **** 
+ 159:lib/helix/real/dqchan.c **** 			y = tab4[x];
+ 160:lib/helix/real/dqchan.c **** 
+ 161:lib/helix/real/dqchan.c **** 		} else if (x < 16) {
+  94              		.loc 1 161 0
+  95 004a 0F2F     		cmp	r7, #15
+  96 004c 1FDC     		bgt	.L4
+ 162:lib/helix/real/dqchan.c **** 
+ 163:lib/helix/real/dqchan.c **** 			y = tab16[x];
+  97              		.loc 1 163 0
+  98 004e 56F82750 		ldr	r5, [r6, r7, lsl #2]
+  99              	.LVL12:
+ 164:lib/helix/real/dqchan.c **** 			y = (scalei < 0) ? y << -scalei : y >> scalei;
+ 100              		.loc 1 164 0
+ 101 0052 B9F1000F 		cmp	r9, #0
+ 102 0056 16DB     		blt	.L20
+ 103              		.loc 1 164 0 is_stmt 0 discriminator 2
+ 104 0058 45FA0CF5 		asr	r5, r5, ip
+ 105              	.LVL13:
+ 106              	.L3:
+ 165:lib/helix/real/dqchan.c **** 
+ 166:lib/helix/real/dqchan.c **** 		} else {
+ 167:lib/helix/real/dqchan.c **** 
+ 168:lib/helix/real/dqchan.c **** 			if (x < 64) {
+ 169:lib/helix/real/dqchan.c **** 
+ 170:lib/helix/real/dqchan.c **** 				y = pow43[x-16];
+ 171:lib/helix/real/dqchan.c **** 
+ 172:lib/helix/real/dqchan.c **** 				/* fractional scale */
+ 173:lib/helix/real/dqchan.c **** 				y = MULSHIFT32(y, scalef);
+ 174:lib/helix/real/dqchan.c **** 				shift = scalei - 3;
+ 175:lib/helix/real/dqchan.c **** 
+ 176:lib/helix/real/dqchan.c **** 			} else {
+ 177:lib/helix/real/dqchan.c **** 
+ 178:lib/helix/real/dqchan.c **** 				/* normalize to [0x40000000, 0x7fffffff] */
+ 179:lib/helix/real/dqchan.c **** 				x <<= 17;
+ 180:lib/helix/real/dqchan.c **** 				shift = 0;
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc2fCeYc.s 			page 6
+
+
+ 181:lib/helix/real/dqchan.c **** 				if (x < 0x08000000)
+ 182:lib/helix/real/dqchan.c **** 					x <<= 4, shift += 4;
+ 183:lib/helix/real/dqchan.c **** 				if (x < 0x20000000)
+ 184:lib/helix/real/dqchan.c **** 					x <<= 2, shift += 2;
+ 185:lib/helix/real/dqchan.c **** 				if (x < 0x40000000)
+ 186:lib/helix/real/dqchan.c **** 					x <<= 1, shift += 1;
+ 187:lib/helix/real/dqchan.c **** 
+ 188:lib/helix/real/dqchan.c **** 				coef = (x < SQRTHALF) ? poly43lo : poly43hi;
+ 189:lib/helix/real/dqchan.c **** 
+ 190:lib/helix/real/dqchan.c **** 				/* polynomial */
+ 191:lib/helix/real/dqchan.c **** 				y = coef[0];
+ 192:lib/helix/real/dqchan.c **** 				y = MULSHIFT32(y, x) + coef[1];
+ 193:lib/helix/real/dqchan.c **** 				y = MULSHIFT32(y, x) + coef[2];
+ 194:lib/helix/real/dqchan.c **** 				y = MULSHIFT32(y, x) + coef[3];
+ 195:lib/helix/real/dqchan.c **** 				y = MULSHIFT32(y, x) + coef[4];
+ 196:lib/helix/real/dqchan.c **** 				y = MULSHIFT32(y, pow2frac[shift]) << 3;
+ 197:lib/helix/real/dqchan.c **** 
+ 198:lib/helix/real/dqchan.c **** 				/* fractional scale */
+ 199:lib/helix/real/dqchan.c **** 				y = MULSHIFT32(y, scalef);
+ 200:lib/helix/real/dqchan.c **** 				shift = scalei - pow2exp[shift];
+ 201:lib/helix/real/dqchan.c **** 			}
+ 202:lib/helix/real/dqchan.c **** 
+ 203:lib/helix/real/dqchan.c **** 			/* integer scale */
+ 204:lib/helix/real/dqchan.c **** 			if (shift < 0) {
+ 205:lib/helix/real/dqchan.c **** 				shift = -shift;
+ 206:lib/helix/real/dqchan.c **** 				if (y > (0x7fffffff >> shift))
+ 207:lib/helix/real/dqchan.c **** 					y = 0x7fffffff;		/* clip */
+ 208:lib/helix/real/dqchan.c **** 				else
+ 209:lib/helix/real/dqchan.c **** 					y <<= shift;
+ 210:lib/helix/real/dqchan.c **** 			} else {
+ 211:lib/helix/real/dqchan.c **** 				y >>= shift;
+ 212:lib/helix/real/dqchan.c **** 			}
+ 213:lib/helix/real/dqchan.c **** 		}
+ 214:lib/helix/real/dqchan.c **** 
+ 215:lib/helix/real/dqchan.c **** 		/* sign and store */
+ 216:lib/helix/real/dqchan.c **** 		mask |= y;
+ 107              		.loc 1 216 0 is_stmt 1
+ 108 005c 2843     		orrs	r0, r0, r5
+ 109              	.LVL14:
+ 217:lib/helix/real/dqchan.c **** 		*outbuf++ = (sx < 0) ? -y : y;
+ 110              		.loc 1 217 0
+ 111 005e 002B     		cmp	r3, #0
+ 112 0060 79DB     		blt	.L21
+ 113              	.LVL15:
+ 114              	.L13:
+ 115              		.loc 1 217 0 is_stmt 0 discriminator 4
+ 116 0062 0B1D     		adds	r3, r1, #4
+ 117              	.LVL16:
+ 118 0064 0D60     		str	r5, [r1]
+ 119              	.LVL17:
+ 154:lib/helix/real/dqchan.c **** 		x = sx & 0x7fffffff;	/* sx = sign|mag */
+ 120              		.loc 1 154 0 is_stmt 1 discriminator 4
+ 121 0066 2546     		mov	r5, r4
+ 218:lib/helix/real/dqchan.c **** 
+ 219:lib/helix/real/dqchan.c **** 	} while (--num);
+ 122              		.loc 1 219 0 discriminator 4
+ 123 0068 013A     		subs	r2, r2, #1
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc2fCeYc.s 			page 7
+
+
+ 124              	.LVL18:
+ 125 006a 76D0     		beq	.L22
+ 217:lib/helix/real/dqchan.c **** 
+ 126              		.loc 1 217 0
+ 127 006c 1946     		mov	r1, r3
+ 128              	.LVL19:
+ 129              	.L14:
+ 154:lib/helix/real/dqchan.c **** 		x = sx & 0x7fffffff;	/* sx = sign|mag */
+ 130              		.loc 1 154 0
+ 131 006e 2C1D     		adds	r4, r5, #4
+ 132              	.LVL20:
+ 133 0070 2B68     		ldr	r3, [r5]
+ 134              	.LVL21:
+ 155:lib/helix/real/dqchan.c **** 
+ 135              		.loc 1 155 0
+ 136 0072 23F00047 		bic	r7, r3, #-2147483648
+ 137              	.LVL22:
+ 157:lib/helix/real/dqchan.c **** 
+ 138              		.loc 1 157 0
+ 139 0076 032F     		cmp	r7, #3
+ 140 0078 E7DC     		bgt	.L2
+ 159:lib/helix/real/dqchan.c **** 
+ 141              		.loc 1 159 0
+ 142 007a 06AD     		add	r5, sp, #24
+ 143 007c 05EB8707 		add	r7, r5, r7, lsl #2
+ 144              	.LVL23:
+ 145 0080 57F8105C 		ldr	r5, [r7, #-16]
+ 146              	.LVL24:
+ 147 0084 EAE7     		b	.L3
+ 148              	.LVL25:
+ 149              	.L20:
+ 164:lib/helix/real/dqchan.c **** 
+ 150              		.loc 1 164 0 discriminator 1
+ 151 0086 CCF10007 		rsb	r7, ip, #0
+ 152              	.LVL26:
+ 153 008a BD40     		lsls	r5, r5, r7
+ 154              	.LVL27:
+ 155 008c E6E7     		b	.L3
+ 156              	.LVL28:
+ 157              	.L4:
+ 168:lib/helix/real/dqchan.c **** 
+ 158              		.loc 1 168 0
+ 159 008e 3F2F     		cmp	r7, #63
+ 160 0090 0CDC     		bgt	.L6
+ 170:lib/helix/real/dqchan.c **** 
+ 161              		.loc 1 170 0
+ 162 0092 103F     		subs	r7, r7, #16
+ 163 0094 344D     		ldr	r5, .L24+8
+ 164 0096 55F82770 		ldr	r7, [r5, r7, lsl #2]
+ 165              	.LVL29:
+ 166              	.LBB20:
+ 167              	.LBB21:
+ 168              		.file 2 "lib/helix/real/assembly.h"
+   1:lib/helix/real/assembly.h **** /* ***** BEGIN LICENSE BLOCK ***** 
+   2:lib/helix/real/assembly.h ****  * Version: RCSL 1.0/RPSL 1.0 
+   3:lib/helix/real/assembly.h ****  *  
+   4:lib/helix/real/assembly.h ****  * Portions Copyright (c) 1995-2002 RealNetworks, Inc. All Rights Reserved. 
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc2fCeYc.s 			page 8
+
+
+   5:lib/helix/real/assembly.h ****  *      
+   6:lib/helix/real/assembly.h ****  * The contents of this file, and the files included with this file, are 
+   7:lib/helix/real/assembly.h ****  * subject to the current version of the RealNetworks Public Source License 
+   8:lib/helix/real/assembly.h ****  * Version 1.0 (the "RPSL") available at 
+   9:lib/helix/real/assembly.h ****  * http://www.helixcommunity.org/content/rpsl unless you have licensed 
+  10:lib/helix/real/assembly.h ****  * the file under the RealNetworks Community Source License Version 1.0 
+  11:lib/helix/real/assembly.h ****  * (the "RCSL") available at http://www.helixcommunity.org/content/rcsl, 
+  12:lib/helix/real/assembly.h ****  * in which case the RCSL will apply. You may also obtain the license terms 
+  13:lib/helix/real/assembly.h ****  * directly from RealNetworks.  You may not use this file except in 
+  14:lib/helix/real/assembly.h ****  * compliance with the RPSL or, if you have a valid RCSL with RealNetworks 
+  15:lib/helix/real/assembly.h ****  * applicable to this file, the RCSL.  Please see the applicable RPSL or 
+  16:lib/helix/real/assembly.h ****  * RCSL for the rights, obligations and limitations governing use of the 
+  17:lib/helix/real/assembly.h ****  * contents of the file.  
+  18:lib/helix/real/assembly.h ****  *  
+  19:lib/helix/real/assembly.h ****  * This file is part of the Helix DNA Technology. RealNetworks is the 
+  20:lib/helix/real/assembly.h ****  * developer of the Original Code and owns the copyrights in the portions 
+  21:lib/helix/real/assembly.h ****  * it created. 
+  22:lib/helix/real/assembly.h ****  *  
+  23:lib/helix/real/assembly.h ****  * This file, and the files included with this file, is distributed and made 
+  24:lib/helix/real/assembly.h ****  * available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER 
+  25:lib/helix/real/assembly.h ****  * EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS ALL SUCH WARRANTIES, 
+  26:lib/helix/real/assembly.h ****  * INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF MERCHANTABILITY, FITNESS 
+  27:lib/helix/real/assembly.h ****  * FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT. 
+  28:lib/helix/real/assembly.h ****  * 
+  29:lib/helix/real/assembly.h ****  * Technology Compatibility Kit Test Suite(s) Location: 
+  30:lib/helix/real/assembly.h ****  *    http://www.helixcommunity.org/content/tck 
+  31:lib/helix/real/assembly.h ****  * 
+  32:lib/helix/real/assembly.h ****  * Contributor(s): 
+  33:lib/helix/real/assembly.h ****  *  
+  34:lib/helix/real/assembly.h ****  * ***** END LICENSE BLOCK ***** */ 
+  35:lib/helix/real/assembly.h **** 
+  36:lib/helix/real/assembly.h **** /**************************************************************************************
+  37:lib/helix/real/assembly.h ****  * Fixed-point MP3 decoder
+  38:lib/helix/real/assembly.h ****  * Jon Recker (jrecker@real.com), Ken Cooke (kenc@real.com)
+  39:lib/helix/real/assembly.h ****  * June 2003
+  40:lib/helix/real/assembly.h ****  *
+  41:lib/helix/real/assembly.h ****  * assembly.h - assembly language functions and prototypes for supported platforms
+  42:lib/helix/real/assembly.h ****  *
+  43:lib/helix/real/assembly.h ****  * - inline rountines with access to 64-bit multiply results 
+  44:lib/helix/real/assembly.h ****  * - x86 (_WIN32) and ARM (ARM_ADS, _WIN32_WCE) versions included
+  45:lib/helix/real/assembly.h ****  * - some inline functions are mix of asm and C for speed
+  46:lib/helix/real/assembly.h ****  * - some functions are in native asm files, so only the prototype is given here
+  47:lib/helix/real/assembly.h ****  *
+  48:lib/helix/real/assembly.h ****  * MULSHIFT32(x, y)    signed multiply of two 32-bit integers (x and y), returns top 32 bits of 64-
+  49:lib/helix/real/assembly.h ****  * FASTABS(x)          branchless absolute value of signed integer x
+  50:lib/helix/real/assembly.h ****  * CLZ(x)              count leading zeros in x
+  51:lib/helix/real/assembly.h ****  * MADD64(sum, x, y)   (Windows only) sum [64-bit] += x [32-bit] * y [32-bit]
+  52:lib/helix/real/assembly.h ****  * SHL64(sum, x, y)    (Windows only) 64-bit left shift using __int64
+  53:lib/helix/real/assembly.h ****  * SAR64(sum, x, y)    (Windows only) 64-bit right shift using __int64
+  54:lib/helix/real/assembly.h ****  */
+  55:lib/helix/real/assembly.h **** 
+  56:lib/helix/real/assembly.h **** #ifndef _ASSEMBLY_H
+  57:lib/helix/real/assembly.h **** #define _ASSEMBLY_H
+  58:lib/helix/real/assembly.h **** 
+  59:lib/helix/real/assembly.h **** #include "../platform.h"
+  60:lib/helix/real/assembly.h **** 
+  61:lib/helix/real/assembly.h **** #if (defined _WIN32 && !defined _WIN32_WCE) || (defined __WINS__ && defined _SYMBIAN) || defined(_O
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc2fCeYc.s 			page 9
+
+
+  62:lib/helix/real/assembly.h **** 
+  63:lib/helix/real/assembly.h **** #pragma warning( disable : 4035 )	/* complains about inline asm not returning a value */
+  64:lib/helix/real/assembly.h **** 
+  65:lib/helix/real/assembly.h **** static __inline int MULSHIFT32(int x, int y)	
+  66:lib/helix/real/assembly.h **** {
+  67:lib/helix/real/assembly.h ****     __asm {
+  68:lib/helix/real/assembly.h **** 		mov		eax, x
+  69:lib/helix/real/assembly.h **** 	    imul	y
+  70:lib/helix/real/assembly.h **** 	    mov		eax, edx
+  71:lib/helix/real/assembly.h **** 	}
+  72:lib/helix/real/assembly.h **** }
+  73:lib/helix/real/assembly.h **** 
+  74:lib/helix/real/assembly.h **** static __inline int FASTABS(int x) 
+  75:lib/helix/real/assembly.h **** {
+  76:lib/helix/real/assembly.h **** 	int sign;
+  77:lib/helix/real/assembly.h **** 
+  78:lib/helix/real/assembly.h **** 	sign = x >> (sizeof(int) * 8 - 1);
+  79:lib/helix/real/assembly.h **** 	x ^= sign;
+  80:lib/helix/real/assembly.h **** 	x -= sign;
+  81:lib/helix/real/assembly.h **** 
+  82:lib/helix/real/assembly.h **** 	return x;
+  83:lib/helix/real/assembly.h **** }
+  84:lib/helix/real/assembly.h **** 
+  85:lib/helix/real/assembly.h **** static __inline int CLZ(int x)
+  86:lib/helix/real/assembly.h **** {
+  87:lib/helix/real/assembly.h **** 	int numZeros;
+  88:lib/helix/real/assembly.h **** 
+  89:lib/helix/real/assembly.h **** 	if (!x)
+  90:lib/helix/real/assembly.h **** 		return (sizeof(int) * 8);
+  91:lib/helix/real/assembly.h **** 
+  92:lib/helix/real/assembly.h **** 	numZeros = 0;
+  93:lib/helix/real/assembly.h **** 	while (!(x & 0x80000000)) {
+  94:lib/helix/real/assembly.h **** 		numZeros++;
+  95:lib/helix/real/assembly.h **** 		x <<= 1;
+  96:lib/helix/real/assembly.h **** 	} 
+  97:lib/helix/real/assembly.h **** 
+  98:lib/helix/real/assembly.h **** 	return numZeros;
+  99:lib/helix/real/assembly.h **** }
+ 100:lib/helix/real/assembly.h **** 
+ 101:lib/helix/real/assembly.h **** /* MADD64, SHL64, SAR64:
+ 102:lib/helix/real/assembly.h ****  * write in assembly to avoid dependency on run-time lib for 64-bit shifts, muls
+ 103:lib/helix/real/assembly.h ****  *  (sometimes compiler thunks to function calls instead of code generating)
+ 104:lib/helix/real/assembly.h ****  * required for Symbian emulator
+ 105:lib/helix/real/assembly.h ****  */
+ 106:lib/helix/real/assembly.h **** #ifdef __CW32__
+ 107:lib/helix/real/assembly.h **** typedef long long Word64;
+ 108:lib/helix/real/assembly.h **** #else
+ 109:lib/helix/real/assembly.h **** typedef __int64 Word64;
+ 110:lib/helix/real/assembly.h **** #endif
+ 111:lib/helix/real/assembly.h **** 
+ 112:lib/helix/real/assembly.h **** static __inline Word64 MADD64(Word64 sum, int x, int y)
+ 113:lib/helix/real/assembly.h **** {
+ 114:lib/helix/real/assembly.h **** 	unsigned int sumLo = ((unsigned int *)&sum)[0];
+ 115:lib/helix/real/assembly.h **** 	int sumHi = ((int *)&sum)[1];
+ 116:lib/helix/real/assembly.h **** 
+ 117:lib/helix/real/assembly.h **** 	__asm {
+ 118:lib/helix/real/assembly.h **** 		mov		eax, x
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc2fCeYc.s 			page 10
+
+
+ 119:lib/helix/real/assembly.h **** 		imul	y
+ 120:lib/helix/real/assembly.h **** 		add		eax, sumLo
+ 121:lib/helix/real/assembly.h **** 		adc		edx, sumHi
+ 122:lib/helix/real/assembly.h **** 	}
+ 123:lib/helix/real/assembly.h **** 
+ 124:lib/helix/real/assembly.h **** 	/* equivalent to return (sum + ((__int64)x * y)); */
+ 125:lib/helix/real/assembly.h **** }
+ 126:lib/helix/real/assembly.h **** 
+ 127:lib/helix/real/assembly.h **** static __inline Word64 SHL64(Word64 x, int n)
+ 128:lib/helix/real/assembly.h **** {
+ 129:lib/helix/real/assembly.h **** 	unsigned int xLo = ((unsigned int *)&x)[0];
+ 130:lib/helix/real/assembly.h **** 	int xHi = ((int *)&x)[1];
+ 131:lib/helix/real/assembly.h **** 	unsigned char nb = (unsigned char)n;
+ 132:lib/helix/real/assembly.h **** 
+ 133:lib/helix/real/assembly.h **** 	if (n < 32) {
+ 134:lib/helix/real/assembly.h **** 		__asm {
+ 135:lib/helix/real/assembly.h **** 			mov		edx, xHi
+ 136:lib/helix/real/assembly.h **** 			mov		eax, xLo
+ 137:lib/helix/real/assembly.h **** 			mov		cl, nb
+ 138:lib/helix/real/assembly.h **** 			shld    edx, eax, cl
+ 139:lib/helix/real/assembly.h **** 			shl     eax, cl
+ 140:lib/helix/real/assembly.h **** 		}
+ 141:lib/helix/real/assembly.h **** 	} else if (n < 64) {
+ 142:lib/helix/real/assembly.h **** 		/* shl masks cl to 0x1f */
+ 143:lib/helix/real/assembly.h **** 		__asm {
+ 144:lib/helix/real/assembly.h **** 			mov		edx, xLo
+ 145:lib/helix/real/assembly.h **** 			mov		cl, nb
+ 146:lib/helix/real/assembly.h **** 			xor     eax, eax
+ 147:lib/helix/real/assembly.h **** 			shl     edx, cl
+ 148:lib/helix/real/assembly.h **** 		}
+ 149:lib/helix/real/assembly.h **** 	} else {
+ 150:lib/helix/real/assembly.h **** 		__asm {
+ 151:lib/helix/real/assembly.h **** 			xor		edx, edx
+ 152:lib/helix/real/assembly.h **** 			xor		eax, eax
+ 153:lib/helix/real/assembly.h **** 		}
+ 154:lib/helix/real/assembly.h **** 	}
+ 155:lib/helix/real/assembly.h **** }
+ 156:lib/helix/real/assembly.h **** 
+ 157:lib/helix/real/assembly.h **** static __inline Word64 SAR64(Word64 x, int n)
+ 158:lib/helix/real/assembly.h **** {
+ 159:lib/helix/real/assembly.h **** 	unsigned int xLo = ((unsigned int *)&x)[0];
+ 160:lib/helix/real/assembly.h **** 	int xHi = ((int *)&x)[1];
+ 161:lib/helix/real/assembly.h **** 	unsigned char nb = (unsigned char)n;
+ 162:lib/helix/real/assembly.h **** 
+ 163:lib/helix/real/assembly.h **** 	if (n < 32) {
+ 164:lib/helix/real/assembly.h **** 		__asm {
+ 165:lib/helix/real/assembly.h **** 			mov		edx, xHi
+ 166:lib/helix/real/assembly.h **** 			mov		eax, xLo
+ 167:lib/helix/real/assembly.h **** 			mov		cl, nb
+ 168:lib/helix/real/assembly.h **** 			shrd	eax, edx, cl
+ 169:lib/helix/real/assembly.h **** 			sar		edx, cl
+ 170:lib/helix/real/assembly.h **** 		}
+ 171:lib/helix/real/assembly.h **** 	} else if (n < 64) {
+ 172:lib/helix/real/assembly.h **** 		/* sar masks cl to 0x1f */
+ 173:lib/helix/real/assembly.h **** 		__asm {
+ 174:lib/helix/real/assembly.h **** 			mov		edx, xHi
+ 175:lib/helix/real/assembly.h **** 			mov		eax, xHi
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc2fCeYc.s 			page 11
+
+
+ 176:lib/helix/real/assembly.h **** 			mov		cl, nb
+ 177:lib/helix/real/assembly.h **** 			sar		edx, 31
+ 178:lib/helix/real/assembly.h **** 			sar		eax, cl
+ 179:lib/helix/real/assembly.h **** 		}
+ 180:lib/helix/real/assembly.h **** 	} else {
+ 181:lib/helix/real/assembly.h **** 		__asm {
+ 182:lib/helix/real/assembly.h **** 			sar		xHi, 31
+ 183:lib/helix/real/assembly.h **** 			mov		eax, xHi
+ 184:lib/helix/real/assembly.h **** 			mov		edx, xHi
+ 185:lib/helix/real/assembly.h **** 		}
+ 186:lib/helix/real/assembly.h **** 	}
+ 187:lib/helix/real/assembly.h **** }
+ 188:lib/helix/real/assembly.h **** 
+ 189:lib/helix/real/assembly.h **** #elif (defined _WIN32) && (defined _WIN32_WCE)
+ 190:lib/helix/real/assembly.h **** 
+ 191:lib/helix/real/assembly.h **** /* use asm function for now (EVC++ 3.0 does horrible job compiling __int64 version) */
+ 192:lib/helix/real/assembly.h **** #define MULSHIFT32	xmp3_MULSHIFT32
+ 193:lib/helix/real/assembly.h **** int MULSHIFT32(int x, int y);
+ 194:lib/helix/real/assembly.h **** 
+ 195:lib/helix/real/assembly.h **** static __inline int FASTABS(int x) 
+ 196:lib/helix/real/assembly.h **** {
+ 197:lib/helix/real/assembly.h **** 	int sign;
+ 198:lib/helix/real/assembly.h **** 
+ 199:lib/helix/real/assembly.h **** 	sign = x >> (sizeof(int) * 8 - 1);
+ 200:lib/helix/real/assembly.h **** 	x ^= sign;
+ 201:lib/helix/real/assembly.h **** 	x -= sign;
+ 202:lib/helix/real/assembly.h **** 
+ 203:lib/helix/real/assembly.h **** 	return x;
+ 204:lib/helix/real/assembly.h **** }
+ 205:lib/helix/real/assembly.h **** 
+ 206:lib/helix/real/assembly.h **** static __inline int CLZ(int x)
+ 207:lib/helix/real/assembly.h **** {
+ 208:lib/helix/real/assembly.h **** 	int numZeros;
+ 209:lib/helix/real/assembly.h **** 
+ 210:lib/helix/real/assembly.h **** 	if (!x)
+ 211:lib/helix/real/assembly.h **** 		return (sizeof(int) * 8);
+ 212:lib/helix/real/assembly.h **** 
+ 213:lib/helix/real/assembly.h **** 	numZeros = 0;
+ 214:lib/helix/real/assembly.h **** 	while (!(x & 0x80000000)) {
+ 215:lib/helix/real/assembly.h **** 		numZeros++;
+ 216:lib/helix/real/assembly.h **** 		x <<= 1;
+ 217:lib/helix/real/assembly.h **** 	} 
+ 218:lib/helix/real/assembly.h **** 
+ 219:lib/helix/real/assembly.h **** 	return numZeros;
+ 220:lib/helix/real/assembly.h **** }
+ 221:lib/helix/real/assembly.h **** 
+ 222:lib/helix/real/assembly.h **** #elif defined ARM_ADS
+ 223:lib/helix/real/assembly.h **** 
+ 224:lib/helix/real/assembly.h **** static __inline int MULSHIFT32(int x, int y)
+ 225:lib/helix/real/assembly.h **** {
+ 226:lib/helix/real/assembly.h ****     /* important rules for smull RdLo, RdHi, Rm, Rs:
+ 227:lib/helix/real/assembly.h ****      *     RdHi and Rm can't be the same register
+ 228:lib/helix/real/assembly.h ****      *     RdLo and Rm can't be the same register
+ 229:lib/helix/real/assembly.h ****      *     RdHi and RdLo can't be the same register
+ 230:lib/helix/real/assembly.h ****      * Note: Rs determines early termination (leading sign bits) so if you want to specify
+ 231:lib/helix/real/assembly.h ****      *   which operand is Rs, put it in the SECOND argument (y)
+ 232:lib/helix/real/assembly.h **** 	 * For inline assembly, x and y are not assumed to be R0, R1 so it shouldn't matter
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc2fCeYc.s 			page 12
+
+
+ 233:lib/helix/real/assembly.h **** 	 *   which one is returned. (If this were a function call, returning y (R1) would 
+ 234:lib/helix/real/assembly.h **** 	 *   require an extra "mov r0, r1")
+ 235:lib/helix/real/assembly.h ****      */
+ 236:lib/helix/real/assembly.h ****     int zlow;
+ 237:lib/helix/real/assembly.h ****     __asm {
+ 238:lib/helix/real/assembly.h ****     	smull zlow,y,x,y
+ 239:lib/helix/real/assembly.h ****    	}
+ 240:lib/helix/real/assembly.h **** 
+ 241:lib/helix/real/assembly.h ****     return y;
+ 242:lib/helix/real/assembly.h **** }
+ 243:lib/helix/real/assembly.h **** 
+ 244:lib/helix/real/assembly.h **** static __inline int FASTABS(int x) 
+ 245:lib/helix/real/assembly.h **** {
+ 246:lib/helix/real/assembly.h **** 	int t=0; /*Really is not necessary to initialiaze only to avoid warning*/
+ 247:lib/helix/real/assembly.h **** 
+ 248:lib/helix/real/assembly.h **** 	__asm {
+ 249:lib/helix/real/assembly.h **** 		eor	t, x, x, asr #31
+ 250:lib/helix/real/assembly.h **** 		sub	t, t, x, asr #31
+ 251:lib/helix/real/assembly.h **** 	}
+ 252:lib/helix/real/assembly.h **** 
+ 253:lib/helix/real/assembly.h **** 	return t;
+ 254:lib/helix/real/assembly.h **** }
+ 255:lib/helix/real/assembly.h **** 
+ 256:lib/helix/real/assembly.h **** static __inline int CLZ(int x)
+ 257:lib/helix/real/assembly.h **** {
+ 258:lib/helix/real/assembly.h **** 	int numZeros;
+ 259:lib/helix/real/assembly.h **** 
+ 260:lib/helix/real/assembly.h **** 	if (!x)
+ 261:lib/helix/real/assembly.h **** 		return (sizeof(int) * 8);
+ 262:lib/helix/real/assembly.h **** 
+ 263:lib/helix/real/assembly.h **** 	numZeros = 0;
+ 264:lib/helix/real/assembly.h **** 	while (!(x & 0x80000000)) {
+ 265:lib/helix/real/assembly.h **** 		numZeros++;
+ 266:lib/helix/real/assembly.h **** 		x <<= 1;
+ 267:lib/helix/real/assembly.h **** 	} 
+ 268:lib/helix/real/assembly.h **** 
+ 269:lib/helix/real/assembly.h **** 	return numZeros;
+ 270:lib/helix/real/assembly.h **** }
+ 271:lib/helix/real/assembly.h **** 
+ 272:lib/helix/real/assembly.h **** #elif defined(__GNUC__) && defined(ARM)
+ 273:lib/helix/real/assembly.h **** 
+ 274:lib/helix/real/assembly.h **** static __inline int MULSHIFT32(int x, int y)
+ 275:lib/helix/real/assembly.h **** {
+ 276:lib/helix/real/assembly.h ****     /* important rules for smull RdLo, RdHi, Rm, Rs:
+ 277:lib/helix/real/assembly.h ****      *     RdHi and Rm can't be the same register
+ 278:lib/helix/real/assembly.h ****      *     RdLo and Rm can't be the same register
+ 279:lib/helix/real/assembly.h ****      *     RdHi and RdLo can't be the same register
+ 280:lib/helix/real/assembly.h ****      * Note: Rs determines early termination (leading sign bits) so if you want to specify
+ 281:lib/helix/real/assembly.h ****      *   which operand is Rs, put it in the SECOND argument (y)
+ 282:lib/helix/real/assembly.h **** 	 * For inline assembly, x and y are not assumed to be R0, R1 so it shouldn't matter
+ 283:lib/helix/real/assembly.h **** 	 *   which one is returned. (If this were a function call, returning y (R1) would 
+ 284:lib/helix/real/assembly.h **** 	 *   require an extra "mov r0, r1")
+ 285:lib/helix/real/assembly.h ****      */
+ 286:lib/helix/real/assembly.h ****     int zlow;
+ 287:lib/helix/real/assembly.h ****     __asm__ volatile ("smull %0,%1,%2,%3" : "=&r" (zlow), "=r" (y) : "r" (x), "1" (y)) ;
+ 288:lib/helix/real/assembly.h **** 
+ 289:lib/helix/real/assembly.h ****     return y;
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc2fCeYc.s 			page 13
+
+
+ 290:lib/helix/real/assembly.h **** }
+ 291:lib/helix/real/assembly.h **** 
+ 292:lib/helix/real/assembly.h **** static __inline int FASTABS(int x) 
+ 293:lib/helix/real/assembly.h **** {
+ 294:lib/helix/real/assembly.h **** 	int t=0; /*Really is not necessary to initialiaze only to avoid warning*/
+ 295:lib/helix/real/assembly.h **** 
+ 296:lib/helix/real/assembly.h **** 	__asm__ volatile (
+ 297:lib/helix/real/assembly.h **** 		"eor %0,%2,%2, asr #31;"
+ 298:lib/helix/real/assembly.h **** 		"sub %0,%1,%2, asr #31;"
+ 299:lib/helix/real/assembly.h **** 		: "=&r" (t) 
+ 300:lib/helix/real/assembly.h **** 		: "0" (t), "r" (x)
+ 301:lib/helix/real/assembly.h **** 	 );
+ 302:lib/helix/real/assembly.h **** 
+ 303:lib/helix/real/assembly.h **** 	return t;
+ 304:lib/helix/real/assembly.h **** }
+ 305:lib/helix/real/assembly.h **** 
+ 306:lib/helix/real/assembly.h **** static __inline int CLZ(int x)
+ 307:lib/helix/real/assembly.h **** {
+ 308:lib/helix/real/assembly.h **** 	int numZeros;
+ 309:lib/helix/real/assembly.h **** 
+ 310:lib/helix/real/assembly.h **** 	if (!x)
+ 311:lib/helix/real/assembly.h **** 		return (sizeof(int) * 8);
+ 312:lib/helix/real/assembly.h **** 
+ 313:lib/helix/real/assembly.h **** 	numZeros = 0;
+ 314:lib/helix/real/assembly.h **** 	while (!(x & 0x80000000)) {
+ 315:lib/helix/real/assembly.h **** 		numZeros++;
+ 316:lib/helix/real/assembly.h **** 		x <<= 1;
+ 317:lib/helix/real/assembly.h **** 	} 
+ 318:lib/helix/real/assembly.h **** 
+ 319:lib/helix/real/assembly.h **** 	return numZeros;
+ 320:lib/helix/real/assembly.h **** }
+ 321:lib/helix/real/assembly.h **** 
+ 322:lib/helix/real/assembly.h **** #elif defined(ARM_TEST)
+ 323:lib/helix/real/assembly.h **** static __inline__ int MULSHIFT32(int x, int y)
+ 324:lib/helix/real/assembly.h **** {
+ 325:lib/helix/real/assembly.h **** 	int zlow;
+ 326:lib/helix/real/assembly.h **** 	__asm__ volatile ("smull %0,%1,%2,%3" : "=&r" (zlow), "=r" (y) : "r" (x), "1" (y) : "cc");
+ 169              		.loc 2 326 0
+ 170 009a 019D     		ldr	r5, [sp, #4]
+ 171              		.syntax unified
+ 172              	@ 326 "lib/helix/real/assembly.h" 1
+ 173 009c 87FB05E5 		smull lr,r5,r7,r5
+ 174              	@ 0 "" 2
+ 175              	.LVL30:
+ 176              		.thumb
+ 177              		.syntax unified
+ 178              	.LBE21:
+ 179              	.LBE20:
+ 174:lib/helix/real/dqchan.c **** 
+ 180              		.loc 1 174 0
+ 181 00a0 ACF10307 		sub	r7, ip, #3
+ 182              	.LVL31:
+ 183              	.L7:
+ 204:lib/helix/real/dqchan.c **** 				shift = -shift;
+ 184              		.loc 1 204 0
+ 185 00a4 002F     		cmp	r7, #0
+ 186 00a6 4ADB     		blt	.L23
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc2fCeYc.s 			page 14
+
+
+ 211:lib/helix/real/dqchan.c **** 			}
+ 187              		.loc 1 211 0
+ 188 00a8 3D41     		asrs	r5, r5, r7
+ 189              	.LVL32:
+ 190 00aa D7E7     		b	.L3
+ 191              	.LVL33:
+ 192              	.L6:
+ 179:lib/helix/real/dqchan.c **** 				shift = 0;
+ 193              		.loc 1 179 0
+ 194 00ac 7D04     		lsls	r5, r7, #17
+ 195              	.LVL34:
+ 181:lib/helix/real/dqchan.c **** 					x <<= 4, shift += 4;
+ 196              		.loc 1 181 0
+ 197 00ae B5F1006F 		cmp	r5, #134217728
+ 198 00b2 3EDA     		bge	.L15
+ 182:lib/helix/real/dqchan.c **** 				if (x < 0x20000000)
+ 199              		.loc 1 182 0
+ 200 00b4 7D05     		lsls	r5, r7, #21
+ 201              	.LVL35:
+ 202 00b6 4FF00408 		mov	r8, #4
+ 203              	.LVL36:
+ 204              	.L8:
+ 183:lib/helix/real/dqchan.c **** 					x <<= 2, shift += 2;
+ 205              		.loc 1 183 0
+ 206 00ba B5F1005F 		cmp	r5, #536870912
+ 207 00be 02DA     		bge	.L9
+ 184:lib/helix/real/dqchan.c **** 				if (x < 0x40000000)
+ 208              		.loc 1 184 0
+ 209 00c0 AD00     		lsls	r5, r5, #2
+ 210              	.LVL37:
+ 211 00c2 08F10208 		add	r8, r8, #2
+ 212              	.LVL38:
+ 213              	.L9:
+ 185:lib/helix/real/dqchan.c **** 					x <<= 1, shift += 1;
+ 214              		.loc 1 185 0
+ 215 00c6 B5F1804F 		cmp	r5, #1073741824
+ 216 00ca 02DA     		bge	.L10
+ 186:lib/helix/real/dqchan.c **** 
+ 217              		.loc 1 186 0
+ 218 00cc 6D00     		lsls	r5, r5, #1
+ 219              	.LVL39:
+ 220 00ce 08F10108 		add	r8, r8, #1
+ 221              	.LVL40:
+ 222              	.L10:
+ 188:lib/helix/real/dqchan.c **** 
+ 223              		.loc 1 188 0
+ 224 00d2 264F     		ldr	r7, .L24+12
+ 225 00d4 BD42     		cmp	r5, r7
+ 226 00d6 2FDC     		bgt	.L16
+ 227 00d8 DFF89CE0 		ldr	lr, .L24+24
+ 228              	.L11:
+ 229              	.LVL41:
+ 230              	.LBB22:
+ 231              	.LBB23:
+ 232              		.loc 2 326 0 discriminator 4
+ 233 00dc AA46     		mov	r10, r5
+ 234 00de DEF80070 		ldr	r7, [lr]
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc2fCeYc.s 			page 15
+
+
+ 235 00e2 BB46     		mov	fp, r7
+ 236              		.syntax unified
+ 237              	@ 326 "lib/helix/real/assembly.h" 1
+ 238 00e4 8BFB0A7A 		smull r7,r10,fp,r10
+ 239              	@ 0 "" 2
+ 240              	.LVL42:
+ 241              		.thumb
+ 242              		.syntax unified
+ 243              	.LBE23:
+ 244              	.LBE22:
+ 192:lib/helix/real/dqchan.c **** 				y = MULSHIFT32(y, x) + coef[2];
+ 245              		.loc 1 192 0 discriminator 4
+ 246 00e8 DEF80470 		ldr	r7, [lr, #4]
+ 247 00ec 5744     		add	r7, r7, r10
+ 248              	.LVL43:
+ 249              	.LBB24:
+ 250              	.LBB25:
+ 251              		.loc 2 326 0 discriminator 4
+ 252 00ee AA46     		mov	r10, r5
+ 253              		.syntax unified
+ 254              	@ 326 "lib/helix/real/assembly.h" 1
+ 255 00f0 87FB0ABA 		smull fp,r10,r7,r10
+ 256              	@ 0 "" 2
+ 257              	.LVL44:
+ 258              		.thumb
+ 259              		.syntax unified
+ 260              	.LBE25:
+ 261              	.LBE24:
+ 193:lib/helix/real/dqchan.c **** 				y = MULSHIFT32(y, x) + coef[3];
+ 262              		.loc 1 193 0 discriminator 4
+ 263 00f4 DEF80870 		ldr	r7, [lr, #8]
+ 264              	.LVL45:
+ 265 00f8 5744     		add	r7, r7, r10
+ 266              	.LVL46:
+ 267              	.LBB26:
+ 268              	.LBB27:
+ 269              		.loc 2 326 0 discriminator 4
+ 270 00fa AA46     		mov	r10, r5
+ 271              		.syntax unified
+ 272              	@ 326 "lib/helix/real/assembly.h" 1
+ 273 00fc 87FB0ABA 		smull fp,r10,r7,r10
+ 274              	@ 0 "" 2
+ 275              	.LVL47:
+ 276              		.thumb
+ 277              		.syntax unified
+ 278              	.LBE27:
+ 279              	.LBE26:
+ 194:lib/helix/real/dqchan.c **** 				y = MULSHIFT32(y, x) + coef[4];
+ 280              		.loc 1 194 0 discriminator 4
+ 281 0100 DEF80C70 		ldr	r7, [lr, #12]
+ 282              	.LVL48:
+ 283 0104 5744     		add	r7, r7, r10
+ 284              	.LVL49:
+ 285              	.LBB28:
+ 286              	.LBB29:
+ 287              		.loc 2 326 0 discriminator 4
+ 288 0106 AB46     		mov	fp, r5
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc2fCeYc.s 			page 16
+
+
+ 289              		.syntax unified
+ 290              	@ 326 "lib/helix/real/assembly.h" 1
+ 291 0108 87FB0B5B 		smull r5,fp,r7,fp
+ 292              	@ 0 "" 2
+ 293              	.LVL50:
+ 294              		.thumb
+ 295              		.syntax unified
+ 296              	.LBE29:
+ 297              	.LBE28:
+ 195:lib/helix/real/dqchan.c **** 				y = MULSHIFT32(y, pow2frac[shift]) << 3;
+ 298              		.loc 1 195 0 discriminator 4
+ 299 010c DEF81050 		ldr	r5, [lr, #16]
+ 300 0110 AB44     		add	fp, fp, r5
+ 301              	.LVL51:
+ 196:lib/helix/real/dqchan.c **** 
+ 302              		.loc 1 196 0 discriminator 4
+ 303 0112 174D     		ldr	r5, .L24+16
+ 304 0114 55F82870 		ldr	r7, [r5, r8, lsl #2]
+ 305              	.LVL52:
+ 306              	.LBB30:
+ 307              	.LBB31:
+ 308              		.loc 2 326 0 discriminator 4
+ 309 0118 3D46     		mov	r5, r7
+ 310              		.syntax unified
+ 311              	@ 326 "lib/helix/real/assembly.h" 1
+ 312 011a 8BFB0575 		smull r7,r5,fp,r5
+ 313              	@ 0 "" 2
+ 314              	.LVL53:
+ 315              		.thumb
+ 316              		.syntax unified
+ 317              	.LBE31:
+ 318              	.LBE30:
+ 196:lib/helix/real/dqchan.c **** 
+ 319              		.loc 1 196 0 discriminator 4
+ 320 011e EF00     		lsls	r7, r5, #3
+ 321              	.LVL54:
+ 322              	.LBB32:
+ 323              	.LBB33:
+ 324              		.loc 2 326 0 discriminator 4
+ 325 0120 019D     		ldr	r5, [sp, #4]
+ 326              		.syntax unified
+ 327              	@ 326 "lib/helix/real/assembly.h" 1
+ 328 0122 87FB05E5 		smull lr,r5,r7,r5
+ 329              	@ 0 "" 2
+ 330              	.LVL55:
+ 331              		.thumb
+ 332              		.syntax unified
+ 333              	.LBE33:
+ 334              	.LBE32:
+ 200:lib/helix/real/dqchan.c **** 			}
+ 335              		.loc 1 200 0 discriminator 4
+ 336 0126 134F     		ldr	r7, .L24+20
+ 337 0128 57F82870 		ldr	r7, [r7, r8, lsl #2]
+ 338 012c ACEB0707 		sub	r7, ip, r7
+ 339              	.LVL56:
+ 340 0130 B8E7     		b	.L7
+ 341              	.LVL57:
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc2fCeYc.s 			page 17
+
+
+ 342              	.L15:
+ 180:lib/helix/real/dqchan.c **** 				if (x < 0x08000000)
+ 343              		.loc 1 180 0
+ 344 0132 4FF00008 		mov	r8, #0
+ 345 0136 C0E7     		b	.L8
+ 346              	.LVL58:
+ 347              	.L16:
+ 188:lib/helix/real/dqchan.c **** 
+ 348              		.loc 1 188 0
+ 349 0138 DFF840E0 		ldr	lr, .L24+28
+ 350 013c CEE7     		b	.L11
+ 351              	.LVL59:
+ 352              	.L23:
+ 205:lib/helix/real/dqchan.c **** 				if (y > (0x7fffffff >> shift))
+ 353              		.loc 1 205 0
+ 354 013e 7F42     		negs	r7, r7
+ 355              	.LVL60:
+ 206:lib/helix/real/dqchan.c **** 					y = 0x7fffffff;		/* clip */
+ 356              		.loc 1 206 0
+ 357 0140 6FF0004E 		mvn	lr, #-2147483648
+ 358 0144 4EFA07FE 		asr	lr, lr, r7
+ 359 0148 AE45     		cmp	lr, r5
+ 360 014a 01DB     		blt	.L17
+ 209:lib/helix/real/dqchan.c **** 			} else {
+ 361              		.loc 1 209 0
+ 362 014c BD40     		lsls	r5, r5, r7
+ 363              	.LVL61:
+ 364 014e 85E7     		b	.L3
+ 365              	.L17:
+ 207:lib/helix/real/dqchan.c **** 				else
+ 366              		.loc 1 207 0
+ 367 0150 6FF00045 		mvn	r5, #-2147483648
+ 368              	.LVL62:
+ 369 0154 82E7     		b	.L3
+ 370              	.LVL63:
+ 371              	.L21:
+ 217:lib/helix/real/dqchan.c **** 
+ 372              		.loc 1 217 0 discriminator 1
+ 373 0156 6D42     		negs	r5, r5
+ 374              	.LVL64:
+ 375 0158 83E7     		b	.L13
+ 376              	.LVL65:
+ 377              	.L22:
+ 220:lib/helix/real/dqchan.c **** 
+ 221:lib/helix/real/dqchan.c **** 	return mask;
+ 222:lib/helix/real/dqchan.c **** }
+ 378              		.loc 1 222 0
+ 379 015a 07B0     		add	sp, sp, #28
+ 380              	.LCFI2:
+ 381              		.cfi_def_cfa_offset 36
+ 382              		@ sp needed
+ 383 015c BDE8F08F 		pop	{r4, r5, r6, r7, r8, r9, r10, fp, pc}
+ 384              	.LVL66:
+ 385              	.L25:
+ 386              		.align	2
+ 387              	.L24:
+ 388 0160 00000000 		.word	.LANCHOR2
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc2fCeYc.s 			page 18
+
+
+ 389 0164 00000000 		.word	.LANCHOR3
+ 390 0168 00000000 		.word	.LANCHOR4
+ 391 016c 9979825A 		.word	1518500249
+ 392 0170 00000000 		.word	.LANCHOR5
+ 393 0174 00000000 		.word	.LANCHOR6
+ 394 0178 00000000 		.word	.LANCHOR0
+ 395 017c 00000000 		.word	.LANCHOR1
+ 396              		.cfi_endproc
+ 397              	.LFE5:
+ 399              		.section	.text.xmp3fixpt_DequantChannel,"ax",%progbits
+ 400              		.align	1
+ 401              		.global	xmp3fixpt_DequantChannel
+ 402              		.syntax unified
+ 403              		.thumb
+ 404              		.thumb_func
+ 405              		.fpu fpv5-sp-d16
+ 407              	xmp3fixpt_DequantChannel:
+ 408              	.LFB6:
+ 223:lib/helix/real/dqchan.c **** 
+ 224:lib/helix/real/dqchan.c **** /**************************************************************************************
+ 225:lib/helix/real/dqchan.c ****  * Function:    DequantChannel
+ 226:lib/helix/real/dqchan.c ****  *
+ 227:lib/helix/real/dqchan.c ****  * Description: dequantize one granule, one channel worth of decoded Huffman codewords
+ 228:lib/helix/real/dqchan.c ****  *
+ 229:lib/helix/real/dqchan.c ****  * Inputs:      sample buffer (decoded Huffman codewords), length = MAX_NSAMP samples
+ 230:lib/helix/real/dqchan.c ****  *              work buffer for reordering short-block, length = MAX_REORDER_SAMPS
+ 231:lib/helix/real/dqchan.c ****  *                samples (3 * width of largest short-block critical band)
+ 232:lib/helix/real/dqchan.c ****  *              non-zero bound for this channel/granule
+ 233:lib/helix/real/dqchan.c ****  *              valid FrameHeader, SideInfoSub, ScaleFactorInfoSub, and CriticalBandInfo
+ 234:lib/helix/real/dqchan.c ****  *                structures for this channel/granule
+ 235:lib/helix/real/dqchan.c ****  *
+ 236:lib/helix/real/dqchan.c ****  * Outputs:     MAX_NSAMP dequantized samples in sampleBuf
+ 237:lib/helix/real/dqchan.c ****  *              updated non-zero bound (indicating which samples are != 0 after DQ)
+ 238:lib/helix/real/dqchan.c ****  *              filled-in cbi structure indicating start and end critical bands
+ 239:lib/helix/real/dqchan.c ****  *
+ 240:lib/helix/real/dqchan.c ****  * Return:      minimum number of guard bits in dequantized sampleBuf
+ 241:lib/helix/real/dqchan.c ****  *
+ 242:lib/helix/real/dqchan.c ****  * Notes:       dequantized samples in Q(DQ_FRACBITS_OUT) format 
+ 243:lib/helix/real/dqchan.c ****  **************************************************************************************/
+ 244:lib/helix/real/dqchan.c **** int DequantChannel(int *sampleBuf, int *workBuf, int *nonZeroBound, FrameHeader *fh, SideInfoSub *s
+ 245:lib/helix/real/dqchan.c **** 					ScaleFactorInfoSub *sfis, CriticalBandInfo *cbi)
+ 246:lib/helix/real/dqchan.c **** {
+ 409              		.loc 1 246 0
+ 410              		.cfi_startproc
+ 411              		@ args = 12, pretend = 0, frame = 48
+ 412              		@ frame_needed = 0, uses_anonymous_args = 0
+ 413              	.LVL67:
+ 414 0000 2DE9F04F 		push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
+ 415              	.LCFI3:
+ 416              		.cfi_def_cfa_offset 36
+ 417              		.cfi_offset 4, -36
+ 418              		.cfi_offset 5, -32
+ 419              		.cfi_offset 6, -28
+ 420              		.cfi_offset 7, -24
+ 421              		.cfi_offset 8, -20
+ 422              		.cfi_offset 9, -16
+ 423              		.cfi_offset 10, -12
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc2fCeYc.s 			page 19
+
+
+ 424              		.cfi_offset 11, -8
+ 425              		.cfi_offset 14, -4
+ 426 0004 8DB0     		sub	sp, sp, #52
+ 427              	.LCFI4:
+ 428              		.cfi_def_cfa_offset 88
+ 429 0006 0490     		str	r0, [sp, #16]
+ 430 0008 0C46     		mov	r4, r1
+ 431 000a 0592     		str	r2, [sp, #20]
+ 432 000c 9A46     		mov	r10, r3
+ 433 000e DDF858B0 		ldr	fp, [sp, #88]
+ 247:lib/helix/real/dqchan.c **** 	int i, j, w, cb;
+ 248:lib/helix/real/dqchan.c **** 	int cbStartL, cbEndL, cbStartS, cbEndS;
+ 249:lib/helix/real/dqchan.c **** 	int nSamps, nonZero, sfactMultiplier, gbMask;
+ 250:lib/helix/real/dqchan.c **** 	int globalGain, gainI;
+ 251:lib/helix/real/dqchan.c **** 	int cbMax[3];
+ 252:lib/helix/real/dqchan.c **** 	ARRAY3 *buf;    /* short block reorder */
+ 253:lib/helix/real/dqchan.c **** 	
+ 254:lib/helix/real/dqchan.c **** 	/* set default start/end points for short/long blocks - will update with non-zero cb info */
+ 255:lib/helix/real/dqchan.c **** 	if (sis->blockType == 2) {
+ 434              		.loc 1 255 0
+ 435 0012 DBF81430 		ldr	r3, [fp, #20]
+ 436              	.LVL68:
+ 437 0016 022B     		cmp	r3, #2
+ 438 0018 1BD0     		beq	.L50
+ 256:lib/helix/real/dqchan.c **** 		cbStartL = 0;
+ 257:lib/helix/real/dqchan.c **** 		if (sis->mixedBlock) { 
+ 258:lib/helix/real/dqchan.c **** 			cbEndL = (fh->ver == MPEG1 ? 8 : 6); 
+ 259:lib/helix/real/dqchan.c **** 			cbStartS = 3; 
+ 260:lib/helix/real/dqchan.c **** 		} else {
+ 261:lib/helix/real/dqchan.c **** 			cbEndL = 0; 
+ 262:lib/helix/real/dqchan.c **** 			cbStartS = 0;
+ 263:lib/helix/real/dqchan.c **** 		}
+ 264:lib/helix/real/dqchan.c **** 		cbEndS = 13;
+ 265:lib/helix/real/dqchan.c **** 	} else {
+ 266:lib/helix/real/dqchan.c **** 		/* long block */
+ 267:lib/helix/real/dqchan.c **** 		cbStartL = 0;
+ 268:lib/helix/real/dqchan.c **** 		cbEndL =   22;
+ 269:lib/helix/real/dqchan.c **** 		cbStartS = 13;
+ 439              		.loc 1 269 0
+ 440 001a 0D26     		movs	r6, #13
+ 268:lib/helix/real/dqchan.c **** 		cbStartS = 13;
+ 441              		.loc 1 268 0
+ 442 001c 1623     		movs	r3, #22
+ 443 001e 0393     		str	r3, [sp, #12]
+ 444              	.L27:
+ 445              	.LVL69:
+ 270:lib/helix/real/dqchan.c **** 		cbEndS =   13;
+ 271:lib/helix/real/dqchan.c **** 	}
+ 272:lib/helix/real/dqchan.c **** 	cbMax[2] = cbMax[1] = cbMax[0] = 0;
+ 446              		.loc 1 272 0
+ 447 0020 0023     		movs	r3, #0
+ 448 0022 0993     		str	r3, [sp, #36]
+ 449              	.LVL70:
+ 273:lib/helix/real/dqchan.c **** 	gbMask = 0;
+ 274:lib/helix/real/dqchan.c **** 	i = 0;
+ 275:lib/helix/real/dqchan.c **** 
+ 276:lib/helix/real/dqchan.c **** 	/* sfactScale = 0 --> quantizer step size = 2
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc2fCeYc.s 			page 20
+
+
+ 277:lib/helix/real/dqchan.c **** 	 * sfactScale = 1 --> quantizer step size = sqrt(2)
+ 278:lib/helix/real/dqchan.c **** 	 *   so sfactMultiplier = 2 or 4 (jump through globalGain by powers of 2 or sqrt(2))
+ 279:lib/helix/real/dqchan.c **** 	 */
+ 280:lib/helix/real/dqchan.c **** 	sfactMultiplier = 2 * (sis->sfactScale + 1);
+ 450              		.loc 1 280 0
+ 451 0024 DBF84030 		ldr	r3, [fp, #64]
+ 452 0028 0133     		adds	r3, r3, #1
+ 453 002a 5B00     		lsls	r3, r3, #1
+ 454 002c 0193     		str	r3, [sp, #4]
+ 455              	.LVL71:
+ 281:lib/helix/real/dqchan.c **** 
+ 282:lib/helix/real/dqchan.c **** 	/* offset globalGain by -2 if midSide enabled, for 1/sqrt(2) used in MidSideProc()
+ 283:lib/helix/real/dqchan.c **** 	 *  (DequantBlock() does 0.25 * gainI so knocking it down by two is the same as 
+ 284:lib/helix/real/dqchan.c **** 	 *   dividing every sample by sqrt(2) = multiplying by 2^-.5)
+ 285:lib/helix/real/dqchan.c **** 	 */
+ 286:lib/helix/real/dqchan.c **** 	globalGain = sis->globalGain;
+ 456              		.loc 1 286 0
+ 457 002e DBF80830 		ldr	r3, [fp, #8]
+ 458              	.LVL72:
+ 287:lib/helix/real/dqchan.c **** 	if (fh->modeExt >> 1)
+ 459              		.loc 1 287 0
+ 460 0032 DAF82020 		ldr	r2, [r10, #32]
+ 461              	.LVL73:
+ 462 0036 5208     		lsrs	r2, r2, #1
+ 463 0038 00D0     		beq	.L28
+ 288:lib/helix/real/dqchan.c **** 		 globalGain -= 2;
+ 464              		.loc 1 288 0
+ 465 003a 023B     		subs	r3, r3, #2
+ 466              	.LVL74:
+ 467              	.L28:
+ 289:lib/helix/real/dqchan.c **** 	globalGain += IMDCT_SCALE;		/* scale everything by sqrt(2), for fast IMDCT36 */
+ 468              		.loc 1 289 0
+ 469 003c 0233     		adds	r3, r3, #2
+ 470              	.LVL75:
+ 471 003e 0293     		str	r3, [sp, #8]
+ 472              	.LVL76:
+ 273:lib/helix/real/dqchan.c **** 	i = 0;
+ 473              		.loc 1 273 0
+ 474 0040 4FF00008 		mov	r8, #0
+ 274:lib/helix/real/dqchan.c **** 
+ 475              		.loc 1 274 0
+ 476 0044 4546     		mov	r5, r8
+ 477 0046 0696     		str	r6, [sp, #24]
+ 478 0048 0794     		str	r4, [sp, #28]
+ 479 004a 4446     		mov	r4, r8
+ 480 004c DDF81490 		ldr	r9, [sp, #20]
+ 290:lib/helix/real/dqchan.c **** 
+ 291:lib/helix/real/dqchan.c **** 	/* long blocks */
+ 292:lib/helix/real/dqchan.c **** 	for (cb = 0; cb < cbEndL; cb++) {
+ 481              		.loc 1 292 0
+ 482 0050 17E0     		b	.L29
+ 483              	.LVL77:
+ 484              	.L50:
+ 257:lib/helix/real/dqchan.c **** 			cbEndL = (fh->ver == MPEG1 ? 8 : 6); 
+ 485              		.loc 1 257 0
+ 486 0052 DBF81830 		ldr	r3, [fp, #24]
+ 487 0056 0393     		str	r3, [sp, #12]
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc2fCeYc.s 			page 21
+
+
+ 488 0058 33B1     		cbz	r3, .L46
+ 258:lib/helix/real/dqchan.c **** 			cbStartS = 3; 
+ 489              		.loc 1 258 0
+ 490 005a 9AF80030 		ldrb	r3, [r10]	@ zero_extendqisi2
+ 491 005e 2BB9     		cbnz	r3, .L47
+ 259:lib/helix/real/dqchan.c **** 		} else {
+ 492              		.loc 1 259 0
+ 493 0060 0326     		movs	r6, #3
+ 258:lib/helix/real/dqchan.c **** 			cbStartS = 3; 
+ 494              		.loc 1 258 0
+ 495 0062 0823     		movs	r3, #8
+ 496 0064 0393     		str	r3, [sp, #12]
+ 497 0066 DBE7     		b	.L27
+ 498              	.L46:
+ 262:lib/helix/real/dqchan.c **** 		}
+ 499              		.loc 1 262 0
+ 500 0068 039E     		ldr	r6, [sp, #12]
+ 501 006a D9E7     		b	.L27
+ 502              	.L47:
+ 259:lib/helix/real/dqchan.c **** 		} else {
+ 503              		.loc 1 259 0
+ 504 006c 0326     		movs	r6, #3
+ 258:lib/helix/real/dqchan.c **** 			cbStartS = 3; 
+ 505              		.loc 1 258 0
+ 506 006e 0623     		movs	r3, #6
+ 507 0070 0393     		str	r3, [sp, #12]
+ 508 0072 D5E7     		b	.L27
+ 509              	.LVL78:
+ 510              	.L31:
+ 293:lib/helix/real/dqchan.c **** 
+ 294:lib/helix/real/dqchan.c **** 		nonZero = 0;
+ 295:lib/helix/real/dqchan.c **** 		nSamps = fh->sfBand->l[cb + 1] - fh->sfBand->l[cb];
+ 296:lib/helix/real/dqchan.c **** 		gainI = 210 - globalGain + sfactMultiplier * (sfis->l[cb] + (sis->preFlag ? (int)preTab[cb] : 0))
+ 297:lib/helix/real/dqchan.c **** 
+ 298:lib/helix/real/dqchan.c **** 		nonZero |= DequantBlock(sampleBuf + i, sampleBuf + i, nSamps, gainI);
+ 299:lib/helix/real/dqchan.c **** 		i += nSamps;
+ 300:lib/helix/real/dqchan.c **** 
+ 301:lib/helix/real/dqchan.c **** 		/* update highest non-zero critical band */
+ 302:lib/helix/real/dqchan.c **** 		if (nonZero) 
+ 303:lib/helix/real/dqchan.c **** 			cbMax[0] = cb;
+ 304:lib/helix/real/dqchan.c **** 		gbMask |= nonZero;
+ 511              		.loc 1 304 0
+ 512 0074 48EA0308 		orr	r8, r8, r3
+ 513              	.LVL79:
+ 305:lib/helix/real/dqchan.c **** 
+ 306:lib/helix/real/dqchan.c **** 		if (i >= *nonZeroBound) 
+ 514              		.loc 1 306 0
+ 515 0078 D9F80030 		ldr	r3, [r9]
+ 292:lib/helix/real/dqchan.c **** 
+ 516              		.loc 1 292 0
+ 517 007c 3C46     		mov	r4, r7
+ 518              	.LVL80:
+ 519              		.loc 1 306 0
+ 520 007e AB42     		cmp	r3, r5
+ 521 0080 25DD     		ble	.L32
+ 522              	.LVL81:
+ 523              	.L29:
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc2fCeYc.s 			page 22
+
+
+ 292:lib/helix/real/dqchan.c **** 
+ 524              		.loc 1 292 0 discriminator 1
+ 525 0082 039B     		ldr	r3, [sp, #12]
+ 526 0084 9C42     		cmp	r4, r3
+ 527 0086 22DA     		bge	.L32
+ 528              	.LVL82:
+ 295:lib/helix/real/dqchan.c **** 		gainI = 210 - globalGain + sfactMultiplier * (sfis->l[cb] + (sis->preFlag ? (int)preTab[cb] : 0))
+ 529              		.loc 1 295 0
+ 530 0088 DAF83430 		ldr	r3, [r10, #52]
+ 531 008c 671C     		adds	r7, r4, #1
+ 532 008e 33F91760 		ldrsh	r6, [r3, r7, lsl #1]
+ 533 0092 33F91430 		ldrsh	r3, [r3, r4, lsl #1]
+ 534 0096 F61A     		subs	r6, r6, r3
+ 535              	.LVL83:
+ 296:lib/helix/real/dqchan.c **** 
+ 536              		.loc 1 296 0
+ 537 0098 029B     		ldr	r3, [sp, #8]
+ 538 009a C3F1D201 		rsb	r1, r3, #210
+ 539 009e 179B     		ldr	r3, [sp, #92]
+ 540 00a0 1A5D     		ldrb	r2, [r3, r4]	@ zero_extendqisi2
+ 541 00a2 DBF83C30 		ldr	r3, [fp, #60]
+ 542 00a6 0BB1     		cbz	r3, .L30
+ 296:lib/helix/real/dqchan.c **** 
+ 543              		.loc 1 296 0 is_stmt 0 discriminator 1
+ 544 00a8 584B     		ldr	r3, .L53
+ 545 00aa 1B5D     		ldrb	r3, [r3, r4]	@ zero_extendqisi2
+ 546              	.L30:
+ 296:lib/helix/real/dqchan.c **** 
+ 547              		.loc 1 296 0 discriminator 4
+ 548 00ac 1344     		add	r3, r3, r2
+ 549              	.LVL84:
+ 298:lib/helix/real/dqchan.c **** 		i += nSamps;
+ 550              		.loc 1 298 0 is_stmt 1 discriminator 4
+ 551 00ae 049A     		ldr	r2, [sp, #16]
+ 552 00b0 02EB8500 		add	r0, r2, r5, lsl #2
+ 553 00b4 019A     		ldr	r2, [sp, #4]
+ 554 00b6 02FB0313 		mla	r3, r2, r3, r1
+ 555              	.LVL85:
+ 556 00ba 3246     		mov	r2, r6
+ 557 00bc 0146     		mov	r1, r0
+ 558 00be FFF7FEFF 		bl	DequantBlock
+ 559              	.LVL86:
+ 299:lib/helix/real/dqchan.c **** 
+ 560              		.loc 1 299 0 discriminator 4
+ 561 00c2 3544     		add	r5, r5, r6
+ 562              	.LVL87:
+ 302:lib/helix/real/dqchan.c **** 			cbMax[0] = cb;
+ 563              		.loc 1 302 0 discriminator 4
+ 564 00c4 0346     		mov	r3, r0
+ 565 00c6 0028     		cmp	r0, #0
+ 566 00c8 D4D0     		beq	.L31
+ 303:lib/helix/real/dqchan.c **** 		gbMask |= nonZero;
+ 567              		.loc 1 303 0
+ 568 00ca 0994     		str	r4, [sp, #36]
+ 569 00cc D2E7     		b	.L31
+ 570              	.LVL88:
+ 571              	.L32:
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc2fCeYc.s 			page 23
+
+
+ 572 00ce 069E     		ldr	r6, [sp, #24]
+ 573 00d0 079C     		ldr	r4, [sp, #28]
+ 307:lib/helix/real/dqchan.c **** 			break;
+ 308:lib/helix/real/dqchan.c **** 	}
+ 309:lib/helix/real/dqchan.c **** 
+ 310:lib/helix/real/dqchan.c **** 	/* set cbi (Type, EndS[], EndSMax will be overwritten if we proceed to do short blocks) */
+ 311:lib/helix/real/dqchan.c **** 	cbi->cbType = 0;			/* long only */
+ 574              		.loc 1 311 0
+ 575 00d2 0023     		movs	r3, #0
+ 576 00d4 189A     		ldr	r2, [sp, #96]
+ 577 00d6 1360     		str	r3, [r2]
+ 312:lib/helix/real/dqchan.c **** 	cbi->cbEndL  = cbMax[0];
+ 578              		.loc 1 312 0
+ 579 00d8 099A     		ldr	r2, [sp, #36]
+ 580 00da 1899     		ldr	r1, [sp, #96]
+ 581 00dc 4A61     		str	r2, [r1, #20]
+ 313:lib/helix/real/dqchan.c **** 	cbi->cbEndS[0] = cbi->cbEndS[1] = cbi->cbEndS[2] = 0;
+ 582              		.loc 1 313 0
+ 583 00de CB60     		str	r3, [r1, #12]
+ 584 00e0 8B60     		str	r3, [r1, #8]
+ 585 00e2 4B60     		str	r3, [r1, #4]
+ 314:lib/helix/real/dqchan.c **** 	cbi->cbEndSMax = 0;
+ 586              		.loc 1 314 0
+ 587 00e4 0B61     		str	r3, [r1, #16]
+ 315:lib/helix/real/dqchan.c **** 
+ 316:lib/helix/real/dqchan.c **** 	/* early exit if no short blocks */
+ 317:lib/helix/real/dqchan.c **** 	if (cbStartS >= 12) 
+ 588              		.loc 1 317 0
+ 589 00e6 0B2E     		cmp	r6, #11
+ 590 00e8 07DC     		bgt	.L51
+ 318:lib/helix/real/dqchan.c **** 		return CLZ(gbMask) - 1;
+ 319:lib/helix/real/dqchan.c **** 	
+ 320:lib/helix/real/dqchan.c **** 	/* short blocks */
+ 321:lib/helix/real/dqchan.c **** 	cbMax[2] = cbMax[1] = cbMax[0] = cbStartS;
+ 591              		.loc 1 321 0
+ 592 00ea 0996     		str	r6, [sp, #36]
+ 593 00ec 0A96     		str	r6, [sp, #40]
+ 594 00ee 0B96     		str	r6, [sp, #44]
+ 595              	.LVL89:
+ 596 00f0 CDF818A0 		str	r10, [sp, #24]
+ 597              	.LVL90:
+ 598 00f4 DDF810A0 		ldr	r10, [sp, #16]
+ 599              	.LVL91:
+ 322:lib/helix/real/dqchan.c **** 	for (cb = cbStartS; cb < cbEndS; cb++) {
+ 600              		.loc 1 322 0
+ 601 00f8 51E0     		b	.L36
+ 602              	.LVL92:
+ 603              	.L51:
+ 604              	.LBB34:
+ 605              	.LBB35:
+ 327:lib/helix/real/assembly.h **** 	return y;
+ 328:lib/helix/real/assembly.h **** }
+ 329:lib/helix/real/assembly.h **** 
+ 330:lib/helix/real/assembly.h **** static __inline int FASTABS(int x)
+ 331:lib/helix/real/assembly.h **** {
+ 332:lib/helix/real/assembly.h **** 	int sign;
+ 333:lib/helix/real/assembly.h **** 
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc2fCeYc.s 			page 24
+
+
+ 334:lib/helix/real/assembly.h **** 	sign = x >> (sizeof(int) * 8 - 1);
+ 335:lib/helix/real/assembly.h **** 	x ^= sign;
+ 336:lib/helix/real/assembly.h **** 	x -= sign;
+ 337:lib/helix/real/assembly.h **** 
+ 338:lib/helix/real/assembly.h **** 	return x;
+ 339:lib/helix/real/assembly.h **** }
+ 340:lib/helix/real/assembly.h **** 
+ 341:lib/helix/real/assembly.h **** static __inline int CLZ(int x)
+ 342:lib/helix/real/assembly.h **** {
+ 343:lib/helix/real/assembly.h **** 	int numZeros;
+ 344:lib/helix/real/assembly.h **** 
+ 345:lib/helix/real/assembly.h **** 	/*if (!x)
+ 346:lib/helix/real/assembly.h **** return (sizeof(int) * 8);
+ 347:lib/helix/real/assembly.h **** 
+ 348:lib/helix/real/assembly.h **** numZeros = 0;
+ 349:lib/helix/real/assembly.h **** while (!(x & 0x80000000)) {
+ 350:lib/helix/real/assembly.h **** numZeros++;
+ 351:lib/helix/real/assembly.h **** x <
+ 352:lib/helix/real/assembly.h **** }*/
+ 353:lib/helix/real/assembly.h **** 
+ 354:lib/helix/real/assembly.h **** 	__asm__ ("clz %0, %1" : "=r" (numZeros) : "r" (x) : "cc");
+ 606              		.loc 2 354 0
+ 607              		.syntax unified
+ 608              	@ 354 "lib/helix/real/assembly.h" 1
+ 609 00fa B8FA88F8 		clz r8, r8
+ 610              	@ 0 "" 2
+ 611              	.LVL93:
+ 612              		.thumb
+ 613              		.syntax unified
+ 614              	.LBE35:
+ 615              	.LBE34:
+ 318:lib/helix/real/dqchan.c **** 	
+ 616              		.loc 1 318 0
+ 617 00fe 08F1FF30 		add	r0, r8, #-1
+ 618 0102 7EE0     		b	.L26
+ 619              	.LVL94:
+ 620              	.L38:
+ 323:lib/helix/real/dqchan.c **** 
+ 324:lib/helix/real/dqchan.c **** 		nSamps = fh->sfBand->s[cb + 1] - fh->sfBand->s[cb];
+ 325:lib/helix/real/dqchan.c **** 		for (w = 0; w < 3; w++) {
+ 326:lib/helix/real/dqchan.c **** 			nonZero =  0;
+ 327:lib/helix/real/dqchan.c **** 			gainI = 210 - globalGain + 8*sis->subBlockGain[w] + sfactMultiplier*(sfis->s[cb][w]);
+ 328:lib/helix/real/dqchan.c **** 
+ 329:lib/helix/real/dqchan.c **** 			nonZero |= DequantBlock(sampleBuf + i + nSamps*w, workBuf + nSamps*w, nSamps, gainI);
+ 330:lib/helix/real/dqchan.c **** 
+ 331:lib/helix/real/dqchan.c **** 			/* update highest non-zero critical band */
+ 332:lib/helix/real/dqchan.c **** 			if (nonZero)
+ 333:lib/helix/real/dqchan.c **** 				cbMax[w] = cb;
+ 334:lib/helix/real/dqchan.c **** 			gbMask |= nonZero;
+ 621              		.loc 1 334 0 discriminator 2
+ 622 0104 48EA0308 		orr	r8, r8, r3
+ 623              	.LVL95:
+ 325:lib/helix/real/dqchan.c **** 			nonZero =  0;
+ 624              		.loc 1 325 0 discriminator 2
+ 625 0108 09F10109 		add	r9, r9, #1
+ 626              	.LVL96:
+ 627              	.L37:
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc2fCeYc.s 			page 25
+
+
+ 325:lib/helix/real/dqchan.c **** 			nonZero =  0;
+ 628              		.loc 1 325 0 is_stmt 0 discriminator 1
+ 629 010c B9F1020F 		cmp	r9, #2
+ 630 0110 25DC     		bgt	.L52
+ 631              	.LVL97:
+ 327:lib/helix/real/dqchan.c **** 
+ 632              		.loc 1 327 0 is_stmt 1
+ 633 0112 029B     		ldr	r3, [sp, #8]
+ 634 0114 C3F1D203 		rsb	r3, r3, #210
+ 635 0118 09F10A02 		add	r2, r9, #10
+ 636 011c 5BF82220 		ldr	r2, [fp, r2, lsl #2]
+ 637 0120 03EBC203 		add	r3, r3, r2, lsl #3
+ 638 0124 06EB4602 		add	r2, r6, r6, lsl #1
+ 639 0128 1799     		ldr	r1, [sp, #92]
+ 640 012a 0A44     		add	r2, r2, r1
+ 641 012c 4A44     		add	r2, r2, r9
+ 642 012e D27D     		ldrb	r2, [r2, #23]	@ zero_extendqisi2
+ 643              	.LVL98:
+ 329:lib/helix/real/dqchan.c **** 
+ 644              		.loc 1 329 0
+ 645 0130 07FB09F1 		mul	r1, r7, r9
+ 646 0134 6818     		adds	r0, r5, r1
+ 647 0136 019C     		ldr	r4, [sp, #4]
+ 648 0138 04FB0233 		mla	r3, r4, r2, r3
+ 649              	.LVL99:
+ 650 013c 3A46     		mov	r2, r7
+ 651 013e 039C     		ldr	r4, [sp, #12]
+ 652 0140 04EB8101 		add	r1, r4, r1, lsl #2
+ 653 0144 0AEB8000 		add	r0, r10, r0, lsl #2
+ 654 0148 FFF7FEFF 		bl	DequantBlock
+ 655              	.LVL100:
+ 332:lib/helix/real/dqchan.c **** 				cbMax[w] = cb;
+ 656              		.loc 1 332 0
+ 657 014c 0346     		mov	r3, r0
+ 658 014e 0028     		cmp	r0, #0
+ 659 0150 D8D0     		beq	.L38
+ 333:lib/helix/real/dqchan.c **** 			gbMask |= nonZero;
+ 660              		.loc 1 333 0
+ 661 0152 0CAA     		add	r2, sp, #48
+ 662 0154 02EB8902 		add	r2, r2, r9, lsl #2
+ 663 0158 42F80C6C 		str	r6, [r2, #-12]
+ 664 015c D2E7     		b	.L38
+ 665              	.LVL101:
+ 666              	.L52:
+ 667 015e 039C     		ldr	r4, [sp, #12]
+ 335:lib/helix/real/dqchan.c **** 		}
+ 336:lib/helix/real/dqchan.c **** 
+ 337:lib/helix/real/dqchan.c **** 		/* reorder blocks */
+ 338:lib/helix/real/dqchan.c **** 		buf = (ARRAY3 *)(sampleBuf + i);
+ 668              		.loc 1 338 0
+ 669 0160 0AEB8506 		add	r6, r10, r5, lsl #2
+ 670              	.LVL102:
+ 339:lib/helix/real/dqchan.c **** 		i += 3*nSamps;
+ 671              		.loc 1 339 0
+ 672 0164 07EB4703 		add	r3, r7, r7, lsl #1
+ 673 0168 1D44     		add	r5, r5, r3
+ 674              	.LVL103:
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc2fCeYc.s 			page 26
+
+
+ 340:lib/helix/real/dqchan.c **** 		for (j = 0; j < nSamps; j++) {
+ 675              		.loc 1 340 0
+ 676 016a 0023     		movs	r3, #0
+ 677 016c 10E0     		b	.L40
+ 678              	.LVL104:
+ 679              	.L41:
+ 341:lib/helix/real/dqchan.c **** 			buf[j][0] = workBuf[0*nSamps + j];
+ 680              		.loc 1 341 0 discriminator 3
+ 681 016e 03EB4301 		add	r1, r3, r3, lsl #1
+ 682 0172 8A00     		lsls	r2, r1, #2
+ 683 0174 B118     		adds	r1, r6, r2
+ 684 0176 54F82300 		ldr	r0, [r4, r3, lsl #2]
+ 685 017a B050     		str	r0, [r6, r2]
+ 342:lib/helix/real/dqchan.c **** 			buf[j][1] = workBuf[1*nSamps + j];
+ 686              		.loc 1 342 0 discriminator 3
+ 687 017c DA19     		adds	r2, r3, r7
+ 688 017e 54F82220 		ldr	r2, [r4, r2, lsl #2]
+ 689 0182 4A60     		str	r2, [r1, #4]
+ 343:lib/helix/real/dqchan.c **** 			buf[j][2] = workBuf[2*nSamps + j];
+ 690              		.loc 1 343 0 discriminator 3
+ 691 0184 03EB4702 		add	r2, r3, r7, lsl #1
+ 692 0188 54F82220 		ldr	r2, [r4, r2, lsl #2]
+ 693 018c 8A60     		str	r2, [r1, #8]
+ 340:lib/helix/real/dqchan.c **** 			buf[j][0] = workBuf[0*nSamps + j];
+ 694              		.loc 1 340 0 discriminator 3
+ 695 018e 0133     		adds	r3, r3, #1
+ 696              	.LVL105:
+ 697              	.L40:
+ 340:lib/helix/real/dqchan.c **** 			buf[j][0] = workBuf[0*nSamps + j];
+ 698              		.loc 1 340 0 is_stmt 0 discriminator 1
+ 699 0190 BB42     		cmp	r3, r7
+ 700 0192 ECDB     		blt	.L41
+ 344:lib/helix/real/dqchan.c **** 		}
+ 345:lib/helix/real/dqchan.c **** 
+ 346:lib/helix/real/dqchan.c **** 		ASSERT(3*nSamps <= MAX_REORDER_SAMPS);
+ 347:lib/helix/real/dqchan.c **** 
+ 348:lib/helix/real/dqchan.c **** 		if (i >= *nonZeroBound) 
+ 701              		.loc 1 348 0 is_stmt 1
+ 702 0194 059B     		ldr	r3, [sp, #20]
+ 703              	.LVL106:
+ 704 0196 1B68     		ldr	r3, [r3]
+ 322:lib/helix/real/dqchan.c **** 
+ 705              		.loc 1 322 0
+ 706 0198 049E     		ldr	r6, [sp, #16]
+ 707              	.LVL107:
+ 708              		.loc 1 348 0
+ 709 019a AB42     		cmp	r3, r5
+ 710 019c 16DD     		ble	.L42
+ 711              	.LVL108:
+ 712              	.L36:
+ 322:lib/helix/real/dqchan.c **** 
+ 713              		.loc 1 322 0 discriminator 1
+ 714 019e 0C2E     		cmp	r6, #12
+ 715 01a0 14DC     		bgt	.L42
+ 324:lib/helix/real/dqchan.c **** 		for (w = 0; w < 3; w++) {
+ 716              		.loc 1 324 0
+ 717 01a2 069B     		ldr	r3, [sp, #24]
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc2fCeYc.s 			page 27
+
+
+ 718 01a4 5B6B     		ldr	r3, [r3, #52]
+ 719 01a6 721C     		adds	r2, r6, #1
+ 720 01a8 0492     		str	r2, [sp, #16]
+ 721 01aa 06F11502 		add	r2, r6, #21
+ 722 01ae 03EB4202 		add	r2, r3, r2, lsl #1
+ 723 01b2 B2F90670 		ldrsh	r7, [r2, #6]
+ 724 01b6 06F11402 		add	r2, r6, #20
+ 725 01ba 03EB4203 		add	r3, r3, r2, lsl #1
+ 726 01be B3F90630 		ldrsh	r3, [r3, #6]
+ 727 01c2 FF1A     		subs	r7, r7, r3
+ 728              	.LVL109:
+ 325:lib/helix/real/dqchan.c **** 			nonZero =  0;
+ 729              		.loc 1 325 0
+ 730 01c4 4FF00009 		mov	r9, #0
+ 731 01c8 0394     		str	r4, [sp, #12]
+ 732 01ca 9FE7     		b	.L37
+ 733              	.LVL110:
+ 734              	.L42:
+ 349:lib/helix/real/dqchan.c **** 			break;
+ 350:lib/helix/real/dqchan.c **** 	}
+ 351:lib/helix/real/dqchan.c **** 
+ 352:lib/helix/real/dqchan.c **** 	/* i = last non-zero INPUT sample processed, which corresponds to highest possible non-zero 
+ 353:lib/helix/real/dqchan.c **** 	 *     OUTPUT sample (after reorder)
+ 354:lib/helix/real/dqchan.c **** 	 * however, the original nzb is no longer necessarily true
+ 355:lib/helix/real/dqchan.c **** 	 *   for each cb, buf[][] is updated with 3*nSamps samples (i increases 3*nSamps each time)
+ 356:lib/helix/real/dqchan.c **** 	 *   (buf[j + 1][0] = 3 (input) samples ahead of buf[j][0])
+ 357:lib/helix/real/dqchan.c ****      * so update nonZeroBound to i
+ 358:lib/helix/real/dqchan.c **** 	 */
+ 359:lib/helix/real/dqchan.c **** 	*nonZeroBound = i;
+ 735              		.loc 1 359 0
+ 736 01cc 059B     		ldr	r3, [sp, #20]
+ 737 01ce 1D60     		str	r5, [r3]
+ 360:lib/helix/real/dqchan.c **** 
+ 361:lib/helix/real/dqchan.c **** 	ASSERT(*nonZeroBound <= MAX_NSAMP);
+ 362:lib/helix/real/dqchan.c **** 
+ 363:lib/helix/real/dqchan.c **** 	cbi->cbType = (sis->mixedBlock ? 2 : 1);	/* 2 = mixed short/long, 1 = short only */
+ 738              		.loc 1 363 0
+ 739 01d0 DBF81830 		ldr	r3, [fp, #24]
+ 740 01d4 C3B1     		cbz	r3, .L48
+ 741 01d6 0223     		movs	r3, #2
+ 742              	.L44:
+ 743              		.loc 1 363 0 is_stmt 0 discriminator 4
+ 744 01d8 189A     		ldr	r2, [sp, #96]
+ 745 01da 1360     		str	r3, [r2]
+ 364:lib/helix/real/dqchan.c **** 
+ 365:lib/helix/real/dqchan.c **** 	cbi->cbEndS[0] = cbMax[0];
+ 746              		.loc 1 365 0 is_stmt 1 discriminator 4
+ 747 01dc 099A     		ldr	r2, [sp, #36]
+ 748 01de 189B     		ldr	r3, [sp, #96]
+ 749 01e0 5A60     		str	r2, [r3, #4]
+ 366:lib/helix/real/dqchan.c **** 	cbi->cbEndS[1] = cbMax[1];
+ 750              		.loc 1 366 0 discriminator 4
+ 751 01e2 0A99     		ldr	r1, [sp, #40]
+ 752 01e4 9960     		str	r1, [r3, #8]
+ 367:lib/helix/real/dqchan.c **** 	cbi->cbEndS[2] = cbMax[2];
+ 753              		.loc 1 367 0 discriminator 4
+ 754 01e6 0B9B     		ldr	r3, [sp, #44]
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc2fCeYc.s 			page 28
+
+
+ 755 01e8 1898     		ldr	r0, [sp, #96]
+ 756 01ea C360     		str	r3, [r0, #12]
+ 368:lib/helix/real/dqchan.c **** 
+ 369:lib/helix/real/dqchan.c **** 	cbi->cbEndSMax = cbMax[0];
+ 370:lib/helix/real/dqchan.c **** 	cbi->cbEndSMax = MAX(cbi->cbEndSMax, cbMax[1]);
+ 757              		.loc 1 370 0 discriminator 4
+ 758 01ec 8A42     		cmp	r2, r1
+ 759 01ee B8BF     		it	lt
+ 760 01f0 0A46     		movlt	r2, r1
+ 371:lib/helix/real/dqchan.c **** 	cbi->cbEndSMax = MAX(cbi->cbEndSMax, cbMax[2]);
+ 761              		.loc 1 371 0 discriminator 4
+ 762 01f2 9342     		cmp	r3, r2
+ 763 01f4 B8BF     		it	lt
+ 764 01f6 1346     		movlt	r3, r2
+ 765 01f8 0361     		str	r3, [r0, #16]
+ 766              	.LVL111:
+ 767              	.LBB36:
+ 768              	.LBB37:
+ 769              		.loc 2 354 0 discriminator 4
+ 770              		.syntax unified
+ 771              	@ 354 "lib/helix/real/assembly.h" 1
+ 772 01fa B8FA88F8 		clz r8, r8
+ 773              	@ 0 "" 2
+ 774              	.LVL112:
+ 775              		.thumb
+ 776              		.syntax unified
+ 777              	.LBE37:
+ 778              	.LBE36:
+ 372:lib/helix/real/dqchan.c **** 
+ 373:lib/helix/real/dqchan.c **** 	return CLZ(gbMask) - 1;
+ 779              		.loc 1 373 0 discriminator 4
+ 780 01fe 08F1FF30 		add	r0, r8, #-1
+ 781              	.LVL113:
+ 782              	.L26:
+ 374:lib/helix/real/dqchan.c **** }
+ 783              		.loc 1 374 0
+ 784 0202 0DB0     		add	sp, sp, #52
+ 785              	.LCFI5:
+ 786              		.cfi_remember_state
+ 787              		.cfi_def_cfa_offset 36
+ 788              		@ sp needed
+ 789 0204 BDE8F08F 		pop	{r4, r5, r6, r7, r8, r9, r10, fp, pc}
+ 790              	.LVL114:
+ 791              	.L48:
+ 792              	.LCFI6:
+ 793              		.cfi_restore_state
+ 363:lib/helix/real/dqchan.c **** 
+ 794              		.loc 1 363 0
+ 795 0208 0123     		movs	r3, #1
+ 796 020a E5E7     		b	.L44
+ 797              	.L54:
+ 798              		.align	2
+ 799              	.L53:
+ 800 020c 00000000 		.word	.LANCHOR7
+ 801              		.cfi_endproc
+ 802              	.LFE6:
+ 804              		.section	.rodata.poly43hi,"a",%progbits
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc2fCeYc.s 			page 29
+
+
+ 805              		.align	2
+ 806              		.set	.LANCHOR1,. + 0
+ 809              	poly43hi:
+ 810 0000 63218510 		.word	277160291
+ 811 0004 A4F633D3 		.word	-751569244
+ 812 0008 8B40E946 		.word	1189691531
+ 813 000c F0CEC227 		.word	667078384
+ 814 0010 B477F5FE 		.word	-17467468
+ 815              		.section	.rodata.poly43lo,"a",%progbits
+ 816              		.align	2
+ 817              		.set	.LANCHOR0,. + 0
+ 820              	poly43lo:
+ 821 0000 A9BDA029 		.word	698400169
+ 822 0004 28482EB0 		.word	-1339144152
+ 823 0008 1BAA5759 		.word	1498917403
+ 824 000c 8D496C23 		.word	594299277
+ 825 0010 591858FF 		.word	-11003815
+ 826              		.section	.rodata.pow14,"a",%progbits
+ 827              		.align	2
+ 828              		.set	.LANCHOR3,. + 0
+ 831              	pow14:
+ 832 0000 FFFFFF7F 		.word	2147483647
+ 833 0004 657EA26B 		.word	1805811301
+ 834 0008 9A79825A 		.word	1518500250
+ 835 000c 29F81B4C 		.word	1276901417
+ 836              		.section	.rodata.pow2exp,"a",%progbits
+ 837              		.align	2
+ 838              		.set	.LANCHOR6,. + 0
+ 841              	pow2exp:
+ 842 0000 0E000000 		.word	14
+ 843 0004 0D000000 		.word	13
+ 844 0008 0B000000 		.word	11
+ 845 000c 0A000000 		.word	10
+ 846 0010 09000000 		.word	9
+ 847 0014 07000000 		.word	7
+ 848 0018 06000000 		.word	6
+ 849 001c 05000000 		.word	5
+ 850              		.section	.rodata.pow2frac,"a",%progbits
+ 851              		.align	2
+ 852              		.set	.LANCHOR5,. + 0
+ 855              	pow2frac:
+ 856 0000 94FA9765 		.word	1704458900
+ 857 0004 E68BA250 		.word	1352829926
+ 858 0008 FFFFFF7F 		.word	2147483647
+ 859 000c 94FA9765 		.word	1704458900
+ 860 0010 E68BA250 		.word	1352829926
+ 861 0014 FFFFFF7F 		.word	2147483647
+ 862 0018 94FA9765 		.word	1704458900
+ 863 001c E68BA250 		.word	1352829926
+ 864              		.section	.rodata.pow43,"a",%progbits
+ 865              		.align	2
+ 866              		.set	.LANCHOR4,. + 0
+ 869              	pow43:
+ 870 0000 FAA22814 		.word	338207482
+ 871 0004 D61BDB15 		.word	366681046
+ 872 0008 2C309617 		.word	395718700
+ 873 000c 858D5919 		.word	425299333
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc2fCeYc.s 			page 30
+
+
+ 874 0010 BBE8241B 		.word	455403707
+ 875 0014 FAFCF71C 		.word	486014202
+ 876 0018 F28AD21E 		.word	517114610
+ 877 001c 2A58B420 		.word	548689962
+ 878 0020 6E2E9D22 		.word	580726382
+ 879 0024 55DB8C24 		.word	613210965
+ 880 0028 DA2F8326 		.word	646131674
+ 881 002c 00008028 		.word	679477248
+ 882 0030 8722832A 		.word	713237127
+ 883 0034 A8708C2C 		.word	747401384
+ 884 0038 D8C59B2E 		.word	781960664
+ 885 003c 99FFB030 		.word	816906137
+ 886 0040 4AFDCB32 		.word	852229450
+ 887 0044 01A0EC34 		.word	887922689
+ 888 0048 62CA1237 		.word	923978338
+ 889 004c 88603E39 		.word	960389256
+ 890 0050 E0476F3B 		.word	997148640
+ 891 0054 1767A53D 		.word	1034250007
+ 892 0058 FCA5E03F 		.word	1071687164
+ 893 005c 72ED2042 		.word	1109454194
+ 894 0060 58276644 		.word	1147545432
+ 895 0064 7C3EB046 		.word	1185955452
+ 896 0068 871EFF48 		.word	1224679047
+ 897 006c F3B3524B 		.word	1263711219
+ 898 0070 FDEBAA4D 		.word	1303047165
+ 899 0074 97B40750 		.word	1342682263
+ 900 0078 62FC6852 		.word	1382612066
+ 901 007c 9CB2CE54 		.word	1422832284
+ 902 0080 21C73857 		.word	1463338785
+ 903 0084 592AA759 		.word	1504127577
+ 904 0088 35CD195C 		.word	1545194805
+ 905 008c 29A1905E 		.word	1586536745
+ 906 0090 21980B61 		.word	1628149793
+ 907 0094 7FA48A63 		.word	1670030463
+ 908 0098 0FB90D66 		.word	1712175375
+ 909 009c 0BC99468 		.word	1754581259
+ 910 00a0 0CC81F6B 		.word	1797244940
+ 911 00a4 0DAAAE6D 		.word	1840163341
+ 912 00a8 60634170 		.word	1883333472
+ 913 00ac B0E8D772 		.word	1926752432
+ 914 00b0 F92E7275 		.word	1970417401
+ 915 00b4 852B1078 		.word	2014325637
+ 916 00b8 ECD3B17A 		.word	2058474476
+ 917 00bc 091E577D 		.word	2102861321
+ 918              		.section	.rodata.pow43_14,"a",%progbits
+ 919              		.align	2
+ 920              		.set	.LANCHOR2,. + 0
+ 923              	pow43_14:
+ 924 0000 00000000 		.word	0
+ 925 0004 00000010 		.word	268435456
+ 926 0008 F3455128 		.word	676414963
+ 927 000c DB5C3A45 		.word	1161452763
+ 928 0010 53FFB20C 		.word	213057363
+ 929 0014 D6891911 		.word	286886358
+ 930 0018 C831CE15 		.word	365834696
+ 931 001c 03F2C71A 		.word	449311235
+ 932 0020 00000020 		.word	536870912
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc2fCeYc.s 			page 31
+
+
+ 933 0024 B9067125 		.word	628164281
+ 934 0028 A3B4162B 		.word	722908323
+ 935 002c B474ED30 		.word	820868276
+ 936 0030 A53FF236 		.word	921845669
+ 937 0034 D37B223D 		.word	1025670099
+ 938 0038 56E67B43 		.word	1132193366
+ 939 003c 3C82FC49 		.word	1241285180
+ 940 0040 00000000 		.word	0
+ 941 0044 CD4F740D 		.word	225726413
+ 942 0048 261FE721 		.word	568794918
+ 943 004c D9AB363A 		.word	976661465
+ 944 0050 84C0AD0A 		.word	179159172
+ 945 0054 6E0E610E 		.word	241241710
+ 946 0058 1D0C5612 		.word	307629085
+ 947 005c CF238516 		.word	377824207
+ 948 0060 999FE81A 		.word	451452825
+ 949 0064 A4037C1F 		.word	528221092
+ 950 0068 49AE3B24 		.word	607891017
+ 951 006c 679C2429 		.word	690265191
+ 952 0070 0F42342E 		.word	775176719
+ 953 0074 856F6833 		.word	862482309
+ 954 0078 FF3DBF38 		.word	952057343
+ 955 007c 8201373E 		.word	1043792258
+ 956 0080 00000000 		.word	0
+ 957 0084 334F500B 		.word	189812531
+ 958 0088 073E821C 		.word	478297607
+ 959 008c 559AF330 		.word	821271125
+ 960 0090 62CDFA08 		.word	150654306
+ 961 0094 1963170C 		.word	202859289
+ 962 0098 22356B0F 		.word	258684194
+ 963 009c ADE2EF12 		.word	317711021
+ 964 00a0 669EA016 		.word	379625062
+ 965 00a4 17A3791A 		.word	444179223
+ 966 00a8 01E3771E 		.word	511173377
+ 967 00ac B4D59822 		.word	580441524
+ 968 00b0 FC56DA26 		.word	651843324
+ 969 00b4 2A903A2B 		.word	725258282
+ 970 00b8 E7E7B72F 		.word	800581607
+ 971 00bc 50F65034 		.word	877721168
+ 972 00c0 00000000 		.word	0
+ 973 00c4 057F8309 		.word	159612677
+ 974 00c8 D710F917 		.word	402198743
+ 975 00cc A9C72929 		.word	690603945
+ 976 00d0 FA0D8D07 		.word	126684666
+ 977 00d4 61E62A0A 		.word	170583649
+ 978 00d8 5431F70C 		.word	217526612
+ 979 00dc CB91EC0F 		.word	267162059
+ 980 00e0 0AFE0613 		.word	319225354
+ 981 00e4 6C4A4316 		.word	373508716
+ 982 00e8 95E59E19 		.word	429843861
+ 983 00ec 3DAE171D 		.word	488091197
+ 984 00f0 6AD7AB20 		.word	548132714
+ 985 00f4 51D55924 		.word	609867089
+ 986 00f8 BB4F2028 		.word	673206203
+ 987 00fc 0818FE2B 		.word	738072584
+ 988              		.section	.rodata.preTab,"a",%progbits
+ 989              		.align	2
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc2fCeYc.s 			page 32
+
+
+ 990              		.set	.LANCHOR7,. + 0
+ 993              	preTab:
+ 994 0000 00       		.byte	0
+ 995 0001 00       		.byte	0
+ 996 0002 00       		.byte	0
+ 997 0003 00       		.byte	0
+ 998 0004 00       		.byte	0
+ 999 0005 00       		.byte	0
+ 1000 0006 00       		.byte	0
+ 1001 0007 00       		.byte	0
+ 1002 0008 00       		.byte	0
+ 1003 0009 00       		.byte	0
+ 1004 000a 00       		.byte	0
+ 1005 000b 01       		.byte	1
+ 1006 000c 01       		.byte	1
+ 1007 000d 01       		.byte	1
+ 1008 000e 01       		.byte	1
+ 1009 000f 02       		.byte	2
+ 1010 0010 02       		.byte	2
+ 1011 0011 03       		.byte	3
+ 1012 0012 03       		.byte	3
+ 1013 0013 03       		.byte	3
+ 1014 0014 02       		.byte	2
+ 1015 0015 00       		.byte	0
+ 1016              		.text
+ 1017              	.Letext0:
+ 1018              		.file 3 "lib/helix/real/../pub/mp3common.h"
+ 1019              		.file 4 "lib/helix/real/../pub/mp3dec.h"
+ 1020              		.file 5 "lib/helix/real/coder.h"
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc2fCeYc.s 			page 33
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 dqchan.c
+C:\Users\Patryk\AppData\Local\Temp\cc2fCeYc.s:18     .text.DequantBlock:00000000 $t
+C:\Users\Patryk\AppData\Local\Temp\cc2fCeYc.s:24     .text.DequantBlock:00000000 DequantBlock
+C:\Users\Patryk\AppData\Local\Temp\cc2fCeYc.s:388    .text.DequantBlock:00000160 $d
+C:\Users\Patryk\AppData\Local\Temp\cc2fCeYc.s:400    .text.xmp3fixpt_DequantChannel:00000000 $t
+C:\Users\Patryk\AppData\Local\Temp\cc2fCeYc.s:407    .text.xmp3fixpt_DequantChannel:00000000 xmp3fixpt_DequantChannel
+C:\Users\Patryk\AppData\Local\Temp\cc2fCeYc.s:800    .text.xmp3fixpt_DequantChannel:0000020c $d
+C:\Users\Patryk\AppData\Local\Temp\cc2fCeYc.s:805    .rodata.poly43hi:00000000 $d
+C:\Users\Patryk\AppData\Local\Temp\cc2fCeYc.s:809    .rodata.poly43hi:00000000 poly43hi
+C:\Users\Patryk\AppData\Local\Temp\cc2fCeYc.s:816    .rodata.poly43lo:00000000 $d
+C:\Users\Patryk\AppData\Local\Temp\cc2fCeYc.s:820    .rodata.poly43lo:00000000 poly43lo
+C:\Users\Patryk\AppData\Local\Temp\cc2fCeYc.s:827    .rodata.pow14:00000000 $d
+C:\Users\Patryk\AppData\Local\Temp\cc2fCeYc.s:831    .rodata.pow14:00000000 pow14
+C:\Users\Patryk\AppData\Local\Temp\cc2fCeYc.s:837    .rodata.pow2exp:00000000 $d
+C:\Users\Patryk\AppData\Local\Temp\cc2fCeYc.s:841    .rodata.pow2exp:00000000 pow2exp
+C:\Users\Patryk\AppData\Local\Temp\cc2fCeYc.s:851    .rodata.pow2frac:00000000 $d
+C:\Users\Patryk\AppData\Local\Temp\cc2fCeYc.s:855    .rodata.pow2frac:00000000 pow2frac
+C:\Users\Patryk\AppData\Local\Temp\cc2fCeYc.s:865    .rodata.pow43:00000000 $d
+C:\Users\Patryk\AppData\Local\Temp\cc2fCeYc.s:869    .rodata.pow43:00000000 pow43
+C:\Users\Patryk\AppData\Local\Temp\cc2fCeYc.s:919    .rodata.pow43_14:00000000 $d
+C:\Users\Patryk\AppData\Local\Temp\cc2fCeYc.s:923    .rodata.pow43_14:00000000 pow43_14
+C:\Users\Patryk\AppData\Local\Temp\cc2fCeYc.s:989    .rodata.preTab:00000000 $d
+C:\Users\Patryk\AppData\Local\Temp\cc2fCeYc.s:993    .rodata.preTab:00000000 preTab
+
+NO UNDEFINED SYMBOLS

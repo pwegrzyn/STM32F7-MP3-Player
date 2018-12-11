@@ -1,7 +1,7 @@
 BINPATH=~/sat/bin
 
-CC=C:/gcc_toolchain/6_2017-q1-update/bin/arm-none-eabi-gcc
-AR=C:/gcc_toolchain/6_2017-q1-update/bin/arm-none-eabi-ar
+CC=D:/Program Files (x86)/gnu/7_2018-q2-update/bin/arm-none-eabi-gcc
+AR=D:/Program Files (x86)/gnu/7_2018-q2-update/bin/arm-none-eabi-ar
 
 ###################################################
 

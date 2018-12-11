@@ -1,0 +1,735 @@
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccHNLlWc.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"mp3tabs.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.global	xmp3fixpt_sfBandTable
+  18              		.global	xmp3fixpt_slotTab
+  19              		.global	xmp3fixpt_sideBytesTab
+  20              		.global	xmp3fixpt_bitsPerSlotTab
+  21              		.global	xmp3fixpt_samplesPerFrameTab
+  22              		.global	xmp3fixpt_bitrateTab
+  23              		.global	xmp3fixpt_samplerateTab
+  24              		.section	.rodata.xmp3fixpt_bitrateTab,"a",%progbits
+  25              		.align	2
+  28              	xmp3fixpt_bitrateTab:
+  29 0000 0000     		.short	0
+  30 0002 2000     		.short	32
+  31 0004 4000     		.short	64
+  32 0006 6000     		.short	96
+  33 0008 8000     		.short	128
+  34 000a A000     		.short	160
+  35 000c C000     		.short	192
+  36 000e E000     		.short	224
+  37 0010 0001     		.short	256
+  38 0012 2001     		.short	288
+  39 0014 4001     		.short	320
+  40 0016 6001     		.short	352
+  41 0018 8001     		.short	384
+  42 001a A001     		.short	416
+  43 001c C001     		.short	448
+  44 001e 0000     		.short	0
+  45 0020 2000     		.short	32
+  46 0022 3000     		.short	48
+  47 0024 3800     		.short	56
+  48 0026 4000     		.short	64
+  49 0028 5000     		.short	80
+  50 002a 6000     		.short	96
+  51 002c 7000     		.short	112
+  52 002e 8000     		.short	128
+  53 0030 A000     		.short	160
+  54 0032 C000     		.short	192
+  55 0034 E000     		.short	224
+  56 0036 0001     		.short	256
+  57 0038 4001     		.short	320
+  58 003a 8001     		.short	384
+  59 003c 0000     		.short	0
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccHNLlWc.s 			page 2
+
+
+  60 003e 2000     		.short	32
+  61 0040 2800     		.short	40
+  62 0042 3000     		.short	48
+  63 0044 3800     		.short	56
+  64 0046 4000     		.short	64
+  65 0048 5000     		.short	80
+  66 004a 6000     		.short	96
+  67 004c 7000     		.short	112
+  68 004e 8000     		.short	128
+  69 0050 A000     		.short	160
+  70 0052 C000     		.short	192
+  71 0054 E000     		.short	224
+  72 0056 0001     		.short	256
+  73 0058 4001     		.short	320
+  74 005a 0000     		.short	0
+  75 005c 2000     		.short	32
+  76 005e 3000     		.short	48
+  77 0060 3800     		.short	56
+  78 0062 4000     		.short	64
+  79 0064 5000     		.short	80
+  80 0066 6000     		.short	96
+  81 0068 7000     		.short	112
+  82 006a 8000     		.short	128
+  83 006c 9000     		.short	144
+  84 006e A000     		.short	160
+  85 0070 B000     		.short	176
+  86 0072 C000     		.short	192
+  87 0074 E000     		.short	224
+  88 0076 0001     		.short	256
+  89 0078 0000     		.short	0
+  90 007a 0800     		.short	8
+  91 007c 1000     		.short	16
+  92 007e 1800     		.short	24
+  93 0080 2000     		.short	32
+  94 0082 2800     		.short	40
+  95 0084 3000     		.short	48
+  96 0086 3800     		.short	56
+  97 0088 4000     		.short	64
+  98 008a 5000     		.short	80
+  99 008c 6000     		.short	96
+ 100 008e 7000     		.short	112
+ 101 0090 8000     		.short	128
+ 102 0092 9000     		.short	144
+ 103 0094 A000     		.short	160
+ 104 0096 0000     		.short	0
+ 105 0098 0800     		.short	8
+ 106 009a 1000     		.short	16
+ 107 009c 1800     		.short	24
+ 108 009e 2000     		.short	32
+ 109 00a0 2800     		.short	40
+ 110 00a2 3000     		.short	48
+ 111 00a4 3800     		.short	56
+ 112 00a6 4000     		.short	64
+ 113 00a8 5000     		.short	80
+ 114 00aa 6000     		.short	96
+ 115 00ac 7000     		.short	112
+ 116 00ae 8000     		.short	128
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccHNLlWc.s 			page 3
+
+
+ 117 00b0 9000     		.short	144
+ 118 00b2 A000     		.short	160
+ 119 00b4 0000     		.short	0
+ 120 00b6 2000     		.short	32
+ 121 00b8 3000     		.short	48
+ 122 00ba 3800     		.short	56
+ 123 00bc 4000     		.short	64
+ 124 00be 5000     		.short	80
+ 125 00c0 6000     		.short	96
+ 126 00c2 7000     		.short	112
+ 127 00c4 8000     		.short	128
+ 128 00c6 9000     		.short	144
+ 129 00c8 A000     		.short	160
+ 130 00ca B000     		.short	176
+ 131 00cc C000     		.short	192
+ 132 00ce E000     		.short	224
+ 133 00d0 0001     		.short	256
+ 134 00d2 0000     		.short	0
+ 135 00d4 0800     		.short	8
+ 136 00d6 1000     		.short	16
+ 137 00d8 1800     		.short	24
+ 138 00da 2000     		.short	32
+ 139 00dc 2800     		.short	40
+ 140 00de 3000     		.short	48
+ 141 00e0 3800     		.short	56
+ 142 00e2 4000     		.short	64
+ 143 00e4 5000     		.short	80
+ 144 00e6 6000     		.short	96
+ 145 00e8 7000     		.short	112
+ 146 00ea 8000     		.short	128
+ 147 00ec 9000     		.short	144
+ 148 00ee A000     		.short	160
+ 149 00f0 0000     		.short	0
+ 150 00f2 0800     		.short	8
+ 151 00f4 1000     		.short	16
+ 152 00f6 1800     		.short	24
+ 153 00f8 2000     		.short	32
+ 154 00fa 2800     		.short	40
+ 155 00fc 3000     		.short	48
+ 156 00fe 3800     		.short	56
+ 157 0100 4000     		.short	64
+ 158 0102 5000     		.short	80
+ 159 0104 6000     		.short	96
+ 160 0106 7000     		.short	112
+ 161 0108 8000     		.short	128
+ 162 010a 9000     		.short	144
+ 163 010c A000     		.short	160
+ 164              		.section	.rodata.xmp3fixpt_bitsPerSlotTab,"a",%progbits
+ 165              		.align	2
+ 168              	xmp3fixpt_bitsPerSlotTab:
+ 169 0000 2000     		.short	32
+ 170 0002 0800     		.short	8
+ 171 0004 0800     		.short	8
+ 172              		.section	.rodata.xmp3fixpt_samplerateTab,"a",%progbits
+ 173              		.align	2
+ 176              	xmp3fixpt_samplerateTab:
+ 177 0000 44AC0000 		.word	44100
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccHNLlWc.s 			page 4
+
+
+ 178 0004 80BB0000 		.word	48000
+ 179 0008 007D0000 		.word	32000
+ 180 000c 22560000 		.word	22050
+ 181 0010 C05D0000 		.word	24000
+ 182 0014 803E0000 		.word	16000
+ 183 0018 112B0000 		.word	11025
+ 184 001c E02E0000 		.word	12000
+ 185 0020 401F0000 		.word	8000
+ 186              		.section	.rodata.xmp3fixpt_samplesPerFrameTab,"a",%progbits
+ 187              		.align	2
+ 190              	xmp3fixpt_samplesPerFrameTab:
+ 191 0000 8001     		.short	384
+ 192 0002 8004     		.short	1152
+ 193 0004 8004     		.short	1152
+ 194 0006 8001     		.short	384
+ 195 0008 8004     		.short	1152
+ 196 000a 4002     		.short	576
+ 197 000c 8001     		.short	384
+ 198 000e 8004     		.short	1152
+ 199 0010 4002     		.short	576
+ 200              		.section	.rodata.xmp3fixpt_sfBandTable,"a",%progbits
+ 201              		.align	2
+ 204              	xmp3fixpt_sfBandTable:
+ 205 0000 0000     		.short	0
+ 206 0002 0400     		.short	4
+ 207 0004 0800     		.short	8
+ 208 0006 0C00     		.short	12
+ 209 0008 1000     		.short	16
+ 210 000a 1400     		.short	20
+ 211 000c 1800     		.short	24
+ 212 000e 1E00     		.short	30
+ 213 0010 2400     		.short	36
+ 214 0012 2C00     		.short	44
+ 215 0014 3400     		.short	52
+ 216 0016 3E00     		.short	62
+ 217 0018 4A00     		.short	74
+ 218 001a 5A00     		.short	90
+ 219 001c 6E00     		.short	110
+ 220 001e 8600     		.short	134
+ 221 0020 A200     		.short	162
+ 222 0022 C400     		.short	196
+ 223 0024 EE00     		.short	238
+ 224 0026 2001     		.short	288
+ 225 0028 5601     		.short	342
+ 226 002a A201     		.short	418
+ 227 002c 4002     		.short	576
+ 228 002e 0000     		.short	0
+ 229 0030 0400     		.short	4
+ 230 0032 0800     		.short	8
+ 231 0034 0C00     		.short	12
+ 232 0036 1000     		.short	16
+ 233 0038 1600     		.short	22
+ 234 003a 1E00     		.short	30
+ 235 003c 2800     		.short	40
+ 236 003e 3400     		.short	52
+ 237 0040 4200     		.short	66
+ 238 0042 5400     		.short	84
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccHNLlWc.s 			page 5
+
+
+ 239 0044 6A00     		.short	106
+ 240 0046 8800     		.short	136
+ 241 0048 C000     		.short	192
+ 242 004a 0000     		.short	0
+ 243 004c 0400     		.short	4
+ 244 004e 0800     		.short	8
+ 245 0050 0C00     		.short	12
+ 246 0052 1000     		.short	16
+ 247 0054 1400     		.short	20
+ 248 0056 1800     		.short	24
+ 249 0058 1E00     		.short	30
+ 250 005a 2400     		.short	36
+ 251 005c 2A00     		.short	42
+ 252 005e 3200     		.short	50
+ 253 0060 3C00     		.short	60
+ 254 0062 4800     		.short	72
+ 255 0064 5800     		.short	88
+ 256 0066 6A00     		.short	106
+ 257 0068 8000     		.short	128
+ 258 006a 9C00     		.short	156
+ 259 006c BE00     		.short	190
+ 260 006e E600     		.short	230
+ 261 0070 1401     		.short	276
+ 262 0072 4A01     		.short	330
+ 263 0074 8001     		.short	384
+ 264 0076 4002     		.short	576
+ 265 0078 0000     		.short	0
+ 266 007a 0400     		.short	4
+ 267 007c 0800     		.short	8
+ 268 007e 0C00     		.short	12
+ 269 0080 1000     		.short	16
+ 270 0082 1600     		.short	22
+ 271 0084 1C00     		.short	28
+ 272 0086 2600     		.short	38
+ 273 0088 3200     		.short	50
+ 274 008a 4000     		.short	64
+ 275 008c 5000     		.short	80
+ 276 008e 6400     		.short	100
+ 277 0090 7E00     		.short	126
+ 278 0092 C000     		.short	192
+ 279 0094 0000     		.short	0
+ 280 0096 0400     		.short	4
+ 281 0098 0800     		.short	8
+ 282 009a 0C00     		.short	12
+ 283 009c 1000     		.short	16
+ 284 009e 1400     		.short	20
+ 285 00a0 1800     		.short	24
+ 286 00a2 1E00     		.short	30
+ 287 00a4 2400     		.short	36
+ 288 00a6 2C00     		.short	44
+ 289 00a8 3600     		.short	54
+ 290 00aa 4200     		.short	66
+ 291 00ac 5200     		.short	82
+ 292 00ae 6600     		.short	102
+ 293 00b0 7E00     		.short	126
+ 294 00b2 9C00     		.short	156
+ 295 00b4 C200     		.short	194
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccHNLlWc.s 			page 6
+
+
+ 296 00b6 F000     		.short	240
+ 297 00b8 2801     		.short	296
+ 298 00ba 6C01     		.short	364
+ 299 00bc C001     		.short	448
+ 300 00be 2602     		.short	550
+ 301 00c0 4002     		.short	576
+ 302 00c2 0000     		.short	0
+ 303 00c4 0400     		.short	4
+ 304 00c6 0800     		.short	8
+ 305 00c8 0C00     		.short	12
+ 306 00ca 1000     		.short	16
+ 307 00cc 1600     		.short	22
+ 308 00ce 1E00     		.short	30
+ 309 00d0 2A00     		.short	42
+ 310 00d2 3A00     		.short	58
+ 311 00d4 4E00     		.short	78
+ 312 00d6 6800     		.short	104
+ 313 00d8 8A00     		.short	138
+ 314 00da B400     		.short	180
+ 315 00dc C000     		.short	192
+ 316 00de 0000     		.short	0
+ 317 00e0 0600     		.short	6
+ 318 00e2 0C00     		.short	12
+ 319 00e4 1200     		.short	18
+ 320 00e6 1800     		.short	24
+ 321 00e8 1E00     		.short	30
+ 322 00ea 2400     		.short	36
+ 323 00ec 2C00     		.short	44
+ 324 00ee 3600     		.short	54
+ 325 00f0 4200     		.short	66
+ 326 00f2 5000     		.short	80
+ 327 00f4 6000     		.short	96
+ 328 00f6 7400     		.short	116
+ 329 00f8 8C00     		.short	140
+ 330 00fa A800     		.short	168
+ 331 00fc C800     		.short	200
+ 332 00fe EE00     		.short	238
+ 333 0100 1C01     		.short	284
+ 334 0102 5001     		.short	336
+ 335 0104 8C01     		.short	396
+ 336 0106 D001     		.short	464
+ 337 0108 0A02     		.short	522
+ 338 010a 4002     		.short	576
+ 339 010c 0000     		.short	0
+ 340 010e 0400     		.short	4
+ 341 0110 0800     		.short	8
+ 342 0112 0C00     		.short	12
+ 343 0114 1200     		.short	18
+ 344 0116 1800     		.short	24
+ 345 0118 2000     		.short	32
+ 346 011a 2A00     		.short	42
+ 347 011c 3800     		.short	56
+ 348 011e 4A00     		.short	74
+ 349 0120 6400     		.short	100
+ 350 0122 8400     		.short	132
+ 351 0124 AE00     		.short	174
+ 352 0126 C000     		.short	192
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccHNLlWc.s 			page 7
+
+
+ 353 0128 0000     		.short	0
+ 354 012a 0600     		.short	6
+ 355 012c 0C00     		.short	12
+ 356 012e 1200     		.short	18
+ 357 0130 1800     		.short	24
+ 358 0132 1E00     		.short	30
+ 359 0134 2400     		.short	36
+ 360 0136 2C00     		.short	44
+ 361 0138 3600     		.short	54
+ 362 013a 4200     		.short	66
+ 363 013c 5000     		.short	80
+ 364 013e 6000     		.short	96
+ 365 0140 7200     		.short	114
+ 366 0142 8800     		.short	136
+ 367 0144 A200     		.short	162
+ 368 0146 C200     		.short	194
+ 369 0148 E800     		.short	232
+ 370 014a 1601     		.short	278
+ 371 014c 4C01     		.short	332
+ 372 014e 8A01     		.short	394
+ 373 0150 D001     		.short	464
+ 374 0152 1C02     		.short	540
+ 375 0154 4002     		.short	576
+ 376 0156 0000     		.short	0
+ 377 0158 0400     		.short	4
+ 378 015a 0800     		.short	8
+ 379 015c 0C00     		.short	12
+ 380 015e 1200     		.short	18
+ 381 0160 1A00     		.short	26
+ 382 0162 2400     		.short	36
+ 383 0164 3000     		.short	48
+ 384 0166 3E00     		.short	62
+ 385 0168 5000     		.short	80
+ 386 016a 6800     		.short	104
+ 387 016c 8800     		.short	136
+ 388 016e B400     		.short	180
+ 389 0170 C000     		.short	192
+ 390 0172 0000     		.short	0
+ 391 0174 0600     		.short	6
+ 392 0176 0C00     		.short	12
+ 393 0178 1200     		.short	18
+ 394 017a 1800     		.short	24
+ 395 017c 1E00     		.short	30
+ 396 017e 2400     		.short	36
+ 397 0180 2C00     		.short	44
+ 398 0182 3600     		.short	54
+ 399 0184 4200     		.short	66
+ 400 0186 5000     		.short	80
+ 401 0188 6000     		.short	96
+ 402 018a 7400     		.short	116
+ 403 018c 8C00     		.short	140
+ 404 018e A800     		.short	168
+ 405 0190 C800     		.short	200
+ 406 0192 EE00     		.short	238
+ 407 0194 1C01     		.short	284
+ 408 0196 5001     		.short	336
+ 409 0198 8C01     		.short	396
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccHNLlWc.s 			page 8
+
+
+ 410 019a D001     		.short	464
+ 411 019c 0A02     		.short	522
+ 412 019e 4002     		.short	576
+ 413 01a0 0000     		.short	0
+ 414 01a2 0400     		.short	4
+ 415 01a4 0800     		.short	8
+ 416 01a6 0C00     		.short	12
+ 417 01a8 1200     		.short	18
+ 418 01aa 1A00     		.short	26
+ 419 01ac 2400     		.short	36
+ 420 01ae 3000     		.short	48
+ 421 01b0 3E00     		.short	62
+ 422 01b2 5000     		.short	80
+ 423 01b4 6800     		.short	104
+ 424 01b6 8600     		.short	134
+ 425 01b8 AE00     		.short	174
+ 426 01ba C000     		.short	192
+ 427 01bc 0000     		.short	0
+ 428 01be 0600     		.short	6
+ 429 01c0 0C00     		.short	12
+ 430 01c2 1200     		.short	18
+ 431 01c4 1800     		.short	24
+ 432 01c6 1E00     		.short	30
+ 433 01c8 2400     		.short	36
+ 434 01ca 2C00     		.short	44
+ 435 01cc 3600     		.short	54
+ 436 01ce 4200     		.short	66
+ 437 01d0 5000     		.short	80
+ 438 01d2 6000     		.short	96
+ 439 01d4 7400     		.short	116
+ 440 01d6 8C00     		.short	140
+ 441 01d8 A800     		.short	168
+ 442 01da C800     		.short	200
+ 443 01dc EE00     		.short	238
+ 444 01de 1C01     		.short	284
+ 445 01e0 5001     		.short	336
+ 446 01e2 8C01     		.short	396
+ 447 01e4 D001     		.short	464
+ 448 01e6 0A02     		.short	522
+ 449 01e8 4002     		.short	576
+ 450 01ea 0000     		.short	0
+ 451 01ec 0400     		.short	4
+ 452 01ee 0800     		.short	8
+ 453 01f0 0C00     		.short	12
+ 454 01f2 1200     		.short	18
+ 455 01f4 1A00     		.short	26
+ 456 01f6 2400     		.short	36
+ 457 01f8 3000     		.short	48
+ 458 01fa 3E00     		.short	62
+ 459 01fc 5000     		.short	80
+ 460 01fe 6800     		.short	104
+ 461 0200 8600     		.short	134
+ 462 0202 AE00     		.short	174
+ 463 0204 C000     		.short	192
+ 464 0206 0000     		.short	0
+ 465 0208 0600     		.short	6
+ 466 020a 0C00     		.short	12
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccHNLlWc.s 			page 9
+
+
+ 467 020c 1200     		.short	18
+ 468 020e 1800     		.short	24
+ 469 0210 1E00     		.short	30
+ 470 0212 2400     		.short	36
+ 471 0214 2C00     		.short	44
+ 472 0216 3600     		.short	54
+ 473 0218 4200     		.short	66
+ 474 021a 5000     		.short	80
+ 475 021c 6000     		.short	96
+ 476 021e 7400     		.short	116
+ 477 0220 8C00     		.short	140
+ 478 0222 A800     		.short	168
+ 479 0224 C800     		.short	200
+ 480 0226 EE00     		.short	238
+ 481 0228 1C01     		.short	284
+ 482 022a 5001     		.short	336
+ 483 022c 8C01     		.short	396
+ 484 022e D001     		.short	464
+ 485 0230 0A02     		.short	522
+ 486 0232 4002     		.short	576
+ 487 0234 0000     		.short	0
+ 488 0236 0400     		.short	4
+ 489 0238 0800     		.short	8
+ 490 023a 0C00     		.short	12
+ 491 023c 1200     		.short	18
+ 492 023e 1A00     		.short	26
+ 493 0240 2400     		.short	36
+ 494 0242 3000     		.short	48
+ 495 0244 3E00     		.short	62
+ 496 0246 5000     		.short	80
+ 497 0248 6800     		.short	104
+ 498 024a 8600     		.short	134
+ 499 024c AE00     		.short	174
+ 500 024e C000     		.short	192
+ 501 0250 0000     		.short	0
+ 502 0252 0C00     		.short	12
+ 503 0254 1800     		.short	24
+ 504 0256 2400     		.short	36
+ 505 0258 3000     		.short	48
+ 506 025a 3C00     		.short	60
+ 507 025c 4800     		.short	72
+ 508 025e 5800     		.short	88
+ 509 0260 6C00     		.short	108
+ 510 0262 8400     		.short	132
+ 511 0264 A000     		.short	160
+ 512 0266 C000     		.short	192
+ 513 0268 E800     		.short	232
+ 514 026a 1801     		.short	280
+ 515 026c 5001     		.short	336
+ 516 026e 9001     		.short	400
+ 517 0270 DC01     		.short	476
+ 518 0272 3602     		.short	566
+ 519 0274 3802     		.short	568
+ 520 0276 3A02     		.short	570
+ 521 0278 3C02     		.short	572
+ 522 027a 3E02     		.short	574
+ 523 027c 4002     		.short	576
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccHNLlWc.s 			page 10
+
+
+ 524 027e 0000     		.short	0
+ 525 0280 0800     		.short	8
+ 526 0282 1000     		.short	16
+ 527 0284 1800     		.short	24
+ 528 0286 2400     		.short	36
+ 529 0288 3400     		.short	52
+ 530 028a 4800     		.short	72
+ 531 028c 6000     		.short	96
+ 532 028e 7C00     		.short	124
+ 533 0290 A000     		.short	160
+ 534 0292 A200     		.short	162
+ 535 0294 A400     		.short	164
+ 536 0296 A600     		.short	166
+ 537 0298 C000     		.short	192
+ 538              		.section	.rodata.xmp3fixpt_sideBytesTab,"a",%progbits
+ 539              		.align	2
+ 542              	xmp3fixpt_sideBytesTab:
+ 543 0000 1100     		.short	17
+ 544 0002 2000     		.short	32
+ 545 0004 0900     		.short	9
+ 546 0006 1100     		.short	17
+ 547 0008 0900     		.short	9
+ 548 000a 1100     		.short	17
+ 549              		.section	.rodata.xmp3fixpt_slotTab,"a",%progbits
+ 550              		.align	2
+ 553              	xmp3fixpt_slotTab:
+ 554 0000 0000     		.short	0
+ 555 0002 6800     		.short	104
+ 556 0004 8200     		.short	130
+ 557 0006 9C00     		.short	156
+ 558 0008 B600     		.short	182
+ 559 000a D000     		.short	208
+ 560 000c 0501     		.short	261
+ 561 000e 3901     		.short	313
+ 562 0010 6D01     		.short	365
+ 563 0012 A101     		.short	417
+ 564 0014 0A02     		.short	522
+ 565 0016 7202     		.short	626
+ 566 0018 DB02     		.short	731
+ 567 001a 4303     		.short	835
+ 568 001c 1404     		.short	1044
+ 569 001e 0000     		.short	0
+ 570 0020 6000     		.short	96
+ 571 0022 7800     		.short	120
+ 572 0024 9000     		.short	144
+ 573 0026 A800     		.short	168
+ 574 0028 C000     		.short	192
+ 575 002a F000     		.short	240
+ 576 002c 2001     		.short	288
+ 577 002e 5001     		.short	336
+ 578 0030 8001     		.short	384
+ 579 0032 E001     		.short	480
+ 580 0034 4002     		.short	576
+ 581 0036 A002     		.short	672
+ 582 0038 0003     		.short	768
+ 583 003a C003     		.short	960
+ 584 003c 0000     		.short	0
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccHNLlWc.s 			page 11
+
+
+ 585 003e 9000     		.short	144
+ 586 0040 B400     		.short	180
+ 587 0042 D800     		.short	216
+ 588 0044 FC00     		.short	252
+ 589 0046 2001     		.short	288
+ 590 0048 6801     		.short	360
+ 591 004a B001     		.short	432
+ 592 004c F801     		.short	504
+ 593 004e 4002     		.short	576
+ 594 0050 D002     		.short	720
+ 595 0052 6003     		.short	864
+ 596 0054 F003     		.short	1008
+ 597 0056 8004     		.short	1152
+ 598 0058 A005     		.short	1440
+ 599 005a 0000     		.short	0
+ 600 005c 1A00     		.short	26
+ 601 005e 3400     		.short	52
+ 602 0060 4E00     		.short	78
+ 603 0062 6800     		.short	104
+ 604 0064 8200     		.short	130
+ 605 0066 9C00     		.short	156
+ 606 0068 B600     		.short	182
+ 607 006a D000     		.short	208
+ 608 006c 0501     		.short	261
+ 609 006e 3901     		.short	313
+ 610 0070 6D01     		.short	365
+ 611 0072 A101     		.short	417
+ 612 0074 D601     		.short	470
+ 613 0076 0A02     		.short	522
+ 614 0078 0000     		.short	0
+ 615 007a 1800     		.short	24
+ 616 007c 3000     		.short	48
+ 617 007e 4800     		.short	72
+ 618 0080 6000     		.short	96
+ 619 0082 7800     		.short	120
+ 620 0084 9000     		.short	144
+ 621 0086 A800     		.short	168
+ 622 0088 C000     		.short	192
+ 623 008a F000     		.short	240
+ 624 008c 2001     		.short	288
+ 625 008e 5001     		.short	336
+ 626 0090 8001     		.short	384
+ 627 0092 B001     		.short	432
+ 628 0094 E001     		.short	480
+ 629 0096 0000     		.short	0
+ 630 0098 2400     		.short	36
+ 631 009a 4800     		.short	72
+ 632 009c 6C00     		.short	108
+ 633 009e 9000     		.short	144
+ 634 00a0 B400     		.short	180
+ 635 00a2 D800     		.short	216
+ 636 00a4 FC00     		.short	252
+ 637 00a6 2001     		.short	288
+ 638 00a8 6801     		.short	360
+ 639 00aa B001     		.short	432
+ 640 00ac F801     		.short	504
+ 641 00ae 4002     		.short	576
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccHNLlWc.s 			page 12
+
+
+ 642 00b0 8802     		.short	648
+ 643 00b2 D002     		.short	720
+ 644 00b4 0000     		.short	0
+ 645 00b6 3400     		.short	52
+ 646 00b8 6800     		.short	104
+ 647 00ba 9C00     		.short	156
+ 648 00bc D000     		.short	208
+ 649 00be 0501     		.short	261
+ 650 00c0 3901     		.short	313
+ 651 00c2 6D01     		.short	365
+ 652 00c4 A101     		.short	417
+ 653 00c6 0A02     		.short	522
+ 654 00c8 7202     		.short	626
+ 655 00ca DB02     		.short	731
+ 656 00cc 4303     		.short	835
+ 657 00ce AC03     		.short	940
+ 658 00d0 1404     		.short	1044
+ 659 00d2 0000     		.short	0
+ 660 00d4 3000     		.short	48
+ 661 00d6 6000     		.short	96
+ 662 00d8 9000     		.short	144
+ 663 00da C000     		.short	192
+ 664 00dc F000     		.short	240
+ 665 00de 2001     		.short	288
+ 666 00e0 5001     		.short	336
+ 667 00e2 8001     		.short	384
+ 668 00e4 E001     		.short	480
+ 669 00e6 4002     		.short	576
+ 670 00e8 A002     		.short	672
+ 671 00ea 0003     		.short	768
+ 672 00ec 6003     		.short	864
+ 673 00ee C003     		.short	960
+ 674 00f0 0000     		.short	0
+ 675 00f2 4800     		.short	72
+ 676 00f4 9000     		.short	144
+ 677 00f6 D800     		.short	216
+ 678 00f8 2001     		.short	288
+ 679 00fa 6801     		.short	360
+ 680 00fc B001     		.short	432
+ 681 00fe F801     		.short	504
+ 682 0100 4002     		.short	576
+ 683 0102 D002     		.short	720
+ 684 0104 6003     		.short	864
+ 685 0106 F003     		.short	1008
+ 686 0108 8004     		.short	1152
+ 687 010a 1005     		.short	1296
+ 688 010c A005     		.short	1440
+ 689              		.text
+ 690              	.Letext0:
+ 691              		.file 1 "lib/helix/pub/mp3common.h"
+ 692              		.file 2 "lib/helix/mp3tabs.c"
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccHNLlWc.s 			page 13
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 mp3tabs.c
+C:\Users\Patryk\AppData\Local\Temp\ccHNLlWc.s:204    .rodata.xmp3fixpt_sfBandTable:00000000 xmp3fixpt_sfBandTable
+C:\Users\Patryk\AppData\Local\Temp\ccHNLlWc.s:553    .rodata.xmp3fixpt_slotTab:00000000 xmp3fixpt_slotTab
+C:\Users\Patryk\AppData\Local\Temp\ccHNLlWc.s:542    .rodata.xmp3fixpt_sideBytesTab:00000000 xmp3fixpt_sideBytesTab
+C:\Users\Patryk\AppData\Local\Temp\ccHNLlWc.s:168    .rodata.xmp3fixpt_bitsPerSlotTab:00000000 xmp3fixpt_bitsPerSlotTab
+C:\Users\Patryk\AppData\Local\Temp\ccHNLlWc.s:190    .rodata.xmp3fixpt_samplesPerFrameTab:00000000 xmp3fixpt_samplesPerFrameTab
+C:\Users\Patryk\AppData\Local\Temp\ccHNLlWc.s:28     .rodata.xmp3fixpt_bitrateTab:00000000 xmp3fixpt_bitrateTab
+C:\Users\Patryk\AppData\Local\Temp\ccHNLlWc.s:176    .rodata.xmp3fixpt_samplerateTab:00000000 xmp3fixpt_samplerateTab
+C:\Users\Patryk\AppData\Local\Temp\ccHNLlWc.s:25     .rodata.xmp3fixpt_bitrateTab:00000000 $d
+C:\Users\Patryk\AppData\Local\Temp\ccHNLlWc.s:165    .rodata.xmp3fixpt_bitsPerSlotTab:00000000 $d
+C:\Users\Patryk\AppData\Local\Temp\ccHNLlWc.s:173    .rodata.xmp3fixpt_samplerateTab:00000000 $d
+C:\Users\Patryk\AppData\Local\Temp\ccHNLlWc.s:187    .rodata.xmp3fixpt_samplesPerFrameTab:00000000 $d
+C:\Users\Patryk\AppData\Local\Temp\ccHNLlWc.s:201    .rodata.xmp3fixpt_sfBandTable:00000000 $d
+C:\Users\Patryk\AppData\Local\Temp\ccHNLlWc.s:539    .rodata.xmp3fixpt_sideBytesTab:00000000 $d
+C:\Users\Patryk\AppData\Local\Temp\ccHNLlWc.s:550    .rodata.xmp3fixpt_slotTab:00000000 $d
+
+NO UNDEFINED SYMBOLS

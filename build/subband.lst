@@ -1,0 +1,377 @@
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5SBWl5.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"subband.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.xmp3fixpt_Subband,"ax",%progbits
+  18              		.align	1
+  19              		.global	xmp3fixpt_Subband
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  23              		.fpu fpv5-sp-d16
+  25              	xmp3fixpt_Subband:
+  26              	.LFB5:
+  27              		.file 1 "lib/helix/real/subband.c"
+   1:lib/helix/real/subband.c **** /* ***** BEGIN LICENSE BLOCK ***** 
+   2:lib/helix/real/subband.c ****  * Version: RCSL 1.0/RPSL 1.0 
+   3:lib/helix/real/subband.c ****  *  
+   4:lib/helix/real/subband.c ****  * Portions Copyright (c) 1995-2002 RealNetworks, Inc. All Rights Reserved. 
+   5:lib/helix/real/subband.c ****  *      
+   6:lib/helix/real/subband.c ****  * The contents of this file, and the files included with this file, are 
+   7:lib/helix/real/subband.c ****  * subject to the current version of the RealNetworks Public Source License 
+   8:lib/helix/real/subband.c ****  * Version 1.0 (the "RPSL") available at 
+   9:lib/helix/real/subband.c ****  * http://www.helixcommunity.org/content/rpsl unless you have licensed 
+  10:lib/helix/real/subband.c ****  * the file under the RealNetworks Community Source License Version 1.0 
+  11:lib/helix/real/subband.c ****  * (the "RCSL") available at http://www.helixcommunity.org/content/rcsl, 
+  12:lib/helix/real/subband.c ****  * in which case the RCSL will apply. You may also obtain the license terms 
+  13:lib/helix/real/subband.c ****  * directly from RealNetworks.  You may not use this file except in 
+  14:lib/helix/real/subband.c ****  * compliance with the RPSL or, if you have a valid RCSL with RealNetworks 
+  15:lib/helix/real/subband.c ****  * applicable to this file, the RCSL.  Please see the applicable RPSL or 
+  16:lib/helix/real/subband.c ****  * RCSL for the rights, obligations and limitations governing use of the 
+  17:lib/helix/real/subband.c ****  * contents of the file.  
+  18:lib/helix/real/subband.c ****  *  
+  19:lib/helix/real/subband.c ****  * This file is part of the Helix DNA Technology. RealNetworks is the 
+  20:lib/helix/real/subband.c ****  * developer of the Original Code and owns the copyrights in the portions 
+  21:lib/helix/real/subband.c ****  * it created. 
+  22:lib/helix/real/subband.c ****  *  
+  23:lib/helix/real/subband.c ****  * This file, and the files included with this file, is distributed and made 
+  24:lib/helix/real/subband.c ****  * available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER 
+  25:lib/helix/real/subband.c ****  * EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS ALL SUCH WARRANTIES, 
+  26:lib/helix/real/subband.c ****  * INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF MERCHANTABILITY, FITNESS 
+  27:lib/helix/real/subband.c ****  * FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT. 
+  28:lib/helix/real/subband.c ****  * 
+  29:lib/helix/real/subband.c ****  * Technology Compatibility Kit Test Suite(s) Location: 
+  30:lib/helix/real/subband.c ****  *    http://www.helixcommunity.org/content/tck 
+  31:lib/helix/real/subband.c ****  * 
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5SBWl5.s 			page 2
+
+
+  32:lib/helix/real/subband.c ****  * Contributor(s): 
+  33:lib/helix/real/subband.c ****  *  
+  34:lib/helix/real/subband.c ****  * ***** END LICENSE BLOCK ***** */ 
+  35:lib/helix/real/subband.c **** 
+  36:lib/helix/real/subband.c **** /**************************************************************************************
+  37:lib/helix/real/subband.c ****  * Fixed-point MP3 decoder
+  38:lib/helix/real/subband.c ****  * Jon Recker (jrecker@real.com), Ken Cooke (kenc@real.com)
+  39:lib/helix/real/subband.c ****  * June 2003
+  40:lib/helix/real/subband.c ****  *
+  41:lib/helix/real/subband.c ****  * subband.c - subband transform (synthesis filterbank implemented via 32-point DCT
+  42:lib/helix/real/subband.c ****  *               followed by polyphase filter)
+  43:lib/helix/real/subband.c ****  **************************************************************************************/
+  44:lib/helix/real/subband.c **** 
+  45:lib/helix/real/subband.c **** #include "coder.h"
+  46:lib/helix/real/subband.c **** #include "assembly.h"
+  47:lib/helix/real/subband.c **** 
+  48:lib/helix/real/subband.c **** /**************************************************************************************
+  49:lib/helix/real/subband.c ****  * Function:    Subband
+  50:lib/helix/real/subband.c ****  *
+  51:lib/helix/real/subband.c ****  * Description: do subband transform on all the blocks in one granule, all channels
+  52:lib/helix/real/subband.c ****  *
+  53:lib/helix/real/subband.c ****  * Inputs:      filled MP3DecInfo structure, after calling IMDCT for all channels
+  54:lib/helix/real/subband.c ****  *              vbuf[ch] and vindex[ch] must be preserved between calls
+  55:lib/helix/real/subband.c ****  *
+  56:lib/helix/real/subband.c ****  * Outputs:     decoded PCM data, interleaved LRLRLR... if stereo
+  57:lib/helix/real/subband.c ****  *
+  58:lib/helix/real/subband.c ****  * Return:      0 on success,  -1 if null input pointers
+  59:lib/helix/real/subband.c ****  **************************************************************************************/
+  60:lib/helix/real/subband.c **** int Subband(MP3DecInfo *mp3DecInfo, short *pcmBuf)
+  61:lib/helix/real/subband.c **** {
+  28              		.loc 1 61 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              	.LVL0:
+  62:lib/helix/real/subband.c **** 	int b;
+  63:lib/helix/real/subband.c **** 	HuffmanInfo *hi;
+  64:lib/helix/real/subband.c **** 	IMDCTInfo *mi;
+  65:lib/helix/real/subband.c **** 	SubbandInfo *sbi;
+  66:lib/helix/real/subband.c **** 
+  67:lib/helix/real/subband.c **** 	/* validate pointers */
+  68:lib/helix/real/subband.c **** 	if (!mp3DecInfo || !mp3DecInfo->HuffmanInfoPS || !mp3DecInfo->IMDCTInfoPS || !mp3DecInfo->SubbandI
+  33              		.loc 1 68 0
+  34 0000 0028     		cmp	r0, #0
+  35 0002 77D0     		beq	.L7
+  61:lib/helix/real/subband.c **** 	int b;
+  36              		.loc 1 61 0 discriminator 1
+  37 0004 2DE9F043 		push	{r4, r5, r6, r7, r8, r9, lr}
+  38              	.LCFI0:
+  39              		.cfi_def_cfa_offset 28
+  40              		.cfi_offset 4, -28
+  41              		.cfi_offset 5, -24
+  42              		.cfi_offset 6, -20
+  43              		.cfi_offset 7, -16
+  44              		.cfi_offset 8, -12
+  45              		.cfi_offset 9, -8
+  46              		.cfi_offset 14, -4
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5SBWl5.s 			page 3
+
+
+  47 0008 83B0     		sub	sp, sp, #12
+  48              	.LCFI1:
+  49              		.cfi_def_cfa_offset 40
+  50 000a 0F46     		mov	r7, r1
+  51              		.loc 1 68 0 discriminator 1
+  52 000c C268     		ldr	r2, [r0, #12]
+  53 000e 002A     		cmp	r2, #0
+  54 0010 73D0     		beq	.L8
+  55              		.loc 1 68 0 is_stmt 0 discriminator 2
+  56 0012 D0F81480 		ldr	r8, [r0, #20]
+  57 0016 B8F1000F 		cmp	r8, #0
+  58 001a 71D0     		beq	.L9
+  59              		.loc 1 68 0 discriminator 3
+  60 001c 8469     		ldr	r4, [r0, #24]
+  61 001e 002C     		cmp	r4, #0
+  62 0020 71D0     		beq	.L10
+  63              	.LVL1:
+  69:lib/helix/real/subband.c **** 		return -1;
+  70:lib/helix/real/subband.c **** 
+  71:lib/helix/real/subband.c **** 	hi = (HuffmanInfo *)mp3DecInfo->HuffmanInfoPS;
+  72:lib/helix/real/subband.c **** 	mi = (IMDCTInfo *)(mp3DecInfo->IMDCTInfoPS);
+  73:lib/helix/real/subband.c **** 	sbi = (SubbandInfo*)(mp3DecInfo->SubbandInfoPS);
+  74:lib/helix/real/subband.c **** 
+  75:lib/helix/real/subband.c **** 	if (mp3DecInfo->nChans == 2) {
+  64              		.loc 1 75 0 is_stmt 1
+  65 0022 D0F8BC37 		ldr	r3, [r0, #1980]
+  66 0026 022B     		cmp	r3, #2
+  67 0028 38D0     		beq	.L11
+  76:lib/helix/real/subband.c **** 		/* stereo */
+  77:lib/helix/real/subband.c **** 		for (b = 0; b < BLOCK_SIZE; b++) {
+  78:lib/helix/real/subband.c **** 			FDCT32(mi->outBuf[0][b], sbi->vbuf + 0*32, sbi->vindex, (b & 0x01), mi->gb[0]);
+  79:lib/helix/real/subband.c **** 			FDCT32(mi->outBuf[1][b], sbi->vbuf + 1*32, sbi->vindex, (b & 0x01), mi->gb[1]);
+  80:lib/helix/real/subband.c **** 			PolyphaseStereo(pcmBuf, sbi->vbuf + sbi->vindex + VBUF_LENGTH * (b & 0x01), polyCoef);
+  81:lib/helix/real/subband.c **** 			sbi->vindex = (sbi->vindex - (b & 0x01)) & 7;
+  82:lib/helix/real/subband.c **** 			pcmBuf += (2 * NBANDS);
+  83:lib/helix/real/subband.c **** 		}
+  84:lib/helix/real/subband.c **** 	} else {
+  85:lib/helix/real/subband.c **** 		/* mono */
+  86:lib/helix/real/subband.c **** 		for (b = 0; b < BLOCK_SIZE; b++) {
+  68              		.loc 1 86 0
+  69 002a 0025     		movs	r5, #0
+  70 002c 5CE0     		b	.L4
+  71              	.LVL2:
+  72              	.L5:
+  78:lib/helix/real/subband.c **** 			FDCT32(mi->outBuf[1][b], sbi->vbuf + 1*32, sbi->vindex, (b & 0x01), mi->gb[1]);
+  73              		.loc 1 78 0 discriminator 3
+  74 002e 05F00109 		and	r9, r5, #1
+  75 0032 04F50856 		add	r6, r4, #8704
+  76 0036 3268     		ldr	r2, [r6]
+  77 0038 41F61833 		movw	r3, #6936
+  78 003c 58F80330 		ldr	r3, [r8, r3]
+  79 0040 0093     		str	r3, [sp]
+  80 0042 4B46     		mov	r3, r9
+  81 0044 2146     		mov	r1, r4
+  82 0046 08EBC510 		add	r0, r8, r5, lsl #7
+  83 004a FFF7FEFF 		bl	xmp3fixpt_FDCT32
+  84              	.LVL3:
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5SBWl5.s 			page 4
+
+
+  79:lib/helix/real/subband.c **** 			PolyphaseStereo(pcmBuf, sbi->vbuf + sbi->vindex + VBUF_LENGTH * (b & 0x01), polyCoef);
+  85              		.loc 1 79 0 discriminator 3
+  86 004e 05F11200 		add	r0, r5, #18
+  87 0052 3268     		ldr	r2, [r6]
+  88 0054 41F61C33 		movw	r3, #6940
+  89 0058 58F80330 		ldr	r3, [r8, r3]
+  90 005c 0093     		str	r3, [sp]
+  91 005e 4B46     		mov	r3, r9
+  92 0060 04F18001 		add	r1, r4, #128
+  93 0064 08EBC010 		add	r0, r8, r0, lsl #7
+  94 0068 FFF7FEFF 		bl	xmp3fixpt_FDCT32
+  95              	.LVL4:
+  80:lib/helix/real/subband.c **** 			sbi->vindex = (sbi->vindex - (b & 0x01)) & 7;
+  96              		.loc 1 80 0 discriminator 3
+  97 006c 3268     		ldr	r2, [r6]
+  98 006e 4FEA0913 		lsl	r3, r9, #4
+  99 0072 4B44     		add	r3, r3, r9
+ 100 0074 1902     		lsls	r1, r3, #8
+ 101 0076 01EB8201 		add	r1, r1, r2, lsl #2
+ 102 007a 244A     		ldr	r2, .L16
+ 103 007c 2144     		add	r1, r1, r4
+ 104 007e 3846     		mov	r0, r7
+ 105 0080 FFF7FEFF 		bl	xmp3fixpt_PolyphaseStereo
+ 106              	.LVL5:
+  81:lib/helix/real/subband.c **** 			pcmBuf += (2 * NBANDS);
+ 107              		.loc 1 81 0 discriminator 3
+ 108 0084 3368     		ldr	r3, [r6]
+ 109 0086 A3EB0903 		sub	r3, r3, r9
+ 110 008a 03F00703 		and	r3, r3, #7
+ 111 008e 3360     		str	r3, [r6]
+  82:lib/helix/real/subband.c **** 		}
+ 112              		.loc 1 82 0 discriminator 3
+ 113 0090 8037     		adds	r7, r7, #128
+ 114              	.LVL6:
+  77:lib/helix/real/subband.c **** 			FDCT32(mi->outBuf[0][b], sbi->vbuf + 0*32, sbi->vindex, (b & 0x01), mi->gb[0]);
+ 115              		.loc 1 77 0 discriminator 3
+ 116 0092 0135     		adds	r5, r5, #1
+ 117              	.LVL7:
+ 118              	.L3:
+  77:lib/helix/real/subband.c **** 			FDCT32(mi->outBuf[0][b], sbi->vbuf + 0*32, sbi->vindex, (b & 0x01), mi->gb[0]);
+ 119              		.loc 1 77 0 is_stmt 0 discriminator 1
+ 120 0094 112D     		cmp	r5, #17
+ 121 0096 CADD     		ble	.L5
+  87:lib/helix/real/subband.c **** 			FDCT32(mi->outBuf[0][b], sbi->vbuf + 0*32, sbi->vindex, (b & 0x01), mi->gb[0]);
+  88:lib/helix/real/subband.c **** 			PolyphaseMono(pcmBuf, sbi->vbuf + sbi->vindex + VBUF_LENGTH * (b & 0x01), polyCoef);
+  89:lib/helix/real/subband.c **** 			sbi->vindex = (sbi->vindex - (b & 0x01)) & 7;
+  90:lib/helix/real/subband.c **** 			pcmBuf += NBANDS;
+  91:lib/helix/real/subband.c **** 		}
+  92:lib/helix/real/subband.c **** 	}
+  93:lib/helix/real/subband.c **** 
+  94:lib/helix/real/subband.c **** 	return 0;
+ 122              		.loc 1 94 0 is_stmt 1
+ 123 0098 0020     		movs	r0, #0
+ 124 009a 28E0     		b	.L1
+ 125              	.LVL8:
+ 126              	.L11:
+  77:lib/helix/real/subband.c **** 			FDCT32(mi->outBuf[0][b], sbi->vbuf + 0*32, sbi->vindex, (b & 0x01), mi->gb[0]);
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5SBWl5.s 			page 5
+
+
+ 127              		.loc 1 77 0
+ 128 009c 0025     		movs	r5, #0
+ 129 009e F9E7     		b	.L3
+ 130              	.LVL9:
+ 131              	.L6:
+  87:lib/helix/real/subband.c **** 			FDCT32(mi->outBuf[0][b], sbi->vbuf + 0*32, sbi->vindex, (b & 0x01), mi->gb[0]);
+ 132              		.loc 1 87 0 discriminator 3
+ 133 00a0 05F00109 		and	r9, r5, #1
+ 134 00a4 04F50856 		add	r6, r4, #8704
+ 135 00a8 3268     		ldr	r2, [r6]
+ 136 00aa 41F61833 		movw	r3, #6936
+ 137 00ae 58F80330 		ldr	r3, [r8, r3]
+ 138 00b2 0093     		str	r3, [sp]
+ 139 00b4 4B46     		mov	r3, r9
+ 140 00b6 2146     		mov	r1, r4
+ 141 00b8 08EBC510 		add	r0, r8, r5, lsl #7
+ 142 00bc FFF7FEFF 		bl	xmp3fixpt_FDCT32
+ 143              	.LVL10:
+  88:lib/helix/real/subband.c **** 			sbi->vindex = (sbi->vindex - (b & 0x01)) & 7;
+ 144              		.loc 1 88 0 discriminator 3
+ 145 00c0 3268     		ldr	r2, [r6]
+ 146 00c2 4FEA0913 		lsl	r3, r9, #4
+ 147 00c6 4B44     		add	r3, r3, r9
+ 148 00c8 1902     		lsls	r1, r3, #8
+ 149 00ca 01EB8201 		add	r1, r1, r2, lsl #2
+ 150 00ce 0F4A     		ldr	r2, .L16
+ 151 00d0 2144     		add	r1, r1, r4
+ 152 00d2 3846     		mov	r0, r7
+ 153 00d4 FFF7FEFF 		bl	xmp3fixpt_PolyphaseMono
+ 154              	.LVL11:
+  89:lib/helix/real/subband.c **** 			pcmBuf += NBANDS;
+ 155              		.loc 1 89 0 discriminator 3
+ 156 00d8 3368     		ldr	r3, [r6]
+ 157 00da A3EB0903 		sub	r3, r3, r9
+ 158 00de 03F00703 		and	r3, r3, #7
+ 159 00e2 3360     		str	r3, [r6]
+  90:lib/helix/real/subband.c **** 		}
+ 160              		.loc 1 90 0 discriminator 3
+ 161 00e4 4037     		adds	r7, r7, #64
+ 162              	.LVL12:
+  86:lib/helix/real/subband.c **** 			FDCT32(mi->outBuf[0][b], sbi->vbuf + 0*32, sbi->vindex, (b & 0x01), mi->gb[0]);
+ 163              		.loc 1 86 0 discriminator 3
+ 164 00e6 0135     		adds	r5, r5, #1
+ 165              	.LVL13:
+ 166              	.L4:
+  86:lib/helix/real/subband.c **** 			FDCT32(mi->outBuf[0][b], sbi->vbuf + 0*32, sbi->vindex, (b & 0x01), mi->gb[0]);
+ 167              		.loc 1 86 0 is_stmt 0 discriminator 1
+ 168 00e8 112D     		cmp	r5, #17
+ 169 00ea D9DD     		ble	.L6
+ 170              		.loc 1 94 0 is_stmt 1
+ 171 00ec 0020     		movs	r0, #0
+ 172              	.LVL14:
+ 173              	.L1:
+  95:lib/helix/real/subband.c **** }
+ 174              		.loc 1 95 0
+ 175 00ee 03B0     		add	sp, sp, #12
+ 176              	.LCFI2:
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5SBWl5.s 			page 6
+
+
+ 177              		.cfi_def_cfa_offset 28
+ 178              		@ sp needed
+ 179 00f0 BDE8F083 		pop	{r4, r5, r6, r7, r8, r9, pc}
+ 180              	.LVL15:
+ 181              	.L7:
+ 182              	.LCFI3:
+ 183              		.cfi_def_cfa_offset 0
+ 184              		.cfi_restore 4
+ 185              		.cfi_restore 5
+ 186              		.cfi_restore 6
+ 187              		.cfi_restore 7
+ 188              		.cfi_restore 8
+ 189              		.cfi_restore 9
+ 190              		.cfi_restore 14
+  69:lib/helix/real/subband.c **** 
+ 191              		.loc 1 69 0
+ 192 00f4 4FF0FF30 		mov	r0, #-1
+ 193              	.LVL16:
+ 194              		.loc 1 95 0
+ 195 00f8 7047     		bx	lr
+ 196              	.LVL17:
+ 197              	.L8:
+ 198              	.LCFI4:
+ 199              		.cfi_def_cfa_offset 40
+ 200              		.cfi_offset 4, -28
+ 201              		.cfi_offset 5, -24
+ 202              		.cfi_offset 6, -20
+ 203              		.cfi_offset 7, -16
+ 204              		.cfi_offset 8, -12
+ 205              		.cfi_offset 9, -8
+ 206              		.cfi_offset 14, -4
+  69:lib/helix/real/subband.c **** 
+ 207              		.loc 1 69 0
+ 208 00fa 4FF0FF30 		mov	r0, #-1
+ 209              	.LVL18:
+ 210 00fe F6E7     		b	.L1
+ 211              	.LVL19:
+ 212              	.L9:
+ 213 0100 4FF0FF30 		mov	r0, #-1
+ 214              	.LVL20:
+ 215 0104 F3E7     		b	.L1
+ 216              	.LVL21:
+ 217              	.L10:
+ 218 0106 4FF0FF30 		mov	r0, #-1
+ 219              	.LVL22:
+ 220 010a F0E7     		b	.L1
+ 221              	.L17:
+ 222              		.align	2
+ 223              	.L16:
+ 224 010c 00000000 		.word	xmp3fixpt_polyCoef
+ 225              		.cfi_endproc
+ 226              	.LFE5:
+ 228              		.text
+ 229              	.Letext0:
+ 230              		.file 2 "lib/helix/real/../pub/mp3common.h"
+ 231              		.file 3 "lib/helix/real/../pub/mp3dec.h"
+ 232              		.file 4 "lib/helix/real/coder.h"
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5SBWl5.s 			page 7
+
+
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5SBWl5.s 			page 8
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 subband.c
+C:\Users\Patryk\AppData\Local\Temp\cc5SBWl5.s:18     .text.xmp3fixpt_Subband:00000000 $t
+C:\Users\Patryk\AppData\Local\Temp\cc5SBWl5.s:25     .text.xmp3fixpt_Subband:00000000 xmp3fixpt_Subband
+C:\Users\Patryk\AppData\Local\Temp\cc5SBWl5.s:224    .text.xmp3fixpt_Subband:0000010c $d
+
+UNDEFINED SYMBOLS
+xmp3fixpt_FDCT32
+xmp3fixpt_PolyphaseStereo
+xmp3fixpt_PolyphaseMono
+xmp3fixpt_polyCoef

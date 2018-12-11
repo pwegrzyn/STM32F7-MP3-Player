@@ -6,41 +6,41 @@
   ******************************************************************************
   * This notice applies to any and all portions of this file
   * that are not between comment pairs USER CODE BEGIN and
-  * USER CODE END. Other portions of this file, whether 
+  * USER CODE END. Other portions of this file, whether
   * inserted by the user or by software development tools
   * are owned by their respective copyright owners.
   *
-  * Copyright (c) 2018 STMicroelectronics International N.V. 
+  * Copyright (c) 2018 STMicroelectronics International N.V.
   * All rights reserved.
   *
-  * Redistribution and use in source and binary forms, with or without 
+  * Redistribution and use in source and binary forms, with or without
   * modification, are permitted, provided that the following conditions are met:
   *
-  * 1. Redistribution of source code must retain the above copyright notice, 
+  * 1. Redistribution of source code must retain the above copyright notice,
   *    this list of conditions and the following disclaimer.
   * 2. Redistributions in binary form must reproduce the above copyright notice,
   *    this list of conditions and the following disclaimer in the documentation
   *    and/or other materials provided with the distribution.
-  * 3. Neither the name of STMicroelectronics nor the names of other 
-  *    contributors to this software may be used to endorse or promote products 
+  * 3. Neither the name of STMicroelectronics nor the names of other
+  *    contributors to this software may be used to endorse or promote products
   *    derived from this software without specific written permission.
-  * 4. This software, including modifications and/or derivative works of this 
+  * 4. This software, including modifications and/or derivative works of this
   *    software, must execute solely and exclusively on microcontroller or
   *    microprocessor devices manufactured by or for STMicroelectronics.
-  * 5. Redistribution and use of this software other than as permitted under 
-  *    this license is void and will automatically terminate your rights under 
-  *    this license. 
+  * 5. Redistribution and use of this software other than as permitted under
+  *    this license is void and will automatically terminate your rights under
+  *    this license.
   *
-  * THIS SOFTWARE IS PROVIDED BY STMICROELECTRONICS AND CONTRIBUTORS "AS IS" 
-  * AND ANY EXPRESS, IMPLIED OR STATUTORY WARRANTIES, INCLUDING, BUT NOT 
-  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A 
+  * THIS SOFTWARE IS PROVIDED BY STMICROELECTRONICS AND CONTRIBUTORS "AS IS"
+  * AND ANY EXPRESS, IMPLIED OR STATUTORY WARRANTIES, INCLUDING, BUT NOT
+  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
   * PARTICULAR PURPOSE AND NON-INFRINGEMENT OF THIRD PARTY INTELLECTUAL PROPERTY
-  * RIGHTS ARE DISCLAIMED TO THE FULLEST EXTENT PERMITTED BY LAW. IN NO EVENT 
+  * RIGHTS ARE DISCLAIMED TO THE FULLEST EXTENT PERMITTED BY LAW. IN NO EVENT
   * SHALL STMICROELECTRONICS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
   * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-  * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, 
-  * OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF 
-  * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING 
+  * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
+  * OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+  * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
   * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
   * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   *
@@ -51,11 +51,11 @@
 #include "stm32f7xx_hal.h"
 #include "cmsis_os.h"
 #include "fatfs.h"
-#include "lwip.h"
 #include "usb_host.h"
 
 /* USER CODE BEGIN Includes */
 #include "mp3_player.h"
+#include "gui.h"
 
 #include  <errno.h>
 #include  <sys/unistd.h>
@@ -72,19 +72,7 @@
 #include "task.h"
 #include "queue.h"
 
-#include "lwip/opt.h"
-#include "lwip/api.h"
-#include "lwip/apps/fs.h"
-#include "lwip/dhcp.h"
-#include "lwip/tcpip.h"
-#include "lwip/netdb.h"
-#include "lwip/sockets.h"
-
-#include "lwip.h"
-
 #include "wm8994/wm8994.h"
-
-
 
 
 /* USER CODE END Includes */
@@ -165,10 +153,6 @@ static void MX_TIM7_Init(void);
 void StartDefaultTask(void const * argument);
 
 void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
-                                
-                                
-                                
-                                
 
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
@@ -177,8 +161,6 @@ void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
 
 /* USER CODE BEGIN 0 */
 void mainTask(void* p);
-
-osThreadId netconn_thread_handle;
 
 #define LCD_X_SIZE			RK043FN48H_WIDTH
 #define LCD_Y_SIZE			RK043FN48H_HEIGHT
@@ -189,7 +171,7 @@ int __io_putchar(int ch)
 {
 	uint8_t data = ch;
 	#if PRINTF_USES_HAL_TX
-		HAL_StatusTypeDef status = HAL_UART_Transmit(&huart1, (uint8_t*)&data, len, 100);	
+		HAL_StatusTypeDef status = HAL_UART_Transmit(&huart1, (uint8_t*)&data, len, 100);
 	#else
 		while(__HAL_UART_GET_FLAG(&huart1, UART_FLAG_TXE) == RESET) { ; }
 		huart1.Instance->TDR = (uint16_t)data;
@@ -200,7 +182,7 @@ int __io_putchar(int ch)
 char inkey(void)
 {
 	uint32_t flags = huart1.Instance->ISR;
-	
+
 	if((flags & UART_FLAG_RXNE) || (flags & UART_FLAG_ORE))
 	{
 		__HAL_UART_CLEAR_OREFLAG(&huart1);
@@ -209,67 +191,6 @@ char inkey(void)
 	else
 		return 0;
 }
-
-//partially based on available code examples
-static void lcd_start(void)
-{
-  /* LCD Initialization */ 
-  BSP_LCD_Init();
-
-  /* LCD Initialization */ 
-  BSP_LCD_LayerDefaultInit(0, (unsigned int)0xC0000000);
-  //BSP_LCD_LayerDefaultInit(1, (unsigned int)lcd_image_bg+(LCD_X_SIZE*LCD_Y_SIZE*4));
-  BSP_LCD_LayerDefaultInit(1, (unsigned int)0xC0000000+(LCD_X_SIZE*LCD_Y_SIZE*4));
-
-  /* Enable the LCD */ 
-  BSP_LCD_DisplayOn(); 
-  
-  /* Select the LCD Background Layer  */
-  BSP_LCD_SelectLayer(0);
-
-  /* Clear the Background Layer */ 
-  BSP_LCD_Clear(LCD_COLOR_WHITE);
-  BSP_LCD_SetBackColor(LCD_COLOR_WHITE);
-  
-  BSP_LCD_SetColorKeying(1,LCD_COLOR_WHITE);
-  
-  /* Select the LCD Foreground Layer  */
-  BSP_LCD_SelectLayer(1);
-
-  /* Clear the Foreground Layer */ 
-  BSP_LCD_Clear(LCD_COLOR_WHITE);
-  BSP_LCD_SetBackColor(LCD_COLOR_WHITE);
-  
-  /* Configure the transparency for foreground and background :
-     Increase the transparency */
-  BSP_LCD_SetTransparency(0, 255);
-  BSP_LCD_SetTransparency(1, 255);
-}
-
-//[rmv]
-void draw_background(void)
-{
-	/* Select the LCD Background Layer  */
-	BSP_LCD_SelectLayer(0);
-	BSP_LCD_SetTextColor(LCD_COLOR_GREEN);
-	BSP_LCD_FillRect(0.4*LCD_X_SIZE,0.2*LCD_Y_SIZE,150,130);
-	
-	//select Foreground Layer
-	BSP_LCD_SelectLayer(1);
-}
-
-static TS_StateTypeDef  TS_State;
-
-
-int initialize_touchscreen(void)
-{
-	uint8_t  status = 0;
-	status = BSP_TS_Init(BSP_LCD_GetXSize(), BSP_LCD_GetYSize());
-	if(status != TS_OK) return -1;
-	return 0;
-}
-
-
 
 /* USER CODE END 0 */
 
@@ -332,9 +253,12 @@ int main(void)
 
   printf("Regular printf\n");
 
-lcd_start();
-draw_background();
-initialize_touchscreen();
+  // gui.h init
+  lcd_start();
+  draw_background();
+  if(initialize_touchscreen() == -1) {
+    xprintf("Error while initializing touchscreen!\n");
+  }
 
   /* USER CODE END 2 */
 
@@ -362,11 +286,11 @@ initialize_touchscreen();
   /* USER CODE BEGIN RTOS_QUEUES */
   /* add queues, ... */
   /* USER CODE END RTOS_QUEUES */
- 
+
 
   /* Start scheduler */
   osKernelStart();
-  
+
   /* We should never get here as control is now taken by the scheduler */
 
   /* Infinite loop */
@@ -394,13 +318,13 @@ void SystemClock_Config(void)
   RCC_ClkInitTypeDef RCC_ClkInitStruct;
   RCC_PeriphCLKInitTypeDef PeriphClkInitStruct;
 
-    /**Configure the main internal regulator output voltage 
+    /**Configure the main internal regulator output voltage
     */
   __HAL_RCC_PWR_CLK_ENABLE();
 
   __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
 
-    /**Initializes the CPU, AHB and APB busses clocks 
+    /**Initializes the CPU, AHB and APB busses clocks
     */
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_LSI|RCC_OSCILLATORTYPE_HSE;
   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
@@ -416,14 +340,14 @@ void SystemClock_Config(void)
     _Error_Handler(__FILE__, __LINE__);
   }
 
-    /**Activate the Over-Drive mode 
+    /**Activate the Over-Drive mode
     */
   if (HAL_PWREx_EnableOverDrive() != HAL_OK)
   {
     _Error_Handler(__FILE__, __LINE__);
   }
 
-    /**Initializes the CPU, AHB and APB busses clocks 
+    /**Initializes the CPU, AHB and APB busses clocks
     */
   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
@@ -466,11 +390,11 @@ void SystemClock_Config(void)
     _Error_Handler(__FILE__, __LINE__);
   }
 
-    /**Configure the Systick interrupt time 
+    /**Configure the Systick interrupt time
     */
   HAL_SYSTICK_Config(HAL_RCC_GetHCLKFreq()/1000);
 
-    /**Configure the Systick 
+    /**Configure the Systick
     */
   HAL_SYSTICK_CLKSourceConfig(SYSTICK_CLKSOURCE_HCLK);
 
@@ -484,7 +408,7 @@ static void MX_ADC3_Init(void)
 
   ADC_ChannelConfTypeDef sConfig;
 
-    /**Configure the global features of the ADC (Clock, Resolution, Data Alignment and number of conversion) 
+    /**Configure the global features of the ADC (Clock, Resolution, Data Alignment and number of conversion)
     */
   hadc3.Instance = ADC3;
   hadc3.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV4;
@@ -503,7 +427,7 @@ static void MX_ADC3_Init(void)
     _Error_Handler(__FILE__, __LINE__);
   }
 
-    /**Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time. 
+    /**Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time.
     */
   sConfig.Channel = ADC_CHANNEL_4;
   sConfig.Rank = ADC_REGULAR_RANK_1;
@@ -597,14 +521,14 @@ static void MX_I2C1_Init(void)
     _Error_Handler(__FILE__, __LINE__);
   }
 
-    /**Configure Analogue filter 
+    /**Configure Analogue filter
     */
   if (HAL_I2CEx_ConfigAnalogFilter(&hi2c1, I2C_ANALOGFILTER_ENABLE) != HAL_OK)
   {
     _Error_Handler(__FILE__, __LINE__);
   }
 
-    /**Configure Digital filter 
+    /**Configure Digital filter
     */
   if (HAL_I2CEx_ConfigDigitalFilter(&hi2c1, 0) != HAL_OK)
   {
@@ -631,14 +555,14 @@ static void MX_I2C3_Init(void)
     _Error_Handler(__FILE__, __LINE__);
   }
 
-    /**Configure Analogue filter 
+    /**Configure Analogue filter
     */
   if (HAL_I2CEx_ConfigAnalogFilter(&hi2c3, I2C_ANALOGFILTER_ENABLE) != HAL_OK)
   {
     _Error_Handler(__FILE__, __LINE__);
   }
 
-    /**Configure Digital filter 
+    /**Configure Digital filter
     */
   if (HAL_I2CEx_ConfigDigitalFilter(&hi2c3, 0) != HAL_OK)
   {
@@ -733,7 +657,7 @@ static void MX_RTC_Init(void)
 
   /* USER CODE END RTC_Init 1 */
 
-    /**Initialize RTC Only 
+    /**Initialize RTC Only
     */
   hrtc.Instance = RTC;
   hrtc.Init.HourFormat = RTC_HOURFORMAT_24;
@@ -747,7 +671,7 @@ static void MX_RTC_Init(void)
     _Error_Handler(__FILE__, __LINE__);
   }
 
-    /**Initialize RTC and set the Time and Date 
+    /**Initialize RTC and set the Time and Date
     */
   sTime.Hours = 0x0;
   sTime.Minutes = 0x0;
@@ -769,7 +693,7 @@ static void MX_RTC_Init(void)
     _Error_Handler(__FILE__, __LINE__);
   }
 
-    /**Enable the Alarm A 
+    /**Enable the Alarm A
     */
   sAlarm.AlarmTime.Hours = 0x0;
   sAlarm.AlarmTime.Minutes = 0x0;
@@ -787,7 +711,7 @@ static void MX_RTC_Init(void)
     _Error_Handler(__FILE__, __LINE__);
   }
 
-    /**Enable the Alarm B 
+    /**Enable the Alarm B
     */
   sAlarm.AlarmDateWeekDay = 0x1;
   sAlarm.Alarm = RTC_ALARM_B;
@@ -796,7 +720,7 @@ static void MX_RTC_Init(void)
     _Error_Handler(__FILE__, __LINE__);
   }
 
-    /**Enable the TimeStamp 
+    /**Enable the TimeStamp
     */
   if (HAL_RTCEx_SetTimeStamp(&hrtc, RTC_TIMESTAMPEDGE_RISING, RTC_TIMESTAMPPIN_POS1) != HAL_OK)
   {
@@ -1318,9 +1242,9 @@ static void MX_FMC_Init(void)
 
 }
 
-/** Configure pins as 
-        * Analog 
-        * Input 
+/** Configure pins as
+        * Analog
+        * Input
         * Output
         * EVENT_OUT
         * EXTI
@@ -1379,9 +1303,9 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(OTG_HS_OverCurrent_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : ULPI_D7_Pin ULPI_D6_Pin ULPI_D5_Pin ULPI_D3_Pin 
+  /*Configure GPIO pins : ULPI_D7_Pin ULPI_D6_Pin ULPI_D5_Pin ULPI_D3_Pin
                            ULPI_D2_Pin ULPI_D1_Pin ULPI_D4_Pin */
-  GPIO_InitStruct.Pin = ULPI_D7_Pin|ULPI_D6_Pin|ULPI_D5_Pin|ULPI_D3_Pin 
+  GPIO_InitStruct.Pin = ULPI_D7_Pin|ULPI_D6_Pin|ULPI_D5_Pin|ULPI_D3_Pin
                           |ULPI_D2_Pin|ULPI_D1_Pin|ULPI_D4_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
@@ -1494,7 +1418,6 @@ static void MX_GPIO_Init(void)
 
 /* USER CODE BEGIN 4 */
 
-static FIL file;
 extern ApplicationTypeDef Appli_state;
 
 /* USER CODE END 4 */
@@ -1502,7 +1425,7 @@ extern ApplicationTypeDef Appli_state;
 /* USER CODE BEGIN Header_StartDefaultTask */
 /**
   * @brief  Function implementing the defaultTask thread.
-  * @param  argument: Not used 
+  * @param  argument: Not used
   * @retval None
   */
 /* USER CODE END Header_StartDefaultTask */
@@ -1514,47 +1437,29 @@ void StartDefaultTask(void const * argument)
   /* init code for USB_HOST */
   MX_USB_HOST_Init();
 
-  /* init code for LWIP */
-  //MX_LWIP_Init();
-
   /* USER CODE BEGIN 5 */
-  //osThreadDef(netconn_thread, http_server_netconn_thread, osPriorityNormal, 0, 1024);
-  //netconn_thread_handle = osThreadCreate(osThread(netconn_thread), NULL);
-  
+
   vTaskDelay(1000);
-  
+
   xprintf("waiting for USB mass storage\n");
-  
+
   do
   {
 	  xprintf(".");
 	  vTaskDelay(250);
-  }while(Appli_state != APPLICATION_READY);
-  
-  FRESULT res;
-  
+  } while(Appli_state != APPLICATION_READY);
+
+
   ////////////////////////////
   ////////////////////////////
-  ////////////////////////////
-  ////////////////////////////
-  ////////////////////////////
-  
-  res = f_open(&file,"test.mp3",FA_READ);
-  
-  if(res==FR_OK)
-  {
-	  xprintf("mp3 file open OK\n");
-  }
-  else
-  {
-	  xprintf("mp3 file open ERROR, res = %d\n",res);
-	  while(1);
-  }
-  
-  
+
+  xprintf("Starting player...\n");
+  mp3_player_fsm("1:/");
+  xprintf("Player finished\n");
+
   /* Infinite loop */
   while(1);
-  /* USER CODE END 5 */ 
+  /* USER CODE END 5 */
 }
 
 /**
@@ -1603,7 +1508,7 @@ void _Error_Handler(char *file, int line)
   * @retval None
   */
 void assert_failed(uint8_t* file, uint32_t line)
-{ 
+{
   /* USER CODE BEGIN 6 */
   /* User can add his own implementation to report the file name and line number,
      tex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */

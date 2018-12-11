@@ -1,6 +1,6 @@
 build/syscall.o: Middlewares/Third_Party/FatFs/src/option/syscall.c \
- d:\sw\middlewares\third_party\fatfs\src\ff.h \
- d:\sw\middlewares\third_party\fatfs\src\integer.h Inc/ffconf.h \
+ Middlewares/Third_Party/FatFs/src/option/../ff.h \
+ Middlewares/Third_Party/FatFs/src/option/../integer.h Inc/ffconf.h \
  Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal.h \
  Inc/stm32f7xx_hal_conf.h Inc/main.h \
  Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc.h \
@@ -77,9 +77,9 @@ build/syscall.o: Middlewares/Third_Party/FatFs/src/option/syscall.c \
  Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc_bot.h \
  Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc/usbh_msc_scsi.h
 
-d:\sw\middlewares\third_party\fatfs\src\ff.h:
+Middlewares/Third_Party/FatFs/src/option/../ff.h:
 
-d:\sw\middlewares\third_party\fatfs\src\integer.h:
+Middlewares/Third_Party/FatFs/src/option/../integer.h:
 
 Inc/ffconf.h:
 

@@ -1,0 +1,1656 @@
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cctYoe2o.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"bitstream.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.xmp3fixpt_SetBitstreamPointer,"ax",%progbits
+  18              		.align	1
+  19              		.global	xmp3fixpt_SetBitstreamPointer
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  23              		.fpu fpv5-sp-d16
+  25              	xmp3fixpt_SetBitstreamPointer:
+  26              	.LFB5:
+  27              		.file 1 "lib/helix/real/bitstream.c"
+   1:lib/helix/real/bitstream.c **** /* ***** BEGIN LICENSE BLOCK ***** 
+   2:lib/helix/real/bitstream.c ****  * Version: RCSL 1.0/RPSL 1.0 
+   3:lib/helix/real/bitstream.c ****  *  
+   4:lib/helix/real/bitstream.c ****  * Portions Copyright (c) 1995-2002 RealNetworks, Inc. All Rights Reserved. 
+   5:lib/helix/real/bitstream.c ****  *      
+   6:lib/helix/real/bitstream.c ****  * The contents of this file, and the files included with this file, are 
+   7:lib/helix/real/bitstream.c ****  * subject to the current version of the RealNetworks Public Source License 
+   8:lib/helix/real/bitstream.c ****  * Version 1.0 (the "RPSL") available at 
+   9:lib/helix/real/bitstream.c ****  * http://www.helixcommunity.org/content/rpsl unless you have licensed 
+  10:lib/helix/real/bitstream.c ****  * the file under the RealNetworks Community Source License Version 1.0 
+  11:lib/helix/real/bitstream.c ****  * (the "RCSL") available at http://www.helixcommunity.org/content/rcsl, 
+  12:lib/helix/real/bitstream.c ****  * in which case the RCSL will apply. You may also obtain the license terms 
+  13:lib/helix/real/bitstream.c ****  * directly from RealNetworks.  You may not use this file except in 
+  14:lib/helix/real/bitstream.c ****  * compliance with the RPSL or, if you have a valid RCSL with RealNetworks 
+  15:lib/helix/real/bitstream.c ****  * applicable to this file, the RCSL.  Please see the applicable RPSL or 
+  16:lib/helix/real/bitstream.c ****  * RCSL for the rights, obligations and limitations governing use of the 
+  17:lib/helix/real/bitstream.c ****  * contents of the file.  
+  18:lib/helix/real/bitstream.c ****  *  
+  19:lib/helix/real/bitstream.c ****  * This file is part of the Helix DNA Technology. RealNetworks is the 
+  20:lib/helix/real/bitstream.c ****  * developer of the Original Code and owns the copyrights in the portions 
+  21:lib/helix/real/bitstream.c ****  * it created. 
+  22:lib/helix/real/bitstream.c ****  *  
+  23:lib/helix/real/bitstream.c ****  * This file, and the files included with this file, is distributed and made 
+  24:lib/helix/real/bitstream.c ****  * available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER 
+  25:lib/helix/real/bitstream.c ****  * EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS ALL SUCH WARRANTIES, 
+  26:lib/helix/real/bitstream.c ****  * INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF MERCHANTABILITY, FITNESS 
+  27:lib/helix/real/bitstream.c ****  * FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT. 
+  28:lib/helix/real/bitstream.c ****  * 
+  29:lib/helix/real/bitstream.c ****  * Technology Compatibility Kit Test Suite(s) Location: 
+  30:lib/helix/real/bitstream.c ****  *    http://www.helixcommunity.org/content/tck 
+  31:lib/helix/real/bitstream.c ****  * 
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cctYoe2o.s 			page 2
+
+
+  32:lib/helix/real/bitstream.c ****  * Contributor(s): 
+  33:lib/helix/real/bitstream.c ****  *  
+  34:lib/helix/real/bitstream.c ****  * ***** END LICENSE BLOCK ***** */ 
+  35:lib/helix/real/bitstream.c **** 
+  36:lib/helix/real/bitstream.c **** /**************************************************************************************
+  37:lib/helix/real/bitstream.c ****  * Fixed-point MP3 decoder
+  38:lib/helix/real/bitstream.c ****  * Jon Recker (jrecker@real.com), Ken Cooke (kenc@real.com)
+  39:lib/helix/real/bitstream.c ****  * June 2003
+  40:lib/helix/real/bitstream.c ****  *
+  41:lib/helix/real/bitstream.c ****  * bitstream.c - bitstream unpacking, frame header parsing, side info parsing
+  42:lib/helix/real/bitstream.c ****  **************************************************************************************/
+  43:lib/helix/real/bitstream.c **** 
+  44:lib/helix/real/bitstream.c **** #include "coder.h"
+  45:lib/helix/real/bitstream.c **** #include "assembly.h"
+  46:lib/helix/real/bitstream.c **** 
+  47:lib/helix/real/bitstream.c **** /**************************************************************************************
+  48:lib/helix/real/bitstream.c ****  * Function:    SetBitstreamPointer
+  49:lib/helix/real/bitstream.c ****  *
+  50:lib/helix/real/bitstream.c ****  * Description: initialize bitstream reader
+  51:lib/helix/real/bitstream.c ****  *
+  52:lib/helix/real/bitstream.c ****  * Inputs:      pointer to BitStreamInfo struct
+  53:lib/helix/real/bitstream.c ****  *              number of bytes in bitstream
+  54:lib/helix/real/bitstream.c ****  *              pointer to byte-aligned buffer of data to read from
+  55:lib/helix/real/bitstream.c ****  *
+  56:lib/helix/real/bitstream.c ****  * Outputs:     filled bitstream info struct
+  57:lib/helix/real/bitstream.c ****  *
+  58:lib/helix/real/bitstream.c ****  * Return:      none
+  59:lib/helix/real/bitstream.c ****  **************************************************************************************/
+  60:lib/helix/real/bitstream.c **** void SetBitstreamPointer(BitStreamInfo *bsi, int nBytes, unsigned char *buf)
+  61:lib/helix/real/bitstream.c **** {
+  28              		.loc 1 61 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+  33              	.LVL0:
+  62:lib/helix/real/bitstream.c **** 	/* init bitstream */
+  63:lib/helix/real/bitstream.c **** 	bsi->bytePtr = buf;
+  34              		.loc 1 63 0
+  35 0000 0260     		str	r2, [r0]
+  64:lib/helix/real/bitstream.c **** 	bsi->iCache = 0;		/* 4-byte unsigned int */
+  36              		.loc 1 64 0
+  37 0002 0023     		movs	r3, #0
+  38 0004 4360     		str	r3, [r0, #4]
+  65:lib/helix/real/bitstream.c **** 	bsi->cachedBits = 0;	/* i.e. zero bits in cache */
+  39              		.loc 1 65 0
+  40 0006 8360     		str	r3, [r0, #8]
+  66:lib/helix/real/bitstream.c **** 	bsi->nBytes = nBytes;
+  41              		.loc 1 66 0
+  42 0008 C160     		str	r1, [r0, #12]
+  67:lib/helix/real/bitstream.c **** }
+  43              		.loc 1 67 0
+  44 000a 7047     		bx	lr
+  45              		.cfi_endproc
+  46              	.LFE5:
+  48              		.section	.text.xmp3fixpt_GetBits,"ax",%progbits
+  49              		.align	1
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cctYoe2o.s 			page 3
+
+
+  50              		.global	xmp3fixpt_GetBits
+  51              		.syntax unified
+  52              		.thumb
+  53              		.thumb_func
+  54              		.fpu fpv5-sp-d16
+  56              	xmp3fixpt_GetBits:
+  57              	.LFB7:
+  68:lib/helix/real/bitstream.c **** 
+  69:lib/helix/real/bitstream.c **** /**************************************************************************************
+  70:lib/helix/real/bitstream.c ****  * Function:    RefillBitstreamCache
+  71:lib/helix/real/bitstream.c ****  *
+  72:lib/helix/real/bitstream.c ****  * Description: read new data from bitstream buffer into bsi cache
+  73:lib/helix/real/bitstream.c ****  *
+  74:lib/helix/real/bitstream.c ****  * Inputs:      pointer to initialized BitStreamInfo struct
+  75:lib/helix/real/bitstream.c ****  *
+  76:lib/helix/real/bitstream.c ****  * Outputs:     updated bitstream info struct
+  77:lib/helix/real/bitstream.c ****  *
+  78:lib/helix/real/bitstream.c ****  * Return:      none
+  79:lib/helix/real/bitstream.c ****  *
+  80:lib/helix/real/bitstream.c ****  * Notes:       only call when iCache is completely drained (resets bitOffset to 0)
+  81:lib/helix/real/bitstream.c ****  *              always loads 4 new bytes except when bsi->nBytes < 4 (end of buffer)
+  82:lib/helix/real/bitstream.c ****  *              stores data as big-endian in cache, regardless of machine endian-ness
+  83:lib/helix/real/bitstream.c ****  *
+  84:lib/helix/real/bitstream.c ****  * TODO:        optimize for ARM
+  85:lib/helix/real/bitstream.c ****  *              possibly add little/big-endian modes for doing 32-bit loads
+  86:lib/helix/real/bitstream.c ****  **************************************************************************************/
+  87:lib/helix/real/bitstream.c **** static __inline void RefillBitstreamCache(BitStreamInfo *bsi)
+  88:lib/helix/real/bitstream.c **** {
+  89:lib/helix/real/bitstream.c **** 	int nBytes = bsi->nBytes;
+  90:lib/helix/real/bitstream.c **** 
+  91:lib/helix/real/bitstream.c **** 	/* optimize for common case, independent of machine endian-ness */
+  92:lib/helix/real/bitstream.c **** 	if (nBytes >= 4) {
+  93:lib/helix/real/bitstream.c **** 		bsi->iCache  = (*bsi->bytePtr++) << 24;
+  94:lib/helix/real/bitstream.c **** 		bsi->iCache |= (*bsi->bytePtr++) << 16;
+  95:lib/helix/real/bitstream.c **** 		bsi->iCache |= (*bsi->bytePtr++) <<  8;
+  96:lib/helix/real/bitstream.c **** 		bsi->iCache |= (*bsi->bytePtr++);
+  97:lib/helix/real/bitstream.c **** 		bsi->cachedBits = 32;
+  98:lib/helix/real/bitstream.c **** 		bsi->nBytes -= 4;
+  99:lib/helix/real/bitstream.c **** 	} else {
+ 100:lib/helix/real/bitstream.c **** 		bsi->iCache = 0;
+ 101:lib/helix/real/bitstream.c **** 		while (nBytes--) {
+ 102:lib/helix/real/bitstream.c **** 			bsi->iCache |= (*bsi->bytePtr++);
+ 103:lib/helix/real/bitstream.c **** 			bsi->iCache <<= 8;
+ 104:lib/helix/real/bitstream.c **** 		}
+ 105:lib/helix/real/bitstream.c **** 		bsi->iCache <<= ((3 - bsi->nBytes)*8);
+ 106:lib/helix/real/bitstream.c **** 		bsi->cachedBits = 8*bsi->nBytes;
+ 107:lib/helix/real/bitstream.c **** 		bsi->nBytes = 0;
+ 108:lib/helix/real/bitstream.c **** 	}
+ 109:lib/helix/real/bitstream.c **** }
+ 110:lib/helix/real/bitstream.c **** 
+ 111:lib/helix/real/bitstream.c **** /**************************************************************************************
+ 112:lib/helix/real/bitstream.c ****  * Function:    GetBits
+ 113:lib/helix/real/bitstream.c ****  *
+ 114:lib/helix/real/bitstream.c ****  * Description: get bits from bitstream, advance bitstream pointer
+ 115:lib/helix/real/bitstream.c ****  *
+ 116:lib/helix/real/bitstream.c ****  * Inputs:      pointer to initialized BitStreamInfo struct
+ 117:lib/helix/real/bitstream.c ****  *              number of bits to get from bitstream
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cctYoe2o.s 			page 4
+
+
+ 118:lib/helix/real/bitstream.c ****  *
+ 119:lib/helix/real/bitstream.c ****  * Outputs:     updated bitstream info struct
+ 120:lib/helix/real/bitstream.c ****  *
+ 121:lib/helix/real/bitstream.c ****  * Return:      the next nBits bits of data from bitstream buffer
+ 122:lib/helix/real/bitstream.c ****  *
+ 123:lib/helix/real/bitstream.c ****  * Notes:       nBits must be in range [0, 31], nBits outside this range masked by 0x1f
+ 124:lib/helix/real/bitstream.c ****  *              for speed, does not indicate error if you overrun bit buffer 
+ 125:lib/helix/real/bitstream.c ****  *              if nBits = 0, returns 0 (useful for scalefactor unpacking)
+ 126:lib/helix/real/bitstream.c ****  *
+ 127:lib/helix/real/bitstream.c ****  * TODO:        optimize for ARM
+ 128:lib/helix/real/bitstream.c ****  **************************************************************************************/
+ 129:lib/helix/real/bitstream.c **** unsigned int GetBits(BitStreamInfo *bsi, int nBits)
+ 130:lib/helix/real/bitstream.c **** {
+  58              		.loc 1 130 0
+  59              		.cfi_startproc
+  60              		@ args = 0, pretend = 0, frame = 0
+  61              		@ frame_needed = 0, uses_anonymous_args = 0
+  62              		@ link register save eliminated.
+  63              	.LVL1:
+  64 0000 0346     		mov	r3, r0
+ 131:lib/helix/real/bitstream.c **** 	unsigned int data, lowBits;
+ 132:lib/helix/real/bitstream.c **** 
+ 133:lib/helix/real/bitstream.c **** 	nBits &= 0x1f;							/* nBits mod 32 to avoid unpredictable results like >> by negative amount */
+  65              		.loc 1 133 0
+  66 0002 01F01F01 		and	r1, r1, #31
+  67              	.LVL2:
+ 134:lib/helix/real/bitstream.c **** 	data = bsi->iCache >> (31 - nBits);		/* unsigned >> so zero-extend */
+  68              		.loc 1 134 0
+  69 0006 4268     		ldr	r2, [r0, #4]
+  70 0008 C1F11F00 		rsb	r0, r1, #31
+  71              	.LVL3:
+  72 000c 22FA00F0 		lsr	r0, r2, r0
+  73              	.LVL4:
+ 135:lib/helix/real/bitstream.c **** 	data >>= 1;								/* do as >> 31, >> 1 so that nBits = 0 works okay (returns 0) */
+  74              		.loc 1 135 0
+  75 0010 4008     		lsrs	r0, r0, #1
+  76              	.LVL5:
+ 136:lib/helix/real/bitstream.c **** 	bsi->iCache <<= nBits;					/* left-justify cache */
+  77              		.loc 1 136 0
+  78 0012 8A40     		lsls	r2, r2, r1
+  79 0014 5A60     		str	r2, [r3, #4]
+ 137:lib/helix/real/bitstream.c **** 	bsi->cachedBits -= nBits;				/* how many bits have we drawn from the cache so far */
+  80              		.loc 1 137 0
+  81 0016 9A68     		ldr	r2, [r3, #8]
+  82 0018 511A     		subs	r1, r2, r1
+  83              	.LVL6:
+  84 001a 9960     		str	r1, [r3, #8]
+ 138:lib/helix/real/bitstream.c **** 
+ 139:lib/helix/real/bitstream.c **** 	/* if we cross an int boundary, refill the cache */
+ 140:lib/helix/real/bitstream.c **** 	if (bsi->cachedBits < 0) {
+  85              		.loc 1 140 0
+  86 001c 0029     		cmp	r1, #0
+  87 001e 00DB     		blt	.L12
+ 141:lib/helix/real/bitstream.c **** 		lowBits = -bsi->cachedBits;
+ 142:lib/helix/real/bitstream.c **** 		RefillBitstreamCache(bsi);
+ 143:lib/helix/real/bitstream.c **** 		data |= bsi->iCache >> (32 - lowBits);		/* get the low-order bits */
+ 144:lib/helix/real/bitstream.c **** 	
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cctYoe2o.s 			page 5
+
+
+ 145:lib/helix/real/bitstream.c **** 		bsi->cachedBits -= lowBits;			/* how many bits have we drawn from the cache so far */
+ 146:lib/helix/real/bitstream.c **** 		bsi->iCache <<= lowBits;			/* left-justify cache */
+ 147:lib/helix/real/bitstream.c **** 	}
+ 148:lib/helix/real/bitstream.c **** 
+ 149:lib/helix/real/bitstream.c **** 	return data;
+ 150:lib/helix/real/bitstream.c **** }
+  88              		.loc 1 150 0
+  89 0020 7047     		bx	lr
+  90              	.L12:
+ 130:lib/helix/real/bitstream.c **** 	unsigned int data, lowBits;
+  91              		.loc 1 130 0
+  92 0022 F0B4     		push	{r4, r5, r6, r7}
+  93              	.LCFI0:
+  94              		.cfi_def_cfa_offset 16
+  95              		.cfi_offset 4, -16
+  96              		.cfi_offset 5, -12
+  97              		.cfi_offset 6, -8
+  98              		.cfi_offset 7, -4
+ 141:lib/helix/real/bitstream.c **** 		lowBits = -bsi->cachedBits;
+  99              		.loc 1 141 0
+ 100 0024 4F42     		negs	r7, r1
+ 101              	.LVL7:
+ 102              	.LBB4:
+ 103              	.LBB5:
+  89:lib/helix/real/bitstream.c **** 
+ 104              		.loc 1 89 0
+ 105 0026 DE68     		ldr	r6, [r3, #12]
+ 106              	.LVL8:
+  92:lib/helix/real/bitstream.c **** 		bsi->iCache  = (*bsi->bytePtr++) << 24;
+ 107              		.loc 1 92 0
+ 108 0028 032E     		cmp	r6, #3
+ 109 002a 03DC     		bgt	.L13
+ 100:lib/helix/real/bitstream.c **** 		while (nBytes--) {
+ 110              		.loc 1 100 0
+ 111 002c 0022     		movs	r2, #0
+ 112 002e 5A60     		str	r2, [r3, #4]
+  89:lib/helix/real/bitstream.c **** 
+ 113              		.loc 1 89 0
+ 114 0030 3246     		mov	r2, r6
+ 115 0032 28E0     		b	.L6
+ 116              	.L13:
+  93:lib/helix/real/bitstream.c **** 		bsi->iCache |= (*bsi->bytePtr++) << 16;
+ 117              		.loc 1 93 0
+ 118 0034 1C68     		ldr	r4, [r3]
+ 119 0036 04F1010C 		add	ip, r4, #1
+ 120 003a C3F800C0 		str	ip, [r3]
+ 121 003e 2278     		ldrb	r2, [r4]	@ zero_extendqisi2
+ 122 0040 1206     		lsls	r2, r2, #24
+ 123 0042 5A60     		str	r2, [r3, #4]
+  94:lib/helix/real/bitstream.c **** 		bsi->iCache |= (*bsi->bytePtr++) <<  8;
+ 124              		.loc 1 94 0
+ 125 0044 A51C     		adds	r5, r4, #2
+ 126 0046 1D60     		str	r5, [r3]
+ 127 0048 6478     		ldrb	r4, [r4, #1]	@ zero_extendqisi2
+ 128 004a 42EA0442 		orr	r2, r2, r4, lsl #16
+ 129 004e 5A60     		str	r2, [r3, #4]
+  95:lib/helix/real/bitstream.c **** 		bsi->iCache |= (*bsi->bytePtr++);
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cctYoe2o.s 			page 6
+
+
+ 130              		.loc 1 95 0
+ 131 0050 0CF10204 		add	r4, ip, #2
+ 132 0054 1C60     		str	r4, [r3]
+ 133 0056 9CF801C0 		ldrb	ip, [ip, #1]	@ zero_extendqisi2
+ 134 005a 42EA0C22 		orr	r2, r2, ip, lsl #8
+ 135 005e 5A60     		str	r2, [r3, #4]
+  96:lib/helix/real/bitstream.c **** 		bsi->cachedBits = 32;
+ 136              		.loc 1 96 0
+ 137 0060 AC1C     		adds	r4, r5, #2
+ 138 0062 1C60     		str	r4, [r3]
+ 139 0064 6C78     		ldrb	r4, [r5, #1]	@ zero_extendqisi2
+ 140 0066 2243     		orrs	r2, r2, r4
+ 141 0068 5A60     		str	r2, [r3, #4]
+  97:lib/helix/real/bitstream.c **** 		bsi->nBytes -= 4;
+ 142              		.loc 1 97 0
+ 143 006a 2022     		movs	r2, #32
+ 144 006c 9A60     		str	r2, [r3, #8]
+  98:lib/helix/real/bitstream.c **** 	} else {
+ 145              		.loc 1 98 0
+ 146 006e 043E     		subs	r6, r6, #4
+ 147              	.LVL9:
+ 148 0070 DE60     		str	r6, [r3, #12]
+ 149              	.LVL10:
+ 150 0072 15E0     		b	.L5
+ 151              	.LVL11:
+ 152              	.L7:
+ 102:lib/helix/real/bitstream.c **** 			bsi->iCache <<= 8;
+ 153              		.loc 1 102 0
+ 154 0074 1A68     		ldr	r2, [r3]
+ 155 0076 551C     		adds	r5, r2, #1
+ 156 0078 1D60     		str	r5, [r3]
+ 157 007a 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
+ 158 007c 5D68     		ldr	r5, [r3, #4]
+ 159 007e 2A43     		orrs	r2, r2, r5
+ 103:lib/helix/real/bitstream.c **** 		}
+ 160              		.loc 1 103 0
+ 161 0080 1202     		lsls	r2, r2, #8
+ 162 0082 5A60     		str	r2, [r3, #4]
+ 101:lib/helix/real/bitstream.c **** 			bsi->iCache |= (*bsi->bytePtr++);
+ 163              		.loc 1 101 0
+ 164 0084 2246     		mov	r2, r4
+ 165              	.LVL12:
+ 166              	.L6:
+ 167 0086 541E     		subs	r4, r2, #1
+ 168              	.LVL13:
+ 169 0088 002A     		cmp	r2, #0
+ 170 008a F3D1     		bne	.L7
+ 105:lib/helix/real/bitstream.c **** 		bsi->cachedBits = 8*bsi->nBytes;
+ 171              		.loc 1 105 0
+ 172 008c C6F10302 		rsb	r2, r6, #3
+ 173 0090 D400     		lsls	r4, r2, #3
+ 174              	.LVL14:
+ 175 0092 5A68     		ldr	r2, [r3, #4]
+ 176 0094 A240     		lsls	r2, r2, r4
+ 177 0096 5A60     		str	r2, [r3, #4]
+ 106:lib/helix/real/bitstream.c **** 		bsi->nBytes = 0;
+ 178              		.loc 1 106 0
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cctYoe2o.s 			page 7
+
+
+ 179 0098 F600     		lsls	r6, r6, #3
+ 180 009a 9E60     		str	r6, [r3, #8]
+ 107:lib/helix/real/bitstream.c **** 	}
+ 181              		.loc 1 107 0
+ 182 009c 0022     		movs	r2, #0
+ 183 009e DA60     		str	r2, [r3, #12]
+ 184              	.L5:
+ 185              	.LVL15:
+ 186              	.LBE5:
+ 187              	.LBE4:
+ 143:lib/helix/real/bitstream.c **** 	
+ 188              		.loc 1 143 0
+ 189 00a0 5A68     		ldr	r2, [r3, #4]
+ 190 00a2 01F12004 		add	r4, r1, #32
+ 191 00a6 22FA04F4 		lsr	r4, r2, r4
+ 192 00aa 2043     		orrs	r0, r0, r4
+ 193              	.LVL16:
+ 145:lib/helix/real/bitstream.c **** 		bsi->iCache <<= lowBits;			/* left-justify cache */
+ 194              		.loc 1 145 0
+ 195 00ac 9C68     		ldr	r4, [r3, #8]
+ 196 00ae 2144     		add	r1, r1, r4
+ 197 00b0 9960     		str	r1, [r3, #8]
+ 146:lib/helix/real/bitstream.c **** 	}
+ 198              		.loc 1 146 0
+ 199 00b2 02FA07F7 		lsl	r7, r2, r7
+ 200              	.LVL17:
+ 201 00b6 5F60     		str	r7, [r3, #4]
+ 202              		.loc 1 150 0
+ 203 00b8 F0BC     		pop	{r4, r5, r6, r7}
+ 204              	.LCFI1:
+ 205              		.cfi_restore 7
+ 206              		.cfi_restore 6
+ 207              		.cfi_restore 5
+ 208              		.cfi_restore 4
+ 209              		.cfi_def_cfa_offset 0
+ 210 00ba 7047     		bx	lr
+ 211              		.cfi_endproc
+ 212              	.LFE7:
+ 214              		.section	.text.xmp3fixpt_CalcBitsUsed,"ax",%progbits
+ 215              		.align	1
+ 216              		.global	xmp3fixpt_CalcBitsUsed
+ 217              		.syntax unified
+ 218              		.thumb
+ 219              		.thumb_func
+ 220              		.fpu fpv5-sp-d16
+ 222              	xmp3fixpt_CalcBitsUsed:
+ 223              	.LFB8:
+ 151:lib/helix/real/bitstream.c **** 
+ 152:lib/helix/real/bitstream.c **** /**************************************************************************************
+ 153:lib/helix/real/bitstream.c ****  * Function:    CalcBitsUsed
+ 154:lib/helix/real/bitstream.c ****  *
+ 155:lib/helix/real/bitstream.c ****  * Description: calculate how many bits have been read from bitstream
+ 156:lib/helix/real/bitstream.c ****  *
+ 157:lib/helix/real/bitstream.c ****  * Inputs:      pointer to initialized BitStreamInfo struct
+ 158:lib/helix/real/bitstream.c ****  *              pointer to start of bitstream buffer
+ 159:lib/helix/real/bitstream.c ****  *              bit offset into first byte of startBuf (0-7) 
+ 160:lib/helix/real/bitstream.c ****  *
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cctYoe2o.s 			page 8
+
+
+ 161:lib/helix/real/bitstream.c ****  * Outputs:     none
+ 162:lib/helix/real/bitstream.c ****  *
+ 163:lib/helix/real/bitstream.c ****  * Return:      number of bits read from bitstream, as offset from startBuf:startOffset
+ 164:lib/helix/real/bitstream.c ****  **************************************************************************************/
+ 165:lib/helix/real/bitstream.c **** int CalcBitsUsed(BitStreamInfo *bsi, unsigned char *startBuf, int startOffset)
+ 166:lib/helix/real/bitstream.c **** {
+ 224              		.loc 1 166 0
+ 225              		.cfi_startproc
+ 226              		@ args = 0, pretend = 0, frame = 0
+ 227              		@ frame_needed = 0, uses_anonymous_args = 0
+ 228              		@ link register save eliminated.
+ 229              	.LVL18:
+ 167:lib/helix/real/bitstream.c **** 	int bitsUsed;
+ 168:lib/helix/real/bitstream.c **** 
+ 169:lib/helix/real/bitstream.c **** 	bitsUsed  = (bsi->bytePtr - startBuf) * 8;
+ 230              		.loc 1 169 0
+ 231 0000 0368     		ldr	r3, [r0]
+ 232 0002 591A     		subs	r1, r3, r1
+ 233              	.LVL19:
+ 170:lib/helix/real/bitstream.c **** 	bitsUsed -= bsi->cachedBits;
+ 234              		.loc 1 170 0
+ 235 0004 8068     		ldr	r0, [r0, #8]
+ 236              	.LVL20:
+ 237 0006 C0EBC100 		rsb	r0, r0, r1, lsl #3
+ 238              	.LVL21:
+ 171:lib/helix/real/bitstream.c **** 	bitsUsed -= startOffset;
+ 172:lib/helix/real/bitstream.c **** 
+ 173:lib/helix/real/bitstream.c **** 	return bitsUsed;
+ 174:lib/helix/real/bitstream.c **** }
+ 239              		.loc 1 174 0
+ 240 000a 801A     		subs	r0, r0, r2
+ 241              	.LVL22:
+ 242 000c 7047     		bx	lr
+ 243              		.cfi_endproc
+ 244              	.LFE8:
+ 246              		.section	.text.xmp3fixpt_CheckPadBit,"ax",%progbits
+ 247              		.align	1
+ 248              		.global	xmp3fixpt_CheckPadBit
+ 249              		.syntax unified
+ 250              		.thumb
+ 251              		.thumb_func
+ 252              		.fpu fpv5-sp-d16
+ 254              	xmp3fixpt_CheckPadBit:
+ 255              	.LFB9:
+ 175:lib/helix/real/bitstream.c **** 
+ 176:lib/helix/real/bitstream.c **** /**************************************************************************************
+ 177:lib/helix/real/bitstream.c ****  * Function:    CheckPadBit
+ 178:lib/helix/real/bitstream.c ****  *
+ 179:lib/helix/real/bitstream.c ****  * Description: check whether padding byte is present in an MP3 frame
+ 180:lib/helix/real/bitstream.c ****  *
+ 181:lib/helix/real/bitstream.c ****  * Inputs:      MP3DecInfo struct with valid FrameHeader struct 
+ 182:lib/helix/real/bitstream.c ****  *                (filled by UnpackFrameHeader())
+ 183:lib/helix/real/bitstream.c ****  *
+ 184:lib/helix/real/bitstream.c ****  * Outputs:     none
+ 185:lib/helix/real/bitstream.c ****  *
+ 186:lib/helix/real/bitstream.c ****  * Return:      1 if pad bit is set, 0 if not, -1 if null input pointer
+ 187:lib/helix/real/bitstream.c ****  **************************************************************************************/
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cctYoe2o.s 			page 9
+
+
+ 188:lib/helix/real/bitstream.c **** int CheckPadBit(MP3DecInfo *mp3DecInfo)
+ 189:lib/helix/real/bitstream.c **** {
+ 256              		.loc 1 189 0
+ 257              		.cfi_startproc
+ 258              		@ args = 0, pretend = 0, frame = 0
+ 259              		@ frame_needed = 0, uses_anonymous_args = 0
+ 260              		@ link register save eliminated.
+ 261              	.LVL23:
+ 190:lib/helix/real/bitstream.c **** 	FrameHeader *fh;
+ 191:lib/helix/real/bitstream.c **** 
+ 192:lib/helix/real/bitstream.c **** 	/* validate pointers */
+ 193:lib/helix/real/bitstream.c **** 	if (!mp3DecInfo || !mp3DecInfo->FrameHeaderPS)
+ 262              		.loc 1 193 0
+ 263 0000 30B1     		cbz	r0, .L17
+ 264              		.loc 1 193 0 is_stmt 0 discriminator 1
+ 265 0002 0368     		ldr	r3, [r0]
+ 266 0004 3BB1     		cbz	r3, .L18
+ 267              	.LVL24:
+ 194:lib/helix/real/bitstream.c **** 		return -1;
+ 195:lib/helix/real/bitstream.c **** 
+ 196:lib/helix/real/bitstream.c **** 	fh = ((FrameHeader *)(mp3DecInfo->FrameHeaderPS));
+ 197:lib/helix/real/bitstream.c **** 
+ 198:lib/helix/real/bitstream.c **** 	return (fh->paddingBit ? 1 : 0);
+ 268              		.loc 1 198 0 is_stmt 1
+ 269 0006 5869     		ldr	r0, [r3, #20]
+ 270              	.LVL25:
+ 271 0008 0030     		adds	r0, r0, #0
+ 272 000a 18BF     		it	ne
+ 273 000c 0120     		movne	r0, #1
+ 274 000e 7047     		bx	lr
+ 275              	.LVL26:
+ 276              	.L17:
+ 194:lib/helix/real/bitstream.c **** 		return -1;
+ 277              		.loc 1 194 0
+ 278 0010 4FF0FF30 		mov	r0, #-1
+ 279              	.LVL27:
+ 280 0014 7047     		bx	lr
+ 281              	.LVL28:
+ 282              	.L18:
+ 283 0016 4FF0FF30 		mov	r0, #-1
+ 284              	.LVL29:
+ 199:lib/helix/real/bitstream.c **** }
+ 285              		.loc 1 199 0
+ 286 001a 7047     		bx	lr
+ 287              		.cfi_endproc
+ 288              	.LFE9:
+ 290              		.section	.text.xmp3fixpt_UnpackFrameHeader,"ax",%progbits
+ 291              		.align	1
+ 292              		.global	xmp3fixpt_UnpackFrameHeader
+ 293              		.syntax unified
+ 294              		.thumb
+ 295              		.thumb_func
+ 296              		.fpu fpv5-sp-d16
+ 298              	xmp3fixpt_UnpackFrameHeader:
+ 299              	.LFB10:
+ 200:lib/helix/real/bitstream.c **** 
+ 201:lib/helix/real/bitstream.c **** /**************************************************************************************
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cctYoe2o.s 			page 10
+
+
+ 202:lib/helix/real/bitstream.c ****  * Function:    UnpackFrameHeader
+ 203:lib/helix/real/bitstream.c ****  *
+ 204:lib/helix/real/bitstream.c ****  * Description: parse the fields of the MP3 frame header
+ 205:lib/helix/real/bitstream.c ****  *
+ 206:lib/helix/real/bitstream.c ****  * Inputs:      buffer pointing to a complete MP3 frame header (4 bytes, plus 2 if CRC)
+ 207:lib/helix/real/bitstream.c ****  *
+ 208:lib/helix/real/bitstream.c ****  * Outputs:     filled frame header info in the MP3DecInfo structure
+ 209:lib/helix/real/bitstream.c ****  *              updated platform-specific FrameHeader struct
+ 210:lib/helix/real/bitstream.c ****  *
+ 211:lib/helix/real/bitstream.c ****  * Return:      length (in bytes) of frame header (for caller to calculate offset to
+ 212:lib/helix/real/bitstream.c ****  *                first byte following frame header)
+ 213:lib/helix/real/bitstream.c ****  *              -1 if null frameHeader or invalid header
+ 214:lib/helix/real/bitstream.c ****  *
+ 215:lib/helix/real/bitstream.c ****  * TODO:        check for valid modes, depending on capabilities of decoder
+ 216:lib/helix/real/bitstream.c ****  *              test CRC on actual stream (verify no endian problems)
+ 217:lib/helix/real/bitstream.c ****  **************************************************************************************/
+ 218:lib/helix/real/bitstream.c **** int UnpackFrameHeader(MP3DecInfo *mp3DecInfo, unsigned char *buf)
+ 219:lib/helix/real/bitstream.c **** {
+ 300              		.loc 1 219 0
+ 301              		.cfi_startproc
+ 302              		@ args = 0, pretend = 0, frame = 0
+ 303              		@ frame_needed = 0, uses_anonymous_args = 0
+ 304              		@ link register save eliminated.
+ 305              	.LVL30:
+ 220:lib/helix/real/bitstream.c **** 
+ 221:lib/helix/real/bitstream.c **** 	int verIdx;
+ 222:lib/helix/real/bitstream.c **** 	FrameHeader *fh;
+ 223:lib/helix/real/bitstream.c **** 
+ 224:lib/helix/real/bitstream.c **** 	/* validate pointers and sync word */
+ 225:lib/helix/real/bitstream.c **** 	if (!mp3DecInfo || !mp3DecInfo->FrameHeaderPS || (buf[0] & SYNCWORDH) != SYNCWORDH || (buf[1] & SY
+ 306              		.loc 1 225 0
+ 307 0000 0028     		cmp	r0, #0
+ 308 0002 00F0DA80 		beq	.L28
+ 219:lib/helix/real/bitstream.c **** 
+ 309              		.loc 1 219 0 discriminator 1
+ 310 0006 F0B4     		push	{r4, r5, r6, r7}
+ 311              	.LCFI2:
+ 312              		.cfi_def_cfa_offset 16
+ 313              		.cfi_offset 4, -16
+ 314              		.cfi_offset 5, -12
+ 315              		.cfi_offset 6, -8
+ 316              		.cfi_offset 7, -4
+ 317 0008 0446     		mov	r4, r0
+ 318              		.loc 1 225 0 discriminator 1
+ 319 000a 0368     		ldr	r3, [r0]
+ 320 000c 002B     		cmp	r3, #0
+ 321 000e 00F0D780 		beq	.L29
+ 322              		.loc 1 225 0 is_stmt 0 discriminator 2
+ 323 0012 0A78     		ldrb	r2, [r1]	@ zero_extendqisi2
+ 324 0014 FF2A     		cmp	r2, #255
+ 325 0016 40F0D680 		bne	.L30
+ 326              		.loc 1 225 0 discriminator 3
+ 327 001a 4A78     		ldrb	r2, [r1, #1]	@ zero_extendqisi2
+ 328 001c 02F0E000 		and	r0, r2, #224
+ 329              	.LVL31:
+ 330 0020 E028     		cmp	r0, #224
+ 331 0022 40F0D380 		bne	.L31
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cctYoe2o.s 			page 11
+
+
+ 332              	.LVL32:
+ 226:lib/helix/real/bitstream.c **** 		return -1;
+ 227:lib/helix/real/bitstream.c **** 
+ 228:lib/helix/real/bitstream.c **** 	fh = ((FrameHeader *)(mp3DecInfo->FrameHeaderPS));
+ 229:lib/helix/real/bitstream.c **** 
+ 230:lib/helix/real/bitstream.c **** 	/* read header fields - use bitmasks instead of GetBits() for speed, since format never varies */
+ 231:lib/helix/real/bitstream.c **** 	verIdx =         (buf[1] >> 3) & 0x03;
+ 333              		.loc 1 231 0 is_stmt 1
+ 334 0026 D208     		lsrs	r2, r2, #3
+ 335              	.LVL33:
+ 232:lib/helix/real/bitstream.c **** 	fh->ver =        (MPEGVersion)( verIdx == 0 ? MPEG25 : ((verIdx & 0x01) ? MPEG1 : MPEG2) );
+ 336              		.loc 1 232 0
+ 337 0028 12F0030F 		tst	r2, #3
+ 338 002c 00F0BB80 		beq	.L32
+ 339              		.loc 1 232 0 is_stmt 0 discriminator 1
+ 340 0030 82F00102 		eor	r2, r2, #1
+ 341              	.LVL34:
+ 342 0034 02F00100 		and	r0, r2, #1
+ 343              	.LVL35:
+ 344              	.L21:
+ 345              		.loc 1 232 0 discriminator 4
+ 346 0038 1870     		strb	r0, [r3]
+ 347              	.LVL36:
+ 233:lib/helix/real/bitstream.c **** 	fh->layer = 4 - ((buf[1] >> 1) & 0x03);     /* easy mapping of index to layer number, 4 = error */
+ 348              		.loc 1 233 0 is_stmt 1 discriminator 4
+ 349 003a 4D78     		ldrb	r5, [r1, #1]	@ zero_extendqisi2
+ 350 003c C5F34105 		ubfx	r5, r5, #1, #2
+ 351 0040 C5F10405 		rsb	r5, r5, #4
+ 352 0044 5D60     		str	r5, [r3, #4]
+ 234:lib/helix/real/bitstream.c **** 	fh->crc =   1 - ((buf[1] >> 0) & 0x01);
+ 353              		.loc 1 234 0 discriminator 4
+ 354 0046 4A78     		ldrb	r2, [r1, #1]	@ zero_extendqisi2
+ 355 0048 82F00102 		eor	r2, r2, #1
+ 356 004c 02F00102 		and	r2, r2, #1
+ 357 0050 9A60     		str	r2, [r3, #8]
+ 235:lib/helix/real/bitstream.c **** 	fh->brIdx =      (buf[2] >> 4) & 0x0f;
+ 358              		.loc 1 235 0 discriminator 4
+ 359 0052 8F78     		ldrb	r7, [r1, #2]	@ zero_extendqisi2
+ 360 0054 3F09     		lsrs	r7, r7, #4
+ 361 0056 DF60     		str	r7, [r3, #12]
+ 236:lib/helix/real/bitstream.c **** 	fh->srIdx =      (buf[2] >> 2) & 0x03;
+ 362              		.loc 1 236 0 discriminator 4
+ 363 0058 8A78     		ldrb	r2, [r1, #2]	@ zero_extendqisi2
+ 364 005a C2F38102 		ubfx	r2, r2, #2, #2
+ 365 005e 1A61     		str	r2, [r3, #16]
+ 237:lib/helix/real/bitstream.c **** 	fh->paddingBit = (buf[2] >> 1) & 0x01;
+ 366              		.loc 1 237 0 discriminator 4
+ 367 0060 8E78     		ldrb	r6, [r1, #2]	@ zero_extendqisi2
+ 368 0062 C6F34006 		ubfx	r6, r6, #1, #1
+ 369 0066 5E61     		str	r6, [r3, #20]
+ 238:lib/helix/real/bitstream.c **** 	fh->privateBit = (buf[2] >> 0) & 0x01;
+ 370              		.loc 1 238 0 discriminator 4
+ 371 0068 8E78     		ldrb	r6, [r1, #2]	@ zero_extendqisi2
+ 372 006a 06F00106 		and	r6, r6, #1
+ 373 006e 9E61     		str	r6, [r3, #24]
+ 239:lib/helix/real/bitstream.c **** 	fh->sMode =      (StereoMode)((buf[3] >> 6) & 0x03);      /* maps to correct enum (see definition)
+ 374              		.loc 1 239 0 discriminator 4
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cctYoe2o.s 			page 12
+
+
+ 375 0070 CE78     		ldrb	r6, [r1, #3]	@ zero_extendqisi2
+ 376 0072 B609     		lsrs	r6, r6, #6
+ 377 0074 1E77     		strb	r6, [r3, #28]
+ 240:lib/helix/real/bitstream.c **** 	fh->modeExt =    (buf[3] >> 4) & 0x03;
+ 378              		.loc 1 240 0 discriminator 4
+ 379 0076 91F803C0 		ldrb	ip, [r1, #3]	@ zero_extendqisi2
+ 380 007a CCF3011C 		ubfx	ip, ip, #4, #2
+ 381 007e C3F820C0 		str	ip, [r3, #32]
+ 241:lib/helix/real/bitstream.c **** 	fh->copyFlag =   (buf[3] >> 3) & 0x01;
+ 382              		.loc 1 241 0 discriminator 4
+ 383 0082 91F803C0 		ldrb	ip, [r1, #3]	@ zero_extendqisi2
+ 384 0086 CCF3C00C 		ubfx	ip, ip, #3, #1
+ 385 008a C3F824C0 		str	ip, [r3, #36]
+ 242:lib/helix/real/bitstream.c **** 	fh->origFlag =   (buf[3] >> 2) & 0x01;
+ 386              		.loc 1 242 0 discriminator 4
+ 387 008e 91F803C0 		ldrb	ip, [r1, #3]	@ zero_extendqisi2
+ 388 0092 CCF3800C 		ubfx	ip, ip, #2, #1
+ 389 0096 C3F828C0 		str	ip, [r3, #40]
+ 243:lib/helix/real/bitstream.c **** 	fh->emphasis =   (buf[3] >> 0) & 0x03;
+ 390              		.loc 1 243 0 discriminator 4
+ 391 009a 91F803C0 		ldrb	ip, [r1, #3]	@ zero_extendqisi2
+ 392 009e 0CF0030C 		and	ip, ip, #3
+ 393 00a2 C3F82CC0 		str	ip, [r3, #44]
+ 244:lib/helix/real/bitstream.c **** 
+ 245:lib/helix/real/bitstream.c **** 	/* check parameters to avoid indexing tables with bad values */
+ 246:lib/helix/real/bitstream.c **** 	if (fh->srIdx == 3 || fh->layer == 4 || fh->brIdx == 15)
+ 394              		.loc 1 246 0 discriminator 4
+ 395 00a6 032A     		cmp	r2, #3
+ 396 00a8 00F09380 		beq	.L33
+ 397              		.loc 1 246 0 is_stmt 0 discriminator 1
+ 398 00ac 042D     		cmp	r5, #4
+ 399 00ae 00F09380 		beq	.L34
+ 400              		.loc 1 246 0 discriminator 2
+ 401 00b2 0F2F     		cmp	r7, #15
+ 402 00b4 00F09380 		beq	.L35
+ 247:lib/helix/real/bitstream.c **** 		return -1;
+ 248:lib/helix/real/bitstream.c **** 
+ 249:lib/helix/real/bitstream.c **** 	fh->sfBand = &sfBandTable[fh->ver][fh->srIdx];	/* for readability (we reference sfBandTable many t
+ 403              		.loc 1 249 0 is_stmt 1
+ 404 00b8 DE25     		movs	r5, #222
+ 405 00ba 05FB00F0 		mul	r0, r5, r0
+ 406 00be 4A25     		movs	r5, #74
+ 407 00c0 05FB0202 		mla	r2, r5, r2, r0
+ 408 00c4 4748     		ldr	r0, .L43
+ 409 00c6 0244     		add	r2, r2, r0
+ 410 00c8 5A63     		str	r2, [r3, #52]
+ 250:lib/helix/real/bitstream.c **** 	if (fh->sMode != Joint)		/* just to be safe (dequant, stproc check fh->modeExt) */
+ 411              		.loc 1 250 0
+ 412 00ca 012E     		cmp	r6, #1
+ 413 00cc 01D0     		beq	.L22
+ 251:lib/helix/real/bitstream.c **** 		fh->modeExt = 0;
+ 414              		.loc 1 251 0
+ 415 00ce 0022     		movs	r2, #0
+ 416 00d0 1A62     		str	r2, [r3, #32]
+ 417              	.L22:
+ 252:lib/helix/real/bitstream.c **** 
+ 253:lib/helix/real/bitstream.c **** 	/* init user-accessible data */
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cctYoe2o.s 			page 13
+
+
+ 254:lib/helix/real/bitstream.c **** 	mp3DecInfo->nChans = (fh->sMode == Mono ? 1 : 2);
+ 418              		.loc 1 254 0
+ 419 00d2 032E     		cmp	r6, #3
+ 420 00d4 69D0     		beq	.L42
+ 421 00d6 0222     		movs	r2, #2
+ 422              	.L23:
+ 423              		.loc 1 254 0 is_stmt 0 discriminator 4
+ 424 00d8 C4F8BC27 		str	r2, [r4, #1980]
+ 255:lib/helix/real/bitstream.c **** 	mp3DecInfo->samprate = samplerateTab[fh->ver][fh->srIdx];
+ 425              		.loc 1 255 0 is_stmt 1 discriminator 4
+ 426 00dc 1A78     		ldrb	r2, [r3]	@ zero_extendqisi2
+ 427 00de 1869     		ldr	r0, [r3, #16]
+ 428 00e0 02EB4202 		add	r2, r2, r2, lsl #1
+ 429 00e4 0244     		add	r2, r2, r0
+ 430 00e6 4048     		ldr	r0, .L43+4
+ 431 00e8 50F82220 		ldr	r2, [r0, r2, lsl #2]
+ 432 00ec C4F8C027 		str	r2, [r4, #1984]
+ 256:lib/helix/real/bitstream.c **** 	mp3DecInfo->nGrans = (fh->ver == MPEG1 ? NGRANS_MPEG1 : NGRANS_MPEG2);
+ 433              		.loc 1 256 0 discriminator 4
+ 434 00f0 1A78     		ldrb	r2, [r3]	@ zero_extendqisi2
+ 435 00f2 002A     		cmp	r2, #0
+ 436 00f4 5BD1     		bne	.L37
+ 437              		.loc 1 256 0 is_stmt 0
+ 438 00f6 0225     		movs	r5, #2
+ 439              	.L24:
+ 440              		.loc 1 256 0 discriminator 4
+ 441 00f8 C4F8C457 		str	r5, [r4, #1988]
+ 257:lib/helix/real/bitstream.c **** 	mp3DecInfo->nGranSamps = ((int)samplesPerFrameTab[fh->ver][fh->layer - 1]) / mp3DecInfo->nGrans;
+ 442              		.loc 1 257 0 is_stmt 1 discriminator 4
+ 443 00fc 1A78     		ldrb	r2, [r3]	@ zero_extendqisi2
+ 444 00fe 5868     		ldr	r0, [r3, #4]
+ 445 0100 0138     		subs	r0, r0, #1
+ 446 0102 02EB4202 		add	r2, r2, r2, lsl #1
+ 447 0106 0244     		add	r2, r2, r0
+ 448 0108 3848     		ldr	r0, .L43+8
+ 449 010a 30F91220 		ldrsh	r2, [r0, r2, lsl #1]
+ 450 010e 92FBF5F2 		sdiv	r2, r2, r5
+ 451 0112 C4F8C827 		str	r2, [r4, #1992]
+ 258:lib/helix/real/bitstream.c **** 	mp3DecInfo->layer = fh->layer;
+ 452              		.loc 1 258 0 discriminator 4
+ 453 0116 5A68     		ldr	r2, [r3, #4]
+ 454 0118 C4F8D027 		str	r2, [r4, #2000]
+ 259:lib/helix/real/bitstream.c **** 	mp3DecInfo->version = fh->ver;
+ 455              		.loc 1 259 0 discriminator 4
+ 456 011c 1A78     		ldrb	r2, [r3]	@ zero_extendqisi2
+ 457 011e 84F8D427 		strb	r2, [r4, #2004]
+ 260:lib/helix/real/bitstream.c **** 	
+ 261:lib/helix/real/bitstream.c **** 	/* get bitrate and nSlots from table, unless brIdx == 0 (free mode) in which case caller must figu
+ 262:lib/helix/real/bitstream.c **** 	 * question - do we want to overwrite mp3DecInfo->bitrate with 0 each time if it's free mode, and
+ 263:lib/helix/real/bitstream.c **** 	 *  copy the pre-calculated actual free bitrate into it in mp3dec.c (according to the spec, 
+ 264:lib/helix/real/bitstream.c **** 	 *  this shouldn't be necessary, since it should be either all frames free or none free)
+ 265:lib/helix/real/bitstream.c **** 	 */
+ 266:lib/helix/real/bitstream.c **** 	if (fh->brIdx) {
+ 458              		.loc 1 266 0 discriminator 4
+ 459 0122 DD68     		ldr	r5, [r3, #12]
+ 460 0124 002D     		cmp	r5, #0
+ 461 0126 34D0     		beq	.L25
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cctYoe2o.s 			page 14
+
+
+ 267:lib/helix/real/bitstream.c **** 		mp3DecInfo->bitrate = ((int)bitrateTab[fh->ver][fh->layer - 1][fh->brIdx]) * 1000;
+ 462              		.loc 1 267 0
+ 463 0128 1878     		ldrb	r0, [r3]	@ zero_extendqisi2
+ 464 012a 5A68     		ldr	r2, [r3, #4]
+ 465 012c 013A     		subs	r2, r2, #1
+ 466 012e C2EB0212 		rsb	r2, r2, r2, lsl #4
+ 467 0132 00EB4000 		add	r0, r0, r0, lsl #1
+ 468 0136 C0EB0010 		rsb	r0, r0, r0, lsl #4
+ 469 013a 0244     		add	r2, r2, r0
+ 470 013c 2A44     		add	r2, r2, r5
+ 471 013e 2C48     		ldr	r0, .L43+12
+ 472 0140 30F91200 		ldrsh	r0, [r0, r2, lsl #1]
+ 473 0144 4FF47A72 		mov	r2, #1000
+ 474 0148 02FB00F2 		mul	r2, r2, r0
+ 475 014c C4F8B827 		str	r2, [r4, #1976]
+ 268:lib/helix/real/bitstream.c **** 	
+ 269:lib/helix/real/bitstream.c **** 		/* nSlots = total frame bytes (from table) - sideInfo bytes - header - CRC (if present) + pad (if
+ 270:lib/helix/real/bitstream.c **** 		mp3DecInfo->nSlots = (int)slotTab[fh->ver][fh->srIdx][fh->brIdx] - 
+ 476              		.loc 1 270 0
+ 477 0150 1878     		ldrb	r0, [r3]	@ zero_extendqisi2
+ 478 0152 1A69     		ldr	r2, [r3, #16]
+ 479 0154 DD68     		ldr	r5, [r3, #12]
+ 480 0156 C2EB0212 		rsb	r2, r2, r2, lsl #4
+ 481 015a 4600     		lsls	r6, r0, #1
+ 482 015c 3044     		add	r0, r0, r6
+ 483 015e C0EB0010 		rsb	r0, r0, r0, lsl #4
+ 484 0162 0244     		add	r2, r2, r0
+ 485 0164 2A44     		add	r2, r2, r5
+ 486 0166 2348     		ldr	r0, .L43+16
+ 487 0168 30F91220 		ldrsh	r2, [r0, r2, lsl #1]
+ 271:lib/helix/real/bitstream.c **** 			(int)sideBytesTab[fh->ver][(fh->sMode == Mono ? 0 : 1)] - 
+ 488              		.loc 1 271 0
+ 489 016c 187F     		ldrb	r0, [r3, #28]	@ zero_extendqisi2
+ 490 016e 0328     		cmp	r0, #3
+ 491 0170 18BF     		it	ne
+ 492 0172 0136     		addne	r6, r6, #1
+ 493 0174 2048     		ldr	r0, .L43+20
+ 494 0176 30F91600 		ldrsh	r0, [r0, r6, lsl #1]
+ 270:lib/helix/real/bitstream.c **** 			(int)sideBytesTab[fh->ver][(fh->sMode == Mono ? 0 : 1)] - 
+ 495              		.loc 1 270 0
+ 496 017a 121A     		subs	r2, r2, r0
+ 497              		.loc 1 271 0
+ 498 017c 043A     		subs	r2, r2, #4
+ 272:lib/helix/real/bitstream.c **** 			4 - (fh->crc ? 2 : 0) + (fh->paddingBit ? 1 : 0);
+ 499              		.loc 1 272 0
+ 500 017e 9868     		ldr	r0, [r3, #8]
+ 501 0180 00B1     		cbz	r0, .L26
+ 502 0182 0220     		movs	r0, #2
+ 503              	.L26:
+ 504              		.loc 1 272 0 is_stmt 0 discriminator 4
+ 505 0184 121A     		subs	r2, r2, r0
+ 506 0186 5869     		ldr	r0, [r3, #20]
+ 507 0188 0028     		cmp	r0, #0
+ 508 018a 18BF     		it	ne
+ 509 018c 0132     		addne	r2, r2, #1
+ 270:lib/helix/real/bitstream.c **** 			(int)sideBytesTab[fh->ver][(fh->sMode == Mono ? 0 : 1)] - 
+ 510              		.loc 1 270 0 is_stmt 1 discriminator 4
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cctYoe2o.s 			page 15
+
+
+ 511 018e C4F8CC27 		str	r2, [r4, #1996]
+ 512              	.L25:
+ 273:lib/helix/real/bitstream.c **** 	}
+ 274:lib/helix/real/bitstream.c **** 
+ 275:lib/helix/real/bitstream.c **** 	/* load crc word, if enabled, and return length of frame header (in bytes) */
+ 276:lib/helix/real/bitstream.c **** 	if (fh->crc) {
+ 513              		.loc 1 276 0
+ 514 0192 9A68     		ldr	r2, [r3, #8]
+ 515 0194 6AB1     		cbz	r2, .L27
+ 277:lib/helix/real/bitstream.c **** 		fh->CRCWord = ((int)buf[4] << 8 | (int)buf[5] << 0);
+ 516              		.loc 1 277 0
+ 517 0196 0879     		ldrb	r0, [r1, #4]	@ zero_extendqisi2
+ 518 0198 4A79     		ldrb	r2, [r1, #5]	@ zero_extendqisi2
+ 519 019a 42EA0022 		orr	r2, r2, r0, lsl #8
+ 520 019e 1A63     		str	r2, [r3, #48]
+ 278:lib/helix/real/bitstream.c **** 		return 6;
+ 521              		.loc 1 278 0
+ 522 01a0 0620     		movs	r0, #6
+ 523              	.LVL37:
+ 524              	.L19:
+ 279:lib/helix/real/bitstream.c **** 	} else {
+ 280:lib/helix/real/bitstream.c **** 		fh->CRCWord = 0;
+ 281:lib/helix/real/bitstream.c **** 		return 4;
+ 282:lib/helix/real/bitstream.c **** 	}
+ 283:lib/helix/real/bitstream.c **** }
+ 525              		.loc 1 283 0
+ 526 01a2 F0BC     		pop	{r4, r5, r6, r7}
+ 527              	.LCFI3:
+ 528              		.cfi_remember_state
+ 529              		.cfi_restore 7
+ 530              		.cfi_restore 6
+ 531              		.cfi_restore 5
+ 532              		.cfi_restore 4
+ 533              		.cfi_def_cfa_offset 0
+ 534              	.LVL38:
+ 535 01a4 7047     		bx	lr
+ 536              	.LVL39:
+ 537              	.L32:
+ 538              	.LCFI4:
+ 539              		.cfi_restore_state
+ 232:lib/helix/real/bitstream.c **** 	fh->layer = 4 - ((buf[1] >> 1) & 0x03);     /* easy mapping of index to layer number, 4 = error */
+ 540              		.loc 1 232 0
+ 541 01a6 0220     		movs	r0, #2
+ 542 01a8 46E7     		b	.L21
+ 543              	.LVL40:
+ 544              	.L42:
+ 254:lib/helix/real/bitstream.c **** 	mp3DecInfo->samprate = samplerateTab[fh->ver][fh->srIdx];
+ 545              		.loc 1 254 0
+ 546 01aa 0122     		movs	r2, #1
+ 547 01ac 94E7     		b	.L23
+ 548              	.L37:
+ 256:lib/helix/real/bitstream.c **** 	mp3DecInfo->nGranSamps = ((int)samplesPerFrameTab[fh->ver][fh->layer - 1]) / mp3DecInfo->nGrans;
+ 549              		.loc 1 256 0
+ 550 01ae 0125     		movs	r5, #1
+ 551 01b0 A2E7     		b	.L24
+ 552              	.L27:
+ 280:lib/helix/real/bitstream.c **** 		return 4;
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cctYoe2o.s 			page 16
+
+
+ 553              		.loc 1 280 0
+ 554 01b2 0022     		movs	r2, #0
+ 555 01b4 1A63     		str	r2, [r3, #48]
+ 281:lib/helix/real/bitstream.c **** 	}
+ 556              		.loc 1 281 0
+ 557 01b6 0420     		movs	r0, #4
+ 558 01b8 F3E7     		b	.L19
+ 559              	.LVL41:
+ 560              	.L28:
+ 561              	.LCFI5:
+ 562              		.cfi_def_cfa_offset 0
+ 563              		.cfi_restore 4
+ 564              		.cfi_restore 5
+ 565              		.cfi_restore 6
+ 566              		.cfi_restore 7
+ 226:lib/helix/real/bitstream.c **** 
+ 567              		.loc 1 226 0
+ 568 01ba 4FF0FF30 		mov	r0, #-1
+ 569              	.LVL42:
+ 570              		.loc 1 283 0
+ 571 01be 7047     		bx	lr
+ 572              	.LVL43:
+ 573              	.L29:
+ 574              	.LCFI6:
+ 575              		.cfi_def_cfa_offset 16
+ 576              		.cfi_offset 4, -16
+ 577              		.cfi_offset 5, -12
+ 578              		.cfi_offset 6, -8
+ 579              		.cfi_offset 7, -4
+ 226:lib/helix/real/bitstream.c **** 
+ 580              		.loc 1 226 0
+ 581 01c0 4FF0FF30 		mov	r0, #-1
+ 582              	.LVL44:
+ 583 01c4 EDE7     		b	.L19
+ 584              	.LVL45:
+ 585              	.L30:
+ 586 01c6 4FF0FF30 		mov	r0, #-1
+ 587              	.LVL46:
+ 588 01ca EAE7     		b	.L19
+ 589              	.L31:
+ 590 01cc 4FF0FF30 		mov	r0, #-1
+ 591 01d0 E7E7     		b	.L19
+ 592              	.LVL47:
+ 593              	.L33:
+ 247:lib/helix/real/bitstream.c **** 
+ 594              		.loc 1 247 0
+ 595 01d2 4FF0FF30 		mov	r0, #-1
+ 596 01d6 E4E7     		b	.L19
+ 597              	.L34:
+ 598 01d8 4FF0FF30 		mov	r0, #-1
+ 599 01dc E1E7     		b	.L19
+ 600              	.L35:
+ 601 01de 4FF0FF30 		mov	r0, #-1
+ 602 01e2 DEE7     		b	.L19
+ 603              	.L44:
+ 604              		.align	2
+ 605              	.L43:
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cctYoe2o.s 			page 17
+
+
+ 606 01e4 00000000 		.word	xmp3fixpt_sfBandTable
+ 607 01e8 00000000 		.word	xmp3fixpt_samplerateTab
+ 608 01ec 00000000 		.word	xmp3fixpt_samplesPerFrameTab
+ 609 01f0 00000000 		.word	xmp3fixpt_bitrateTab
+ 610 01f4 00000000 		.word	xmp3fixpt_slotTab
+ 611 01f8 00000000 		.word	xmp3fixpt_sideBytesTab
+ 612              		.cfi_endproc
+ 613              	.LFE10:
+ 615              		.section	.text.xmp3fixpt_UnpackSideInfo,"ax",%progbits
+ 616              		.align	1
+ 617              		.global	xmp3fixpt_UnpackSideInfo
+ 618              		.syntax unified
+ 619              		.thumb
+ 620              		.thumb_func
+ 621              		.fpu fpv5-sp-d16
+ 623              	xmp3fixpt_UnpackSideInfo:
+ 624              	.LFB11:
+ 284:lib/helix/real/bitstream.c **** 
+ 285:lib/helix/real/bitstream.c **** /**************************************************************************************
+ 286:lib/helix/real/bitstream.c ****  * Function:    UnpackSideInfo
+ 287:lib/helix/real/bitstream.c ****  *
+ 288:lib/helix/real/bitstream.c ****  * Description: parse the fields of the MP3 side info header
+ 289:lib/helix/real/bitstream.c ****  *
+ 290:lib/helix/real/bitstream.c ****  * Inputs:      MP3DecInfo structure filled by UnpackFrameHeader()
+ 291:lib/helix/real/bitstream.c ****  *              buffer pointing to the MP3 side info data
+ 292:lib/helix/real/bitstream.c ****  *
+ 293:lib/helix/real/bitstream.c ****  * Outputs:     updated mainDataBegin in MP3DecInfo struct
+ 294:lib/helix/real/bitstream.c ****  *              updated private (platform-specific) SideInfo struct
+ 295:lib/helix/real/bitstream.c ****  *
+ 296:lib/helix/real/bitstream.c ****  * Return:      length (in bytes) of side info data
+ 297:lib/helix/real/bitstream.c ****  *              -1 if null input pointers
+ 298:lib/helix/real/bitstream.c ****  **************************************************************************************/
+ 299:lib/helix/real/bitstream.c **** int UnpackSideInfo(MP3DecInfo *mp3DecInfo, unsigned char *buf)
+ 300:lib/helix/real/bitstream.c **** {
+ 625              		.loc 1 300 0
+ 626              		.cfi_startproc
+ 627              		@ args = 0, pretend = 0, frame = 16
+ 628              		@ frame_needed = 0, uses_anonymous_args = 0
+ 629              	.LVL48:
+ 630 0000 2DE9F047 		push	{r4, r5, r6, r7, r8, r9, r10, lr}
+ 631              	.LCFI7:
+ 632              		.cfi_def_cfa_offset 32
+ 633              		.cfi_offset 4, -32
+ 634              		.cfi_offset 5, -28
+ 635              		.cfi_offset 6, -24
+ 636              		.cfi_offset 7, -20
+ 637              		.cfi_offset 8, -16
+ 638              		.cfi_offset 9, -12
+ 639              		.cfi_offset 10, -8
+ 640              		.cfi_offset 14, -4
+ 641 0004 84B0     		sub	sp, sp, #16
+ 642              	.LCFI8:
+ 643              		.cfi_def_cfa_offset 48
+ 301:lib/helix/real/bitstream.c **** 	int gr, ch, bd, nBytes;
+ 302:lib/helix/real/bitstream.c **** 	BitStreamInfo bitStreamInfo, *bsi;
+ 303:lib/helix/real/bitstream.c **** 	FrameHeader *fh;
+ 304:lib/helix/real/bitstream.c **** 	SideInfo *si;
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cctYoe2o.s 			page 18
+
+
+ 305:lib/helix/real/bitstream.c **** 	SideInfoSub *sis;
+ 306:lib/helix/real/bitstream.c **** 
+ 307:lib/helix/real/bitstream.c **** 	/* validate pointers and sync word */
+ 308:lib/helix/real/bitstream.c **** 	if (!mp3DecInfo || !mp3DecInfo->FrameHeaderPS || !mp3DecInfo->SideInfoPS)
+ 644              		.loc 1 308 0
+ 645 0006 0028     		cmp	r0, #0
+ 646 0008 00F04E81 		beq	.L66
+ 647 000c 8046     		mov	r8, r0
+ 648              		.loc 1 308 0 is_stmt 0 discriminator 1
+ 649 000e D0F80090 		ldr	r9, [r0]
+ 650 0012 B9F1000F 		cmp	r9, #0
+ 651 0016 00F04A81 		beq	.L67
+ 652              		.loc 1 308 0 discriminator 2
+ 653 001a 4768     		ldr	r7, [r0, #4]
+ 654 001c 002F     		cmp	r7, #0
+ 655 001e 00F04981 		beq	.L68
+ 656 0022 0A46     		mov	r2, r1
+ 657              	.LVL49:
+ 309:lib/helix/real/bitstream.c **** 		return -1;
+ 310:lib/helix/real/bitstream.c **** 
+ 311:lib/helix/real/bitstream.c **** 	fh = ((FrameHeader *)(mp3DecInfo->FrameHeaderPS));
+ 312:lib/helix/real/bitstream.c **** 	si = ((SideInfo *)(mp3DecInfo->SideInfoPS));
+ 313:lib/helix/real/bitstream.c **** 
+ 314:lib/helix/real/bitstream.c **** 	bsi = &bitStreamInfo;
+ 315:lib/helix/real/bitstream.c **** 	if (fh->ver == MPEG1) {
+ 658              		.loc 1 315 0 is_stmt 1
+ 659 0024 99F80030 		ldrb	r3, [r9]	@ zero_extendqisi2
+ 660 0028 8BBB     		cbnz	r3, .L47
+ 316:lib/helix/real/bitstream.c **** 		/* MPEG 1 */
+ 317:lib/helix/real/bitstream.c **** 		nBytes = (fh->sMode == Mono ? SIBYTES_MPEG1_MONO : SIBYTES_MPEG1_STEREO);
+ 661              		.loc 1 317 0
+ 662 002a 99F81C30 		ldrb	r3, [r9, #28]	@ zero_extendqisi2
+ 663 002e 032B     		cmp	r3, #3
+ 664 0030 15D0     		beq	.L78
+ 665 0032 4FF0200A 		mov	r10, #32
+ 666              	.L48:
+ 667              	.LVL50:
+ 318:lib/helix/real/bitstream.c **** 		SetBitstreamPointer(bsi, nBytes, buf);
+ 668              		.loc 1 318 0 discriminator 4
+ 669 0036 5146     		mov	r1, r10
+ 670              	.LVL51:
+ 671 0038 6846     		mov	r0, sp
+ 672              	.LVL52:
+ 673 003a FFF7FEFF 		bl	xmp3fixpt_SetBitstreamPointer
+ 674              	.LVL53:
+ 319:lib/helix/real/bitstream.c **** 		si->mainDataBegin = GetBits(bsi, 9);
+ 675              		.loc 1 319 0 discriminator 4
+ 676 003e 0921     		movs	r1, #9
+ 677 0040 6846     		mov	r0, sp
+ 678 0042 FFF7FEFF 		bl	xmp3fixpt_GetBits
+ 679              	.LVL54:
+ 680 0046 3860     		str	r0, [r7]
+ 320:lib/helix/real/bitstream.c **** 		si->privateBits =   GetBits(bsi, (fh->sMode == Mono ? 5 : 3));
+ 681              		.loc 1 320 0 discriminator 4
+ 682 0048 99F81C30 		ldrb	r3, [r9, #28]	@ zero_extendqisi2
+ 683 004c 032B     		cmp	r3, #3
+ 684 004e 09D0     		beq	.L79
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cctYoe2o.s 			page 19
+
+
+ 685              		.loc 1 320 0 is_stmt 0
+ 686 0050 0321     		movs	r1, #3
+ 687              	.L49:
+ 688              		.loc 1 320 0 discriminator 4
+ 689 0052 6846     		mov	r0, sp
+ 690 0054 FFF7FEFF 		bl	xmp3fixpt_GetBits
+ 691              	.LVL55:
+ 692 0058 7860     		str	r0, [r7, #4]
+ 693              	.LVL56:
+ 321:lib/helix/real/bitstream.c **** 
+ 322:lib/helix/real/bitstream.c **** 		for (ch = 0; ch < mp3DecInfo->nChans; ch++)
+ 694              		.loc 1 322 0 is_stmt 1 discriminator 4
+ 695 005a 0025     		movs	r5, #0
+ 696 005c 11E0     		b	.L50
+ 697              	.LVL57:
+ 698              	.L78:
+ 317:lib/helix/real/bitstream.c **** 		SetBitstreamPointer(bsi, nBytes, buf);
+ 699              		.loc 1 317 0
+ 700 005e 4FF0110A 		mov	r10, #17
+ 701 0062 E8E7     		b	.L48
+ 702              	.LVL58:
+ 703              	.L79:
+ 320:lib/helix/real/bitstream.c **** 		si->privateBits =   GetBits(bsi, (fh->sMode == Mono ? 5 : 3));
+ 704              		.loc 1 320 0
+ 705 0064 0521     		movs	r1, #5
+ 706 0066 F4E7     		b	.L49
+ 707              	.LVL59:
+ 708              	.L51:
+ 323:lib/helix/real/bitstream.c **** 			for (bd = 0; bd < MAX_SCFBD; bd++)
+ 324:lib/helix/real/bitstream.c **** 				si->scfsi[ch][bd] = GetBits(bsi, 1);
+ 709              		.loc 1 324 0 discriminator 3
+ 710 0068 0121     		movs	r1, #1
+ 711 006a 6846     		mov	r0, sp
+ 712 006c FFF7FEFF 		bl	xmp3fixpt_GetBits
+ 713              	.LVL60:
+ 714 0070 04EB8503 		add	r3, r4, r5, lsl #2
+ 715 0074 0233     		adds	r3, r3, #2
+ 716 0076 47F82300 		str	r0, [r7, r3, lsl #2]
+ 323:lib/helix/real/bitstream.c **** 			for (bd = 0; bd < MAX_SCFBD; bd++)
+ 717              		.loc 1 323 0 discriminator 3
+ 718 007a 0134     		adds	r4, r4, #1
+ 719              	.LVL61:
+ 720              	.L52:
+ 323:lib/helix/real/bitstream.c **** 			for (bd = 0; bd < MAX_SCFBD; bd++)
+ 721              		.loc 1 323 0 is_stmt 0 discriminator 1
+ 722 007c 032C     		cmp	r4, #3
+ 723 007e F3DD     		ble	.L51
+ 322:lib/helix/real/bitstream.c **** 			for (bd = 0; bd < MAX_SCFBD; bd++)
+ 724              		.loc 1 322 0 is_stmt 1 discriminator 2
+ 725 0080 0135     		adds	r5, r5, #1
+ 726              	.LVL62:
+ 727              	.L50:
+ 322:lib/helix/real/bitstream.c **** 			for (bd = 0; bd < MAX_SCFBD; bd++)
+ 728              		.loc 1 322 0 is_stmt 0 discriminator 1
+ 729 0082 D8F8BC37 		ldr	r3, [r8, #1980]
+ 730 0086 AB42     		cmp	r3, r5
+ 731 0088 19DD     		ble	.L53
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cctYoe2o.s 			page 20
+
+
+ 323:lib/helix/real/bitstream.c **** 			for (bd = 0; bd < MAX_SCFBD; bd++)
+ 732              		.loc 1 323 0 is_stmt 1
+ 733 008a 0024     		movs	r4, #0
+ 734 008c F6E7     		b	.L52
+ 735              	.LVL63:
+ 736              	.L47:
+ 325:lib/helix/real/bitstream.c **** 	} else {
+ 326:lib/helix/real/bitstream.c **** 		/* MPEG 2, MPEG 2.5 */
+ 327:lib/helix/real/bitstream.c **** 		nBytes = (fh->sMode == Mono ? SIBYTES_MPEG2_MONO : SIBYTES_MPEG2_STEREO);
+ 737              		.loc 1 327 0
+ 738 008e 99F81C30 		ldrb	r3, [r9, #28]	@ zero_extendqisi2
+ 739 0092 032B     		cmp	r3, #3
+ 740 0094 15D0     		beq	.L80
+ 741 0096 4FF0110A 		mov	r10, #17
+ 742              	.L54:
+ 743              	.LVL64:
+ 328:lib/helix/real/bitstream.c **** 		SetBitstreamPointer(bsi, nBytes, buf);
+ 744              		.loc 1 328 0 discriminator 4
+ 745 009a 5146     		mov	r1, r10
+ 746              	.LVL65:
+ 747 009c 6846     		mov	r0, sp
+ 748              	.LVL66:
+ 749 009e FFF7FEFF 		bl	xmp3fixpt_SetBitstreamPointer
+ 750              	.LVL67:
+ 329:lib/helix/real/bitstream.c **** 		si->mainDataBegin = GetBits(bsi, 8);
+ 751              		.loc 1 329 0 discriminator 4
+ 752 00a2 0821     		movs	r1, #8
+ 753 00a4 6846     		mov	r0, sp
+ 754 00a6 FFF7FEFF 		bl	xmp3fixpt_GetBits
+ 755              	.LVL68:
+ 756 00aa 3860     		str	r0, [r7]
+ 330:lib/helix/real/bitstream.c **** 		si->privateBits =   GetBits(bsi, (fh->sMode == Mono ? 1 : 2));
+ 757              		.loc 1 330 0 discriminator 4
+ 758 00ac 99F81C30 		ldrb	r3, [r9, #28]	@ zero_extendqisi2
+ 759 00b0 032B     		cmp	r3, #3
+ 760 00b2 09D0     		beq	.L81
+ 761              		.loc 1 330 0 is_stmt 0
+ 762 00b4 0221     		movs	r1, #2
+ 763              	.L55:
+ 764              		.loc 1 330 0 discriminator 4
+ 765 00b6 6846     		mov	r0, sp
+ 766 00b8 FFF7FEFF 		bl	xmp3fixpt_GetBits
+ 767              	.LVL69:
+ 768 00bc 7860     		str	r0, [r7, #4]
+ 769              	.L53:
+ 770              	.LVL70:
+ 331:lib/helix/real/bitstream.c **** 	}
+ 332:lib/helix/real/bitstream.c **** 
+ 333:lib/helix/real/bitstream.c **** 	for(gr =0; gr < mp3DecInfo->nGrans; gr++) {
+ 771              		.loc 1 333 0 is_stmt 1
+ 772 00be 0025     		movs	r5, #0
+ 773 00c0 E5E0     		b	.L56
+ 774              	.LVL71:
+ 775              	.L80:
+ 327:lib/helix/real/bitstream.c **** 		SetBitstreamPointer(bsi, nBytes, buf);
+ 776              		.loc 1 327 0
+ 777 00c2 4FF0090A 		mov	r10, #9
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cctYoe2o.s 			page 21
+
+
+ 778 00c6 E8E7     		b	.L54
+ 779              	.LVL72:
+ 780              	.L81:
+ 330:lib/helix/real/bitstream.c **** 		si->privateBits =   GetBits(bsi, (fh->sMode == Mono ? 1 : 2));
+ 781              		.loc 1 330 0
+ 782 00c8 0121     		movs	r1, #1
+ 783 00ca F4E7     		b	.L55
+ 784              	.LVL73:
+ 785              	.L74:
+ 334:lib/helix/real/bitstream.c **** 		for (ch = 0; ch < mp3DecInfo->nChans; ch++) {
+ 335:lib/helix/real/bitstream.c **** 			sis = &si->sis[gr][ch];						/* side info subblock for this granule, channel */
+ 336:lib/helix/real/bitstream.c **** 
+ 337:lib/helix/real/bitstream.c **** 			sis->part23Length =    GetBits(bsi, 12);
+ 338:lib/helix/real/bitstream.c **** 			sis->nBigvals =        GetBits(bsi, 9);
+ 339:lib/helix/real/bitstream.c **** 			sis->globalGain =      GetBits(bsi, 8);
+ 340:lib/helix/real/bitstream.c **** 			sis->sfCompress =      GetBits(bsi, (fh->ver == MPEG1 ? 4 : 9));
+ 786              		.loc 1 340 0
+ 787 00cc 0921     		movs	r1, #9
+ 788 00ce 53E0     		b	.L57
+ 789              	.L59:
+ 341:lib/helix/real/bitstream.c **** 			sis->winSwitchFlag =   GetBits(bsi, 1);
+ 342:lib/helix/real/bitstream.c **** 
+ 343:lib/helix/real/bitstream.c **** 			if(sis->winSwitchFlag) {
+ 344:lib/helix/real/bitstream.c **** 				/* this is a start, stop, short, or mixed block */
+ 345:lib/helix/real/bitstream.c **** 				sis->blockType =       GetBits(bsi, 2);		/* 0 = normal, 1 = start, 2 = short, 3 = stop */
+ 346:lib/helix/real/bitstream.c **** 				sis->mixedBlock =      GetBits(bsi, 1);		/* 0 = not mixed, 1 = mixed */
+ 347:lib/helix/real/bitstream.c **** 				sis->tableSelect[0] =  GetBits(bsi, 5);
+ 348:lib/helix/real/bitstream.c **** 				sis->tableSelect[1] =  GetBits(bsi, 5);
+ 349:lib/helix/real/bitstream.c **** 				sis->tableSelect[2] =  0;					/* unused */
+ 350:lib/helix/real/bitstream.c **** 				sis->subBlockGain[0] = GetBits(bsi, 3);
+ 351:lib/helix/real/bitstream.c **** 				sis->subBlockGain[1] = GetBits(bsi, 3);
+ 352:lib/helix/real/bitstream.c **** 				sis->subBlockGain[2] = GetBits(bsi, 3);
+ 353:lib/helix/real/bitstream.c **** 
+ 354:lib/helix/real/bitstream.c **** 				/* TODO - check logic */
+ 355:lib/helix/real/bitstream.c **** 				if (sis->blockType == 0) {
+ 356:lib/helix/real/bitstream.c **** 					/* this should not be allowed, according to spec */
+ 357:lib/helix/real/bitstream.c **** 					sis->nBigvals = 0;
+ 358:lib/helix/real/bitstream.c **** 					sis->part23Length = 0;
+ 359:lib/helix/real/bitstream.c **** 					sis->sfCompress = 0;
+ 360:lib/helix/real/bitstream.c **** 				} else if (sis->blockType == 2 && sis->mixedBlock == 0) {
+ 790              		.loc 1 360 0
+ 791 00d0 022B     		cmp	r3, #2
+ 792 00d2 00F09A80 		beq	.L82
+ 793              	.L61:
+ 361:lib/helix/real/bitstream.c **** 					/* short block, not mixed */
+ 362:lib/helix/real/bitstream.c **** 					sis->region0Count = 8;
+ 363:lib/helix/real/bitstream.c **** 				} else {
+ 364:lib/helix/real/bitstream.c **** 					/* start, stop, or short-mixed */
+ 365:lib/helix/real/bitstream.c **** 					sis->region0Count = 7;
+ 794              		.loc 1 365 0
+ 795 00d6 04EBC402 		add	r2, r4, r4, lsl #3
+ 796 00da D300     		lsls	r3, r2, #3
+ 797 00dc 05EBC501 		add	r1, r5, r5, lsl #3
+ 798 00e0 0A01     		lsls	r2, r1, #4
+ 799 00e2 1344     		add	r3, r3, r2
+ 800 00e4 3B44     		add	r3, r3, r7
+ 801 00e6 0722     		movs	r2, #7
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cctYoe2o.s 			page 22
+
+
+ 802 00e8 DA65     		str	r2, [r3, #92]
+ 803              	.L60:
+ 366:lib/helix/real/bitstream.c **** 				}
+ 367:lib/helix/real/bitstream.c **** 				sis->region1Count = 20 - sis->region0Count;
+ 804              		.loc 1 367 0
+ 805 00ea E200     		lsls	r2, r4, #3
+ 806 00ec 2244     		add	r2, r2, r4
+ 807 00ee D300     		lsls	r3, r2, #3
+ 808 00f0 EA00     		lsls	r2, r5, #3
+ 809 00f2 2A44     		add	r2, r2, r5
+ 810 00f4 1101     		lsls	r1, r2, #4
+ 811 00f6 0B44     		add	r3, r3, r1
+ 812 00f8 3B44     		add	r3, r3, r7
+ 813 00fa DA6D     		ldr	r2, [r3, #92]
+ 814 00fc C2F11402 		rsb	r2, r2, #20
+ 815 0100 1A66     		str	r2, [r3, #96]
+ 816              	.L62:
+ 368:lib/helix/real/bitstream.c **** 			} else {
+ 369:lib/helix/real/bitstream.c **** 				/* this is a normal block */
+ 370:lib/helix/real/bitstream.c **** 				sis->blockType = 0;
+ 371:lib/helix/real/bitstream.c **** 				sis->mixedBlock = 0;
+ 372:lib/helix/real/bitstream.c **** 				sis->tableSelect[0] =  GetBits(bsi, 5);
+ 373:lib/helix/real/bitstream.c **** 				sis->tableSelect[1] =  GetBits(bsi, 5);
+ 374:lib/helix/real/bitstream.c **** 				sis->tableSelect[2] =  GetBits(bsi, 5);
+ 375:lib/helix/real/bitstream.c **** 				sis->region0Count =    GetBits(bsi, 4);
+ 376:lib/helix/real/bitstream.c **** 				sis->region1Count =    GetBits(bsi, 3);
+ 377:lib/helix/real/bitstream.c **** 			}
+ 378:lib/helix/real/bitstream.c **** 			sis->preFlag =           (fh->ver == MPEG1 ? GetBits(bsi, 1) : 0);
+ 817              		.loc 1 378 0
+ 818 0102 99F80030 		ldrb	r3, [r9]	@ zero_extendqisi2
+ 819 0106 002B     		cmp	r3, #0
+ 820 0108 00F0BB80 		beq	.L83
+ 821 010c 0020     		movs	r0, #0
+ 822              	.L63:
+ 823              		.loc 1 378 0 is_stmt 0 discriminator 4
+ 824 010e E300     		lsls	r3, r4, #3
+ 825 0110 2344     		add	r3, r3, r4
+ 826 0112 DE00     		lsls	r6, r3, #3
+ 827 0114 EB00     		lsls	r3, r5, #3
+ 828 0116 2B44     		add	r3, r3, r5
+ 829 0118 1A01     		lsls	r2, r3, #4
+ 830 011a 1644     		add	r6, r6, r2
+ 831 011c 3E44     		add	r6, r6, r7
+ 832 011e 7066     		str	r0, [r6, #100]
+ 379:lib/helix/real/bitstream.c **** 			sis->sfactScale =        GetBits(bsi, 1);
+ 833              		.loc 1 379 0 is_stmt 1 discriminator 4
+ 834 0120 0121     		movs	r1, #1
+ 835 0122 6846     		mov	r0, sp
+ 836 0124 FFF7FEFF 		bl	xmp3fixpt_GetBits
+ 837              	.LVL74:
+ 838 0128 B066     		str	r0, [r6, #104]
+ 380:lib/helix/real/bitstream.c **** 			sis->count1TableSelect = GetBits(bsi, 1);
+ 839              		.loc 1 380 0 discriminator 4
+ 840 012a 0121     		movs	r1, #1
+ 841 012c 6846     		mov	r0, sp
+ 842 012e FFF7FEFF 		bl	xmp3fixpt_GetBits
+ 843              	.LVL75:
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cctYoe2o.s 			page 23
+
+
+ 844 0132 F066     		str	r0, [r6, #108]
+ 334:lib/helix/real/bitstream.c **** 			sis = &si->sis[gr][ch];						/* side info subblock for this granule, channel */
+ 845              		.loc 1 334 0 discriminator 4
+ 846 0134 0134     		adds	r4, r4, #1
+ 847              	.LVL76:
+ 848              	.L65:
+ 334:lib/helix/real/bitstream.c **** 			sis = &si->sis[gr][ch];						/* side info subblock for this granule, channel */
+ 849              		.loc 1 334 0 is_stmt 0 discriminator 2
+ 850 0136 D8F8BC37 		ldr	r3, [r8, #1980]
+ 851 013a A342     		cmp	r3, r4
+ 852 013c 40F3A680 		ble	.L84
+ 853              	.LVL77:
+ 337:lib/helix/real/bitstream.c **** 			sis->nBigvals =        GetBits(bsi, 9);
+ 854              		.loc 1 337 0 is_stmt 1
+ 855 0140 0C21     		movs	r1, #12
+ 856 0142 6846     		mov	r0, sp
+ 857 0144 FFF7FEFF 		bl	xmp3fixpt_GetBits
+ 858              	.LVL78:
+ 859 0148 E300     		lsls	r3, r4, #3
+ 860 014a 2344     		add	r3, r3, r4
+ 861 014c DE00     		lsls	r6, r3, #3
+ 862 014e EB00     		lsls	r3, r5, #3
+ 863 0150 2B44     		add	r3, r3, r5
+ 864 0152 1A01     		lsls	r2, r3, #4
+ 865 0154 1644     		add	r6, r6, r2
+ 866 0156 3E44     		add	r6, r6, r7
+ 867 0158 B062     		str	r0, [r6, #40]
+ 338:lib/helix/real/bitstream.c **** 			sis->globalGain =      GetBits(bsi, 8);
+ 868              		.loc 1 338 0
+ 869 015a 0921     		movs	r1, #9
+ 870 015c 6846     		mov	r0, sp
+ 871 015e FFF7FEFF 		bl	xmp3fixpt_GetBits
+ 872              	.LVL79:
+ 873 0162 F062     		str	r0, [r6, #44]
+ 339:lib/helix/real/bitstream.c **** 			sis->sfCompress =      GetBits(bsi, (fh->ver == MPEG1 ? 4 : 9));
+ 874              		.loc 1 339 0
+ 875 0164 0821     		movs	r1, #8
+ 876 0166 6846     		mov	r0, sp
+ 877 0168 FFF7FEFF 		bl	xmp3fixpt_GetBits
+ 878              	.LVL80:
+ 879 016c 3063     		str	r0, [r6, #48]
+ 340:lib/helix/real/bitstream.c **** 			sis->winSwitchFlag =   GetBits(bsi, 1);
+ 880              		.loc 1 340 0
+ 881 016e 99F80030 		ldrb	r3, [r9]	@ zero_extendqisi2
+ 882 0172 002B     		cmp	r3, #0
+ 883 0174 AAD1     		bne	.L74
+ 884 0176 0421     		movs	r1, #4
+ 885              	.L57:
+ 340:lib/helix/real/bitstream.c **** 			sis->winSwitchFlag =   GetBits(bsi, 1);
+ 886              		.loc 1 340 0 is_stmt 0 discriminator 4
+ 887 0178 6846     		mov	r0, sp
+ 888 017a FFF7FEFF 		bl	xmp3fixpt_GetBits
+ 889              	.LVL81:
+ 890 017e E300     		lsls	r3, r4, #3
+ 891 0180 2344     		add	r3, r3, r4
+ 892 0182 DE00     		lsls	r6, r3, #3
+ 893 0184 EB00     		lsls	r3, r5, #3
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cctYoe2o.s 			page 24
+
+
+ 894 0186 2B44     		add	r3, r3, r5
+ 895 0188 1A01     		lsls	r2, r3, #4
+ 896 018a 1644     		add	r6, r6, r2
+ 897 018c 3E44     		add	r6, r6, r7
+ 898 018e 7063     		str	r0, [r6, #52]
+ 341:lib/helix/real/bitstream.c **** 
+ 899              		.loc 1 341 0 is_stmt 1 discriminator 4
+ 900 0190 0121     		movs	r1, #1
+ 901 0192 6846     		mov	r0, sp
+ 902 0194 FFF7FEFF 		bl	xmp3fixpt_GetBits
+ 903              	.LVL82:
+ 904 0198 B063     		str	r0, [r6, #56]
+ 343:lib/helix/real/bitstream.c **** 				/* this is a start, stop, short, or mixed block */
+ 905              		.loc 1 343 0 discriminator 4
+ 906 019a 0028     		cmp	r0, #0
+ 907 019c 4CD0     		beq	.L58
+ 345:lib/helix/real/bitstream.c **** 				sis->mixedBlock =      GetBits(bsi, 1);		/* 0 = not mixed, 1 = mixed */
+ 908              		.loc 1 345 0
+ 909 019e 0221     		movs	r1, #2
+ 910 01a0 6846     		mov	r0, sp
+ 911 01a2 FFF7FEFF 		bl	xmp3fixpt_GetBits
+ 912              	.LVL83:
+ 913 01a6 E300     		lsls	r3, r4, #3
+ 914 01a8 2344     		add	r3, r3, r4
+ 915 01aa DE00     		lsls	r6, r3, #3
+ 916 01ac EB00     		lsls	r3, r5, #3
+ 917 01ae 2B44     		add	r3, r3, r5
+ 918 01b0 1A01     		lsls	r2, r3, #4
+ 919 01b2 1644     		add	r6, r6, r2
+ 920 01b4 3E44     		add	r6, r6, r7
+ 921 01b6 F063     		str	r0, [r6, #60]
+ 346:lib/helix/real/bitstream.c **** 				sis->tableSelect[0] =  GetBits(bsi, 5);
+ 922              		.loc 1 346 0
+ 923 01b8 0121     		movs	r1, #1
+ 924 01ba 6846     		mov	r0, sp
+ 925 01bc FFF7FEFF 		bl	xmp3fixpt_GetBits
+ 926              	.LVL84:
+ 927 01c0 3064     		str	r0, [r6, #64]
+ 347:lib/helix/real/bitstream.c **** 				sis->tableSelect[1] =  GetBits(bsi, 5);
+ 928              		.loc 1 347 0
+ 929 01c2 0521     		movs	r1, #5
+ 930 01c4 6846     		mov	r0, sp
+ 931 01c6 FFF7FEFF 		bl	xmp3fixpt_GetBits
+ 932              	.LVL85:
+ 933 01ca 7064     		str	r0, [r6, #68]
+ 348:lib/helix/real/bitstream.c **** 				sis->tableSelect[2] =  0;					/* unused */
+ 934              		.loc 1 348 0
+ 935 01cc 0521     		movs	r1, #5
+ 936 01ce 6846     		mov	r0, sp
+ 937 01d0 FFF7FEFF 		bl	xmp3fixpt_GetBits
+ 938              	.LVL86:
+ 939 01d4 B064     		str	r0, [r6, #72]
+ 349:lib/helix/real/bitstream.c **** 				sis->subBlockGain[0] = GetBits(bsi, 3);
+ 940              		.loc 1 349 0
+ 941 01d6 0023     		movs	r3, #0
+ 942 01d8 F364     		str	r3, [r6, #76]
+ 350:lib/helix/real/bitstream.c **** 				sis->subBlockGain[1] = GetBits(bsi, 3);
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cctYoe2o.s 			page 25
+
+
+ 943              		.loc 1 350 0
+ 944 01da 0321     		movs	r1, #3
+ 945 01dc 6846     		mov	r0, sp
+ 946 01de FFF7FEFF 		bl	xmp3fixpt_GetBits
+ 947              	.LVL87:
+ 948 01e2 3065     		str	r0, [r6, #80]
+ 351:lib/helix/real/bitstream.c **** 				sis->subBlockGain[2] = GetBits(bsi, 3);
+ 949              		.loc 1 351 0
+ 950 01e4 0321     		movs	r1, #3
+ 951 01e6 6846     		mov	r0, sp
+ 952 01e8 FFF7FEFF 		bl	xmp3fixpt_GetBits
+ 953              	.LVL88:
+ 954 01ec 7065     		str	r0, [r6, #84]
+ 352:lib/helix/real/bitstream.c **** 
+ 955              		.loc 1 352 0
+ 956 01ee 0321     		movs	r1, #3
+ 957 01f0 6846     		mov	r0, sp
+ 958 01f2 FFF7FEFF 		bl	xmp3fixpt_GetBits
+ 959              	.LVL89:
+ 960 01f6 B065     		str	r0, [r6, #88]
+ 355:lib/helix/real/bitstream.c **** 					/* this should not be allowed, according to spec */
+ 961              		.loc 1 355 0
+ 962 01f8 F36B     		ldr	r3, [r6, #60]
+ 963 01fa 002B     		cmp	r3, #0
+ 964 01fc 7FF468AF 		bne	.L59
+ 357:lib/helix/real/bitstream.c **** 					sis->part23Length = 0;
+ 965              		.loc 1 357 0
+ 966 0200 0022     		movs	r2, #0
+ 967 0202 F262     		str	r2, [r6, #44]
+ 358:lib/helix/real/bitstream.c **** 					sis->sfCompress = 0;
+ 968              		.loc 1 358 0
+ 969 0204 B262     		str	r2, [r6, #40]
+ 359:lib/helix/real/bitstream.c **** 				} else if (sis->blockType == 2 && sis->mixedBlock == 0) {
+ 970              		.loc 1 359 0
+ 971 0206 7263     		str	r2, [r6, #52]
+ 972 0208 6FE7     		b	.L60
+ 973              	.L82:
+ 360:lib/helix/real/bitstream.c **** 					/* short block, not mixed */
+ 974              		.loc 1 360 0 discriminator 1
+ 975 020a 04EBC402 		add	r2, r4, r4, lsl #3
+ 976 020e D300     		lsls	r3, r2, #3
+ 977 0210 05EBC501 		add	r1, r5, r5, lsl #3
+ 978 0214 0A01     		lsls	r2, r1, #4
+ 979 0216 1344     		add	r3, r3, r2
+ 980 0218 3B44     		add	r3, r3, r7
+ 981 021a 1B6C     		ldr	r3, [r3, #64]
+ 982 021c 002B     		cmp	r3, #0
+ 983 021e 7FF45AAF 		bne	.L61
+ 362:lib/helix/real/bitstream.c **** 				} else {
+ 984              		.loc 1 362 0
+ 985 0222 04EBC402 		add	r2, r4, r4, lsl #3
+ 986 0226 D300     		lsls	r3, r2, #3
+ 987 0228 05EBC501 		add	r1, r5, r5, lsl #3
+ 988 022c 0A01     		lsls	r2, r1, #4
+ 989 022e 1344     		add	r3, r3, r2
+ 990 0230 3B44     		add	r3, r3, r7
+ 991 0232 0822     		movs	r2, #8
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cctYoe2o.s 			page 26
+
+
+ 992 0234 DA65     		str	r2, [r3, #92]
+ 993 0236 58E7     		b	.L60
+ 994              	.L58:
+ 370:lib/helix/real/bitstream.c **** 				sis->mixedBlock = 0;
+ 995              		.loc 1 370 0
+ 996 0238 E300     		lsls	r3, r4, #3
+ 997 023a 2344     		add	r3, r3, r4
+ 998 023c DE00     		lsls	r6, r3, #3
+ 999 023e EB00     		lsls	r3, r5, #3
+ 1000 0240 2B44     		add	r3, r3, r5
+ 1001 0242 1A01     		lsls	r2, r3, #4
+ 1002 0244 1644     		add	r6, r6, r2
+ 1003 0246 3E44     		add	r6, r6, r7
+ 1004 0248 0023     		movs	r3, #0
+ 1005 024a F363     		str	r3, [r6, #60]
+ 371:lib/helix/real/bitstream.c **** 				sis->tableSelect[0] =  GetBits(bsi, 5);
+ 1006              		.loc 1 371 0
+ 1007 024c 3364     		str	r3, [r6, #64]
+ 372:lib/helix/real/bitstream.c **** 				sis->tableSelect[1] =  GetBits(bsi, 5);
+ 1008              		.loc 1 372 0
+ 1009 024e 0521     		movs	r1, #5
+ 1010 0250 6846     		mov	r0, sp
+ 1011 0252 FFF7FEFF 		bl	xmp3fixpt_GetBits
+ 1012              	.LVL90:
+ 1013 0256 7064     		str	r0, [r6, #68]
+ 373:lib/helix/real/bitstream.c **** 				sis->tableSelect[2] =  GetBits(bsi, 5);
+ 1014              		.loc 1 373 0
+ 1015 0258 0521     		movs	r1, #5
+ 1016 025a 6846     		mov	r0, sp
+ 1017 025c FFF7FEFF 		bl	xmp3fixpt_GetBits
+ 1018              	.LVL91:
+ 1019 0260 B064     		str	r0, [r6, #72]
+ 374:lib/helix/real/bitstream.c **** 				sis->region0Count =    GetBits(bsi, 4);
+ 1020              		.loc 1 374 0
+ 1021 0262 0521     		movs	r1, #5
+ 1022 0264 6846     		mov	r0, sp
+ 1023 0266 FFF7FEFF 		bl	xmp3fixpt_GetBits
+ 1024              	.LVL92:
+ 1025 026a F064     		str	r0, [r6, #76]
+ 375:lib/helix/real/bitstream.c **** 				sis->region1Count =    GetBits(bsi, 3);
+ 1026              		.loc 1 375 0
+ 1027 026c 0421     		movs	r1, #4
+ 1028 026e 6846     		mov	r0, sp
+ 1029 0270 FFF7FEFF 		bl	xmp3fixpt_GetBits
+ 1030              	.LVL93:
+ 1031 0274 F065     		str	r0, [r6, #92]
+ 376:lib/helix/real/bitstream.c **** 			}
+ 1032              		.loc 1 376 0
+ 1033 0276 0321     		movs	r1, #3
+ 1034 0278 6846     		mov	r0, sp
+ 1035 027a FFF7FEFF 		bl	xmp3fixpt_GetBits
+ 1036              	.LVL94:
+ 1037 027e 3066     		str	r0, [r6, #96]
+ 1038 0280 3FE7     		b	.L62
+ 1039              	.L83:
+ 378:lib/helix/real/bitstream.c **** 			sis->sfactScale =        GetBits(bsi, 1);
+ 1040              		.loc 1 378 0 discriminator 1
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cctYoe2o.s 			page 27
+
+
+ 1041 0282 0121     		movs	r1, #1
+ 1042 0284 6846     		mov	r0, sp
+ 1043 0286 FFF7FEFF 		bl	xmp3fixpt_GetBits
+ 1044              	.LVL95:
+ 1045 028a 40E7     		b	.L63
+ 1046              	.LVL96:
+ 1047              	.L84:
+ 333:lib/helix/real/bitstream.c **** 		for (ch = 0; ch < mp3DecInfo->nChans; ch++) {
+ 1048              		.loc 1 333 0 discriminator 2
+ 1049 028c 0135     		adds	r5, r5, #1
+ 1050              	.LVL97:
+ 1051              	.L56:
+ 333:lib/helix/real/bitstream.c **** 		for (ch = 0; ch < mp3DecInfo->nChans; ch++) {
+ 1052              		.loc 1 333 0 is_stmt 0 discriminator 1
+ 1053 028e D8F8C437 		ldr	r3, [r8, #1988]
+ 1054 0292 AB42     		cmp	r3, r5
+ 1055 0294 01DD     		ble	.L85
+ 334:lib/helix/real/bitstream.c **** 			sis = &si->sis[gr][ch];						/* side info subblock for this granule, channel */
+ 1056              		.loc 1 334 0 is_stmt 1
+ 1057 0296 0024     		movs	r4, #0
+ 1058 0298 4DE7     		b	.L65
+ 1059              	.L85:
+ 381:lib/helix/real/bitstream.c **** 		}
+ 382:lib/helix/real/bitstream.c **** 	}
+ 383:lib/helix/real/bitstream.c **** 	mp3DecInfo->mainDataBegin = si->mainDataBegin;	/* needed by main decode loop */
+ 1060              		.loc 1 383 0
+ 1061 029a 3B68     		ldr	r3, [r7]
+ 1062 029c C8F8D837 		str	r3, [r8, #2008]
+ 1063              	.LVL98:
+ 1064              	.L45:
+ 384:lib/helix/real/bitstream.c **** 
+ 385:lib/helix/real/bitstream.c **** 	ASSERT(nBytes == CalcBitsUsed(bsi, buf, 0) >> 3);
+ 386:lib/helix/real/bitstream.c **** 
+ 387:lib/helix/real/bitstream.c **** 	return nBytes;	
+ 388:lib/helix/real/bitstream.c **** }
+ 1065              		.loc 1 388 0
+ 1066 02a0 5046     		mov	r0, r10
+ 1067 02a2 04B0     		add	sp, sp, #16
+ 1068              	.LCFI9:
+ 1069              		.cfi_remember_state
+ 1070              		.cfi_def_cfa_offset 32
+ 1071              		@ sp needed
+ 1072 02a4 BDE8F087 		pop	{r4, r5, r6, r7, r8, r9, r10, pc}
+ 1073              	.LVL99:
+ 1074              	.L66:
+ 1075              	.LCFI10:
+ 1076              		.cfi_restore_state
+ 309:lib/helix/real/bitstream.c **** 
+ 1077              		.loc 1 309 0
+ 1078 02a8 4FF0FF3A 		mov	r10, #-1
+ 1079 02ac F8E7     		b	.L45
+ 1080              	.L67:
+ 1081 02ae 4FF0FF3A 		mov	r10, #-1
+ 1082 02b2 F5E7     		b	.L45
+ 1083              	.L68:
+ 1084 02b4 4FF0FF3A 		mov	r10, #-1
+ 1085 02b8 F2E7     		b	.L45
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cctYoe2o.s 			page 28
+
+
+ 1086              		.cfi_endproc
+ 1087              	.LFE11:
+ 1089              		.text
+ 1090              	.Letext0:
+ 1091              		.file 2 "lib/helix/real/../pub/mp3common.h"
+ 1092              		.file 3 "lib/helix/real/../pub/mp3dec.h"
+ 1093              		.file 4 "lib/helix/real/coder.h"
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cctYoe2o.s 			page 29
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 bitstream.c
+C:\Users\Patryk\AppData\Local\Temp\cctYoe2o.s:18     .text.xmp3fixpt_SetBitstreamPointer:00000000 $t
+C:\Users\Patryk\AppData\Local\Temp\cctYoe2o.s:25     .text.xmp3fixpt_SetBitstreamPointer:00000000 xmp3fixpt_SetBitstreamPointer
+C:\Users\Patryk\AppData\Local\Temp\cctYoe2o.s:49     .text.xmp3fixpt_GetBits:00000000 $t
+C:\Users\Patryk\AppData\Local\Temp\cctYoe2o.s:56     .text.xmp3fixpt_GetBits:00000000 xmp3fixpt_GetBits
+C:\Users\Patryk\AppData\Local\Temp\cctYoe2o.s:215    .text.xmp3fixpt_CalcBitsUsed:00000000 $t
+C:\Users\Patryk\AppData\Local\Temp\cctYoe2o.s:222    .text.xmp3fixpt_CalcBitsUsed:00000000 xmp3fixpt_CalcBitsUsed
+C:\Users\Patryk\AppData\Local\Temp\cctYoe2o.s:247    .text.xmp3fixpt_CheckPadBit:00000000 $t
+C:\Users\Patryk\AppData\Local\Temp\cctYoe2o.s:254    .text.xmp3fixpt_CheckPadBit:00000000 xmp3fixpt_CheckPadBit
+C:\Users\Patryk\AppData\Local\Temp\cctYoe2o.s:291    .text.xmp3fixpt_UnpackFrameHeader:00000000 $t
+C:\Users\Patryk\AppData\Local\Temp\cctYoe2o.s:298    .text.xmp3fixpt_UnpackFrameHeader:00000000 xmp3fixpt_UnpackFrameHeader
+C:\Users\Patryk\AppData\Local\Temp\cctYoe2o.s:606    .text.xmp3fixpt_UnpackFrameHeader:000001e4 $d
+C:\Users\Patryk\AppData\Local\Temp\cctYoe2o.s:616    .text.xmp3fixpt_UnpackSideInfo:00000000 $t
+C:\Users\Patryk\AppData\Local\Temp\cctYoe2o.s:623    .text.xmp3fixpt_UnpackSideInfo:00000000 xmp3fixpt_UnpackSideInfo
+
+UNDEFINED SYMBOLS
+xmp3fixpt_sfBandTable
+xmp3fixpt_samplerateTab
+xmp3fixpt_samplesPerFrameTab
+xmp3fixpt_bitrateTab
+xmp3fixpt_slotTab
+xmp3fixpt_sideBytesTab

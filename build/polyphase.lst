@@ -1,0 +1,4250 @@
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"polyphase.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.xmp3fixpt_PolyphaseMono,"ax",%progbits
+  18              		.align	1
+  19              		.global	xmp3fixpt_PolyphaseMono
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  23              		.fpu fpv5-sp-d16
+  25              	xmp3fixpt_PolyphaseMono:
+  26              	.LFB6:
+  27              		.file 1 "lib/helix/real/polyphase.c"
+   1:lib/helix/real/polyphase.c **** /* ***** BEGIN LICENSE BLOCK ***** 
+   2:lib/helix/real/polyphase.c ****  * Version: RCSL 1.0/RPSL 1.0 
+   3:lib/helix/real/polyphase.c ****  *  
+   4:lib/helix/real/polyphase.c ****  * Portions Copyright (c) 1995-2002 RealNetworks, Inc. All Rights Reserved. 
+   5:lib/helix/real/polyphase.c ****  *      
+   6:lib/helix/real/polyphase.c ****  * The contents of this file, and the files included with this file, are 
+   7:lib/helix/real/polyphase.c ****  * subject to the current version of the RealNetworks Public Source License 
+   8:lib/helix/real/polyphase.c ****  * Version 1.0 (the "RPSL") available at 
+   9:lib/helix/real/polyphase.c ****  * http://www.helixcommunity.org/content/rpsl unless you have licensed 
+  10:lib/helix/real/polyphase.c ****  * the file under the RealNetworks Community Source License Version 1.0 
+  11:lib/helix/real/polyphase.c ****  * (the "RCSL") available at http://www.helixcommunity.org/content/rcsl, 
+  12:lib/helix/real/polyphase.c ****  * in which case the RCSL will apply. You may also obtain the license terms 
+  13:lib/helix/real/polyphase.c ****  * directly from RealNetworks.  You may not use this file except in 
+  14:lib/helix/real/polyphase.c ****  * compliance with the RPSL or, if you have a valid RCSL with RealNetworks 
+  15:lib/helix/real/polyphase.c ****  * applicable to this file, the RCSL.  Please see the applicable RPSL or 
+  16:lib/helix/real/polyphase.c ****  * RCSL for the rights, obligations and limitations governing use of the 
+  17:lib/helix/real/polyphase.c ****  * contents of the file.  
+  18:lib/helix/real/polyphase.c ****  *  
+  19:lib/helix/real/polyphase.c ****  * This file is part of the Helix DNA Technology. RealNetworks is the 
+  20:lib/helix/real/polyphase.c ****  * developer of the Original Code and owns the copyrights in the portions 
+  21:lib/helix/real/polyphase.c ****  * it created. 
+  22:lib/helix/real/polyphase.c ****  *  
+  23:lib/helix/real/polyphase.c ****  * This file, and the files included with this file, is distributed and made 
+  24:lib/helix/real/polyphase.c ****  * available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER 
+  25:lib/helix/real/polyphase.c ****  * EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS ALL SUCH WARRANTIES, 
+  26:lib/helix/real/polyphase.c ****  * INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF MERCHANTABILITY, FITNESS 
+  27:lib/helix/real/polyphase.c ****  * FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT. 
+  28:lib/helix/real/polyphase.c ****  * 
+  29:lib/helix/real/polyphase.c ****  * Technology Compatibility Kit Test Suite(s) Location: 
+  30:lib/helix/real/polyphase.c ****  *    http://www.helixcommunity.org/content/tck 
+  31:lib/helix/real/polyphase.c ****  * 
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 2
+
+
+  32:lib/helix/real/polyphase.c ****  * Contributor(s): 
+  33:lib/helix/real/polyphase.c ****  *  
+  34:lib/helix/real/polyphase.c ****  * ***** END LICENSE BLOCK ***** */ 
+  35:lib/helix/real/polyphase.c **** 
+  36:lib/helix/real/polyphase.c **** /**************************************************************************************
+  37:lib/helix/real/polyphase.c ****  * Fixed-point MP3 decoder
+  38:lib/helix/real/polyphase.c ****  * Jon Recker (jrecker@real.com), Ken Cooke (kenc@real.com)
+  39:lib/helix/real/polyphase.c ****  * June 2003
+  40:lib/helix/real/polyphase.c ****  *
+  41:lib/helix/real/polyphase.c ****  * polyphase.c - final stage of subband transform (polyphase synthesis filter)
+  42:lib/helix/real/polyphase.c ****  *
+  43:lib/helix/real/polyphase.c ****  * This is the C reference version using __int64
+  44:lib/helix/real/polyphase.c ****  * Look in the appropriate subdirectories for optimized asm implementations 
+  45:lib/helix/real/polyphase.c ****  *   (e.g. arm/asmpoly.s)
+  46:lib/helix/real/polyphase.c ****  **************************************************************************************/
+  47:lib/helix/real/polyphase.c **** 
+  48:lib/helix/real/polyphase.c **** #include "coder.h"
+  49:lib/helix/real/polyphase.c **** #include "assembly.h"
+  50:lib/helix/real/polyphase.c **** 
+  51:lib/helix/real/polyphase.c **** /* input to Polyphase = Q(DQ_FRACBITS_OUT-2), gain 2 bits in convolution
+  52:lib/helix/real/polyphase.c ****  *  we also have the implicit bias of 2^15 to add back, so net fraction bits = 
+  53:lib/helix/real/polyphase.c ****  *    DQ_FRACBITS_OUT - 2 - 2 - 15
+  54:lib/helix/real/polyphase.c ****  *  (see comment on Dequantize() for more info)
+  55:lib/helix/real/polyphase.c ****  */
+  56:lib/helix/real/polyphase.c **** #define DEF_NFRACBITS	(DQ_FRACBITS_OUT - 2 - 2 - 15)	
+  57:lib/helix/real/polyphase.c **** #define CSHIFT	12	/* coefficients have 12 leading sign bits for early-terminating mulitplies */
+  58:lib/helix/real/polyphase.c **** 
+  59:lib/helix/real/polyphase.c **** static __inline short ClipToShort(int x, int fracBits)
+  60:lib/helix/real/polyphase.c **** {
+  61:lib/helix/real/polyphase.c **** 	int sign;
+  62:lib/helix/real/polyphase.c **** 	
+  63:lib/helix/real/polyphase.c **** 	/* assumes you've already rounded (x += (1 << (fracBits-1))) */
+  64:lib/helix/real/polyphase.c **** 	x >>= fracBits;
+  65:lib/helix/real/polyphase.c **** 	
+  66:lib/helix/real/polyphase.c **** 	/* Ken's trick: clips to [-32768, 32767] */
+  67:lib/helix/real/polyphase.c **** 	sign = x >> 31;
+  68:lib/helix/real/polyphase.c **** 	if (sign != (x >> 15))
+  69:lib/helix/real/polyphase.c **** 		x = sign ^ ((1 << 15) - 1);
+  70:lib/helix/real/polyphase.c **** 
+  71:lib/helix/real/polyphase.c **** 	return (short)x;
+  72:lib/helix/real/polyphase.c **** }
+  73:lib/helix/real/polyphase.c **** 
+  74:lib/helix/real/polyphase.c **** #define MC0M(x)	{ \
+  75:lib/helix/real/polyphase.c **** 	c1 = *coef;		coef++;		c2 = *coef;		coef++; \
+  76:lib/helix/real/polyphase.c **** 	vLo = *(vb1+(x));			vHi = *(vb1+(23-(x))); \
+  77:lib/helix/real/polyphase.c **** 	sum1L = MADD64(sum1L, vLo,  c1);	sum1L = MADD64(sum1L, vHi, -c2); \
+  78:lib/helix/real/polyphase.c **** }
+  79:lib/helix/real/polyphase.c **** 
+  80:lib/helix/real/polyphase.c **** #define MC1M(x)	{ \
+  81:lib/helix/real/polyphase.c **** 	c1 = *coef;		coef++; \
+  82:lib/helix/real/polyphase.c **** 	vLo = *(vb1+(x)); \
+  83:lib/helix/real/polyphase.c **** 	sum1L = MADD64(sum1L, vLo,  c1); \
+  84:lib/helix/real/polyphase.c **** }
+  85:lib/helix/real/polyphase.c **** 
+  86:lib/helix/real/polyphase.c **** #define MC2M(x)	{ \
+  87:lib/helix/real/polyphase.c **** 		c1 = *coef;		coef++;		c2 = *coef;		coef++; \
+  88:lib/helix/real/polyphase.c **** 		vLo = *(vb1+(x));	vHi = *(vb1+(23-(x))); \
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 3
+
+
+  89:lib/helix/real/polyphase.c **** 		sum1L = MADD64(sum1L, vLo,  c1);	sum2L = MADD64(sum2L, vLo,  c2); \
+  90:lib/helix/real/polyphase.c **** 		sum1L = MADD64(sum1L, vHi, -c2);	sum2L = MADD64(sum2L, vHi,  c1); \
+  91:lib/helix/real/polyphase.c **** }
+  92:lib/helix/real/polyphase.c **** 
+  93:lib/helix/real/polyphase.c **** /**************************************************************************************
+  94:lib/helix/real/polyphase.c ****  * Function:    PolyphaseMono
+  95:lib/helix/real/polyphase.c ****  *
+  96:lib/helix/real/polyphase.c ****  * Description: filter one subband and produce 32 output PCM samples for one channel
+  97:lib/helix/real/polyphase.c ****  *
+  98:lib/helix/real/polyphase.c ****  * Inputs:      pointer to PCM output buffer
+  99:lib/helix/real/polyphase.c ****  *              number of "extra shifts" (vbuf format = Q(DQ_FRACBITS_OUT-2))
+ 100:lib/helix/real/polyphase.c ****  *              pointer to start of vbuf (preserved from last call)
+ 101:lib/helix/real/polyphase.c ****  *              start of filter coefficient table (in proper, shuffled order)
+ 102:lib/helix/real/polyphase.c ****  *              no minimum number of guard bits is required for input vbuf 
+ 103:lib/helix/real/polyphase.c ****  *                (see additional scaling comments below)
+ 104:lib/helix/real/polyphase.c ****  *
+ 105:lib/helix/real/polyphase.c ****  * Outputs:     32 samples of one channel of decoded PCM data, (i.e. Q16.0)
+ 106:lib/helix/real/polyphase.c ****  *
+ 107:lib/helix/real/polyphase.c ****  * Return:      none
+ 108:lib/helix/real/polyphase.c ****  *
+ 109:lib/helix/real/polyphase.c ****  * TODO:        add 32-bit version for platforms where 64-bit mul-acc is not supported
+ 110:lib/helix/real/polyphase.c ****  *                (note max filter gain - see polyCoef[] comments)
+ 111:lib/helix/real/polyphase.c ****  **************************************************************************************/
+ 112:lib/helix/real/polyphase.c **** void PolyphaseMono(short *pcm, int *vbuf, const int *coefBase)
+ 113:lib/helix/real/polyphase.c **** {	
+  28              		.loc 1 113 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 8
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              	.LVL0:
+  33 0000 2DE9F047 		push	{r4, r5, r6, r7, r8, r9, r10, lr}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 32
+  36              		.cfi_offset 4, -32
+  37              		.cfi_offset 5, -28
+  38              		.cfi_offset 6, -24
+  39              		.cfi_offset 7, -20
+  40              		.cfi_offset 8, -16
+  41              		.cfi_offset 9, -12
+  42              		.cfi_offset 10, -8
+  43              		.cfi_offset 14, -4
+  44 0004 82B0     		sub	sp, sp, #8
+  45              	.LCFI1:
+  46              		.cfi_def_cfa_offset 40
+  47              	.LVL1:
+ 114:lib/helix/real/polyphase.c **** 	int i;
+ 115:lib/helix/real/polyphase.c **** 	const int *coef;
+ 116:lib/helix/real/polyphase.c **** 	int *vb1;
+ 117:lib/helix/real/polyphase.c **** 	int vLo, vHi, c1, c2;
+ 118:lib/helix/real/polyphase.c **** 	Word64 sum1L, sum2L, rndVal;
+ 119:lib/helix/real/polyphase.c **** 
+ 120:lib/helix/real/polyphase.c **** 	rndVal = (Word64)( 1 << (DEF_NFRACBITS - 1 + (32 - CSHIFT)) );
+ 121:lib/helix/real/polyphase.c **** 
+ 122:lib/helix/real/polyphase.c **** 	/* special case, output sample 0 */
+ 123:lib/helix/real/polyphase.c **** 	coef = coefBase;
+ 124:lib/helix/real/polyphase.c **** 	vb1 = vbuf;
+ 125:lib/helix/real/polyphase.c **** 	sum1L = rndVal;
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 4
+
+
+ 126:lib/helix/real/polyphase.c **** 
+ 127:lib/helix/real/polyphase.c **** 	MC0M(0)
+  48              		.loc 1 127 0
+  49 0006 1768     		ldr	r7, [r2]
+  50              	.LVL2:
+  51 0008 5468     		ldr	r4, [r2, #4]
+  52              	.LVL3:
+  53 000a 0E68     		ldr	r6, [r1]
+  54              	.LVL4:
+  55 000c CD6D     		ldr	r5, [r1, #92]
+  56              	.LVL5:
+  57              	.LBB386:
+  58              	.LBB387:
+  59              		.file 2 "lib/helix/real/assembly.h"
+   1:lib/helix/real/assembly.h **** /* ***** BEGIN LICENSE BLOCK ***** 
+   2:lib/helix/real/assembly.h ****  * Version: RCSL 1.0/RPSL 1.0 
+   3:lib/helix/real/assembly.h ****  *  
+   4:lib/helix/real/assembly.h ****  * Portions Copyright (c) 1995-2002 RealNetworks, Inc. All Rights Reserved. 
+   5:lib/helix/real/assembly.h ****  *      
+   6:lib/helix/real/assembly.h ****  * The contents of this file, and the files included with this file, are 
+   7:lib/helix/real/assembly.h ****  * subject to the current version of the RealNetworks Public Source License 
+   8:lib/helix/real/assembly.h ****  * Version 1.0 (the "RPSL") available at 
+   9:lib/helix/real/assembly.h ****  * http://www.helixcommunity.org/content/rpsl unless you have licensed 
+  10:lib/helix/real/assembly.h ****  * the file under the RealNetworks Community Source License Version 1.0 
+  11:lib/helix/real/assembly.h ****  * (the "RCSL") available at http://www.helixcommunity.org/content/rcsl, 
+  12:lib/helix/real/assembly.h ****  * in which case the RCSL will apply. You may also obtain the license terms 
+  13:lib/helix/real/assembly.h ****  * directly from RealNetworks.  You may not use this file except in 
+  14:lib/helix/real/assembly.h ****  * compliance with the RPSL or, if you have a valid RCSL with RealNetworks 
+  15:lib/helix/real/assembly.h ****  * applicable to this file, the RCSL.  Please see the applicable RPSL or 
+  16:lib/helix/real/assembly.h ****  * RCSL for the rights, obligations and limitations governing use of the 
+  17:lib/helix/real/assembly.h ****  * contents of the file.  
+  18:lib/helix/real/assembly.h ****  *  
+  19:lib/helix/real/assembly.h ****  * This file is part of the Helix DNA Technology. RealNetworks is the 
+  20:lib/helix/real/assembly.h ****  * developer of the Original Code and owns the copyrights in the portions 
+  21:lib/helix/real/assembly.h ****  * it created. 
+  22:lib/helix/real/assembly.h ****  *  
+  23:lib/helix/real/assembly.h ****  * This file, and the files included with this file, is distributed and made 
+  24:lib/helix/real/assembly.h ****  * available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER 
+  25:lib/helix/real/assembly.h ****  * EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS ALL SUCH WARRANTIES, 
+  26:lib/helix/real/assembly.h ****  * INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF MERCHANTABILITY, FITNESS 
+  27:lib/helix/real/assembly.h ****  * FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT. 
+  28:lib/helix/real/assembly.h ****  * 
+  29:lib/helix/real/assembly.h ****  * Technology Compatibility Kit Test Suite(s) Location: 
+  30:lib/helix/real/assembly.h ****  *    http://www.helixcommunity.org/content/tck 
+  31:lib/helix/real/assembly.h ****  * 
+  32:lib/helix/real/assembly.h ****  * Contributor(s): 
+  33:lib/helix/real/assembly.h ****  *  
+  34:lib/helix/real/assembly.h ****  * ***** END LICENSE BLOCK ***** */ 
+  35:lib/helix/real/assembly.h **** 
+  36:lib/helix/real/assembly.h **** /**************************************************************************************
+  37:lib/helix/real/assembly.h ****  * Fixed-point MP3 decoder
+  38:lib/helix/real/assembly.h ****  * Jon Recker (jrecker@real.com), Ken Cooke (kenc@real.com)
+  39:lib/helix/real/assembly.h ****  * June 2003
+  40:lib/helix/real/assembly.h ****  *
+  41:lib/helix/real/assembly.h ****  * assembly.h - assembly language functions and prototypes for supported platforms
+  42:lib/helix/real/assembly.h ****  *
+  43:lib/helix/real/assembly.h ****  * - inline rountines with access to 64-bit multiply results 
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 5
+
+
+  44:lib/helix/real/assembly.h ****  * - x86 (_WIN32) and ARM (ARM_ADS, _WIN32_WCE) versions included
+  45:lib/helix/real/assembly.h ****  * - some inline functions are mix of asm and C for speed
+  46:lib/helix/real/assembly.h ****  * - some functions are in native asm files, so only the prototype is given here
+  47:lib/helix/real/assembly.h ****  *
+  48:lib/helix/real/assembly.h ****  * MULSHIFT32(x, y)    signed multiply of two 32-bit integers (x and y), returns top 32 bits of 64-
+  49:lib/helix/real/assembly.h ****  * FASTABS(x)          branchless absolute value of signed integer x
+  50:lib/helix/real/assembly.h ****  * CLZ(x)              count leading zeros in x
+  51:lib/helix/real/assembly.h ****  * MADD64(sum, x, y)   (Windows only) sum [64-bit] += x [32-bit] * y [32-bit]
+  52:lib/helix/real/assembly.h ****  * SHL64(sum, x, y)    (Windows only) 64-bit left shift using __int64
+  53:lib/helix/real/assembly.h ****  * SAR64(sum, x, y)    (Windows only) 64-bit right shift using __int64
+  54:lib/helix/real/assembly.h ****  */
+  55:lib/helix/real/assembly.h **** 
+  56:lib/helix/real/assembly.h **** #ifndef _ASSEMBLY_H
+  57:lib/helix/real/assembly.h **** #define _ASSEMBLY_H
+  58:lib/helix/real/assembly.h **** 
+  59:lib/helix/real/assembly.h **** #include "../platform.h"
+  60:lib/helix/real/assembly.h **** 
+  61:lib/helix/real/assembly.h **** #if (defined _WIN32 && !defined _WIN32_WCE) || (defined __WINS__ && defined _SYMBIAN) || defined(_O
+  62:lib/helix/real/assembly.h **** 
+  63:lib/helix/real/assembly.h **** #pragma warning( disable : 4035 )	/* complains about inline asm not returning a value */
+  64:lib/helix/real/assembly.h **** 
+  65:lib/helix/real/assembly.h **** static __inline int MULSHIFT32(int x, int y)	
+  66:lib/helix/real/assembly.h **** {
+  67:lib/helix/real/assembly.h ****     __asm {
+  68:lib/helix/real/assembly.h **** 		mov		eax, x
+  69:lib/helix/real/assembly.h **** 	    imul	y
+  70:lib/helix/real/assembly.h **** 	    mov		eax, edx
+  71:lib/helix/real/assembly.h **** 	}
+  72:lib/helix/real/assembly.h **** }
+  73:lib/helix/real/assembly.h **** 
+  74:lib/helix/real/assembly.h **** static __inline int FASTABS(int x) 
+  75:lib/helix/real/assembly.h **** {
+  76:lib/helix/real/assembly.h **** 	int sign;
+  77:lib/helix/real/assembly.h **** 
+  78:lib/helix/real/assembly.h **** 	sign = x >> (sizeof(int) * 8 - 1);
+  79:lib/helix/real/assembly.h **** 	x ^= sign;
+  80:lib/helix/real/assembly.h **** 	x -= sign;
+  81:lib/helix/real/assembly.h **** 
+  82:lib/helix/real/assembly.h **** 	return x;
+  83:lib/helix/real/assembly.h **** }
+  84:lib/helix/real/assembly.h **** 
+  85:lib/helix/real/assembly.h **** static __inline int CLZ(int x)
+  86:lib/helix/real/assembly.h **** {
+  87:lib/helix/real/assembly.h **** 	int numZeros;
+  88:lib/helix/real/assembly.h **** 
+  89:lib/helix/real/assembly.h **** 	if (!x)
+  90:lib/helix/real/assembly.h **** 		return (sizeof(int) * 8);
+  91:lib/helix/real/assembly.h **** 
+  92:lib/helix/real/assembly.h **** 	numZeros = 0;
+  93:lib/helix/real/assembly.h **** 	while (!(x & 0x80000000)) {
+  94:lib/helix/real/assembly.h **** 		numZeros++;
+  95:lib/helix/real/assembly.h **** 		x <<= 1;
+  96:lib/helix/real/assembly.h **** 	} 
+  97:lib/helix/real/assembly.h **** 
+  98:lib/helix/real/assembly.h **** 	return numZeros;
+  99:lib/helix/real/assembly.h **** }
+ 100:lib/helix/real/assembly.h **** 
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 6
+
+
+ 101:lib/helix/real/assembly.h **** /* MADD64, SHL64, SAR64:
+ 102:lib/helix/real/assembly.h ****  * write in assembly to avoid dependency on run-time lib for 64-bit shifts, muls
+ 103:lib/helix/real/assembly.h ****  *  (sometimes compiler thunks to function calls instead of code generating)
+ 104:lib/helix/real/assembly.h ****  * required for Symbian emulator
+ 105:lib/helix/real/assembly.h ****  */
+ 106:lib/helix/real/assembly.h **** #ifdef __CW32__
+ 107:lib/helix/real/assembly.h **** typedef long long Word64;
+ 108:lib/helix/real/assembly.h **** #else
+ 109:lib/helix/real/assembly.h **** typedef __int64 Word64;
+ 110:lib/helix/real/assembly.h **** #endif
+ 111:lib/helix/real/assembly.h **** 
+ 112:lib/helix/real/assembly.h **** static __inline Word64 MADD64(Word64 sum, int x, int y)
+ 113:lib/helix/real/assembly.h **** {
+ 114:lib/helix/real/assembly.h **** 	unsigned int sumLo = ((unsigned int *)&sum)[0];
+ 115:lib/helix/real/assembly.h **** 	int sumHi = ((int *)&sum)[1];
+ 116:lib/helix/real/assembly.h **** 
+ 117:lib/helix/real/assembly.h **** 	__asm {
+ 118:lib/helix/real/assembly.h **** 		mov		eax, x
+ 119:lib/helix/real/assembly.h **** 		imul	y
+ 120:lib/helix/real/assembly.h **** 		add		eax, sumLo
+ 121:lib/helix/real/assembly.h **** 		adc		edx, sumHi
+ 122:lib/helix/real/assembly.h **** 	}
+ 123:lib/helix/real/assembly.h **** 
+ 124:lib/helix/real/assembly.h **** 	/* equivalent to return (sum + ((__int64)x * y)); */
+ 125:lib/helix/real/assembly.h **** }
+ 126:lib/helix/real/assembly.h **** 
+ 127:lib/helix/real/assembly.h **** static __inline Word64 SHL64(Word64 x, int n)
+ 128:lib/helix/real/assembly.h **** {
+ 129:lib/helix/real/assembly.h **** 	unsigned int xLo = ((unsigned int *)&x)[0];
+ 130:lib/helix/real/assembly.h **** 	int xHi = ((int *)&x)[1];
+ 131:lib/helix/real/assembly.h **** 	unsigned char nb = (unsigned char)n;
+ 132:lib/helix/real/assembly.h **** 
+ 133:lib/helix/real/assembly.h **** 	if (n < 32) {
+ 134:lib/helix/real/assembly.h **** 		__asm {
+ 135:lib/helix/real/assembly.h **** 			mov		edx, xHi
+ 136:lib/helix/real/assembly.h **** 			mov		eax, xLo
+ 137:lib/helix/real/assembly.h **** 			mov		cl, nb
+ 138:lib/helix/real/assembly.h **** 			shld    edx, eax, cl
+ 139:lib/helix/real/assembly.h **** 			shl     eax, cl
+ 140:lib/helix/real/assembly.h **** 		}
+ 141:lib/helix/real/assembly.h **** 	} else if (n < 64) {
+ 142:lib/helix/real/assembly.h **** 		/* shl masks cl to 0x1f */
+ 143:lib/helix/real/assembly.h **** 		__asm {
+ 144:lib/helix/real/assembly.h **** 			mov		edx, xLo
+ 145:lib/helix/real/assembly.h **** 			mov		cl, nb
+ 146:lib/helix/real/assembly.h **** 			xor     eax, eax
+ 147:lib/helix/real/assembly.h **** 			shl     edx, cl
+ 148:lib/helix/real/assembly.h **** 		}
+ 149:lib/helix/real/assembly.h **** 	} else {
+ 150:lib/helix/real/assembly.h **** 		__asm {
+ 151:lib/helix/real/assembly.h **** 			xor		edx, edx
+ 152:lib/helix/real/assembly.h **** 			xor		eax, eax
+ 153:lib/helix/real/assembly.h **** 		}
+ 154:lib/helix/real/assembly.h **** 	}
+ 155:lib/helix/real/assembly.h **** }
+ 156:lib/helix/real/assembly.h **** 
+ 157:lib/helix/real/assembly.h **** static __inline Word64 SAR64(Word64 x, int n)
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 7
+
+
+ 158:lib/helix/real/assembly.h **** {
+ 159:lib/helix/real/assembly.h **** 	unsigned int xLo = ((unsigned int *)&x)[0];
+ 160:lib/helix/real/assembly.h **** 	int xHi = ((int *)&x)[1];
+ 161:lib/helix/real/assembly.h **** 	unsigned char nb = (unsigned char)n;
+ 162:lib/helix/real/assembly.h **** 
+ 163:lib/helix/real/assembly.h **** 	if (n < 32) {
+ 164:lib/helix/real/assembly.h **** 		__asm {
+ 165:lib/helix/real/assembly.h **** 			mov		edx, xHi
+ 166:lib/helix/real/assembly.h **** 			mov		eax, xLo
+ 167:lib/helix/real/assembly.h **** 			mov		cl, nb
+ 168:lib/helix/real/assembly.h **** 			shrd	eax, edx, cl
+ 169:lib/helix/real/assembly.h **** 			sar		edx, cl
+ 170:lib/helix/real/assembly.h **** 		}
+ 171:lib/helix/real/assembly.h **** 	} else if (n < 64) {
+ 172:lib/helix/real/assembly.h **** 		/* sar masks cl to 0x1f */
+ 173:lib/helix/real/assembly.h **** 		__asm {
+ 174:lib/helix/real/assembly.h **** 			mov		edx, xHi
+ 175:lib/helix/real/assembly.h **** 			mov		eax, xHi
+ 176:lib/helix/real/assembly.h **** 			mov		cl, nb
+ 177:lib/helix/real/assembly.h **** 			sar		edx, 31
+ 178:lib/helix/real/assembly.h **** 			sar		eax, cl
+ 179:lib/helix/real/assembly.h **** 		}
+ 180:lib/helix/real/assembly.h **** 	} else {
+ 181:lib/helix/real/assembly.h **** 		__asm {
+ 182:lib/helix/real/assembly.h **** 			sar		xHi, 31
+ 183:lib/helix/real/assembly.h **** 			mov		eax, xHi
+ 184:lib/helix/real/assembly.h **** 			mov		edx, xHi
+ 185:lib/helix/real/assembly.h **** 		}
+ 186:lib/helix/real/assembly.h **** 	}
+ 187:lib/helix/real/assembly.h **** }
+ 188:lib/helix/real/assembly.h **** 
+ 189:lib/helix/real/assembly.h **** #elif (defined _WIN32) && (defined _WIN32_WCE)
+ 190:lib/helix/real/assembly.h **** 
+ 191:lib/helix/real/assembly.h **** /* use asm function for now (EVC++ 3.0 does horrible job compiling __int64 version) */
+ 192:lib/helix/real/assembly.h **** #define MULSHIFT32	xmp3_MULSHIFT32
+ 193:lib/helix/real/assembly.h **** int MULSHIFT32(int x, int y);
+ 194:lib/helix/real/assembly.h **** 
+ 195:lib/helix/real/assembly.h **** static __inline int FASTABS(int x) 
+ 196:lib/helix/real/assembly.h **** {
+ 197:lib/helix/real/assembly.h **** 	int sign;
+ 198:lib/helix/real/assembly.h **** 
+ 199:lib/helix/real/assembly.h **** 	sign = x >> (sizeof(int) * 8 - 1);
+ 200:lib/helix/real/assembly.h **** 	x ^= sign;
+ 201:lib/helix/real/assembly.h **** 	x -= sign;
+ 202:lib/helix/real/assembly.h **** 
+ 203:lib/helix/real/assembly.h **** 	return x;
+ 204:lib/helix/real/assembly.h **** }
+ 205:lib/helix/real/assembly.h **** 
+ 206:lib/helix/real/assembly.h **** static __inline int CLZ(int x)
+ 207:lib/helix/real/assembly.h **** {
+ 208:lib/helix/real/assembly.h **** 	int numZeros;
+ 209:lib/helix/real/assembly.h **** 
+ 210:lib/helix/real/assembly.h **** 	if (!x)
+ 211:lib/helix/real/assembly.h **** 		return (sizeof(int) * 8);
+ 212:lib/helix/real/assembly.h **** 
+ 213:lib/helix/real/assembly.h **** 	numZeros = 0;
+ 214:lib/helix/real/assembly.h **** 	while (!(x & 0x80000000)) {
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 8
+
+
+ 215:lib/helix/real/assembly.h **** 		numZeros++;
+ 216:lib/helix/real/assembly.h **** 		x <<= 1;
+ 217:lib/helix/real/assembly.h **** 	} 
+ 218:lib/helix/real/assembly.h **** 
+ 219:lib/helix/real/assembly.h **** 	return numZeros;
+ 220:lib/helix/real/assembly.h **** }
+ 221:lib/helix/real/assembly.h **** 
+ 222:lib/helix/real/assembly.h **** #elif defined ARM_ADS
+ 223:lib/helix/real/assembly.h **** 
+ 224:lib/helix/real/assembly.h **** static __inline int MULSHIFT32(int x, int y)
+ 225:lib/helix/real/assembly.h **** {
+ 226:lib/helix/real/assembly.h ****     /* important rules for smull RdLo, RdHi, Rm, Rs:
+ 227:lib/helix/real/assembly.h ****      *     RdHi and Rm can't be the same register
+ 228:lib/helix/real/assembly.h ****      *     RdLo and Rm can't be the same register
+ 229:lib/helix/real/assembly.h ****      *     RdHi and RdLo can't be the same register
+ 230:lib/helix/real/assembly.h ****      * Note: Rs determines early termination (leading sign bits) so if you want to specify
+ 231:lib/helix/real/assembly.h ****      *   which operand is Rs, put it in the SECOND argument (y)
+ 232:lib/helix/real/assembly.h **** 	 * For inline assembly, x and y are not assumed to be R0, R1 so it shouldn't matter
+ 233:lib/helix/real/assembly.h **** 	 *   which one is returned. (If this were a function call, returning y (R1) would 
+ 234:lib/helix/real/assembly.h **** 	 *   require an extra "mov r0, r1")
+ 235:lib/helix/real/assembly.h ****      */
+ 236:lib/helix/real/assembly.h ****     int zlow;
+ 237:lib/helix/real/assembly.h ****     __asm {
+ 238:lib/helix/real/assembly.h ****     	smull zlow,y,x,y
+ 239:lib/helix/real/assembly.h ****    	}
+ 240:lib/helix/real/assembly.h **** 
+ 241:lib/helix/real/assembly.h ****     return y;
+ 242:lib/helix/real/assembly.h **** }
+ 243:lib/helix/real/assembly.h **** 
+ 244:lib/helix/real/assembly.h **** static __inline int FASTABS(int x) 
+ 245:lib/helix/real/assembly.h **** {
+ 246:lib/helix/real/assembly.h **** 	int t=0; /*Really is not necessary to initialiaze only to avoid warning*/
+ 247:lib/helix/real/assembly.h **** 
+ 248:lib/helix/real/assembly.h **** 	__asm {
+ 249:lib/helix/real/assembly.h **** 		eor	t, x, x, asr #31
+ 250:lib/helix/real/assembly.h **** 		sub	t, t, x, asr #31
+ 251:lib/helix/real/assembly.h **** 	}
+ 252:lib/helix/real/assembly.h **** 
+ 253:lib/helix/real/assembly.h **** 	return t;
+ 254:lib/helix/real/assembly.h **** }
+ 255:lib/helix/real/assembly.h **** 
+ 256:lib/helix/real/assembly.h **** static __inline int CLZ(int x)
+ 257:lib/helix/real/assembly.h **** {
+ 258:lib/helix/real/assembly.h **** 	int numZeros;
+ 259:lib/helix/real/assembly.h **** 
+ 260:lib/helix/real/assembly.h **** 	if (!x)
+ 261:lib/helix/real/assembly.h **** 		return (sizeof(int) * 8);
+ 262:lib/helix/real/assembly.h **** 
+ 263:lib/helix/real/assembly.h **** 	numZeros = 0;
+ 264:lib/helix/real/assembly.h **** 	while (!(x & 0x80000000)) {
+ 265:lib/helix/real/assembly.h **** 		numZeros++;
+ 266:lib/helix/real/assembly.h **** 		x <<= 1;
+ 267:lib/helix/real/assembly.h **** 	} 
+ 268:lib/helix/real/assembly.h **** 
+ 269:lib/helix/real/assembly.h **** 	return numZeros;
+ 270:lib/helix/real/assembly.h **** }
+ 271:lib/helix/real/assembly.h **** 
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 9
+
+
+ 272:lib/helix/real/assembly.h **** #elif defined(__GNUC__) && defined(ARM)
+ 273:lib/helix/real/assembly.h **** 
+ 274:lib/helix/real/assembly.h **** static __inline int MULSHIFT32(int x, int y)
+ 275:lib/helix/real/assembly.h **** {
+ 276:lib/helix/real/assembly.h ****     /* important rules for smull RdLo, RdHi, Rm, Rs:
+ 277:lib/helix/real/assembly.h ****      *     RdHi and Rm can't be the same register
+ 278:lib/helix/real/assembly.h ****      *     RdLo and Rm can't be the same register
+ 279:lib/helix/real/assembly.h ****      *     RdHi and RdLo can't be the same register
+ 280:lib/helix/real/assembly.h ****      * Note: Rs determines early termination (leading sign bits) so if you want to specify
+ 281:lib/helix/real/assembly.h ****      *   which operand is Rs, put it in the SECOND argument (y)
+ 282:lib/helix/real/assembly.h **** 	 * For inline assembly, x and y are not assumed to be R0, R1 so it shouldn't matter
+ 283:lib/helix/real/assembly.h **** 	 *   which one is returned. (If this were a function call, returning y (R1) would 
+ 284:lib/helix/real/assembly.h **** 	 *   require an extra "mov r0, r1")
+ 285:lib/helix/real/assembly.h ****      */
+ 286:lib/helix/real/assembly.h ****     int zlow;
+ 287:lib/helix/real/assembly.h ****     __asm__ volatile ("smull %0,%1,%2,%3" : "=&r" (zlow), "=r" (y) : "r" (x), "1" (y)) ;
+ 288:lib/helix/real/assembly.h **** 
+ 289:lib/helix/real/assembly.h ****     return y;
+ 290:lib/helix/real/assembly.h **** }
+ 291:lib/helix/real/assembly.h **** 
+ 292:lib/helix/real/assembly.h **** static __inline int FASTABS(int x) 
+ 293:lib/helix/real/assembly.h **** {
+ 294:lib/helix/real/assembly.h **** 	int t=0; /*Really is not necessary to initialiaze only to avoid warning*/
+ 295:lib/helix/real/assembly.h **** 
+ 296:lib/helix/real/assembly.h **** 	__asm__ volatile (
+ 297:lib/helix/real/assembly.h **** 		"eor %0,%2,%2, asr #31;"
+ 298:lib/helix/real/assembly.h **** 		"sub %0,%1,%2, asr #31;"
+ 299:lib/helix/real/assembly.h **** 		: "=&r" (t) 
+ 300:lib/helix/real/assembly.h **** 		: "0" (t), "r" (x)
+ 301:lib/helix/real/assembly.h **** 	 );
+ 302:lib/helix/real/assembly.h **** 
+ 303:lib/helix/real/assembly.h **** 	return t;
+ 304:lib/helix/real/assembly.h **** }
+ 305:lib/helix/real/assembly.h **** 
+ 306:lib/helix/real/assembly.h **** static __inline int CLZ(int x)
+ 307:lib/helix/real/assembly.h **** {
+ 308:lib/helix/real/assembly.h **** 	int numZeros;
+ 309:lib/helix/real/assembly.h **** 
+ 310:lib/helix/real/assembly.h **** 	if (!x)
+ 311:lib/helix/real/assembly.h **** 		return (sizeof(int) * 8);
+ 312:lib/helix/real/assembly.h **** 
+ 313:lib/helix/real/assembly.h **** 	numZeros = 0;
+ 314:lib/helix/real/assembly.h **** 	while (!(x & 0x80000000)) {
+ 315:lib/helix/real/assembly.h **** 		numZeros++;
+ 316:lib/helix/real/assembly.h **** 		x <<= 1;
+ 317:lib/helix/real/assembly.h **** 	} 
+ 318:lib/helix/real/assembly.h **** 
+ 319:lib/helix/real/assembly.h **** 	return numZeros;
+ 320:lib/helix/real/assembly.h **** }
+ 321:lib/helix/real/assembly.h **** 
+ 322:lib/helix/real/assembly.h **** #elif defined(ARM_TEST)
+ 323:lib/helix/real/assembly.h **** static __inline__ int MULSHIFT32(int x, int y)
+ 324:lib/helix/real/assembly.h **** {
+ 325:lib/helix/real/assembly.h **** 	int zlow;
+ 326:lib/helix/real/assembly.h **** 	__asm__ volatile ("smull %0,%1,%2,%3" : "=&r" (zlow), "=r" (y) : "r" (x), "1" (y) : "cc");
+ 327:lib/helix/real/assembly.h **** 	return y;
+ 328:lib/helix/real/assembly.h **** }
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 10
+
+
+ 329:lib/helix/real/assembly.h **** 
+ 330:lib/helix/real/assembly.h **** static __inline int FASTABS(int x)
+ 331:lib/helix/real/assembly.h **** {
+ 332:lib/helix/real/assembly.h **** 	int sign;
+ 333:lib/helix/real/assembly.h **** 
+ 334:lib/helix/real/assembly.h **** 	sign = x >> (sizeof(int) * 8 - 1);
+ 335:lib/helix/real/assembly.h **** 	x ^= sign;
+ 336:lib/helix/real/assembly.h **** 	x -= sign;
+ 337:lib/helix/real/assembly.h **** 
+ 338:lib/helix/real/assembly.h **** 	return x;
+ 339:lib/helix/real/assembly.h **** }
+ 340:lib/helix/real/assembly.h **** 
+ 341:lib/helix/real/assembly.h **** static __inline int CLZ(int x)
+ 342:lib/helix/real/assembly.h **** {
+ 343:lib/helix/real/assembly.h **** 	int numZeros;
+ 344:lib/helix/real/assembly.h **** 
+ 345:lib/helix/real/assembly.h **** 	/*if (!x)
+ 346:lib/helix/real/assembly.h **** return (sizeof(int) * 8);
+ 347:lib/helix/real/assembly.h **** 
+ 348:lib/helix/real/assembly.h **** numZeros = 0;
+ 349:lib/helix/real/assembly.h **** while (!(x & 0x80000000)) {
+ 350:lib/helix/real/assembly.h **** numZeros++;
+ 351:lib/helix/real/assembly.h **** x <
+ 352:lib/helix/real/assembly.h **** }*/
+ 353:lib/helix/real/assembly.h **** 
+ 354:lib/helix/real/assembly.h **** 	__asm__ ("clz %0, %1" : "=r" (numZeros) : "r" (x) : "cc");
+ 355:lib/helix/real/assembly.h **** 
+ 356:lib/helix/real/assembly.h **** 	return numZeros;
+ 357:lib/helix/real/assembly.h **** }
+ 358:lib/helix/real/assembly.h **** 
+ 359:lib/helix/real/assembly.h **** //static __inline int CLZ(int x) {
+ 360:lib/helix/real/assembly.h **** //	int numZeros;
+ 361:lib/helix/real/assembly.h **** //
+ 362:lib/helix/real/assembly.h **** //	if (!x) {
+ 363:lib/helix/real/assembly.h **** //		return (sizeof(int) * 8);
+ 364:lib/helix/real/assembly.h **** //	}
+ 365:lib/helix/real/assembly.h **** //
+ 366:lib/helix/real/assembly.h **** //	numZeros = 0;
+ 367:lib/helix/real/assembly.h **** //	while (!(x & 0x80000000)) {
+ 368:lib/helix/real/assembly.h **** //		numZeros++;
+ 369:lib/helix/real/assembly.h **** //		x <<= 1;
+ 370:lib/helix/real/assembly.h **** //	}
+ 371:lib/helix/real/assembly.h **** //
+ 372:lib/helix/real/assembly.h **** //	return numZeros;
+ 373:lib/helix/real/assembly.h **** //}
+ 374:lib/helix/real/assembly.h **** 
+ 375:lib/helix/real/assembly.h **** typedef union _U64 {
+ 376:lib/helix/real/assembly.h **** 	Word64 w64;
+ 377:lib/helix/real/assembly.h **** 	struct {
+ 378:lib/helix/real/assembly.h **** 		/* ARM ADS = little endian */
+ 379:lib/helix/real/assembly.h **** 		unsigned int lo32;
+ 380:lib/helix/real/assembly.h **** 		signed int hi32;
+ 381:lib/helix/real/assembly.h **** 	} r;
+ 382:lib/helix/real/assembly.h **** } U64;
+ 383:lib/helix/real/assembly.h **** 
+ 384:lib/helix/real/assembly.h **** static __inline Word64 MADD64(Word64 sum64, int x, int y)
+ 385:lib/helix/real/assembly.h **** {
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 11
+
+
+ 386:lib/helix/real/assembly.h **** 	U64 u;
+ 387:lib/helix/real/assembly.h **** 	u.w64 = sum64;
+ 388:lib/helix/real/assembly.h **** 
+ 389:lib/helix/real/assembly.h **** 	__asm__ volatile ("smlal %0,%1,%2,%3" : "+&r" (u.r.lo32), "+&r" (u.r.hi32) : "r" (x), "r" (y) : "c
+  60              		.loc 2 389 0
+  61 000e 4FF00073 		mov	r3, #33554432
+  62 0012 4FF0000C 		mov	ip, #0
+  63              		.syntax unified
+  64              	@ 389 "lib/helix/real/assembly.h" 1
+  65 0016 C6FB073C 		smlal r3,ip,r6,r7
+  66              	@ 0 "" 2
+  67              	.LVL6:
+  68              		.thumb
+  69              		.syntax unified
+  70              	.LBE387:
+  71              	.LBE386:
+  72              		.loc 1 127 0
+  73 001a 6442     		negs	r4, r4
+  74              	.LVL7:
+  75              	.LBB388:
+  76              	.LBB389:
+  77              		.loc 2 389 0
+  78              		.syntax unified
+  79              	@ 389 "lib/helix/real/assembly.h" 1
+  80 001c C5FB043C 		smlal r3,ip,r5,r4
+  81              	@ 0 "" 2
+  82              	.LVL8:
+  83              		.thumb
+  84              		.syntax unified
+  85              	.LBE389:
+  86              	.LBE388:
+ 128:lib/helix/real/polyphase.c **** 	MC0M(1)
+  87              		.loc 1 128 0
+  88 0020 9768     		ldr	r7, [r2, #8]
+  89              	.LVL9:
+  90 0022 D468     		ldr	r4, [r2, #12]
+  91              	.LVL10:
+  92 0024 4E68     		ldr	r6, [r1, #4]
+  93              	.LVL11:
+  94 0026 8D6D     		ldr	r5, [r1, #88]
+  95              	.LVL12:
+  96              	.LBB390:
+  97              	.LBB391:
+  98              		.loc 2 389 0
+  99              		.syntax unified
+ 100              	@ 389 "lib/helix/real/assembly.h" 1
+ 101 0028 C6FB073C 		smlal r3,ip,r6,r7
+ 102              	@ 0 "" 2
+ 103              	.LVL13:
+ 104              		.thumb
+ 105              		.syntax unified
+ 106              	.LBE391:
+ 107              	.LBE390:
+ 108              		.loc 1 128 0
+ 109 002c 6442     		negs	r4, r4
+ 110              	.LVL14:
+ 111              	.LBB392:
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 12
+
+
+ 112              	.LBB393:
+ 113              		.loc 2 389 0
+ 114              		.syntax unified
+ 115              	@ 389 "lib/helix/real/assembly.h" 1
+ 116 002e C5FB043C 		smlal r3,ip,r5,r4
+ 117              	@ 0 "" 2
+ 118              	.LVL15:
+ 119              		.thumb
+ 120              		.syntax unified
+ 121              	.LBE393:
+ 122              	.LBE392:
+ 129:lib/helix/real/polyphase.c **** 	MC0M(2)
+ 123              		.loc 1 129 0
+ 124 0032 1769     		ldr	r7, [r2, #16]
+ 125              	.LVL16:
+ 126 0034 5469     		ldr	r4, [r2, #20]
+ 127              	.LVL17:
+ 128 0036 8E68     		ldr	r6, [r1, #8]
+ 129              	.LVL18:
+ 130 0038 4D6D     		ldr	r5, [r1, #84]
+ 131              	.LVL19:
+ 132              	.LBB394:
+ 133              	.LBB395:
+ 134              		.loc 2 389 0
+ 135              		.syntax unified
+ 136              	@ 389 "lib/helix/real/assembly.h" 1
+ 137 003a C6FB073C 		smlal r3,ip,r6,r7
+ 138              	@ 0 "" 2
+ 139              	.LVL20:
+ 140              		.thumb
+ 141              		.syntax unified
+ 142              	.LBE395:
+ 143              	.LBE394:
+ 144              		.loc 1 129 0
+ 145 003e 6442     		negs	r4, r4
+ 146              	.LVL21:
+ 147              	.LBB396:
+ 148              	.LBB397:
+ 149              		.loc 2 389 0
+ 150              		.syntax unified
+ 151              	@ 389 "lib/helix/real/assembly.h" 1
+ 152 0040 C5FB043C 		smlal r3,ip,r5,r4
+ 153              	@ 0 "" 2
+ 154              	.LVL22:
+ 155              		.thumb
+ 156              		.syntax unified
+ 157              	.LBE397:
+ 158              	.LBE396:
+ 130:lib/helix/real/polyphase.c **** 	MC0M(3)
+ 159              		.loc 1 130 0
+ 160 0044 9769     		ldr	r7, [r2, #24]
+ 161              	.LVL23:
+ 162 0046 D469     		ldr	r4, [r2, #28]
+ 163              	.LVL24:
+ 164 0048 CE68     		ldr	r6, [r1, #12]
+ 165              	.LVL25:
+ 166 004a 0D6D     		ldr	r5, [r1, #80]
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 13
+
+
+ 167              	.LVL26:
+ 168              	.LBB398:
+ 169              	.LBB399:
+ 170              		.loc 2 389 0
+ 171              		.syntax unified
+ 172              	@ 389 "lib/helix/real/assembly.h" 1
+ 173 004c C6FB073C 		smlal r3,ip,r6,r7
+ 174              	@ 0 "" 2
+ 175              	.LVL27:
+ 176              		.thumb
+ 177              		.syntax unified
+ 178              	.LBE399:
+ 179              	.LBE398:
+ 180              		.loc 1 130 0
+ 181 0050 6442     		negs	r4, r4
+ 182              	.LVL28:
+ 183              	.LBB400:
+ 184              	.LBB401:
+ 185              		.loc 2 389 0
+ 186              		.syntax unified
+ 187              	@ 389 "lib/helix/real/assembly.h" 1
+ 188 0052 C5FB043C 		smlal r3,ip,r5,r4
+ 189              	@ 0 "" 2
+ 190              	.LVL29:
+ 191              		.thumb
+ 192              		.syntax unified
+ 193              	.LBE401:
+ 194              	.LBE400:
+ 131:lib/helix/real/polyphase.c **** 	MC0M(4)
+ 195              		.loc 1 131 0
+ 196 0056 176A     		ldr	r7, [r2, #32]
+ 197              	.LVL30:
+ 198 0058 546A     		ldr	r4, [r2, #36]
+ 199              	.LVL31:
+ 200 005a 0E69     		ldr	r6, [r1, #16]
+ 201              	.LVL32:
+ 202 005c CD6C     		ldr	r5, [r1, #76]
+ 203              	.LVL33:
+ 204              	.LBB402:
+ 205              	.LBB403:
+ 206              		.loc 2 389 0
+ 207              		.syntax unified
+ 208              	@ 389 "lib/helix/real/assembly.h" 1
+ 209 005e C6FB073C 		smlal r3,ip,r6,r7
+ 210              	@ 0 "" 2
+ 211              	.LVL34:
+ 212              		.thumb
+ 213              		.syntax unified
+ 214              	.LBE403:
+ 215              	.LBE402:
+ 216              		.loc 1 131 0
+ 217 0062 6442     		negs	r4, r4
+ 218              	.LVL35:
+ 219              	.LBB404:
+ 220              	.LBB405:
+ 221              		.loc 2 389 0
+ 222              		.syntax unified
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 14
+
+
+ 223              	@ 389 "lib/helix/real/assembly.h" 1
+ 224 0064 C5FB043C 		smlal r3,ip,r5,r4
+ 225              	@ 0 "" 2
+ 226              	.LVL36:
+ 227              		.thumb
+ 228              		.syntax unified
+ 229              	.LBE405:
+ 230              	.LBE404:
+ 132:lib/helix/real/polyphase.c **** 	MC0M(5)
+ 231              		.loc 1 132 0
+ 232 0068 976A     		ldr	r7, [r2, #40]
+ 233              	.LVL37:
+ 234 006a D46A     		ldr	r4, [r2, #44]
+ 235              	.LVL38:
+ 236 006c 4E69     		ldr	r6, [r1, #20]
+ 237              	.LVL39:
+ 238 006e 8D6C     		ldr	r5, [r1, #72]
+ 239              	.LVL40:
+ 240              	.LBB406:
+ 241              	.LBB407:
+ 242              		.loc 2 389 0
+ 243              		.syntax unified
+ 244              	@ 389 "lib/helix/real/assembly.h" 1
+ 245 0070 C6FB073C 		smlal r3,ip,r6,r7
+ 246              	@ 0 "" 2
+ 247              	.LVL41:
+ 248              		.thumb
+ 249              		.syntax unified
+ 250              	.LBE407:
+ 251              	.LBE406:
+ 252              		.loc 1 132 0
+ 253 0074 6442     		negs	r4, r4
+ 254              	.LVL42:
+ 255              	.LBB408:
+ 256              	.LBB409:
+ 257              		.loc 2 389 0
+ 258              		.syntax unified
+ 259              	@ 389 "lib/helix/real/assembly.h" 1
+ 260 0076 C5FB043C 		smlal r3,ip,r5,r4
+ 261              	@ 0 "" 2
+ 262              	.LVL43:
+ 263              		.thumb
+ 264              		.syntax unified
+ 265              	.LBE409:
+ 266              	.LBE408:
+ 133:lib/helix/real/polyphase.c **** 	MC0M(6)
+ 267              		.loc 1 133 0
+ 268 007a 176B     		ldr	r7, [r2, #48]
+ 269              	.LVL44:
+ 270 007c 546B     		ldr	r4, [r2, #52]
+ 271              	.LVL45:
+ 272 007e 8E69     		ldr	r6, [r1, #24]
+ 273              	.LVL46:
+ 274 0080 4D6C     		ldr	r5, [r1, #68]
+ 275              	.LVL47:
+ 276              	.LBB410:
+ 277              	.LBB411:
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 15
+
+
+ 278              		.loc 2 389 0
+ 279              		.syntax unified
+ 280              	@ 389 "lib/helix/real/assembly.h" 1
+ 281 0082 C6FB073C 		smlal r3,ip,r6,r7
+ 282              	@ 0 "" 2
+ 283              	.LVL48:
+ 284              		.thumb
+ 285              		.syntax unified
+ 286              	.LBE411:
+ 287              	.LBE410:
+ 288              		.loc 1 133 0
+ 289 0086 6442     		negs	r4, r4
+ 290              	.LVL49:
+ 291              	.LBB412:
+ 292              	.LBB413:
+ 293              		.loc 2 389 0
+ 294              		.syntax unified
+ 295              	@ 389 "lib/helix/real/assembly.h" 1
+ 296 0088 C5FB043C 		smlal r3,ip,r5,r4
+ 297              	@ 0 "" 2
+ 298              	.LVL50:
+ 299              		.thumb
+ 300              		.syntax unified
+ 301              	.LBE413:
+ 302              	.LBE412:
+ 134:lib/helix/real/polyphase.c **** 	MC0M(7)
+ 303              		.loc 1 134 0
+ 304 008c D46B     		ldr	r4, [r2, #60]
+ 305 008e 0194     		str	r4, [sp, #4]
+ 306              	.LVL51:
+ 307 0090 CF69     		ldr	r7, [r1, #28]
+ 308              	.LVL52:
+ 309 0092 0E6C     		ldr	r6, [r1, #64]
+ 310              	.LVL53:
+ 311              	.LBB414:
+ 312              	.LBB415:
+ 313              		.loc 2 389 0
+ 314 0094 6546     		mov	r5, ip
+ 315 0096 946B     		ldr	r4, [r2, #56]
+ 316              	.LVL54:
+ 317              		.syntax unified
+ 318              	@ 389 "lib/helix/real/assembly.h" 1
+ 319 0098 C7FB0435 		smlal r3,r5,r7,r4
+ 320              	@ 0 "" 2
+ 321              	.LVL55:
+ 322              		.thumb
+ 323              		.syntax unified
+ 324              	.LBE415:
+ 325              	.LBE414:
+ 326              		.loc 1 134 0
+ 327 009c 019C     		ldr	r4, [sp, #4]
+ 328 009e 6442     		negs	r4, r4
+ 329              	.LVL56:
+ 330              	.LBB416:
+ 331              	.LBB417:
+ 332              		.loc 2 389 0
+ 333              		.syntax unified
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 16
+
+
+ 334              	@ 389 "lib/helix/real/assembly.h" 1
+ 335 00a0 C6FB0435 		smlal r3,r5,r6,r4
+ 336              	@ 0 "" 2
+ 337              	.LVL57:
+ 338              		.thumb
+ 339              		.syntax unified
+ 340              	.LBE417:
+ 341              	.LBE416:
+ 342              	.LBB418:
+ 343              	.LBB419:
+ 390:lib/helix/real/assembly.h **** 
+ 391:lib/helix/real/assembly.h **** 	return u.w64;
+ 392:lib/helix/real/assembly.h **** }
+ 393:lib/helix/real/assembly.h **** static __inline Word64 SAR64(Word64 x, int n)
+ 394:lib/helix/real/assembly.h **** {
+ 395:lib/helix/real/assembly.h **** 	return x >> n;
+ 344              		.loc 2 395 0
+ 345 00a4 1B0D     		lsrs	r3, r3, #20
+ 346 00a6 43EA0533 		orr	r3, r3, r5, lsl #12
+ 347              	.LVL58:
+ 348              	.LBE419:
+ 349              	.LBE418:
+ 350              	.LBB420:
+ 351              	.LBB421:
+  64:lib/helix/real/polyphase.c **** 	
+ 352              		.loc 1 64 0
+ 353 00aa 9C11     		asrs	r4, r3, #6
+ 354              	.LVL59:
+  67:lib/helix/real/polyphase.c **** 	if (sign != (x >> 15))
+ 355              		.loc 1 67 0
+ 356 00ac DD17     		asrs	r5, r3, #31
+ 357              	.LVL60:
+  68:lib/helix/real/polyphase.c **** 		x = sign ^ ((1 << 15) - 1);
+ 358              		.loc 1 68 0
+ 359 00ae B5EB635F 		cmp	r5, r3, asr #21
+ 360 00b2 02D0     		beq	.L2
+  69:lib/helix/real/polyphase.c **** 
+ 361              		.loc 1 69 0
+ 362 00b4 47F6FF74 		movw	r4, #32767
+ 363              	.LVL61:
+ 364 00b8 6C40     		eors	r4, r4, r5
+ 365              	.LVL62:
+ 366              	.L2:
+ 367              	.LBE421:
+ 368              	.LBE420:
+ 135:lib/helix/real/polyphase.c **** 
+ 136:lib/helix/real/polyphase.c **** 	*(pcm + 0) = ClipToShort((int)SAR64(sum1L, (32-CSHIFT)), DEF_NFRACBITS);
+ 369              		.loc 1 136 0
+ 370 00ba 0480     		strh	r4, [r0]	@ movhi
+ 371              	.LVL63:
+ 137:lib/helix/real/polyphase.c **** 
+ 138:lib/helix/real/polyphase.c **** 	/* special case, output sample 16 */
+ 139:lib/helix/real/polyphase.c **** 	coef = coefBase + 256;
+ 140:lib/helix/real/polyphase.c **** 	vb1 = vbuf + 64*16;
+ 141:lib/helix/real/polyphase.c **** 	sum1L = rndVal;
+ 142:lib/helix/real/polyphase.c **** 
+ 143:lib/helix/real/polyphase.c **** 	MC1M(0)
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 17
+
+
+ 372              		.loc 1 143 0
+ 373 00bc D2F80064 		ldr	r6, [r2, #1024]
+ 374              	.LVL64:
+ 375 00c0 01F58053 		add	r3, r1, #4096
+ 376              	.LVL65:
+ 377 00c4 1D68     		ldr	r5, [r3]
+ 378              	.LVL66:
+ 379              	.LBB422:
+ 380              	.LBB423:
+ 389:lib/helix/real/assembly.h **** 
+ 381              		.loc 2 389 0
+ 382 00c6 4FF00073 		mov	r3, #33554432
+ 383              	.LVL67:
+ 384 00ca 0024     		movs	r4, #0
+ 385              		.syntax unified
+ 386              	@ 389 "lib/helix/real/assembly.h" 1
+ 387 00cc C5FB0634 		smlal r3,r4,r5,r6
+ 388              	@ 0 "" 2
+ 389              	.LVL68:
+ 390              		.thumb
+ 391              		.syntax unified
+ 392              	.LBE423:
+ 393              	.LBE422:
+ 144:lib/helix/real/polyphase.c **** 	MC1M(1)
+ 394              		.loc 1 144 0
+ 395 00d0 D2F80454 		ldr	r5, [r2, #1028]
+ 396              	.LVL69:
+ 397 00d4 41F20406 		movw	r6, #4100
+ 398 00d8 8E59     		ldr	r6, [r1, r6]
+ 399              	.LVL70:
+ 400              	.LBB424:
+ 401              	.LBB425:
+ 389:lib/helix/real/assembly.h **** 
+ 402              		.loc 2 389 0
+ 403              		.syntax unified
+ 404              	@ 389 "lib/helix/real/assembly.h" 1
+ 405 00da C6FB0534 		smlal r3,r4,r6,r5
+ 406              	@ 0 "" 2
+ 407              	.LVL71:
+ 408              		.thumb
+ 409              		.syntax unified
+ 410              	.LBE425:
+ 411              	.LBE424:
+ 145:lib/helix/real/polyphase.c **** 	MC1M(2)
+ 412              		.loc 1 145 0
+ 413 00de D2F80854 		ldr	r5, [r2, #1032]
+ 414              	.LVL72:
+ 415 00e2 41F20806 		movw	r6, #4104
+ 416              	.LVL73:
+ 417 00e6 8E59     		ldr	r6, [r1, r6]
+ 418              	.LVL74:
+ 419              	.LBB426:
+ 420              	.LBB427:
+ 389:lib/helix/real/assembly.h **** 
+ 421              		.loc 2 389 0
+ 422              		.syntax unified
+ 423              	@ 389 "lib/helix/real/assembly.h" 1
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 18
+
+
+ 424 00e8 C6FB0534 		smlal r3,r4,r6,r5
+ 425              	@ 0 "" 2
+ 426              	.LVL75:
+ 427              		.thumb
+ 428              		.syntax unified
+ 429              	.LBE427:
+ 430              	.LBE426:
+ 146:lib/helix/real/polyphase.c **** 	MC1M(3)
+ 431              		.loc 1 146 0
+ 432 00ec D2F80C54 		ldr	r5, [r2, #1036]
+ 433              	.LVL76:
+ 434 00f0 41F20C06 		movw	r6, #4108
+ 435              	.LVL77:
+ 436 00f4 8E59     		ldr	r6, [r1, r6]
+ 437              	.LVL78:
+ 438              	.LBB428:
+ 439              	.LBB429:
+ 389:lib/helix/real/assembly.h **** 
+ 440              		.loc 2 389 0
+ 441              		.syntax unified
+ 442              	@ 389 "lib/helix/real/assembly.h" 1
+ 443 00f6 C6FB0534 		smlal r3,r4,r6,r5
+ 444              	@ 0 "" 2
+ 445              	.LVL79:
+ 446              		.thumb
+ 447              		.syntax unified
+ 448              	.LBE429:
+ 449              	.LBE428:
+ 147:lib/helix/real/polyphase.c **** 	MC1M(4)
+ 450              		.loc 1 147 0
+ 451 00fa D2F81054 		ldr	r5, [r2, #1040]
+ 452              	.LVL80:
+ 453 00fe 41F21006 		movw	r6, #4112
+ 454              	.LVL81:
+ 455 0102 8E59     		ldr	r6, [r1, r6]
+ 456              	.LVL82:
+ 457              	.LBB430:
+ 458              	.LBB431:
+ 389:lib/helix/real/assembly.h **** 
+ 459              		.loc 2 389 0
+ 460              		.syntax unified
+ 461              	@ 389 "lib/helix/real/assembly.h" 1
+ 462 0104 C6FB0534 		smlal r3,r4,r6,r5
+ 463              	@ 0 "" 2
+ 464              	.LVL83:
+ 465              		.thumb
+ 466              		.syntax unified
+ 467              	.LBE431:
+ 468              	.LBE430:
+ 148:lib/helix/real/polyphase.c **** 	MC1M(5)
+ 469              		.loc 1 148 0
+ 470 0108 D2F81454 		ldr	r5, [r2, #1044]
+ 471              	.LVL84:
+ 472 010c 41F21406 		movw	r6, #4116
+ 473              	.LVL85:
+ 474 0110 8E59     		ldr	r6, [r1, r6]
+ 475              	.LVL86:
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 19
+
+
+ 476              	.LBB432:
+ 477              	.LBB433:
+ 389:lib/helix/real/assembly.h **** 
+ 478              		.loc 2 389 0
+ 479              		.syntax unified
+ 480              	@ 389 "lib/helix/real/assembly.h" 1
+ 481 0112 C6FB0534 		smlal r3,r4,r6,r5
+ 482              	@ 0 "" 2
+ 483              	.LVL87:
+ 484              		.thumb
+ 485              		.syntax unified
+ 486              	.LBE433:
+ 487              	.LBE432:
+ 149:lib/helix/real/polyphase.c **** 	MC1M(6)
+ 488              		.loc 1 149 0
+ 489 0116 D2F81854 		ldr	r5, [r2, #1048]
+ 490              	.LVL88:
+ 491 011a 41F21806 		movw	r6, #4120
+ 492              	.LVL89:
+ 493 011e 8E59     		ldr	r6, [r1, r6]
+ 494              	.LVL90:
+ 495              	.LBB434:
+ 496              	.LBB435:
+ 389:lib/helix/real/assembly.h **** 
+ 497              		.loc 2 389 0
+ 498              		.syntax unified
+ 499              	@ 389 "lib/helix/real/assembly.h" 1
+ 500 0120 C6FB0534 		smlal r3,r4,r6,r5
+ 501              	@ 0 "" 2
+ 502              	.LVL91:
+ 503              		.thumb
+ 504              		.syntax unified
+ 505              	.LBE435:
+ 506              	.LBE434:
+ 150:lib/helix/real/polyphase.c **** 	MC1M(7)
+ 507              		.loc 1 150 0
+ 508 0124 D2F81C54 		ldr	r5, [r2, #1052]
+ 509              	.LVL92:
+ 510 0128 41F21C06 		movw	r6, #4124
+ 511              	.LVL93:
+ 512 012c 8E59     		ldr	r6, [r1, r6]
+ 513              	.LVL94:
+ 514              	.LBB436:
+ 515              	.LBB437:
+ 389:lib/helix/real/assembly.h **** 
+ 516              		.loc 2 389 0
+ 517              		.syntax unified
+ 518              	@ 389 "lib/helix/real/assembly.h" 1
+ 519 012e C6FB0534 		smlal r3,r4,r6,r5
+ 520              	@ 0 "" 2
+ 521              	.LVL95:
+ 522              		.thumb
+ 523              		.syntax unified
+ 524              	.LBE437:
+ 525              	.LBE436:
+ 526              	.LBB438:
+ 527              	.LBB439:
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 20
+
+
+ 528              		.loc 2 395 0
+ 529 0132 1B0D     		lsrs	r3, r3, #20
+ 530 0134 43EA0433 		orr	r3, r3, r4, lsl #12
+ 531              	.LVL96:
+ 532              	.LBE439:
+ 533              	.LBE438:
+ 534              	.LBB440:
+ 535              	.LBB441:
+  64:lib/helix/real/polyphase.c **** 	
+ 536              		.loc 1 64 0
+ 537 0138 9C11     		asrs	r4, r3, #6
+ 538              	.LVL97:
+  67:lib/helix/real/polyphase.c **** 	if (sign != (x >> 15))
+ 539              		.loc 1 67 0
+ 540 013a DD17     		asrs	r5, r3, #31
+ 541              	.LVL98:
+  68:lib/helix/real/polyphase.c **** 		x = sign ^ ((1 << 15) - 1);
+ 542              		.loc 1 68 0
+ 543 013c B5EB635F 		cmp	r5, r3, asr #21
+ 544 0140 02D0     		beq	.L3
+  69:lib/helix/real/polyphase.c **** 
+ 545              		.loc 1 69 0
+ 546 0142 47F6FF74 		movw	r4, #32767
+ 547              	.LVL99:
+ 548 0146 6C40     		eors	r4, r4, r5
+ 549              	.LVL100:
+ 550              	.L3:
+ 551              	.LBE441:
+ 552              	.LBE440:
+ 151:lib/helix/real/polyphase.c **** 
+ 152:lib/helix/real/polyphase.c **** 	*(pcm + 16) = ClipToShort((int)SAR64(sum1L, (32-CSHIFT)), DEF_NFRACBITS);
+ 553              		.loc 1 152 0
+ 554 0148 0484     		strh	r4, [r0, #32]	@ movhi
+ 555              	.LVL101:
+ 153:lib/helix/real/polyphase.c **** 
+ 154:lib/helix/real/polyphase.c **** 	/* main convolution loop: sum1L = samples 1, 2, 3, ... 15   sum2L = samples 31, 30, ... 17 */
+ 155:lib/helix/real/polyphase.c **** 	coef = coefBase + 16;
+ 556              		.loc 1 155 0
+ 557 014a 02F14005 		add	r5, r2, #64
+ 558              	.LVL102:
+ 156:lib/helix/real/polyphase.c **** 	vb1 = vbuf + 64;
+ 559              		.loc 1 156 0
+ 560 014e 01F58074 		add	r4, r1, #256
+ 561              	.LVL103:
+ 157:lib/helix/real/polyphase.c **** 	pcm++;
+ 562              		.loc 1 157 0
+ 563 0152 0230     		adds	r0, r0, #2
+ 564              	.LVL104:
+ 158:lib/helix/real/polyphase.c **** 
+ 159:lib/helix/real/polyphase.c **** 	/* right now, the compiler creates bad asm from this... */
+ 160:lib/helix/real/polyphase.c **** 	for (i = 15; i > 0; i--) {
+ 565              		.loc 1 160 0
+ 566 0154 0F26     		movs	r6, #15
+ 567              	.LVL105:
+ 568 0156 02E0     		b	.L4
+ 569              	.LVL106:
+ 570              	.L6:
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 21
+
+
+ 161:lib/helix/real/polyphase.c **** 		sum1L = sum2L = rndVal;
+ 162:lib/helix/real/polyphase.c **** 
+ 163:lib/helix/real/polyphase.c **** 		MC2M(0)
+ 164:lib/helix/real/polyphase.c **** 		MC2M(1)
+ 165:lib/helix/real/polyphase.c **** 		MC2M(2)
+ 166:lib/helix/real/polyphase.c **** 		MC2M(3)
+ 167:lib/helix/real/polyphase.c **** 		MC2M(4)
+ 168:lib/helix/real/polyphase.c **** 		MC2M(5)
+ 169:lib/helix/real/polyphase.c **** 		MC2M(6)
+ 170:lib/helix/real/polyphase.c **** 		MC2M(7)
+ 171:lib/helix/real/polyphase.c **** 
+ 172:lib/helix/real/polyphase.c **** 		vb1 += 64;
+ 173:lib/helix/real/polyphase.c **** 		*(pcm)       = ClipToShort((int)SAR64(sum1L, (32-CSHIFT)), DEF_NFRACBITS);
+ 174:lib/helix/real/polyphase.c **** 		*(pcm + 2*i) = ClipToShort((int)SAR64(sum2L, (32-CSHIFT)), DEF_NFRACBITS);
+ 571              		.loc 1 174 0
+ 572 0158 3A80     		strh	r2, [r7]	@ movhi
+ 175:lib/helix/real/polyphase.c **** 		pcm++;
+ 573              		.loc 1 175 0
+ 574 015a 0230     		adds	r0, r0, #2
+ 575              	.LVL107:
+ 160:lib/helix/real/polyphase.c **** 		sum1L = sum2L = rndVal;
+ 576              		.loc 1 160 0
+ 577 015c 013E     		subs	r6, r6, #1
+ 578              	.LVL108:
+ 579              	.L4:
+ 160:lib/helix/real/polyphase.c **** 		sum1L = sum2L = rndVal;
+ 580              		.loc 1 160 0 is_stmt 0 discriminator 1
+ 581 015e 002E     		cmp	r6, #0
+ 582 0160 40F3B780 		ble	.L9
+ 583              	.LVL109:
+ 163:lib/helix/real/polyphase.c **** 		MC2M(1)
+ 584              		.loc 1 163 0 is_stmt 1 discriminator 3
+ 585 0164 D5F80080 		ldr	r8, [r5]
+ 586              	.LVL110:
+ 587 0168 D5F804C0 		ldr	ip, [r5, #4]
+ 588              	.LVL111:
+ 589 016c D4F80090 		ldr	r9, [r4]
+ 590              	.LVL112:
+ 591 0170 D4F85CE0 		ldr	lr, [r4, #92]
+ 592              	.LVL113:
+ 593              	.LBB442:
+ 594              	.LBB443:
+ 389:lib/helix/real/assembly.h **** 
+ 595              		.loc 2 389 0 discriminator 3
+ 596 0174 4FF00071 		mov	r1, #33554432
+ 597 0178 0023     		movs	r3, #0
+ 598 017a 0A46     		mov	r2, r1
+ 599 017c 1F46     		mov	r7, r3
+ 600              		.syntax unified
+ 601              	@ 389 "lib/helix/real/assembly.h" 1
+ 602 017e C9FB0827 		smlal r2,r7,r9,r8
+ 603              	@ 0 "" 2
+ 604              	.LVL114:
+ 605              		.thumb
+ 606              		.syntax unified
+ 607              	.LBE443:
+ 608              	.LBE442:
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 22
+
+
+ 609              	.LBB444:
+ 610              	.LBB445:
+ 611              		.syntax unified
+ 612              	@ 389 "lib/helix/real/assembly.h" 1
+ 613 0182 C9FB0C13 		smlal r1,r3,r9,ip
+ 614              	@ 0 "" 2
+ 615              	.LVL115:
+ 616              		.thumb
+ 617              		.syntax unified
+ 618              	.LBE445:
+ 619              	.LBE444:
+ 163:lib/helix/real/polyphase.c **** 		MC2M(1)
+ 620              		.loc 1 163 0 discriminator 3
+ 621 0186 CCF1000C 		rsb	ip, ip, #0
+ 622              	.LVL116:
+ 623              	.LBB446:
+ 624              	.LBB447:
+ 389:lib/helix/real/assembly.h **** 
+ 625              		.loc 2 389 0 discriminator 3
+ 626              		.syntax unified
+ 627              	@ 389 "lib/helix/real/assembly.h" 1
+ 628 018a CEFB0C27 		smlal r2,r7,lr,ip
+ 629              	@ 0 "" 2
+ 630              	.LVL117:
+ 631              		.thumb
+ 632              		.syntax unified
+ 633              	.LBE447:
+ 634              	.LBE446:
+ 635              	.LBB448:
+ 636              	.LBB449:
+ 637              		.syntax unified
+ 638              	@ 389 "lib/helix/real/assembly.h" 1
+ 639 018e CEFB0813 		smlal r1,r3,lr,r8
+ 640              	@ 0 "" 2
+ 641              	.LVL118:
+ 642              		.thumb
+ 643              		.syntax unified
+ 644              	.LBE449:
+ 645              	.LBE448:
+ 164:lib/helix/real/polyphase.c **** 		MC2M(2)
+ 646              		.loc 1 164 0 discriminator 3
+ 647 0192 D5F808E0 		ldr	lr, [r5, #8]
+ 648              	.LVL119:
+ 649 0196 D5F80C80 		ldr	r8, [r5, #12]
+ 650              	.LVL120:
+ 651 019a D4F80490 		ldr	r9, [r4, #4]
+ 652              	.LVL121:
+ 653 019e D4F858C0 		ldr	ip, [r4, #88]
+ 654              	.LVL122:
+ 655              	.LBB450:
+ 656              	.LBB451:
+ 389:lib/helix/real/assembly.h **** 
+ 657              		.loc 2 389 0 discriminator 3
+ 658              		.syntax unified
+ 659              	@ 389 "lib/helix/real/assembly.h" 1
+ 660 01a2 C9FB0E27 		smlal r2,r7,r9,lr
+ 661              	@ 0 "" 2
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 23
+
+
+ 662              	.LVL123:
+ 663              		.thumb
+ 664              		.syntax unified
+ 665              	.LBE451:
+ 666              	.LBE450:
+ 667              	.LBB452:
+ 668              	.LBB453:
+ 669              		.syntax unified
+ 670              	@ 389 "lib/helix/real/assembly.h" 1
+ 671 01a6 C9FB0813 		smlal r1,r3,r9,r8
+ 672              	@ 0 "" 2
+ 673              	.LVL124:
+ 674              		.thumb
+ 675              		.syntax unified
+ 676              	.LBE453:
+ 677              	.LBE452:
+ 164:lib/helix/real/polyphase.c **** 		MC2M(2)
+ 678              		.loc 1 164 0 discriminator 3
+ 679 01aa C8F10008 		rsb	r8, r8, #0
+ 680              	.LVL125:
+ 681              	.LBB454:
+ 682              	.LBB455:
+ 389:lib/helix/real/assembly.h **** 
+ 683              		.loc 2 389 0 discriminator 3
+ 684              		.syntax unified
+ 685              	@ 389 "lib/helix/real/assembly.h" 1
+ 686 01ae CCFB0827 		smlal r2,r7,ip,r8
+ 687              	@ 0 "" 2
+ 688              	.LVL126:
+ 689              		.thumb
+ 690              		.syntax unified
+ 691              	.LBE455:
+ 692              	.LBE454:
+ 693              	.LBB456:
+ 694              	.LBB457:
+ 695 01b2 9846     		mov	r8, r3
+ 696              		.syntax unified
+ 697              	@ 389 "lib/helix/real/assembly.h" 1
+ 698 01b4 CCFB0E18 		smlal r1,r8,ip,lr
+ 699              	@ 0 "" 2
+ 700              	.LVL127:
+ 701              		.thumb
+ 702              		.syntax unified
+ 703              	.LBE457:
+ 704              	.LBE456:
+ 165:lib/helix/real/polyphase.c **** 		MC2M(3)
+ 705              		.loc 1 165 0 discriminator 3
+ 706 01b8 D5F810E0 		ldr	lr, [r5, #16]
+ 707              	.LVL128:
+ 708 01bc D5F81490 		ldr	r9, [r5, #20]
+ 709              	.LVL129:
+ 710 01c0 D4F808A0 		ldr	r10, [r4, #8]
+ 711              	.LVL130:
+ 712 01c4 D4F854C0 		ldr	ip, [r4, #84]
+ 713              	.LVL131:
+ 714              	.LBB458:
+ 715              	.LBB459:
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 24
+
+
+ 389:lib/helix/real/assembly.h **** 
+ 716              		.loc 2 389 0 discriminator 3
+ 717              		.syntax unified
+ 718              	@ 389 "lib/helix/real/assembly.h" 1
+ 719 01c8 CAFB0E27 		smlal r2,r7,r10,lr
+ 720              	@ 0 "" 2
+ 721              	.LVL132:
+ 722              		.thumb
+ 723              		.syntax unified
+ 724              	.LBE459:
+ 725              	.LBE458:
+ 726              	.LBB460:
+ 727              	.LBB461:
+ 728 01cc 0B46     		mov	r3, r1
+ 729              		.syntax unified
+ 730              	@ 389 "lib/helix/real/assembly.h" 1
+ 731 01ce CAFB0938 		smlal r3,r8,r10,r9
+ 732              	@ 0 "" 2
+ 733              	.LVL133:
+ 734              		.thumb
+ 735              		.syntax unified
+ 736              	.LBE461:
+ 737              	.LBE460:
+ 165:lib/helix/real/polyphase.c **** 		MC2M(3)
+ 738              		.loc 1 165 0 discriminator 3
+ 739 01d2 C9F10009 		rsb	r9, r9, #0
+ 740              	.LVL134:
+ 741              	.LBB462:
+ 742              	.LBB463:
+ 389:lib/helix/real/assembly.h **** 
+ 743              		.loc 2 389 0 discriminator 3
+ 744              		.syntax unified
+ 745              	@ 389 "lib/helix/real/assembly.h" 1
+ 746 01d6 CCFB0927 		smlal r2,r7,ip,r9
+ 747              	@ 0 "" 2
+ 748              	.LVL135:
+ 749              		.thumb
+ 750              		.syntax unified
+ 751              	.LBE463:
+ 752              	.LBE462:
+ 753              	.LBB464:
+ 754              	.LBB465:
+ 755              		.syntax unified
+ 756              	@ 389 "lib/helix/real/assembly.h" 1
+ 757 01da CCFB0E38 		smlal r3,r8,ip,lr
+ 758              	@ 0 "" 2
+ 759              	.LVL136:
+ 760              		.thumb
+ 761              		.syntax unified
+ 762              	.LBE465:
+ 763              	.LBE464:
+ 166:lib/helix/real/polyphase.c **** 		MC2M(4)
+ 764              		.loc 1 166 0 discriminator 3
+ 765 01de D5F818E0 		ldr	lr, [r5, #24]
+ 766              	.LVL137:
+ 767 01e2 E969     		ldr	r1, [r5, #28]
+ 768              	.LVL138:
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 25
+
+
+ 769 01e4 D4F80CA0 		ldr	r10, [r4, #12]
+ 770              	.LVL139:
+ 771 01e8 D4F850C0 		ldr	ip, [r4, #80]
+ 772              	.LVL140:
+ 773              	.LBB466:
+ 774              	.LBB467:
+ 389:lib/helix/real/assembly.h **** 
+ 775              		.loc 2 389 0 discriminator 3
+ 776              		.syntax unified
+ 777              	@ 389 "lib/helix/real/assembly.h" 1
+ 778 01ec CAFB0E27 		smlal r2,r7,r10,lr
+ 779              	@ 0 "" 2
+ 780              	.LVL141:
+ 781              		.thumb
+ 782              		.syntax unified
+ 783              	.LBE467:
+ 784              	.LBE466:
+ 785              	.LBB468:
+ 786              	.LBB469:
+ 787              		.syntax unified
+ 788              	@ 389 "lib/helix/real/assembly.h" 1
+ 789 01f0 CAFB0138 		smlal r3,r8,r10,r1
+ 790              	@ 0 "" 2
+ 791              	.LVL142:
+ 792              		.thumb
+ 793              		.syntax unified
+ 794              	.LBE469:
+ 795              	.LBE468:
+ 166:lib/helix/real/polyphase.c **** 		MC2M(4)
+ 796              		.loc 1 166 0 discriminator 3
+ 797 01f4 C1F10009 		rsb	r9, r1, #0
+ 798              	.LVL143:
+ 799              	.LBB470:
+ 800              	.LBB471:
+ 389:lib/helix/real/assembly.h **** 
+ 801              		.loc 2 389 0 discriminator 3
+ 802              		.syntax unified
+ 803              	@ 389 "lib/helix/real/assembly.h" 1
+ 804 01f8 CCFB0927 		smlal r2,r7,ip,r9
+ 805              	@ 0 "" 2
+ 806              	.LVL144:
+ 807              		.thumb
+ 808              		.syntax unified
+ 809              	.LBE471:
+ 810              	.LBE470:
+ 811              	.LBB472:
+ 812              	.LBB473:
+ 813 01fc 4146     		mov	r1, r8
+ 814              	.LVL145:
+ 815              		.syntax unified
+ 816              	@ 389 "lib/helix/real/assembly.h" 1
+ 817 01fe CCFB0E31 		smlal r3,r1,ip,lr
+ 818              	@ 0 "" 2
+ 819              	.LVL146:
+ 820              		.thumb
+ 821              		.syntax unified
+ 822              	.LBE473:
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 26
+
+
+ 823              	.LBE472:
+ 167:lib/helix/real/polyphase.c **** 		MC2M(5)
+ 824              		.loc 1 167 0 discriminator 3
+ 825 0202 D5F820E0 		ldr	lr, [r5, #32]
+ 826              	.LVL147:
+ 827 0206 D5F82480 		ldr	r8, [r5, #36]
+ 828              	.LVL148:
+ 829 020a D4F81090 		ldr	r9, [r4, #16]
+ 830              	.LVL149:
+ 831 020e D4F84CC0 		ldr	ip, [r4, #76]
+ 832              	.LVL150:
+ 833              	.LBB474:
+ 834              	.LBB475:
+ 389:lib/helix/real/assembly.h **** 
+ 835              		.loc 2 389 0 discriminator 3
+ 836              		.syntax unified
+ 837              	@ 389 "lib/helix/real/assembly.h" 1
+ 838 0212 C9FB0E27 		smlal r2,r7,r9,lr
+ 839              	@ 0 "" 2
+ 840              	.LVL151:
+ 841              		.thumb
+ 842              		.syntax unified
+ 843              	.LBE475:
+ 844              	.LBE474:
+ 845              	.LBB476:
+ 846              	.LBB477:
+ 847              		.syntax unified
+ 848              	@ 389 "lib/helix/real/assembly.h" 1
+ 849 0216 C9FB0831 		smlal r3,r1,r9,r8
+ 850              	@ 0 "" 2
+ 851              	.LVL152:
+ 852              		.thumb
+ 853              		.syntax unified
+ 854              	.LBE477:
+ 855              	.LBE476:
+ 167:lib/helix/real/polyphase.c **** 		MC2M(5)
+ 856              		.loc 1 167 0 discriminator 3
+ 857 021a C8F10008 		rsb	r8, r8, #0
+ 858              	.LVL153:
+ 859              	.LBB478:
+ 860              	.LBB479:
+ 389:lib/helix/real/assembly.h **** 
+ 861              		.loc 2 389 0 discriminator 3
+ 862              		.syntax unified
+ 863              	@ 389 "lib/helix/real/assembly.h" 1
+ 864 021e CCFB0827 		smlal r2,r7,ip,r8
+ 865              	@ 0 "" 2
+ 866              	.LVL154:
+ 867              		.thumb
+ 868              		.syntax unified
+ 869              	.LBE479:
+ 870              	.LBE478:
+ 871              	.LBB480:
+ 872              	.LBB481:
+ 873              		.syntax unified
+ 874              	@ 389 "lib/helix/real/assembly.h" 1
+ 875 0222 CCFB0E31 		smlal r3,r1,ip,lr
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 27
+
+
+ 876              	@ 0 "" 2
+ 877              	.LVL155:
+ 878              		.thumb
+ 879              		.syntax unified
+ 880              	.LBE481:
+ 881              	.LBE480:
+ 168:lib/helix/real/polyphase.c **** 		MC2M(6)
+ 882              		.loc 1 168 0 discriminator 3
+ 883 0226 D5F828E0 		ldr	lr, [r5, #40]
+ 884              	.LVL156:
+ 885 022a D5F82C80 		ldr	r8, [r5, #44]
+ 886              	.LVL157:
+ 887 022e D4F81490 		ldr	r9, [r4, #20]
+ 888              	.LVL158:
+ 889 0232 D4F848C0 		ldr	ip, [r4, #72]
+ 890              	.LVL159:
+ 891              	.LBB482:
+ 892              	.LBB483:
+ 389:lib/helix/real/assembly.h **** 
+ 893              		.loc 2 389 0 discriminator 3
+ 894              		.syntax unified
+ 895              	@ 389 "lib/helix/real/assembly.h" 1
+ 896 0236 C9FB0E27 		smlal r2,r7,r9,lr
+ 897              	@ 0 "" 2
+ 898              	.LVL160:
+ 899              		.thumb
+ 900              		.syntax unified
+ 901              	.LBE483:
+ 902              	.LBE482:
+ 903              	.LBB484:
+ 904              	.LBB485:
+ 905              		.syntax unified
+ 906              	@ 389 "lib/helix/real/assembly.h" 1
+ 907 023a C9FB0831 		smlal r3,r1,r9,r8
+ 908              	@ 0 "" 2
+ 909              	.LVL161:
+ 910              		.thumb
+ 911              		.syntax unified
+ 912              	.LBE485:
+ 913              	.LBE484:
+ 168:lib/helix/real/polyphase.c **** 		MC2M(6)
+ 914              		.loc 1 168 0 discriminator 3
+ 915 023e C8F10008 		rsb	r8, r8, #0
+ 916              	.LVL162:
+ 917              	.LBB486:
+ 918              	.LBB487:
+ 389:lib/helix/real/assembly.h **** 
+ 919              		.loc 2 389 0 discriminator 3
+ 920              		.syntax unified
+ 921              	@ 389 "lib/helix/real/assembly.h" 1
+ 922 0242 CCFB0827 		smlal r2,r7,ip,r8
+ 923              	@ 0 "" 2
+ 924              	.LVL163:
+ 925              		.thumb
+ 926              		.syntax unified
+ 927              	.LBE487:
+ 928              	.LBE486:
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 28
+
+
+ 929              	.LBB488:
+ 930              	.LBB489:
+ 931              		.syntax unified
+ 932              	@ 389 "lib/helix/real/assembly.h" 1
+ 933 0246 CCFB0E31 		smlal r3,r1,ip,lr
+ 934              	@ 0 "" 2
+ 935              	.LVL164:
+ 936              		.thumb
+ 937              		.syntax unified
+ 938              	.LBE489:
+ 939              	.LBE488:
+ 169:lib/helix/real/polyphase.c **** 		MC2M(7)
+ 940              		.loc 1 169 0 discriminator 3
+ 941 024a D5F830E0 		ldr	lr, [r5, #48]
+ 942              	.LVL165:
+ 943 024e D5F83480 		ldr	r8, [r5, #52]
+ 944              	.LVL166:
+ 945 0252 D4F81890 		ldr	r9, [r4, #24]
+ 946              	.LVL167:
+ 947 0256 D4F844C0 		ldr	ip, [r4, #68]
+ 948              	.LVL168:
+ 949              	.LBB490:
+ 950              	.LBB491:
+ 389:lib/helix/real/assembly.h **** 
+ 951              		.loc 2 389 0 discriminator 3
+ 952              		.syntax unified
+ 953              	@ 389 "lib/helix/real/assembly.h" 1
+ 954 025a C9FB0E27 		smlal r2,r7,r9,lr
+ 955              	@ 0 "" 2
+ 956              	.LVL169:
+ 957              		.thumb
+ 958              		.syntax unified
+ 959              	.LBE491:
+ 960              	.LBE490:
+ 961              	.LBB492:
+ 962              	.LBB493:
+ 963              		.syntax unified
+ 964              	@ 389 "lib/helix/real/assembly.h" 1
+ 965 025e C9FB0831 		smlal r3,r1,r9,r8
+ 966              	@ 0 "" 2
+ 967              	.LVL170:
+ 968              		.thumb
+ 969              		.syntax unified
+ 970              	.LBE493:
+ 971              	.LBE492:
+ 169:lib/helix/real/polyphase.c **** 		MC2M(7)
+ 972              		.loc 1 169 0 discriminator 3
+ 973 0262 C8F10008 		rsb	r8, r8, #0
+ 974              	.LVL171:
+ 975              	.LBB494:
+ 976              	.LBB495:
+ 389:lib/helix/real/assembly.h **** 
+ 977              		.loc 2 389 0 discriminator 3
+ 978              		.syntax unified
+ 979              	@ 389 "lib/helix/real/assembly.h" 1
+ 980 0266 CCFB0827 		smlal r2,r7,ip,r8
+ 981              	@ 0 "" 2
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 29
+
+
+ 982              	.LVL172:
+ 983              		.thumb
+ 984              		.syntax unified
+ 985              	.LBE495:
+ 986              	.LBE494:
+ 987              	.LBB496:
+ 988              	.LBB497:
+ 989              		.syntax unified
+ 990              	@ 389 "lib/helix/real/assembly.h" 1
+ 991 026a CCFB0E31 		smlal r3,r1,ip,lr
+ 992              	@ 0 "" 2
+ 993              	.LVL173:
+ 994              		.thumb
+ 995              		.syntax unified
+ 996              	.LBE497:
+ 997              	.LBE496:
+ 170:lib/helix/real/polyphase.c **** 
+ 998              		.loc 1 170 0 discriminator 3
+ 999 026e D5F838E0 		ldr	lr, [r5, #56]
+ 1000              	.LVL174:
+ 1001 0272 D5F83C80 		ldr	r8, [r5, #60]
+ 1002              	.LVL175:
+ 1003 0276 4035     		adds	r5, r5, #64
+ 1004              	.LVL176:
+ 1005 0278 D4F81C90 		ldr	r9, [r4, #28]
+ 1006              	.LVL177:
+ 1007 027c D4F840C0 		ldr	ip, [r4, #64]
+ 1008              	.LVL178:
+ 1009              	.LBB498:
+ 1010              	.LBB499:
+ 389:lib/helix/real/assembly.h **** 
+ 1011              		.loc 2 389 0 discriminator 3
+ 1012              		.syntax unified
+ 1013              	@ 389 "lib/helix/real/assembly.h" 1
+ 1014 0280 C9FB0E27 		smlal r2,r7,r9,lr
+ 1015              	@ 0 "" 2
+ 1016              	.LVL179:
+ 1017              		.thumb
+ 1018              		.syntax unified
+ 1019              	.LBE499:
+ 1020              	.LBE498:
+ 1021              	.LBB500:
+ 1022              	.LBB501:
+ 1023              		.syntax unified
+ 1024              	@ 389 "lib/helix/real/assembly.h" 1
+ 1025 0284 C9FB0831 		smlal r3,r1,r9,r8
+ 1026              	@ 0 "" 2
+ 1027              	.LVL180:
+ 1028              		.thumb
+ 1029              		.syntax unified
+ 1030              	.LBE501:
+ 1031              	.LBE500:
+ 170:lib/helix/real/polyphase.c **** 
+ 1032              		.loc 1 170 0 discriminator 3
+ 1033 0288 C8F10008 		rsb	r8, r8, #0
+ 1034              	.LVL181:
+ 1035              	.LBB502:
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 30
+
+
+ 1036              	.LBB503:
+ 389:lib/helix/real/assembly.h **** 
+ 1037              		.loc 2 389 0 discriminator 3
+ 1038              		.syntax unified
+ 1039              	@ 389 "lib/helix/real/assembly.h" 1
+ 1040 028c CCFB0827 		smlal r2,r7,ip,r8
+ 1041              	@ 0 "" 2
+ 1042              	.LVL182:
+ 1043              		.thumb
+ 1044              		.syntax unified
+ 1045              	.LBE503:
+ 1046              	.LBE502:
+ 1047              	.LBB504:
+ 1048              	.LBB505:
+ 1049              		.syntax unified
+ 1050              	@ 389 "lib/helix/real/assembly.h" 1
+ 1051 0290 CCFB0E31 		smlal r3,r1,ip,lr
+ 1052              	@ 0 "" 2
+ 1053              	.LVL183:
+ 1054              		.thumb
+ 1055              		.syntax unified
+ 1056              	.LBE505:
+ 1057              	.LBE504:
+ 172:lib/helix/real/polyphase.c **** 		*(pcm)       = ClipToShort((int)SAR64(sum1L, (32-CSHIFT)), DEF_NFRACBITS);
+ 1058              		.loc 1 172 0 discriminator 3
+ 1059 0294 04F58074 		add	r4, r4, #256
+ 1060              	.LVL184:
+ 1061              	.LBB506:
+ 1062              	.LBB507:
+ 1063              		.loc 2 395 0 discriminator 3
+ 1064 0298 120D     		lsrs	r2, r2, #20
+ 1065 029a 42EA0732 		orr	r2, r2, r7, lsl #12
+ 1066              	.LVL185:
+ 1067              	.LBE507:
+ 1068              	.LBE506:
+ 1069              	.LBB508:
+ 1070              	.LBB509:
+  64:lib/helix/real/polyphase.c **** 	
+ 1071              		.loc 1 64 0 discriminator 3
+ 1072 029e 9711     		asrs	r7, r2, #6
+ 1073              	.LVL186:
+  67:lib/helix/real/polyphase.c **** 	if (sign != (x >> 15))
+ 1074              		.loc 1 67 0 discriminator 3
+ 1075 02a0 4FEAE27C 		asr	ip, r2, #31
+ 1076              	.LVL187:
+  68:lib/helix/real/polyphase.c **** 		x = sign ^ ((1 << 15) - 1);
+ 1077              		.loc 1 68 0 discriminator 3
+ 1078 02a4 BCEB625F 		cmp	ip, r2, asr #21
+ 1079 02a8 03D0     		beq	.L5
+  69:lib/helix/real/polyphase.c **** 
+ 1080              		.loc 1 69 0
+ 1081 02aa 47F6FF77 		movw	r7, #32767
+ 1082              	.LVL188:
+ 1083 02ae 8CEA0707 		eor	r7, ip, r7
+ 1084              	.LVL189:
+ 1085              	.L5:
+ 1086              	.LBE509:
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 31
+
+
+ 1087              	.LBE508:
+ 173:lib/helix/real/polyphase.c **** 		*(pcm + 2*i) = ClipToShort((int)SAR64(sum2L, (32-CSHIFT)), DEF_NFRACBITS);
+ 1088              		.loc 1 173 0
+ 1089 02b2 0780     		strh	r7, [r0]	@ movhi
+ 1090              	.LVL190:
+ 1091              	.LBB510:
+ 1092              	.LBB511:
+ 1093              		.loc 2 395 0
+ 1094 02b4 1B0D     		lsrs	r3, r3, #20
+ 1095 02b6 43EA0133 		orr	r3, r3, r1, lsl #12
+ 1096              	.LVL191:
+ 1097              	.LBE511:
+ 1098              	.LBE510:
+ 174:lib/helix/real/polyphase.c **** 		pcm++;
+ 1099              		.loc 1 174 0
+ 1100 02ba 00EB8607 		add	r7, r0, r6, lsl #2
+ 1101              	.LVL192:
+ 1102              	.LBB512:
+ 1103              	.LBB513:
+  64:lib/helix/real/polyphase.c **** 	
+ 1104              		.loc 1 64 0
+ 1105 02be 9A11     		asrs	r2, r3, #6
+ 1106              	.LVL193:
+  67:lib/helix/real/polyphase.c **** 	if (sign != (x >> 15))
+ 1107              		.loc 1 67 0
+ 1108 02c0 D917     		asrs	r1, r3, #31
+ 1109              	.LVL194:
+  68:lib/helix/real/polyphase.c **** 		x = sign ^ ((1 << 15) - 1);
+ 1110              		.loc 1 68 0
+ 1111 02c2 B1EB635F 		cmp	r1, r3, asr #21
+ 1112 02c6 3FF447AF 		beq	.L6
+  69:lib/helix/real/polyphase.c **** 
+ 1113              		.loc 1 69 0
+ 1114 02ca 47F6FF72 		movw	r2, #32767
+ 1115              	.LVL195:
+ 1116 02ce 4A40     		eors	r2, r2, r1
+ 1117              	.LVL196:
+ 1118 02d0 42E7     		b	.L6
+ 1119              	.LVL197:
+ 1120              	.L9:
+ 1121              	.LBE513:
+ 1122              	.LBE512:
+ 176:lib/helix/real/polyphase.c **** 	}
+ 177:lib/helix/real/polyphase.c **** }
+ 1123              		.loc 1 177 0
+ 1124 02d2 02B0     		add	sp, sp, #8
+ 1125              	.LCFI2:
+ 1126              		.cfi_def_cfa_offset 32
+ 1127              		@ sp needed
+ 1128 02d4 BDE8F087 		pop	{r4, r5, r6, r7, r8, r9, r10, pc}
+ 1129              		.cfi_endproc
+ 1130              	.LFE6:
+ 1132              		.section	.text.xmp3fixpt_PolyphaseStereo,"ax",%progbits
+ 1133              		.align	1
+ 1134              		.global	xmp3fixpt_PolyphaseStereo
+ 1135              		.syntax unified
+ 1136              		.thumb
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 32
+
+
+ 1137              		.thumb_func
+ 1138              		.fpu fpv5-sp-d16
+ 1140              	xmp3fixpt_PolyphaseStereo:
+ 1141              	.LFB7:
+ 178:lib/helix/real/polyphase.c **** 
+ 179:lib/helix/real/polyphase.c **** #define MC0S(x)	{ \
+ 180:lib/helix/real/polyphase.c **** 	c1 = *coef;		coef++;		c2 = *coef;		coef++; \
+ 181:lib/helix/real/polyphase.c **** 	vLo = *(vb1+(x));		vHi = *(vb1+(23-(x))); \
+ 182:lib/helix/real/polyphase.c **** 	sum1L = MADD64(sum1L, vLo,  c1);	sum1L = MADD64(sum1L, vHi, -c2); \
+ 183:lib/helix/real/polyphase.c **** 	vLo = *(vb1+32+(x));	vHi = *(vb1+32+(23-(x))); \
+ 184:lib/helix/real/polyphase.c **** 	sum1R = MADD64(sum1R, vLo,  c1);	sum1R = MADD64(sum1R, vHi, -c2); \
+ 185:lib/helix/real/polyphase.c **** }
+ 186:lib/helix/real/polyphase.c **** 
+ 187:lib/helix/real/polyphase.c **** #define MC1S(x)	{ \
+ 188:lib/helix/real/polyphase.c **** 	c1 = *coef;		coef++; \
+ 189:lib/helix/real/polyphase.c **** 	vLo = *(vb1+(x)); \
+ 190:lib/helix/real/polyphase.c **** 	sum1L = MADD64(sum1L, vLo,  c1); \
+ 191:lib/helix/real/polyphase.c **** 	vLo = *(vb1+32+(x)); \
+ 192:lib/helix/real/polyphase.c **** 	sum1R = MADD64(sum1R, vLo,  c1); \
+ 193:lib/helix/real/polyphase.c **** }
+ 194:lib/helix/real/polyphase.c **** 
+ 195:lib/helix/real/polyphase.c **** #define MC2S(x)	{ \
+ 196:lib/helix/real/polyphase.c **** 		c1 = *coef;		coef++;		c2 = *coef;		coef++; \
+ 197:lib/helix/real/polyphase.c **** 		vLo = *(vb1+(x));	vHi = *(vb1+(23-(x))); \
+ 198:lib/helix/real/polyphase.c **** 		sum1L = MADD64(sum1L, vLo,  c1);	sum2L = MADD64(sum2L, vLo,  c2); \
+ 199:lib/helix/real/polyphase.c **** 		sum1L = MADD64(sum1L, vHi, -c2);	sum2L = MADD64(sum2L, vHi,  c1); \
+ 200:lib/helix/real/polyphase.c **** 		vLo = *(vb1+32+(x));	vHi = *(vb1+32+(23-(x))); \
+ 201:lib/helix/real/polyphase.c **** 		sum1R = MADD64(sum1R, vLo,  c1);	sum2R = MADD64(sum2R, vLo,  c2); \
+ 202:lib/helix/real/polyphase.c **** 		sum1R = MADD64(sum1R, vHi, -c2);	sum2R = MADD64(sum2R, vHi,  c1); \
+ 203:lib/helix/real/polyphase.c **** }
+ 204:lib/helix/real/polyphase.c **** 
+ 205:lib/helix/real/polyphase.c **** /**************************************************************************************
+ 206:lib/helix/real/polyphase.c ****  * Function:    PolyphaseStereo
+ 207:lib/helix/real/polyphase.c ****  *
+ 208:lib/helix/real/polyphase.c ****  * Description: filter one subband and produce 32 output PCM samples for each channel
+ 209:lib/helix/real/polyphase.c ****  *
+ 210:lib/helix/real/polyphase.c ****  * Inputs:      pointer to PCM output buffer
+ 211:lib/helix/real/polyphase.c ****  *              number of "extra shifts" (vbuf format = Q(DQ_FRACBITS_OUT-2))
+ 212:lib/helix/real/polyphase.c ****  *              pointer to start of vbuf (preserved from last call)
+ 213:lib/helix/real/polyphase.c ****  *              start of filter coefficient table (in proper, shuffled order)
+ 214:lib/helix/real/polyphase.c ****  *              no minimum number of guard bits is required for input vbuf 
+ 215:lib/helix/real/polyphase.c ****  *                (see additional scaling comments below)
+ 216:lib/helix/real/polyphase.c ****  *
+ 217:lib/helix/real/polyphase.c ****  * Outputs:     32 samples of two channels of decoded PCM data, (i.e. Q16.0)
+ 218:lib/helix/real/polyphase.c ****  *
+ 219:lib/helix/real/polyphase.c ****  * Return:      none
+ 220:lib/helix/real/polyphase.c ****  *
+ 221:lib/helix/real/polyphase.c ****  * Notes:       interleaves PCM samples LRLRLR...
+ 222:lib/helix/real/polyphase.c ****  *
+ 223:lib/helix/real/polyphase.c ****  * TODO:        add 32-bit version for platforms where 64-bit mul-acc is not supported
+ 224:lib/helix/real/polyphase.c ****  **************************************************************************************/
+ 225:lib/helix/real/polyphase.c **** void PolyphaseStereo(short *pcm, int *vbuf, const int *coefBase)
+ 226:lib/helix/real/polyphase.c **** {
+ 1142              		.loc 1 226 0
+ 1143              		.cfi_startproc
+ 1144              		@ args = 0, pretend = 0, frame = 16
+ 1145              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 33
+
+
+ 1146              	.LVL198:
+ 1147 0000 2DE9F04F 		push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
+ 1148              	.LCFI3:
+ 1149              		.cfi_def_cfa_offset 36
+ 1150              		.cfi_offset 4, -36
+ 1151              		.cfi_offset 5, -32
+ 1152              		.cfi_offset 6, -28
+ 1153              		.cfi_offset 7, -24
+ 1154              		.cfi_offset 8, -20
+ 1155              		.cfi_offset 9, -16
+ 1156              		.cfi_offset 10, -12
+ 1157              		.cfi_offset 11, -8
+ 1158              		.cfi_offset 14, -4
+ 1159 0004 85B0     		sub	sp, sp, #20
+ 1160              	.LCFI4:
+ 1161              		.cfi_def_cfa_offset 56
+ 1162              	.LVL199:
+ 227:lib/helix/real/polyphase.c **** 	int i;
+ 228:lib/helix/real/polyphase.c **** 	const int *coef;
+ 229:lib/helix/real/polyphase.c **** 	int *vb1;
+ 230:lib/helix/real/polyphase.c **** 	int vLo, vHi, c1, c2;
+ 231:lib/helix/real/polyphase.c **** 	Word64 sum1L, sum2L, sum1R, sum2R, rndVal;
+ 232:lib/helix/real/polyphase.c **** 
+ 233:lib/helix/real/polyphase.c **** 	rndVal = (Word64)( 1 << (DEF_NFRACBITS - 1 + (32 - CSHIFT)) );
+ 234:lib/helix/real/polyphase.c **** 
+ 235:lib/helix/real/polyphase.c **** 	/* special case, output sample 0 */
+ 236:lib/helix/real/polyphase.c **** 	coef = coefBase;
+ 237:lib/helix/real/polyphase.c **** 	vb1 = vbuf;
+ 238:lib/helix/real/polyphase.c **** 	sum1L = sum1R = rndVal;
+ 239:lib/helix/real/polyphase.c **** 
+ 240:lib/helix/real/polyphase.c **** 	MC0S(0)
+ 1163              		.loc 1 240 0
+ 1164 0006 1568     		ldr	r5, [r2]
+ 1165              	.LVL200:
+ 1166 0008 0E68     		ldr	r6, [r1]
+ 1167              	.LVL201:
+ 1168              	.LBB514:
+ 1169              	.LBB515:
+ 389:lib/helix/real/assembly.h **** 
+ 1170              		.loc 2 389 0
+ 1171 000a 4FF00073 		mov	r3, #33554432
+ 1172 000e 0027     		movs	r7, #0
+ 1173 0010 1C46     		mov	r4, r3
+ 1174 0012 BC46     		mov	ip, r7
+ 1175              		.syntax unified
+ 1176              	@ 389 "lib/helix/real/assembly.h" 1
+ 1177 0014 C6FB054C 		smlal r4,ip,r6,r5
+ 1178              	@ 0 "" 2
+ 1179              	.LVL202:
+ 1180              		.thumb
+ 1181              		.syntax unified
+ 1182              	.LBE515:
+ 1183              	.LBE514:
+ 1184              		.loc 1 240 0
+ 1185 0018 5668     		ldr	r6, [r2, #4]
+ 1186              	.LVL203:
+ 1187 001a C6F1000E 		rsb	lr, r6, #0
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 34
+
+
+ 1188              	.LVL204:
+ 1189              	.LBB516:
+ 1190              	.LBB517:
+ 389:lib/helix/real/assembly.h **** 
+ 1191              		.loc 2 389 0
+ 1192 001e CE6D     		ldr	r6, [r1, #92]
+ 1193              		.syntax unified
+ 1194              	@ 389 "lib/helix/real/assembly.h" 1
+ 1195 0020 C6FB0E4C 		smlal r4,ip,r6,lr
+ 1196              	@ 0 "" 2
+ 1197              	.LVL205:
+ 1198              		.thumb
+ 1199              		.syntax unified
+ 1200              	.LBE517:
+ 1201              	.LBE516:
+ 1202              		.loc 1 240 0
+ 1203 0024 D1F88060 		ldr	r6, [r1, #128]
+ 1204              	.LVL206:
+ 1205              	.LBB518:
+ 1206              	.LBB519:
+ 389:lib/helix/real/assembly.h **** 
+ 1207              		.loc 2 389 0
+ 1208              		.syntax unified
+ 1209              	@ 389 "lib/helix/real/assembly.h" 1
+ 1210 0028 C6FB0537 		smlal r3,r7,r6,r5
+ 1211              	@ 0 "" 2
+ 1212              	.LVL207:
+ 1213              		.thumb
+ 1214              		.syntax unified
+ 1215              	.LBE519:
+ 1216              	.LBE518:
+ 1217              	.LBB520:
+ 1218              	.LBB521:
+ 1219 002c D1F8DC50 		ldr	r5, [r1, #220]
+ 1220              	.LVL208:
+ 1221              		.syntax unified
+ 1222              	@ 389 "lib/helix/real/assembly.h" 1
+ 1223 0030 C5FB0E37 		smlal r3,r7,r5,lr
+ 1224              	@ 0 "" 2
+ 1225              	.LVL209:
+ 1226              		.thumb
+ 1227              		.syntax unified
+ 1228              	.LBE521:
+ 1229              	.LBE520:
+ 241:lib/helix/real/polyphase.c **** 	MC0S(1)
+ 1230              		.loc 1 241 0
+ 1231 0034 9568     		ldr	r5, [r2, #8]
+ 1232              	.LVL210:
+ 1233 0036 4E68     		ldr	r6, [r1, #4]
+ 1234              	.LVL211:
+ 1235              	.LBB522:
+ 1236              	.LBB523:
+ 389:lib/helix/real/assembly.h **** 
+ 1237              		.loc 2 389 0
+ 1238              		.syntax unified
+ 1239              	@ 389 "lib/helix/real/assembly.h" 1
+ 1240 0038 C6FB054C 		smlal r4,ip,r6,r5
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 35
+
+
+ 1241              	@ 0 "" 2
+ 1242              	.LVL212:
+ 1243              		.thumb
+ 1244              		.syntax unified
+ 1245              	.LBE523:
+ 1246              	.LBE522:
+ 1247              		.loc 1 241 0
+ 1248 003c D668     		ldr	r6, [r2, #12]
+ 1249              	.LVL213:
+ 1250 003e C6F1000E 		rsb	lr, r6, #0
+ 1251              	.LVL214:
+ 1252              	.LBB524:
+ 1253              	.LBB525:
+ 389:lib/helix/real/assembly.h **** 
+ 1254              		.loc 2 389 0
+ 1255 0042 8E6D     		ldr	r6, [r1, #88]
+ 1256              		.syntax unified
+ 1257              	@ 389 "lib/helix/real/assembly.h" 1
+ 1258 0044 C6FB0E4C 		smlal r4,ip,r6,lr
+ 1259              	@ 0 "" 2
+ 1260              	.LVL215:
+ 1261              		.thumb
+ 1262              		.syntax unified
+ 1263              	.LBE525:
+ 1264              	.LBE524:
+ 1265              		.loc 1 241 0
+ 1266 0048 D1F88460 		ldr	r6, [r1, #132]
+ 1267              	.LVL216:
+ 1268              	.LBB526:
+ 1269              	.LBB527:
+ 389:lib/helix/real/assembly.h **** 
+ 1270              		.loc 2 389 0
+ 1271              		.syntax unified
+ 1272              	@ 389 "lib/helix/real/assembly.h" 1
+ 1273 004c C6FB0537 		smlal r3,r7,r6,r5
+ 1274              	@ 0 "" 2
+ 1275              	.LVL217:
+ 1276              		.thumb
+ 1277              		.syntax unified
+ 1278              	.LBE527:
+ 1279              	.LBE526:
+ 1280              	.LBB528:
+ 1281              	.LBB529:
+ 1282 0050 D1F8D850 		ldr	r5, [r1, #216]
+ 1283              	.LVL218:
+ 1284              		.syntax unified
+ 1285              	@ 389 "lib/helix/real/assembly.h" 1
+ 1286 0054 C5FB0E37 		smlal r3,r7,r5,lr
+ 1287              	@ 0 "" 2
+ 1288              	.LVL219:
+ 1289              		.thumb
+ 1290              		.syntax unified
+ 1291              	.LBE529:
+ 1292              	.LBE528:
+ 242:lib/helix/real/polyphase.c **** 	MC0S(2)
+ 1293              		.loc 1 242 0
+ 1294 0058 1569     		ldr	r5, [r2, #16]
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 36
+
+
+ 1295              	.LVL220:
+ 1296 005a 8E68     		ldr	r6, [r1, #8]
+ 1297              	.LVL221:
+ 1298              	.LBB530:
+ 1299              	.LBB531:
+ 389:lib/helix/real/assembly.h **** 
+ 1300              		.loc 2 389 0
+ 1301              		.syntax unified
+ 1302              	@ 389 "lib/helix/real/assembly.h" 1
+ 1303 005c C6FB054C 		smlal r4,ip,r6,r5
+ 1304              	@ 0 "" 2
+ 1305              	.LVL222:
+ 1306              		.thumb
+ 1307              		.syntax unified
+ 1308              	.LBE531:
+ 1309              	.LBE530:
+ 1310              		.loc 1 242 0
+ 1311 0060 5669     		ldr	r6, [r2, #20]
+ 1312              	.LVL223:
+ 1313 0062 C6F1000E 		rsb	lr, r6, #0
+ 1314              	.LVL224:
+ 1315              	.LBB532:
+ 1316              	.LBB533:
+ 389:lib/helix/real/assembly.h **** 
+ 1317              		.loc 2 389 0
+ 1318 0066 4E6D     		ldr	r6, [r1, #84]
+ 1319              		.syntax unified
+ 1320              	@ 389 "lib/helix/real/assembly.h" 1
+ 1321 0068 C6FB0E4C 		smlal r4,ip,r6,lr
+ 1322              	@ 0 "" 2
+ 1323              	.LVL225:
+ 1324              		.thumb
+ 1325              		.syntax unified
+ 1326              	.LBE533:
+ 1327              	.LBE532:
+ 1328              		.loc 1 242 0
+ 1329 006c D1F88860 		ldr	r6, [r1, #136]
+ 1330              	.LVL226:
+ 1331              	.LBB534:
+ 1332              	.LBB535:
+ 389:lib/helix/real/assembly.h **** 
+ 1333              		.loc 2 389 0
+ 1334              		.syntax unified
+ 1335              	@ 389 "lib/helix/real/assembly.h" 1
+ 1336 0070 C6FB0537 		smlal r3,r7,r6,r5
+ 1337              	@ 0 "" 2
+ 1338              	.LVL227:
+ 1339              		.thumb
+ 1340              		.syntax unified
+ 1341              	.LBE535:
+ 1342              	.LBE534:
+ 1343              	.LBB536:
+ 1344              	.LBB537:
+ 1345 0074 D1F8D450 		ldr	r5, [r1, #212]
+ 1346              	.LVL228:
+ 1347              		.syntax unified
+ 1348              	@ 389 "lib/helix/real/assembly.h" 1
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 37
+
+
+ 1349 0078 C5FB0E37 		smlal r3,r7,r5,lr
+ 1350              	@ 0 "" 2
+ 1351              	.LVL229:
+ 1352              		.thumb
+ 1353              		.syntax unified
+ 1354              	.LBE537:
+ 1355              	.LBE536:
+ 243:lib/helix/real/polyphase.c **** 	MC0S(3)
+ 1356              		.loc 1 243 0
+ 1357 007c 9569     		ldr	r5, [r2, #24]
+ 1358              	.LVL230:
+ 1359 007e CE68     		ldr	r6, [r1, #12]
+ 1360              	.LVL231:
+ 1361              	.LBB538:
+ 1362              	.LBB539:
+ 389:lib/helix/real/assembly.h **** 
+ 1363              		.loc 2 389 0
+ 1364              		.syntax unified
+ 1365              	@ 389 "lib/helix/real/assembly.h" 1
+ 1366 0080 C6FB054C 		smlal r4,ip,r6,r5
+ 1367              	@ 0 "" 2
+ 1368              	.LVL232:
+ 1369              		.thumb
+ 1370              		.syntax unified
+ 1371              	.LBE539:
+ 1372              	.LBE538:
+ 1373              		.loc 1 243 0
+ 1374 0084 D669     		ldr	r6, [r2, #28]
+ 1375              	.LVL233:
+ 1376 0086 C6F1000E 		rsb	lr, r6, #0
+ 1377              	.LVL234:
+ 1378              	.LBB540:
+ 1379              	.LBB541:
+ 389:lib/helix/real/assembly.h **** 
+ 1380              		.loc 2 389 0
+ 1381 008a 0E6D     		ldr	r6, [r1, #80]
+ 1382              		.syntax unified
+ 1383              	@ 389 "lib/helix/real/assembly.h" 1
+ 1384 008c C6FB0E4C 		smlal r4,ip,r6,lr
+ 1385              	@ 0 "" 2
+ 1386              	.LVL235:
+ 1387              		.thumb
+ 1388              		.syntax unified
+ 1389              	.LBE541:
+ 1390              	.LBE540:
+ 1391              		.loc 1 243 0
+ 1392 0090 D1F88C60 		ldr	r6, [r1, #140]
+ 1393              	.LVL236:
+ 1394              	.LBB542:
+ 1395              	.LBB543:
+ 389:lib/helix/real/assembly.h **** 
+ 1396              		.loc 2 389 0
+ 1397              		.syntax unified
+ 1398              	@ 389 "lib/helix/real/assembly.h" 1
+ 1399 0094 C6FB0537 		smlal r3,r7,r6,r5
+ 1400              	@ 0 "" 2
+ 1401              	.LVL237:
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 38
+
+
+ 1402              		.thumb
+ 1403              		.syntax unified
+ 1404              	.LBE543:
+ 1405              	.LBE542:
+ 1406              	.LBB544:
+ 1407              	.LBB545:
+ 1408 0098 D1F8D050 		ldr	r5, [r1, #208]
+ 1409              	.LVL238:
+ 1410              		.syntax unified
+ 1411              	@ 389 "lib/helix/real/assembly.h" 1
+ 1412 009c C5FB0E37 		smlal r3,r7,r5,lr
+ 1413              	@ 0 "" 2
+ 1414              	.LVL239:
+ 1415              		.thumb
+ 1416              		.syntax unified
+ 1417              	.LBE545:
+ 1418              	.LBE544:
+ 244:lib/helix/real/polyphase.c **** 	MC0S(4)
+ 1419              		.loc 1 244 0
+ 1420 00a0 156A     		ldr	r5, [r2, #32]
+ 1421              	.LVL240:
+ 1422 00a2 0E69     		ldr	r6, [r1, #16]
+ 1423              	.LVL241:
+ 1424              	.LBB546:
+ 1425              	.LBB547:
+ 389:lib/helix/real/assembly.h **** 
+ 1426              		.loc 2 389 0
+ 1427              		.syntax unified
+ 1428              	@ 389 "lib/helix/real/assembly.h" 1
+ 1429 00a4 C6FB054C 		smlal r4,ip,r6,r5
+ 1430              	@ 0 "" 2
+ 1431              	.LVL242:
+ 1432              		.thumb
+ 1433              		.syntax unified
+ 1434              	.LBE547:
+ 1435              	.LBE546:
+ 1436              		.loc 1 244 0
+ 1437 00a8 566A     		ldr	r6, [r2, #36]
+ 1438              	.LVL243:
+ 1439 00aa C6F1000E 		rsb	lr, r6, #0
+ 1440              	.LVL244:
+ 1441              	.LBB548:
+ 1442              	.LBB549:
+ 389:lib/helix/real/assembly.h **** 
+ 1443              		.loc 2 389 0
+ 1444 00ae CE6C     		ldr	r6, [r1, #76]
+ 1445              		.syntax unified
+ 1446              	@ 389 "lib/helix/real/assembly.h" 1
+ 1447 00b0 C6FB0E4C 		smlal r4,ip,r6,lr
+ 1448              	@ 0 "" 2
+ 1449              	.LVL245:
+ 1450              		.thumb
+ 1451              		.syntax unified
+ 1452              	.LBE549:
+ 1453              	.LBE548:
+ 1454              		.loc 1 244 0
+ 1455 00b4 D1F89060 		ldr	r6, [r1, #144]
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 39
+
+
+ 1456              	.LVL246:
+ 1457              	.LBB550:
+ 1458              	.LBB551:
+ 389:lib/helix/real/assembly.h **** 
+ 1459              		.loc 2 389 0
+ 1460              		.syntax unified
+ 1461              	@ 389 "lib/helix/real/assembly.h" 1
+ 1462 00b8 C6FB0537 		smlal r3,r7,r6,r5
+ 1463              	@ 0 "" 2
+ 1464              	.LVL247:
+ 1465              		.thumb
+ 1466              		.syntax unified
+ 1467              	.LBE551:
+ 1468              	.LBE550:
+ 1469              	.LBB552:
+ 1470              	.LBB553:
+ 1471 00bc D1F8CC50 		ldr	r5, [r1, #204]
+ 1472              	.LVL248:
+ 1473              		.syntax unified
+ 1474              	@ 389 "lib/helix/real/assembly.h" 1
+ 1475 00c0 C5FB0E37 		smlal r3,r7,r5,lr
+ 1476              	@ 0 "" 2
+ 1477              	.LVL249:
+ 1478              		.thumb
+ 1479              		.syntax unified
+ 1480              	.LBE553:
+ 1481              	.LBE552:
+ 245:lib/helix/real/polyphase.c **** 	MC0S(5)
+ 1482              		.loc 1 245 0
+ 1483 00c4 956A     		ldr	r5, [r2, #40]
+ 1484              	.LVL250:
+ 1485 00c6 4E69     		ldr	r6, [r1, #20]
+ 1486              	.LVL251:
+ 1487              	.LBB554:
+ 1488              	.LBB555:
+ 389:lib/helix/real/assembly.h **** 
+ 1489              		.loc 2 389 0
+ 1490              		.syntax unified
+ 1491              	@ 389 "lib/helix/real/assembly.h" 1
+ 1492 00c8 C6FB054C 		smlal r4,ip,r6,r5
+ 1493              	@ 0 "" 2
+ 1494              	.LVL252:
+ 1495              		.thumb
+ 1496              		.syntax unified
+ 1497              	.LBE555:
+ 1498              	.LBE554:
+ 1499              		.loc 1 245 0
+ 1500 00cc D66A     		ldr	r6, [r2, #44]
+ 1501              	.LVL253:
+ 1502 00ce C6F1000E 		rsb	lr, r6, #0
+ 1503              	.LVL254:
+ 1504              	.LBB556:
+ 1505              	.LBB557:
+ 389:lib/helix/real/assembly.h **** 
+ 1506              		.loc 2 389 0
+ 1507 00d2 8E6C     		ldr	r6, [r1, #72]
+ 1508              		.syntax unified
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 40
+
+
+ 1509              	@ 389 "lib/helix/real/assembly.h" 1
+ 1510 00d4 C6FB0E4C 		smlal r4,ip,r6,lr
+ 1511              	@ 0 "" 2
+ 1512              	.LVL255:
+ 1513              		.thumb
+ 1514              		.syntax unified
+ 1515              	.LBE557:
+ 1516              	.LBE556:
+ 1517              		.loc 1 245 0
+ 1518 00d8 D1F89460 		ldr	r6, [r1, #148]
+ 1519              	.LVL256:
+ 1520              	.LBB558:
+ 1521              	.LBB559:
+ 389:lib/helix/real/assembly.h **** 
+ 1522              		.loc 2 389 0
+ 1523              		.syntax unified
+ 1524              	@ 389 "lib/helix/real/assembly.h" 1
+ 1525 00dc C6FB0537 		smlal r3,r7,r6,r5
+ 1526              	@ 0 "" 2
+ 1527              	.LVL257:
+ 1528              		.thumb
+ 1529              		.syntax unified
+ 1530              	.LBE559:
+ 1531              	.LBE558:
+ 1532              	.LBB560:
+ 1533              	.LBB561:
+ 1534 00e0 D1F8C850 		ldr	r5, [r1, #200]
+ 1535              	.LVL258:
+ 1536              		.syntax unified
+ 1537              	@ 389 "lib/helix/real/assembly.h" 1
+ 1538 00e4 C5FB0E37 		smlal r3,r7,r5,lr
+ 1539              	@ 0 "" 2
+ 1540              	.LVL259:
+ 1541              		.thumb
+ 1542              		.syntax unified
+ 1543              	.LBE561:
+ 1544              	.LBE560:
+ 246:lib/helix/real/polyphase.c **** 	MC0S(6)
+ 1545              		.loc 1 246 0
+ 1546 00e8 156B     		ldr	r5, [r2, #48]
+ 1547              	.LVL260:
+ 1548 00ea 8E69     		ldr	r6, [r1, #24]
+ 1549              	.LVL261:
+ 1550              	.LBB562:
+ 1551              	.LBB563:
+ 389:lib/helix/real/assembly.h **** 
+ 1552              		.loc 2 389 0
+ 1553              		.syntax unified
+ 1554              	@ 389 "lib/helix/real/assembly.h" 1
+ 1555 00ec C6FB054C 		smlal r4,ip,r6,r5
+ 1556              	@ 0 "" 2
+ 1557              	.LVL262:
+ 1558              		.thumb
+ 1559              		.syntax unified
+ 1560              	.LBE563:
+ 1561              	.LBE562:
+ 1562              		.loc 1 246 0
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 41
+
+
+ 1563 00f0 566B     		ldr	r6, [r2, #52]
+ 1564              	.LVL263:
+ 1565 00f2 C6F1000E 		rsb	lr, r6, #0
+ 1566              	.LVL264:
+ 1567              	.LBB564:
+ 1568              	.LBB565:
+ 389:lib/helix/real/assembly.h **** 
+ 1569              		.loc 2 389 0
+ 1570 00f6 4E6C     		ldr	r6, [r1, #68]
+ 1571              		.syntax unified
+ 1572              	@ 389 "lib/helix/real/assembly.h" 1
+ 1573 00f8 C6FB0E4C 		smlal r4,ip,r6,lr
+ 1574              	@ 0 "" 2
+ 1575              	.LVL265:
+ 1576              		.thumb
+ 1577              		.syntax unified
+ 1578              	.LBE565:
+ 1579              	.LBE564:
+ 1580              		.loc 1 246 0
+ 1581 00fc D1F89860 		ldr	r6, [r1, #152]
+ 1582              	.LVL266:
+ 1583              	.LBB566:
+ 1584              	.LBB567:
+ 389:lib/helix/real/assembly.h **** 
+ 1585              		.loc 2 389 0
+ 1586              		.syntax unified
+ 1587              	@ 389 "lib/helix/real/assembly.h" 1
+ 1588 0100 C6FB0537 		smlal r3,r7,r6,r5
+ 1589              	@ 0 "" 2
+ 1590              	.LVL267:
+ 1591              		.thumb
+ 1592              		.syntax unified
+ 1593              	.LBE567:
+ 1594              	.LBE566:
+ 1595              	.LBB568:
+ 1596              	.LBB569:
+ 1597 0104 D1F8C450 		ldr	r5, [r1, #196]
+ 1598              	.LVL268:
+ 1599              		.syntax unified
+ 1600              	@ 389 "lib/helix/real/assembly.h" 1
+ 1601 0108 C5FB0E37 		smlal r3,r7,r5,lr
+ 1602              	@ 0 "" 2
+ 1603              	.LVL269:
+ 1604              		.thumb
+ 1605              		.syntax unified
+ 1606              	.LBE569:
+ 1607              	.LBE568:
+ 247:lib/helix/real/polyphase.c **** 	MC0S(7)
+ 1608              		.loc 1 247 0
+ 1609 010c 956B     		ldr	r5, [r2, #56]
+ 1610              	.LVL270:
+ 1611 010e D66B     		ldr	r6, [r2, #60]
+ 1612              	.LVL271:
+ 1613 0110 0196     		str	r6, [sp, #4]
+ 1614              	.LVL272:
+ 1615              	.LBB570:
+ 1616              	.LBB571:
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 42
+
+
+ 389:lib/helix/real/assembly.h **** 
+ 1617              		.loc 2 389 0
+ 1618 0112 CE69     		ldr	r6, [r1, #28]
+ 1619              	.LVL273:
+ 1620              		.syntax unified
+ 1621              	@ 389 "lib/helix/real/assembly.h" 1
+ 1622 0114 C6FB054C 		smlal r4,ip,r6,r5
+ 1623              	@ 0 "" 2
+ 1624              	.LVL274:
+ 1625              		.thumb
+ 1626              		.syntax unified
+ 1627              	.LBE571:
+ 1628              	.LBE570:
+ 1629              		.loc 1 247 0
+ 1630 0118 019E     		ldr	r6, [sp, #4]
+ 1631 011a C6F10008 		rsb	r8, r6, #0
+ 1632              	.LVL275:
+ 1633              	.LBB572:
+ 1634              	.LBB573:
+ 389:lib/helix/real/assembly.h **** 
+ 1635              		.loc 2 389 0
+ 1636 011e 0E6C     		ldr	r6, [r1, #64]
+ 1637              		.syntax unified
+ 1638              	@ 389 "lib/helix/real/assembly.h" 1
+ 1639 0120 C6FB084C 		smlal r4,ip,r6,r8
+ 1640              	@ 0 "" 2
+ 1641              	.LVL276:
+ 1642              		.thumb
+ 1643              		.syntax unified
+ 1644              	.LBE573:
+ 1645              	.LBE572:
+ 1646              		.loc 1 247 0
+ 1647 0124 D1F89C60 		ldr	r6, [r1, #156]
+ 1648              	.LVL277:
+ 1649              	.LBB574:
+ 1650              	.LBB575:
+ 389:lib/helix/real/assembly.h **** 
+ 1651              		.loc 2 389 0
+ 1652              		.syntax unified
+ 1653              	@ 389 "lib/helix/real/assembly.h" 1
+ 1654 0128 C6FB0537 		smlal r3,r7,r6,r5
+ 1655              	@ 0 "" 2
+ 1656              	.LVL278:
+ 1657              		.thumb
+ 1658              		.syntax unified
+ 1659              	.LBE575:
+ 1660              	.LBE574:
+ 1661              	.LBB576:
+ 1662              	.LBB577:
+ 1663 012c D1F8C050 		ldr	r5, [r1, #192]
+ 1664              	.LVL279:
+ 1665              		.syntax unified
+ 1666              	@ 389 "lib/helix/real/assembly.h" 1
+ 1667 0130 C5FB0837 		smlal r3,r7,r5,r8
+ 1668              	@ 0 "" 2
+ 1669              	.LVL280:
+ 1670              		.thumb
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 43
+
+
+ 1671              		.syntax unified
+ 1672              	.LBE577:
+ 1673              	.LBE576:
+ 1674              	.LBB578:
+ 1675              	.LBB579:
+ 1676              		.loc 2 395 0
+ 1677 0134 240D     		lsrs	r4, r4, #20
+ 1678 0136 44EA0C34 		orr	r4, r4, ip, lsl #12
+ 1679              	.LVL281:
+ 1680              	.LBE579:
+ 1681              	.LBE578:
+ 1682              	.LBB580:
+ 1683              	.LBB581:
+  64:lib/helix/real/polyphase.c **** 	
+ 1684              		.loc 1 64 0
+ 1685 013a A511     		asrs	r5, r4, #6
+ 1686              	.LVL282:
+  67:lib/helix/real/polyphase.c **** 	if (sign != (x >> 15))
+ 1687              		.loc 1 67 0
+ 1688 013c E617     		asrs	r6, r4, #31
+ 1689              	.LVL283:
+  68:lib/helix/real/polyphase.c **** 		x = sign ^ ((1 << 15) - 1);
+ 1690              		.loc 1 68 0
+ 1691 013e B6EB645F 		cmp	r6, r4, asr #21
+ 1692 0142 02D0     		beq	.L11
+  69:lib/helix/real/polyphase.c **** 
+ 1693              		.loc 1 69 0
+ 1694 0144 47F6FF75 		movw	r5, #32767
+ 1695              	.LVL284:
+ 1696 0148 7540     		eors	r5, r5, r6
+ 1697              	.LVL285:
+ 1698              	.L11:
+ 1699              	.LBE581:
+ 1700              	.LBE580:
+ 248:lib/helix/real/polyphase.c **** 
+ 249:lib/helix/real/polyphase.c **** 	*(pcm + 0) = ClipToShort((int)SAR64(sum1L, (32-CSHIFT)), DEF_NFRACBITS);
+ 1701              		.loc 1 249 0
+ 1702 014a 0580     		strh	r5, [r0]	@ movhi
+ 1703              	.LVL286:
+ 1704              	.LBB582:
+ 1705              	.LBB583:
+ 1706              		.loc 2 395 0
+ 1707 014c 1B0D     		lsrs	r3, r3, #20
+ 1708 014e 43EA0733 		orr	r3, r3, r7, lsl #12
+ 1709              	.LVL287:
+ 1710              	.LBE583:
+ 1711              	.LBE582:
+ 1712              	.LBB584:
+ 1713              	.LBB585:
+  64:lib/helix/real/polyphase.c **** 	
+ 1714              		.loc 1 64 0
+ 1715 0152 9C11     		asrs	r4, r3, #6
+ 1716              	.LVL288:
+  67:lib/helix/real/polyphase.c **** 	if (sign != (x >> 15))
+ 1717              		.loc 1 67 0
+ 1718 0154 DD17     		asrs	r5, r3, #31
+ 1719              	.LVL289:
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 44
+
+
+  68:lib/helix/real/polyphase.c **** 		x = sign ^ ((1 << 15) - 1);
+ 1720              		.loc 1 68 0
+ 1721 0156 B5EB635F 		cmp	r5, r3, asr #21
+ 1722 015a 02D0     		beq	.L12
+  69:lib/helix/real/polyphase.c **** 
+ 1723              		.loc 1 69 0
+ 1724 015c 47F6FF74 		movw	r4, #32767
+ 1725              	.LVL290:
+ 1726 0160 6C40     		eors	r4, r4, r5
+ 1727              	.LVL291:
+ 1728              	.L12:
+ 1729              	.LBE585:
+ 1730              	.LBE584:
+ 250:lib/helix/real/polyphase.c **** 	*(pcm + 1) = ClipToShort((int)SAR64(sum1R, (32-CSHIFT)), DEF_NFRACBITS);
+ 1731              		.loc 1 250 0
+ 1732 0162 4480     		strh	r4, [r0, #2]	@ movhi
+ 1733              	.LVL292:
+ 251:lib/helix/real/polyphase.c **** 
+ 252:lib/helix/real/polyphase.c **** 	/* special case, output sample 16 */
+ 253:lib/helix/real/polyphase.c **** 	coef = coefBase + 256;
+ 254:lib/helix/real/polyphase.c **** 	vb1 = vbuf + 64*16;
+ 255:lib/helix/real/polyphase.c **** 	sum1L = sum1R = rndVal;
+ 256:lib/helix/real/polyphase.c **** 
+ 257:lib/helix/real/polyphase.c **** 	MC1S(0)
+ 1734              		.loc 1 257 0
+ 1735 0164 D2F80064 		ldr	r6, [r2, #1024]
+ 1736              	.LVL293:
+ 1737 0168 01F58053 		add	r3, r1, #4096
+ 1738              	.LVL294:
+ 1739 016c 1F68     		ldr	r7, [r3]
+ 1740              	.LVL295:
+ 1741              	.LBB586:
+ 1742              	.LBB587:
+ 389:lib/helix/real/assembly.h **** 
+ 1743              		.loc 2 389 0
+ 1744 016e 4FF00075 		mov	r5, #33554432
+ 1745 0172 0023     		movs	r3, #0
+ 1746              	.LVL296:
+ 1747 0174 AC46     		mov	ip, r5
+ 1748 0176 1C46     		mov	r4, r3
+ 1749              		.syntax unified
+ 1750              	@ 389 "lib/helix/real/assembly.h" 1
+ 1751 0178 C7FB06C4 		smlal ip,r4,r7,r6
+ 1752              	@ 0 "" 2
+ 1753              	.LVL297:
+ 1754              		.thumb
+ 1755              		.syntax unified
+ 1756              	.LBE587:
+ 1757              	.LBE586:
+ 1758              		.loc 1 257 0
+ 1759 017c 01F58457 		add	r7, r1, #4224
+ 1760              	.LVL298:
+ 1761 0180 3F68     		ldr	r7, [r7]
+ 1762              	.LVL299:
+ 1763              	.LBB588:
+ 1764              	.LBB589:
+ 389:lib/helix/real/assembly.h **** 
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 45
+
+
+ 1765              		.loc 2 389 0
+ 1766              		.syntax unified
+ 1767              	@ 389 "lib/helix/real/assembly.h" 1
+ 1768 0182 C7FB0653 		smlal r5,r3,r7,r6
+ 1769              	@ 0 "" 2
+ 1770              	.LVL300:
+ 1771              		.thumb
+ 1772              		.syntax unified
+ 1773              	.LBE589:
+ 1774              	.LBE588:
+ 258:lib/helix/real/polyphase.c **** 	MC1S(1)
+ 1775              		.loc 1 258 0
+ 1776 0186 D2F80464 		ldr	r6, [r2, #1028]
+ 1777              	.LVL301:
+ 1778 018a 41F20407 		movw	r7, #4100
+ 1779              	.LVL302:
+ 1780 018e CF59     		ldr	r7, [r1, r7]
+ 1781              	.LVL303:
+ 1782              	.LBB590:
+ 1783              	.LBB591:
+ 389:lib/helix/real/assembly.h **** 
+ 1784              		.loc 2 389 0
+ 1785              		.syntax unified
+ 1786              	@ 389 "lib/helix/real/assembly.h" 1
+ 1787 0190 C7FB06C4 		smlal ip,r4,r7,r6
+ 1788              	@ 0 "" 2
+ 1789              	.LVL304:
+ 1790              		.thumb
+ 1791              		.syntax unified
+ 1792              	.LBE591:
+ 1793              	.LBE590:
+ 1794              		.loc 1 258 0
+ 1795 0194 41F28407 		movw	r7, #4228
+ 1796              	.LVL305:
+ 1797 0198 CF59     		ldr	r7, [r1, r7]
+ 1798              	.LVL306:
+ 1799              	.LBB592:
+ 1800              	.LBB593:
+ 389:lib/helix/real/assembly.h **** 
+ 1801              		.loc 2 389 0
+ 1802              		.syntax unified
+ 1803              	@ 389 "lib/helix/real/assembly.h" 1
+ 1804 019a C7FB0653 		smlal r5,r3,r7,r6
+ 1805              	@ 0 "" 2
+ 1806              	.LVL307:
+ 1807              		.thumb
+ 1808              		.syntax unified
+ 1809              	.LBE593:
+ 1810              	.LBE592:
+ 259:lib/helix/real/polyphase.c **** 	MC1S(2)
+ 1811              		.loc 1 259 0
+ 1812 019e D2F80874 		ldr	r7, [r2, #1032]
+ 1813              	.LVL308:
+ 1814 01a2 41F20806 		movw	r6, #4104
+ 1815 01a6 51F806E0 		ldr	lr, [r1, r6]
+ 1816              	.LVL309:
+ 1817              	.LBB594:
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 46
+
+
+ 1818              	.LBB595:
+ 389:lib/helix/real/assembly.h **** 
+ 1819              		.loc 2 389 0
+ 1820 01aa 6646     		mov	r6, ip
+ 1821              		.syntax unified
+ 1822              	@ 389 "lib/helix/real/assembly.h" 1
+ 1823 01ac CEFB0764 		smlal r6,r4,lr,r7
+ 1824              	@ 0 "" 2
+ 1825              	.LVL310:
+ 1826              		.thumb
+ 1827              		.syntax unified
+ 1828              	.LBE595:
+ 1829              	.LBE594:
+ 1830              		.loc 1 259 0
+ 1831 01b0 41F2880C 		movw	ip, #4232
+ 1832 01b4 51F80CC0 		ldr	ip, [r1, ip]
+ 1833              	.LVL311:
+ 1834              	.LBB596:
+ 1835              	.LBB597:
+ 389:lib/helix/real/assembly.h **** 
+ 1836              		.loc 2 389 0
+ 1837              		.syntax unified
+ 1838              	@ 389 "lib/helix/real/assembly.h" 1
+ 1839 01b8 CCFB0753 		smlal r5,r3,ip,r7
+ 1840              	@ 0 "" 2
+ 1841              	.LVL312:
+ 1842              		.thumb
+ 1843              		.syntax unified
+ 1844              	.LBE597:
+ 1845              	.LBE596:
+ 260:lib/helix/real/polyphase.c **** 	MC1S(3)
+ 1846              		.loc 1 260 0
+ 1847 01bc D2F80C74 		ldr	r7, [r2, #1036]
+ 1848              	.LVL313:
+ 1849 01c0 41F20C0C 		movw	ip, #4108
+ 1850              	.LVL314:
+ 1851 01c4 51F80CC0 		ldr	ip, [r1, ip]
+ 1852              	.LVL315:
+ 1853              	.LBB598:
+ 1854              	.LBB599:
+ 389:lib/helix/real/assembly.h **** 
+ 1855              		.loc 2 389 0
+ 1856              		.syntax unified
+ 1857              	@ 389 "lib/helix/real/assembly.h" 1
+ 1858 01c8 CCFB0764 		smlal r6,r4,ip,r7
+ 1859              	@ 0 "" 2
+ 1860              	.LVL316:
+ 1861              		.thumb
+ 1862              		.syntax unified
+ 1863              	.LBE599:
+ 1864              	.LBE598:
+ 1865              		.loc 1 260 0
+ 1866 01cc 41F28C0C 		movw	ip, #4236
+ 1867              	.LVL317:
+ 1868 01d0 51F80CC0 		ldr	ip, [r1, ip]
+ 1869              	.LVL318:
+ 1870              	.LBB600:
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 47
+
+
+ 1871              	.LBB601:
+ 389:lib/helix/real/assembly.h **** 
+ 1872              		.loc 2 389 0
+ 1873              		.syntax unified
+ 1874              	@ 389 "lib/helix/real/assembly.h" 1
+ 1875 01d4 CCFB0753 		smlal r5,r3,ip,r7
+ 1876              	@ 0 "" 2
+ 1877              	.LVL319:
+ 1878              		.thumb
+ 1879              		.syntax unified
+ 1880              	.LBE601:
+ 1881              	.LBE600:
+ 261:lib/helix/real/polyphase.c **** 	MC1S(4)
+ 1882              		.loc 1 261 0
+ 1883 01d8 D2F81074 		ldr	r7, [r2, #1040]
+ 1884              	.LVL320:
+ 1885 01dc 41F2100C 		movw	ip, #4112
+ 1886              	.LVL321:
+ 1887 01e0 51F80CC0 		ldr	ip, [r1, ip]
+ 1888              	.LVL322:
+ 1889              	.LBB602:
+ 1890              	.LBB603:
+ 389:lib/helix/real/assembly.h **** 
+ 1891              		.loc 2 389 0
+ 1892              		.syntax unified
+ 1893              	@ 389 "lib/helix/real/assembly.h" 1
+ 1894 01e4 CCFB0764 		smlal r6,r4,ip,r7
+ 1895              	@ 0 "" 2
+ 1896              	.LVL323:
+ 1897              		.thumb
+ 1898              		.syntax unified
+ 1899              	.LBE603:
+ 1900              	.LBE602:
+ 1901              		.loc 1 261 0
+ 1902 01e8 41F2900C 		movw	ip, #4240
+ 1903              	.LVL324:
+ 1904 01ec 51F80CC0 		ldr	ip, [r1, ip]
+ 1905              	.LVL325:
+ 1906              	.LBB604:
+ 1907              	.LBB605:
+ 389:lib/helix/real/assembly.h **** 
+ 1908              		.loc 2 389 0
+ 1909              		.syntax unified
+ 1910              	@ 389 "lib/helix/real/assembly.h" 1
+ 1911 01f0 CCFB0753 		smlal r5,r3,ip,r7
+ 1912              	@ 0 "" 2
+ 1913              	.LVL326:
+ 1914              		.thumb
+ 1915              		.syntax unified
+ 1916              	.LBE605:
+ 1917              	.LBE604:
+ 262:lib/helix/real/polyphase.c **** 	MC1S(5)
+ 1918              		.loc 1 262 0
+ 1919 01f4 D2F81474 		ldr	r7, [r2, #1044]
+ 1920              	.LVL327:
+ 1921 01f8 41F2140C 		movw	ip, #4116
+ 1922              	.LVL328:
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 48
+
+
+ 1923 01fc 51F80CC0 		ldr	ip, [r1, ip]
+ 1924              	.LVL329:
+ 1925              	.LBB606:
+ 1926              	.LBB607:
+ 389:lib/helix/real/assembly.h **** 
+ 1927              		.loc 2 389 0
+ 1928              		.syntax unified
+ 1929              	@ 389 "lib/helix/real/assembly.h" 1
+ 1930 0200 CCFB0764 		smlal r6,r4,ip,r7
+ 1931              	@ 0 "" 2
+ 1932              	.LVL330:
+ 1933              		.thumb
+ 1934              		.syntax unified
+ 1935              	.LBE607:
+ 1936              	.LBE606:
+ 1937              		.loc 1 262 0
+ 1938 0204 41F2940C 		movw	ip, #4244
+ 1939              	.LVL331:
+ 1940 0208 51F80CC0 		ldr	ip, [r1, ip]
+ 1941              	.LVL332:
+ 1942              	.LBB608:
+ 1943              	.LBB609:
+ 389:lib/helix/real/assembly.h **** 
+ 1944              		.loc 2 389 0
+ 1945              		.syntax unified
+ 1946              	@ 389 "lib/helix/real/assembly.h" 1
+ 1947 020c CCFB0753 		smlal r5,r3,ip,r7
+ 1948              	@ 0 "" 2
+ 1949              	.LVL333:
+ 1950              		.thumb
+ 1951              		.syntax unified
+ 1952              	.LBE609:
+ 1953              	.LBE608:
+ 263:lib/helix/real/polyphase.c **** 	MC1S(6)
+ 1954              		.loc 1 263 0
+ 1955 0210 D2F81874 		ldr	r7, [r2, #1048]
+ 1956              	.LVL334:
+ 1957 0214 41F2180C 		movw	ip, #4120
+ 1958              	.LVL335:
+ 1959 0218 51F80CC0 		ldr	ip, [r1, ip]
+ 1960              	.LVL336:
+ 1961              	.LBB610:
+ 1962              	.LBB611:
+ 389:lib/helix/real/assembly.h **** 
+ 1963              		.loc 2 389 0
+ 1964              		.syntax unified
+ 1965              	@ 389 "lib/helix/real/assembly.h" 1
+ 1966 021c CCFB0764 		smlal r6,r4,ip,r7
+ 1967              	@ 0 "" 2
+ 1968              	.LVL337:
+ 1969              		.thumb
+ 1970              		.syntax unified
+ 1971              	.LBE611:
+ 1972              	.LBE610:
+ 1973              		.loc 1 263 0
+ 1974 0220 41F2980C 		movw	ip, #4248
+ 1975              	.LVL338:
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 49
+
+
+ 1976 0224 51F80CC0 		ldr	ip, [r1, ip]
+ 1977              	.LVL339:
+ 1978              	.LBB612:
+ 1979              	.LBB613:
+ 389:lib/helix/real/assembly.h **** 
+ 1980              		.loc 2 389 0
+ 1981              		.syntax unified
+ 1982              	@ 389 "lib/helix/real/assembly.h" 1
+ 1983 0228 CCFB0753 		smlal r5,r3,ip,r7
+ 1984              	@ 0 "" 2
+ 1985              	.LVL340:
+ 1986              		.thumb
+ 1987              		.syntax unified
+ 1988              	.LBE613:
+ 1989              	.LBE612:
+ 264:lib/helix/real/polyphase.c **** 	MC1S(7)
+ 1990              		.loc 1 264 0
+ 1991 022c D2F81C74 		ldr	r7, [r2, #1052]
+ 1992              	.LVL341:
+ 1993 0230 41F21C0C 		movw	ip, #4124
+ 1994              	.LVL342:
+ 1995 0234 51F80CC0 		ldr	ip, [r1, ip]
+ 1996              	.LVL343:
+ 1997              	.LBB614:
+ 1998              	.LBB615:
+ 389:lib/helix/real/assembly.h **** 
+ 1999              		.loc 2 389 0
+ 2000              		.syntax unified
+ 2001              	@ 389 "lib/helix/real/assembly.h" 1
+ 2002 0238 CCFB0764 		smlal r6,r4,ip,r7
+ 2003              	@ 0 "" 2
+ 2004              	.LVL344:
+ 2005              		.thumb
+ 2006              		.syntax unified
+ 2007              	.LBE615:
+ 2008              	.LBE614:
+ 2009              		.loc 1 264 0
+ 2010 023c 41F29C0C 		movw	ip, #4252
+ 2011              	.LVL345:
+ 2012 0240 51F80CC0 		ldr	ip, [r1, ip]
+ 2013              	.LVL346:
+ 2014              	.LBB616:
+ 2015              	.LBB617:
+ 389:lib/helix/real/assembly.h **** 
+ 2016              		.loc 2 389 0
+ 2017              		.syntax unified
+ 2018              	@ 389 "lib/helix/real/assembly.h" 1
+ 2019 0244 CCFB0753 		smlal r5,r3,ip,r7
+ 2020              	@ 0 "" 2
+ 2021              	.LVL347:
+ 2022              		.thumb
+ 2023              		.syntax unified
+ 2024              	.LBE617:
+ 2025              	.LBE616:
+ 2026              	.LBB618:
+ 2027              	.LBB619:
+ 2028              		.loc 2 395 0
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 50
+
+
+ 2029 0248 360D     		lsrs	r6, r6, #20
+ 2030 024a 46EA0436 		orr	r6, r6, r4, lsl #12
+ 2031              	.LVL348:
+ 2032              	.LBE619:
+ 2033              	.LBE618:
+ 2034              	.LBB620:
+ 2035              	.LBB621:
+  64:lib/helix/real/polyphase.c **** 	
+ 2036              		.loc 1 64 0
+ 2037 024e B411     		asrs	r4, r6, #6
+ 2038              	.LVL349:
+  67:lib/helix/real/polyphase.c **** 	if (sign != (x >> 15))
+ 2039              		.loc 1 67 0
+ 2040 0250 F717     		asrs	r7, r6, #31
+ 2041              	.LVL350:
+  68:lib/helix/real/polyphase.c **** 		x = sign ^ ((1 << 15) - 1);
+ 2042              		.loc 1 68 0
+ 2043 0252 B7EB665F 		cmp	r7, r6, asr #21
+ 2044 0256 02D0     		beq	.L13
+  69:lib/helix/real/polyphase.c **** 
+ 2045              		.loc 1 69 0
+ 2046 0258 47F6FF74 		movw	r4, #32767
+ 2047              	.LVL351:
+ 2048 025c 7C40     		eors	r4, r4, r7
+ 2049              	.LVL352:
+ 2050              	.L13:
+ 2051              	.LBE621:
+ 2052              	.LBE620:
+ 265:lib/helix/real/polyphase.c **** 
+ 266:lib/helix/real/polyphase.c **** 	*(pcm + 2*16 + 0) = ClipToShort((int)SAR64(sum1L, (32-CSHIFT)), DEF_NFRACBITS);
+ 2053              		.loc 1 266 0
+ 2054 025e A0F84040 		strh	r4, [r0, #64]	@ movhi
+ 2055              	.LVL353:
+ 2056              	.LBB622:
+ 2057              	.LBB623:
+ 2058              		.loc 2 395 0
+ 2059 0262 2C0D     		lsrs	r4, r5, #20
+ 2060 0264 44EA0334 		orr	r4, r4, r3, lsl #12
+ 2061              	.LVL354:
+ 2062              	.LBE623:
+ 2063              	.LBE622:
+ 2064              	.LBB624:
+ 2065              	.LBB625:
+  64:lib/helix/real/polyphase.c **** 	
+ 2066              		.loc 1 64 0
+ 2067 0268 A311     		asrs	r3, r4, #6
+ 2068              	.LVL355:
+  67:lib/helix/real/polyphase.c **** 	if (sign != (x >> 15))
+ 2069              		.loc 1 67 0
+ 2070 026a E517     		asrs	r5, r4, #31
+ 2071              	.LVL356:
+  68:lib/helix/real/polyphase.c **** 		x = sign ^ ((1 << 15) - 1);
+ 2072              		.loc 1 68 0
+ 2073 026c B5EB645F 		cmp	r5, r4, asr #21
+ 2074 0270 02D0     		beq	.L14
+  69:lib/helix/real/polyphase.c **** 
+ 2075              		.loc 1 69 0
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 51
+
+
+ 2076 0272 47F6FF73 		movw	r3, #32767
+ 2077              	.LVL357:
+ 2078 0276 6B40     		eors	r3, r3, r5
+ 2079              	.LVL358:
+ 2080              	.L14:
+ 2081              	.LBE625:
+ 2082              	.LBE624:
+ 267:lib/helix/real/polyphase.c **** 	*(pcm + 2*16 + 1) = ClipToShort((int)SAR64(sum1R, (32-CSHIFT)), DEF_NFRACBITS);
+ 2083              		.loc 1 267 0
+ 2084 0278 A0F84230 		strh	r3, [r0, #66]	@ movhi
+ 268:lib/helix/real/polyphase.c **** 
+ 269:lib/helix/real/polyphase.c **** 	/* main convolution loop: sum1L = samples 1, 2, 3, ... 15   sum2L = samples 31, 30, ... 17 */
+ 270:lib/helix/real/polyphase.c **** 	coef = coefBase + 16;
+ 2085              		.loc 1 270 0
+ 2086 027c 02F1400B 		add	fp, r2, #64
+ 2087              	.LVL359:
+ 271:lib/helix/real/polyphase.c **** 	vb1 = vbuf + 64;
+ 2088              		.loc 1 271 0
+ 2089 0280 01F5807C 		add	ip, r1, #256
+ 2090              	.LVL360:
+ 272:lib/helix/real/polyphase.c **** 	pcm += 2;
+ 2091              		.loc 1 272 0
+ 2092 0284 031D     		adds	r3, r0, #4
+ 2093 0286 0193     		str	r3, [sp, #4]
+ 2094              	.LVL361:
+ 273:lib/helix/real/polyphase.c **** 
+ 274:lib/helix/real/polyphase.c **** 	/* right now, the compiler creates bad asm from this... */
+ 275:lib/helix/real/polyphase.c **** 	for (i = 15; i > 0; i--) {
+ 2095              		.loc 1 275 0
+ 2096 0288 0F23     		movs	r3, #15
+ 2097              	.LVL362:
+ 2098 028a 0293     		str	r3, [sp, #8]
+ 2099 028c 06E0     		b	.L15
+ 2100              	.LVL363:
+ 2101              	.L19:
+ 276:lib/helix/real/polyphase.c **** 		sum1L = sum2L = rndVal;
+ 277:lib/helix/real/polyphase.c **** 		sum1R = sum2R = rndVal;
+ 278:lib/helix/real/polyphase.c **** 
+ 279:lib/helix/real/polyphase.c **** 		MC2S(0)
+ 280:lib/helix/real/polyphase.c **** 		MC2S(1)
+ 281:lib/helix/real/polyphase.c **** 		MC2S(2)
+ 282:lib/helix/real/polyphase.c **** 		MC2S(3)
+ 283:lib/helix/real/polyphase.c **** 		MC2S(4)
+ 284:lib/helix/real/polyphase.c **** 		MC2S(5)
+ 285:lib/helix/real/polyphase.c **** 		MC2S(6)
+ 286:lib/helix/real/polyphase.c **** 		MC2S(7)
+ 287:lib/helix/real/polyphase.c **** 
+ 288:lib/helix/real/polyphase.c **** 		vb1 += 64;
+ 289:lib/helix/real/polyphase.c **** 		*(pcm + 0)         = ClipToShort((int)SAR64(sum1L, (32-CSHIFT)), DEF_NFRACBITS);
+ 290:lib/helix/real/polyphase.c **** 		*(pcm + 1)         = ClipToShort((int)SAR64(sum1R, (32-CSHIFT)), DEF_NFRACBITS);
+ 291:lib/helix/real/polyphase.c **** 		*(pcm + 2*2*i + 0) = ClipToShort((int)SAR64(sum2L, (32-CSHIFT)), DEF_NFRACBITS);
+ 292:lib/helix/real/polyphase.c **** 		*(pcm + 2*2*i + 1) = ClipToShort((int)SAR64(sum2R, (32-CSHIFT)), DEF_NFRACBITS);
+ 2102              		.loc 1 292 0
+ 2103 028e 0A80     		strh	r2, [r1]	@ movhi
+ 293:lib/helix/real/polyphase.c **** 		pcm += 2;
+ 2104              		.loc 1 293 0
+ 2105 0290 019B     		ldr	r3, [sp, #4]
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 52
+
+
+ 2106 0292 0433     		adds	r3, r3, #4
+ 2107 0294 0193     		str	r3, [sp, #4]
+ 2108              	.LVL364:
+ 275:lib/helix/real/polyphase.c **** 		sum1L = sum2L = rndVal;
+ 2109              		.loc 1 275 0
+ 2110 0296 029B     		ldr	r3, [sp, #8]
+ 2111              	.LVL365:
+ 2112 0298 013B     		subs	r3, r3, #1
+ 2113 029a 0293     		str	r3, [sp, #8]
+ 2114              	.LVL366:
+ 2115              	.L15:
+ 275:lib/helix/real/polyphase.c **** 		sum1L = sum2L = rndVal;
+ 2116              		.loc 1 275 0 is_stmt 0 discriminator 1
+ 2117 029c 029B     		ldr	r3, [sp, #8]
+ 2118 029e 002B     		cmp	r3, #0
+ 2119 02a0 40F34881 		ble	.L22
+ 2120              	.LVL367:
+ 279:lib/helix/real/polyphase.c **** 		MC2S(1)
+ 2121              		.loc 1 279 0 is_stmt 1 discriminator 3
+ 2122 02a4 DBF800E0 		ldr	lr, [fp]
+ 2123              	.LVL368:
+ 2124 02a8 DBF80480 		ldr	r8, [fp, #4]
+ 2125              	.LVL369:
+ 2126 02ac DCF80060 		ldr	r6, [ip]
+ 2127              	.LVL370:
+ 2128 02b0 DCF85C10 		ldr	r1, [ip, #92]
+ 2129              	.LVL371:
+ 2130              	.LBB626:
+ 2131              	.LBB627:
+ 389:lib/helix/real/assembly.h **** 
+ 2132              		.loc 2 389 0 discriminator 3
+ 2133 02b4 4FF00073 		mov	r3, #33554432
+ 2134 02b8 0024     		movs	r4, #0
+ 2135 02ba 1846     		mov	r0, r3
+ 2136 02bc 2746     		mov	r7, r4
+ 2137              		.syntax unified
+ 2138              	@ 389 "lib/helix/real/assembly.h" 1
+ 2139 02be C6FB0E07 		smlal r0,r7,r6,lr
+ 2140              	@ 0 "" 2
+ 2141              	.LVL372:
+ 2142              		.thumb
+ 2143              		.syntax unified
+ 2144              	.LBE627:
+ 2145              	.LBE626:
+ 2146              	.LBB628:
+ 2147              	.LBB629:
+ 2148 02c2 1A46     		mov	r2, r3
+ 2149 02c4 2546     		mov	r5, r4
+ 2150              		.syntax unified
+ 2151              	@ 389 "lib/helix/real/assembly.h" 1
+ 2152 02c6 C6FB0825 		smlal r2,r5,r6,r8
+ 2153              	@ 0 "" 2
+ 2154              	.LVL373:
+ 2155              		.thumb
+ 2156              		.syntax unified
+ 2157              	.LBE629:
+ 2158              	.LBE628:
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 53
+
+
+ 279:lib/helix/real/polyphase.c **** 		MC2S(1)
+ 2159              		.loc 1 279 0 discriminator 3
+ 2160 02ca C8F10009 		rsb	r9, r8, #0
+ 2161              	.LVL374:
+ 2162              	.LBB630:
+ 2163              	.LBB631:
+ 389:lib/helix/real/assembly.h **** 
+ 2164              		.loc 2 389 0 discriminator 3
+ 2165              		.syntax unified
+ 2166              	@ 389 "lib/helix/real/assembly.h" 1
+ 2167 02ce C1FB0907 		smlal r0,r7,r1,r9
+ 2168              	@ 0 "" 2
+ 2169              	.LVL375:
+ 2170              		.thumb
+ 2171              		.syntax unified
+ 2172              	.LBE631:
+ 2173              	.LBE630:
+ 2174              	.LBB632:
+ 2175              	.LBB633:
+ 2176              		.syntax unified
+ 2177              	@ 389 "lib/helix/real/assembly.h" 1
+ 2178 02d2 C1FB0E25 		smlal r2,r5,r1,lr
+ 2179              	@ 0 "" 2
+ 2180              		.thumb
+ 2181              		.syntax unified
+ 2182 02d6 0392     		str	r2, [sp, #12]
+ 2183              	.LVL376:
+ 2184              	.LBE633:
+ 2185              	.LBE632:
+ 279:lib/helix/real/polyphase.c **** 		MC2S(1)
+ 2186              		.loc 1 279 0 discriminator 3
+ 2187 02d8 DCF880A0 		ldr	r10, [ip, #128]
+ 2188              	.LVL377:
+ 2189              	.LBB634:
+ 2190              	.LBB635:
+ 389:lib/helix/real/assembly.h **** 
+ 2191              		.loc 2 389 0 discriminator 3
+ 2192 02dc 1946     		mov	r1, r3
+ 2193 02de 2646     		mov	r6, r4
+ 2194              		.syntax unified
+ 2195              	@ 389 "lib/helix/real/assembly.h" 1
+ 2196 02e0 CAFB0E16 		smlal r1,r6,r10,lr
+ 2197              	@ 0 "" 2
+ 2198              	.LVL378:
+ 2199              		.thumb
+ 2200              		.syntax unified
+ 2201              	.LBE635:
+ 2202              	.LBE634:
+ 2203              	.LBB636:
+ 2204              	.LBB637:
+ 2205              		.syntax unified
+ 2206              	@ 389 "lib/helix/real/assembly.h" 1
+ 2207 02e4 CAFB0834 		smlal r3,r4,r10,r8
+ 2208              	@ 0 "" 2
+ 2209              	.LVL379:
+ 2210              		.thumb
+ 2211              		.syntax unified
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 54
+
+
+ 2212              	.LBE637:
+ 2213              	.LBE636:
+ 2214              	.LBB638:
+ 2215              	.LBB639:
+ 2216 02e8 DCF8DC20 		ldr	r2, [ip, #220]
+ 2217              		.syntax unified
+ 2218              	@ 389 "lib/helix/real/assembly.h" 1
+ 2219 02ec C2FB0916 		smlal r1,r6,r2,r9
+ 2220              	@ 0 "" 2
+ 2221              	.LVL380:
+ 2222              		.thumb
+ 2223              		.syntax unified
+ 2224              	.LBE639:
+ 2225              	.LBE638:
+ 2226              	.LBB640:
+ 2227              	.LBB641:
+ 2228              		.syntax unified
+ 2229              	@ 389 "lib/helix/real/assembly.h" 1
+ 2230 02f0 C2FB0E34 		smlal r3,r4,r2,lr
+ 2231              	@ 0 "" 2
+ 2232              	.LVL381:
+ 2233              		.thumb
+ 2234              		.syntax unified
+ 2235              	.LBE641:
+ 2236              	.LBE640:
+ 280:lib/helix/real/polyphase.c **** 		MC2S(2)
+ 2237              		.loc 1 280 0 discriminator 3
+ 2238 02f4 DBF808E0 		ldr	lr, [fp, #8]
+ 2239              	.LVL382:
+ 2240 02f8 DBF80C80 		ldr	r8, [fp, #12]
+ 2241              	.LVL383:
+ 2242 02fc DCF804A0 		ldr	r10, [ip, #4]
+ 2243              	.LVL384:
+ 2244 0300 DCF85890 		ldr	r9, [ip, #88]
+ 2245              	.LVL385:
+ 2246              	.LBB642:
+ 2247              	.LBB643:
+ 389:lib/helix/real/assembly.h **** 
+ 2248              		.loc 2 389 0 discriminator 3
+ 2249              		.syntax unified
+ 2250              	@ 389 "lib/helix/real/assembly.h" 1
+ 2251 0304 CAFB0E07 		smlal r0,r7,r10,lr
+ 2252              	@ 0 "" 2
+ 2253              	.LVL386:
+ 2254              		.thumb
+ 2255              		.syntax unified
+ 2256              	.LBE643:
+ 2257              	.LBE642:
+ 2258              	.LBB644:
+ 2259              	.LBB645:
+ 2260 0308 039A     		ldr	r2, [sp, #12]
+ 2261              		.syntax unified
+ 2262              	@ 389 "lib/helix/real/assembly.h" 1
+ 2263 030a CAFB0825 		smlal r2,r5,r10,r8
+ 2264              	@ 0 "" 2
+ 2265              	.LVL387:
+ 2266              		.thumb
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 55
+
+
+ 2267              		.syntax unified
+ 2268              	.LBE645:
+ 2269              	.LBE644:
+ 280:lib/helix/real/polyphase.c **** 		MC2S(2)
+ 2270              		.loc 1 280 0 discriminator 3
+ 2271 030e C8F1000A 		rsb	r10, r8, #0
+ 2272              	.LVL388:
+ 2273              	.LBB646:
+ 2274              	.LBB647:
+ 389:lib/helix/real/assembly.h **** 
+ 2275              		.loc 2 389 0 discriminator 3
+ 2276              		.syntax unified
+ 2277              	@ 389 "lib/helix/real/assembly.h" 1
+ 2278 0312 C9FB0A07 		smlal r0,r7,r9,r10
+ 2279              	@ 0 "" 2
+ 2280              	.LVL389:
+ 2281              		.thumb
+ 2282              		.syntax unified
+ 2283              	.LBE647:
+ 2284              	.LBE646:
+ 2285              	.LBB648:
+ 2286              	.LBB649:
+ 2287              		.syntax unified
+ 2288              	@ 389 "lib/helix/real/assembly.h" 1
+ 2289 0316 C9FB0E25 		smlal r2,r5,r9,lr
+ 2290              	@ 0 "" 2
+ 2291              		.thumb
+ 2292              		.syntax unified
+ 2293 031a 0392     		str	r2, [sp, #12]
+ 2294              	.LVL390:
+ 2295              	.LBE649:
+ 2296              	.LBE648:
+ 280:lib/helix/real/polyphase.c **** 		MC2S(2)
+ 2297              		.loc 1 280 0 discriminator 3
+ 2298 031c DCF88490 		ldr	r9, [ip, #132]
+ 2299              	.LVL391:
+ 2300              	.LBB650:
+ 2301              	.LBB651:
+ 389:lib/helix/real/assembly.h **** 
+ 2302              		.loc 2 389 0 discriminator 3
+ 2303              		.syntax unified
+ 2304              	@ 389 "lib/helix/real/assembly.h" 1
+ 2305 0320 C9FB0E16 		smlal r1,r6,r9,lr
+ 2306              	@ 0 "" 2
+ 2307              	.LVL392:
+ 2308              		.thumb
+ 2309              		.syntax unified
+ 2310              	.LBE651:
+ 2311              	.LBE650:
+ 2312              	.LBB652:
+ 2313              	.LBB653:
+ 2314              		.syntax unified
+ 2315              	@ 389 "lib/helix/real/assembly.h" 1
+ 2316 0324 C9FB0834 		smlal r3,r4,r9,r8
+ 2317              	@ 0 "" 2
+ 2318              	.LVL393:
+ 2319              		.thumb
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 56
+
+
+ 2320              		.syntax unified
+ 2321              	.LBE653:
+ 2322              	.LBE652:
+ 2323              	.LBB654:
+ 2324              	.LBB655:
+ 2325 0328 DCF8D820 		ldr	r2, [ip, #216]
+ 2326              		.syntax unified
+ 2327              	@ 389 "lib/helix/real/assembly.h" 1
+ 2328 032c C2FB0A16 		smlal r1,r6,r2,r10
+ 2329              	@ 0 "" 2
+ 2330              	.LVL394:
+ 2331              		.thumb
+ 2332              		.syntax unified
+ 2333              	.LBE655:
+ 2334              	.LBE654:
+ 2335              	.LBB656:
+ 2336              	.LBB657:
+ 2337              		.syntax unified
+ 2338              	@ 389 "lib/helix/real/assembly.h" 1
+ 2339 0330 C2FB0E34 		smlal r3,r4,r2,lr
+ 2340              	@ 0 "" 2
+ 2341              	.LVL395:
+ 2342              		.thumb
+ 2343              		.syntax unified
+ 2344              	.LBE657:
+ 2345              	.LBE656:
+ 281:lib/helix/real/polyphase.c **** 		MC2S(3)
+ 2346              		.loc 1 281 0 discriminator 3
+ 2347 0334 DBF810E0 		ldr	lr, [fp, #16]
+ 2348              	.LVL396:
+ 2349 0338 DBF81480 		ldr	r8, [fp, #20]
+ 2350              	.LVL397:
+ 2351 033c DCF808A0 		ldr	r10, [ip, #8]
+ 2352              	.LVL398:
+ 2353 0340 DCF85490 		ldr	r9, [ip, #84]
+ 2354              	.LVL399:
+ 2355              	.LBB658:
+ 2356              	.LBB659:
+ 389:lib/helix/real/assembly.h **** 
+ 2357              		.loc 2 389 0 discriminator 3
+ 2358              		.syntax unified
+ 2359              	@ 389 "lib/helix/real/assembly.h" 1
+ 2360 0344 CAFB0E07 		smlal r0,r7,r10,lr
+ 2361              	@ 0 "" 2
+ 2362              	.LVL400:
+ 2363              		.thumb
+ 2364              		.syntax unified
+ 2365              	.LBE659:
+ 2366              	.LBE658:
+ 2367              	.LBB660:
+ 2368              	.LBB661:
+ 2369 0348 039A     		ldr	r2, [sp, #12]
+ 2370              		.syntax unified
+ 2371              	@ 389 "lib/helix/real/assembly.h" 1
+ 2372 034a CAFB0825 		smlal r2,r5,r10,r8
+ 2373              	@ 0 "" 2
+ 2374              	.LVL401:
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 57
+
+
+ 2375              		.thumb
+ 2376              		.syntax unified
+ 2377              	.LBE661:
+ 2378              	.LBE660:
+ 281:lib/helix/real/polyphase.c **** 		MC2S(3)
+ 2379              		.loc 1 281 0 discriminator 3
+ 2380 034e C8F1000A 		rsb	r10, r8, #0
+ 2381              	.LVL402:
+ 2382              	.LBB662:
+ 2383              	.LBB663:
+ 389:lib/helix/real/assembly.h **** 
+ 2384              		.loc 2 389 0 discriminator 3
+ 2385              		.syntax unified
+ 2386              	@ 389 "lib/helix/real/assembly.h" 1
+ 2387 0352 C9FB0A07 		smlal r0,r7,r9,r10
+ 2388              	@ 0 "" 2
+ 2389              	.LVL403:
+ 2390              		.thumb
+ 2391              		.syntax unified
+ 2392              	.LBE663:
+ 2393              	.LBE662:
+ 2394              	.LBB664:
+ 2395              	.LBB665:
+ 2396              		.syntax unified
+ 2397              	@ 389 "lib/helix/real/assembly.h" 1
+ 2398 0356 C9FB0E25 		smlal r2,r5,r9,lr
+ 2399              	@ 0 "" 2
+ 2400              		.thumb
+ 2401              		.syntax unified
+ 2402 035a 0392     		str	r2, [sp, #12]
+ 2403              	.LVL404:
+ 2404              	.LBE665:
+ 2405              	.LBE664:
+ 281:lib/helix/real/polyphase.c **** 		MC2S(3)
+ 2406              		.loc 1 281 0 discriminator 3
+ 2407 035c DCF88890 		ldr	r9, [ip, #136]
+ 2408              	.LVL405:
+ 2409              	.LBB666:
+ 2410              	.LBB667:
+ 389:lib/helix/real/assembly.h **** 
+ 2411              		.loc 2 389 0 discriminator 3
+ 2412              		.syntax unified
+ 2413              	@ 389 "lib/helix/real/assembly.h" 1
+ 2414 0360 C9FB0E16 		smlal r1,r6,r9,lr
+ 2415              	@ 0 "" 2
+ 2416              	.LVL406:
+ 2417              		.thumb
+ 2418              		.syntax unified
+ 2419              	.LBE667:
+ 2420              	.LBE666:
+ 2421              	.LBB668:
+ 2422              	.LBB669:
+ 2423              		.syntax unified
+ 2424              	@ 389 "lib/helix/real/assembly.h" 1
+ 2425 0364 C9FB0834 		smlal r3,r4,r9,r8
+ 2426              	@ 0 "" 2
+ 2427              	.LVL407:
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 58
+
+
+ 2428              		.thumb
+ 2429              		.syntax unified
+ 2430              	.LBE669:
+ 2431              	.LBE668:
+ 2432              	.LBB670:
+ 2433              	.LBB671:
+ 2434 0368 DCF8D420 		ldr	r2, [ip, #212]
+ 2435              		.syntax unified
+ 2436              	@ 389 "lib/helix/real/assembly.h" 1
+ 2437 036c C2FB0A16 		smlal r1,r6,r2,r10
+ 2438              	@ 0 "" 2
+ 2439              	.LVL408:
+ 2440              		.thumb
+ 2441              		.syntax unified
+ 2442              	.LBE671:
+ 2443              	.LBE670:
+ 2444              	.LBB672:
+ 2445              	.LBB673:
+ 2446              		.syntax unified
+ 2447              	@ 389 "lib/helix/real/assembly.h" 1
+ 2448 0370 C2FB0E34 		smlal r3,r4,r2,lr
+ 2449              	@ 0 "" 2
+ 2450              	.LVL409:
+ 2451              		.thumb
+ 2452              		.syntax unified
+ 2453              	.LBE673:
+ 2454              	.LBE672:
+ 282:lib/helix/real/polyphase.c **** 		MC2S(4)
+ 2455              		.loc 1 282 0 discriminator 3
+ 2456 0374 DBF818E0 		ldr	lr, [fp, #24]
+ 2457              	.LVL410:
+ 2458 0378 DBF81C80 		ldr	r8, [fp, #28]
+ 2459              	.LVL411:
+ 2460 037c DCF80CA0 		ldr	r10, [ip, #12]
+ 2461              	.LVL412:
+ 2462 0380 DCF85090 		ldr	r9, [ip, #80]
+ 2463              	.LVL413:
+ 2464              	.LBB674:
+ 2465              	.LBB675:
+ 389:lib/helix/real/assembly.h **** 
+ 2466              		.loc 2 389 0 discriminator 3
+ 2467              		.syntax unified
+ 2468              	@ 389 "lib/helix/real/assembly.h" 1
+ 2469 0384 CAFB0E07 		smlal r0,r7,r10,lr
+ 2470              	@ 0 "" 2
+ 2471              	.LVL414:
+ 2472              		.thumb
+ 2473              		.syntax unified
+ 2474              	.LBE675:
+ 2475              	.LBE674:
+ 2476              	.LBB676:
+ 2477              	.LBB677:
+ 2478 0388 039A     		ldr	r2, [sp, #12]
+ 2479              		.syntax unified
+ 2480              	@ 389 "lib/helix/real/assembly.h" 1
+ 2481 038a CAFB0825 		smlal r2,r5,r10,r8
+ 2482              	@ 0 "" 2
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 59
+
+
+ 2483              	.LVL415:
+ 2484              		.thumb
+ 2485              		.syntax unified
+ 2486              	.LBE677:
+ 2487              	.LBE676:
+ 282:lib/helix/real/polyphase.c **** 		MC2S(4)
+ 2488              		.loc 1 282 0 discriminator 3
+ 2489 038e C8F1000A 		rsb	r10, r8, #0
+ 2490              	.LVL416:
+ 2491              	.LBB678:
+ 2492              	.LBB679:
+ 389:lib/helix/real/assembly.h **** 
+ 2493              		.loc 2 389 0 discriminator 3
+ 2494              		.syntax unified
+ 2495              	@ 389 "lib/helix/real/assembly.h" 1
+ 2496 0392 C9FB0A07 		smlal r0,r7,r9,r10
+ 2497              	@ 0 "" 2
+ 2498              	.LVL417:
+ 2499              		.thumb
+ 2500              		.syntax unified
+ 2501              	.LBE679:
+ 2502              	.LBE678:
+ 2503              	.LBB680:
+ 2504              	.LBB681:
+ 2505              		.syntax unified
+ 2506              	@ 389 "lib/helix/real/assembly.h" 1
+ 2507 0396 C9FB0E25 		smlal r2,r5,r9,lr
+ 2508              	@ 0 "" 2
+ 2509              		.thumb
+ 2510              		.syntax unified
+ 2511 039a 0392     		str	r2, [sp, #12]
+ 2512              	.LVL418:
+ 2513              	.LBE681:
+ 2514              	.LBE680:
+ 282:lib/helix/real/polyphase.c **** 		MC2S(4)
+ 2515              		.loc 1 282 0 discriminator 3
+ 2516 039c DCF88C90 		ldr	r9, [ip, #140]
+ 2517              	.LVL419:
+ 2518              	.LBB682:
+ 2519              	.LBB683:
+ 389:lib/helix/real/assembly.h **** 
+ 2520              		.loc 2 389 0 discriminator 3
+ 2521              		.syntax unified
+ 2522              	@ 389 "lib/helix/real/assembly.h" 1
+ 2523 03a0 C9FB0E16 		smlal r1,r6,r9,lr
+ 2524              	@ 0 "" 2
+ 2525              	.LVL420:
+ 2526              		.thumb
+ 2527              		.syntax unified
+ 2528              	.LBE683:
+ 2529              	.LBE682:
+ 2530              	.LBB684:
+ 2531              	.LBB685:
+ 2532              		.syntax unified
+ 2533              	@ 389 "lib/helix/real/assembly.h" 1
+ 2534 03a4 C9FB0834 		smlal r3,r4,r9,r8
+ 2535              	@ 0 "" 2
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 60
+
+
+ 2536              	.LVL421:
+ 2537              		.thumb
+ 2538              		.syntax unified
+ 2539              	.LBE685:
+ 2540              	.LBE684:
+ 2541              	.LBB686:
+ 2542              	.LBB687:
+ 2543 03a8 DCF8D020 		ldr	r2, [ip, #208]
+ 2544              		.syntax unified
+ 2545              	@ 389 "lib/helix/real/assembly.h" 1
+ 2546 03ac C2FB0A16 		smlal r1,r6,r2,r10
+ 2547              	@ 0 "" 2
+ 2548              	.LVL422:
+ 2549              		.thumb
+ 2550              		.syntax unified
+ 2551              	.LBE687:
+ 2552              	.LBE686:
+ 2553              	.LBB688:
+ 2554              	.LBB689:
+ 2555              		.syntax unified
+ 2556              	@ 389 "lib/helix/real/assembly.h" 1
+ 2557 03b0 C2FB0E34 		smlal r3,r4,r2,lr
+ 2558              	@ 0 "" 2
+ 2559              	.LVL423:
+ 2560              		.thumb
+ 2561              		.syntax unified
+ 2562              	.LBE689:
+ 2563              	.LBE688:
+ 283:lib/helix/real/polyphase.c **** 		MC2S(5)
+ 2564              		.loc 1 283 0 discriminator 3
+ 2565 03b4 DBF820E0 		ldr	lr, [fp, #32]
+ 2566              	.LVL424:
+ 2567 03b8 DBF82480 		ldr	r8, [fp, #36]
+ 2568              	.LVL425:
+ 2569 03bc DCF810A0 		ldr	r10, [ip, #16]
+ 2570              	.LVL426:
+ 2571 03c0 DCF84C90 		ldr	r9, [ip, #76]
+ 2572              	.LVL427:
+ 2573              	.LBB690:
+ 2574              	.LBB691:
+ 389:lib/helix/real/assembly.h **** 
+ 2575              		.loc 2 389 0 discriminator 3
+ 2576              		.syntax unified
+ 2577              	@ 389 "lib/helix/real/assembly.h" 1
+ 2578 03c4 CAFB0E07 		smlal r0,r7,r10,lr
+ 2579              	@ 0 "" 2
+ 2580              	.LVL428:
+ 2581              		.thumb
+ 2582              		.syntax unified
+ 2583              	.LBE691:
+ 2584              	.LBE690:
+ 2585              	.LBB692:
+ 2586              	.LBB693:
+ 2587 03c8 039A     		ldr	r2, [sp, #12]
+ 2588              		.syntax unified
+ 2589              	@ 389 "lib/helix/real/assembly.h" 1
+ 2590 03ca CAFB0825 		smlal r2,r5,r10,r8
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 61
+
+
+ 2591              	@ 0 "" 2
+ 2592              	.LVL429:
+ 2593              		.thumb
+ 2594              		.syntax unified
+ 2595              	.LBE693:
+ 2596              	.LBE692:
+ 283:lib/helix/real/polyphase.c **** 		MC2S(5)
+ 2597              		.loc 1 283 0 discriminator 3
+ 2598 03ce C8F1000A 		rsb	r10, r8, #0
+ 2599              	.LVL430:
+ 2600              	.LBB694:
+ 2601              	.LBB695:
+ 389:lib/helix/real/assembly.h **** 
+ 2602              		.loc 2 389 0 discriminator 3
+ 2603              		.syntax unified
+ 2604              	@ 389 "lib/helix/real/assembly.h" 1
+ 2605 03d2 C9FB0A07 		smlal r0,r7,r9,r10
+ 2606              	@ 0 "" 2
+ 2607              	.LVL431:
+ 2608              		.thumb
+ 2609              		.syntax unified
+ 2610              	.LBE695:
+ 2611              	.LBE694:
+ 2612              	.LBB696:
+ 2613              	.LBB697:
+ 2614              		.syntax unified
+ 2615              	@ 389 "lib/helix/real/assembly.h" 1
+ 2616 03d6 C9FB0E25 		smlal r2,r5,r9,lr
+ 2617              	@ 0 "" 2
+ 2618              		.thumb
+ 2619              		.syntax unified
+ 2620 03da 0392     		str	r2, [sp, #12]
+ 2621              	.LVL432:
+ 2622              	.LBE697:
+ 2623              	.LBE696:
+ 283:lib/helix/real/polyphase.c **** 		MC2S(5)
+ 2624              		.loc 1 283 0 discriminator 3
+ 2625 03dc DCF89090 		ldr	r9, [ip, #144]
+ 2626              	.LVL433:
+ 2627              	.LBB698:
+ 2628              	.LBB699:
+ 389:lib/helix/real/assembly.h **** 
+ 2629              		.loc 2 389 0 discriminator 3
+ 2630              		.syntax unified
+ 2631              	@ 389 "lib/helix/real/assembly.h" 1
+ 2632 03e0 C9FB0E16 		smlal r1,r6,r9,lr
+ 2633              	@ 0 "" 2
+ 2634              	.LVL434:
+ 2635              		.thumb
+ 2636              		.syntax unified
+ 2637              	.LBE699:
+ 2638              	.LBE698:
+ 2639              	.LBB700:
+ 2640              	.LBB701:
+ 2641              		.syntax unified
+ 2642              	@ 389 "lib/helix/real/assembly.h" 1
+ 2643 03e4 C9FB0834 		smlal r3,r4,r9,r8
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 62
+
+
+ 2644              	@ 0 "" 2
+ 2645              	.LVL435:
+ 2646              		.thumb
+ 2647              		.syntax unified
+ 2648              	.LBE701:
+ 2649              	.LBE700:
+ 2650              	.LBB702:
+ 2651              	.LBB703:
+ 2652 03e8 DCF8CC20 		ldr	r2, [ip, #204]
+ 2653              		.syntax unified
+ 2654              	@ 389 "lib/helix/real/assembly.h" 1
+ 2655 03ec C2FB0A16 		smlal r1,r6,r2,r10
+ 2656              	@ 0 "" 2
+ 2657              	.LVL436:
+ 2658              		.thumb
+ 2659              		.syntax unified
+ 2660              	.LBE703:
+ 2661              	.LBE702:
+ 2662              	.LBB704:
+ 2663              	.LBB705:
+ 2664              		.syntax unified
+ 2665              	@ 389 "lib/helix/real/assembly.h" 1
+ 2666 03f0 C2FB0E34 		smlal r3,r4,r2,lr
+ 2667              	@ 0 "" 2
+ 2668              	.LVL437:
+ 2669              		.thumb
+ 2670              		.syntax unified
+ 2671              	.LBE705:
+ 2672              	.LBE704:
+ 284:lib/helix/real/polyphase.c **** 		MC2S(6)
+ 2673              		.loc 1 284 0 discriminator 3
+ 2674 03f4 DBF828E0 		ldr	lr, [fp, #40]
+ 2675              	.LVL438:
+ 2676 03f8 DBF82C80 		ldr	r8, [fp, #44]
+ 2677              	.LVL439:
+ 2678 03fc DCF814A0 		ldr	r10, [ip, #20]
+ 2679              	.LVL440:
+ 2680 0400 DCF84890 		ldr	r9, [ip, #72]
+ 2681              	.LVL441:
+ 2682              	.LBB706:
+ 2683              	.LBB707:
+ 389:lib/helix/real/assembly.h **** 
+ 2684              		.loc 2 389 0 discriminator 3
+ 2685              		.syntax unified
+ 2686              	@ 389 "lib/helix/real/assembly.h" 1
+ 2687 0404 CAFB0E07 		smlal r0,r7,r10,lr
+ 2688              	@ 0 "" 2
+ 2689              	.LVL442:
+ 2690              		.thumb
+ 2691              		.syntax unified
+ 2692              	.LBE707:
+ 2693              	.LBE706:
+ 2694              	.LBB708:
+ 2695              	.LBB709:
+ 2696 0408 039A     		ldr	r2, [sp, #12]
+ 2697              		.syntax unified
+ 2698              	@ 389 "lib/helix/real/assembly.h" 1
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 63
+
+
+ 2699 040a CAFB0825 		smlal r2,r5,r10,r8
+ 2700              	@ 0 "" 2
+ 2701              	.LVL443:
+ 2702              		.thumb
+ 2703              		.syntax unified
+ 2704              	.LBE709:
+ 2705              	.LBE708:
+ 284:lib/helix/real/polyphase.c **** 		MC2S(6)
+ 2706              		.loc 1 284 0 discriminator 3
+ 2707 040e C8F1000A 		rsb	r10, r8, #0
+ 2708              	.LVL444:
+ 2709              	.LBB710:
+ 2710              	.LBB711:
+ 389:lib/helix/real/assembly.h **** 
+ 2711              		.loc 2 389 0 discriminator 3
+ 2712              		.syntax unified
+ 2713              	@ 389 "lib/helix/real/assembly.h" 1
+ 2714 0412 C9FB0A07 		smlal r0,r7,r9,r10
+ 2715              	@ 0 "" 2
+ 2716              	.LVL445:
+ 2717              		.thumb
+ 2718              		.syntax unified
+ 2719              	.LBE711:
+ 2720              	.LBE710:
+ 2721              	.LBB712:
+ 2722              	.LBB713:
+ 2723              		.syntax unified
+ 2724              	@ 389 "lib/helix/real/assembly.h" 1
+ 2725 0416 C9FB0E25 		smlal r2,r5,r9,lr
+ 2726              	@ 0 "" 2
+ 2727              		.thumb
+ 2728              		.syntax unified
+ 2729 041a 0392     		str	r2, [sp, #12]
+ 2730              	.LVL446:
+ 2731              	.LBE713:
+ 2732              	.LBE712:
+ 284:lib/helix/real/polyphase.c **** 		MC2S(6)
+ 2733              		.loc 1 284 0 discriminator 3
+ 2734 041c DCF89490 		ldr	r9, [ip, #148]
+ 2735              	.LVL447:
+ 2736              	.LBB714:
+ 2737              	.LBB715:
+ 389:lib/helix/real/assembly.h **** 
+ 2738              		.loc 2 389 0 discriminator 3
+ 2739              		.syntax unified
+ 2740              	@ 389 "lib/helix/real/assembly.h" 1
+ 2741 0420 C9FB0E16 		smlal r1,r6,r9,lr
+ 2742              	@ 0 "" 2
+ 2743              	.LVL448:
+ 2744              		.thumb
+ 2745              		.syntax unified
+ 2746              	.LBE715:
+ 2747              	.LBE714:
+ 2748              	.LBB716:
+ 2749              	.LBB717:
+ 2750              		.syntax unified
+ 2751              	@ 389 "lib/helix/real/assembly.h" 1
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 64
+
+
+ 2752 0424 C9FB0834 		smlal r3,r4,r9,r8
+ 2753              	@ 0 "" 2
+ 2754              	.LVL449:
+ 2755              		.thumb
+ 2756              		.syntax unified
+ 2757              	.LBE717:
+ 2758              	.LBE716:
+ 2759              	.LBB718:
+ 2760              	.LBB719:
+ 2761 0428 DCF8C820 		ldr	r2, [ip, #200]
+ 2762              		.syntax unified
+ 2763              	@ 389 "lib/helix/real/assembly.h" 1
+ 2764 042c C2FB0A16 		smlal r1,r6,r2,r10
+ 2765              	@ 0 "" 2
+ 2766              	.LVL450:
+ 2767              		.thumb
+ 2768              		.syntax unified
+ 2769              	.LBE719:
+ 2770              	.LBE718:
+ 2771              	.LBB720:
+ 2772              	.LBB721:
+ 2773              		.syntax unified
+ 2774              	@ 389 "lib/helix/real/assembly.h" 1
+ 2775 0430 C2FB0E34 		smlal r3,r4,r2,lr
+ 2776              	@ 0 "" 2
+ 2777              	.LVL451:
+ 2778              		.thumb
+ 2779              		.syntax unified
+ 2780              	.LBE721:
+ 2781              	.LBE720:
+ 285:lib/helix/real/polyphase.c **** 		MC2S(7)
+ 2782              		.loc 1 285 0 discriminator 3
+ 2783 0434 DBF830E0 		ldr	lr, [fp, #48]
+ 2784              	.LVL452:
+ 2785 0438 DBF83480 		ldr	r8, [fp, #52]
+ 2786              	.LVL453:
+ 2787 043c DCF818A0 		ldr	r10, [ip, #24]
+ 2788              	.LVL454:
+ 2789 0440 DCF84490 		ldr	r9, [ip, #68]
+ 2790              	.LVL455:
+ 2791              	.LBB722:
+ 2792              	.LBB723:
+ 389:lib/helix/real/assembly.h **** 
+ 2793              		.loc 2 389 0 discriminator 3
+ 2794              		.syntax unified
+ 2795              	@ 389 "lib/helix/real/assembly.h" 1
+ 2796 0444 CAFB0E07 		smlal r0,r7,r10,lr
+ 2797              	@ 0 "" 2
+ 2798              	.LVL456:
+ 2799              		.thumb
+ 2800              		.syntax unified
+ 2801              	.LBE723:
+ 2802              	.LBE722:
+ 2803              	.LBB724:
+ 2804              	.LBB725:
+ 2805 0448 039A     		ldr	r2, [sp, #12]
+ 2806              		.syntax unified
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 65
+
+
+ 2807              	@ 389 "lib/helix/real/assembly.h" 1
+ 2808 044a CAFB0825 		smlal r2,r5,r10,r8
+ 2809              	@ 0 "" 2
+ 2810              	.LVL457:
+ 2811              		.thumb
+ 2812              		.syntax unified
+ 2813              	.LBE725:
+ 2814              	.LBE724:
+ 285:lib/helix/real/polyphase.c **** 		MC2S(7)
+ 2815              		.loc 1 285 0 discriminator 3
+ 2816 044e C8F1000A 		rsb	r10, r8, #0
+ 2817              	.LVL458:
+ 2818              	.LBB726:
+ 2819              	.LBB727:
+ 389:lib/helix/real/assembly.h **** 
+ 2820              		.loc 2 389 0 discriminator 3
+ 2821              		.syntax unified
+ 2822              	@ 389 "lib/helix/real/assembly.h" 1
+ 2823 0452 C9FB0A07 		smlal r0,r7,r9,r10
+ 2824              	@ 0 "" 2
+ 2825              	.LVL459:
+ 2826              		.thumb
+ 2827              		.syntax unified
+ 2828              	.LBE727:
+ 2829              	.LBE726:
+ 2830              	.LBB728:
+ 2831              	.LBB729:
+ 2832              		.syntax unified
+ 2833              	@ 389 "lib/helix/real/assembly.h" 1
+ 2834 0456 C9FB0E25 		smlal r2,r5,r9,lr
+ 2835              	@ 0 "" 2
+ 2836              		.thumb
+ 2837              		.syntax unified
+ 2838 045a 0392     		str	r2, [sp, #12]
+ 2839              	.LVL460:
+ 2840              	.LBE729:
+ 2841              	.LBE728:
+ 285:lib/helix/real/polyphase.c **** 		MC2S(7)
+ 2842              		.loc 1 285 0 discriminator 3
+ 2843 045c DCF89890 		ldr	r9, [ip, #152]
+ 2844              	.LVL461:
+ 2845              	.LBB730:
+ 2846              	.LBB731:
+ 389:lib/helix/real/assembly.h **** 
+ 2847              		.loc 2 389 0 discriminator 3
+ 2848              		.syntax unified
+ 2849              	@ 389 "lib/helix/real/assembly.h" 1
+ 2850 0460 C9FB0E16 		smlal r1,r6,r9,lr
+ 2851              	@ 0 "" 2
+ 2852              	.LVL462:
+ 2853              		.thumb
+ 2854              		.syntax unified
+ 2855              	.LBE731:
+ 2856              	.LBE730:
+ 2857              	.LBB732:
+ 2858              	.LBB733:
+ 2859              		.syntax unified
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 66
+
+
+ 2860              	@ 389 "lib/helix/real/assembly.h" 1
+ 2861 0464 C9FB0834 		smlal r3,r4,r9,r8
+ 2862              	@ 0 "" 2
+ 2863              	.LVL463:
+ 2864              		.thumb
+ 2865              		.syntax unified
+ 2866              	.LBE733:
+ 2867              	.LBE732:
+ 2868              	.LBB734:
+ 2869              	.LBB735:
+ 2870 0468 DCF8C420 		ldr	r2, [ip, #196]
+ 2871              		.syntax unified
+ 2872              	@ 389 "lib/helix/real/assembly.h" 1
+ 2873 046c C2FB0A16 		smlal r1,r6,r2,r10
+ 2874              	@ 0 "" 2
+ 2875              	.LVL464:
+ 2876              		.thumb
+ 2877              		.syntax unified
+ 2878              	.LBE735:
+ 2879              	.LBE734:
+ 2880              	.LBB736:
+ 2881              	.LBB737:
+ 2882              		.syntax unified
+ 2883              	@ 389 "lib/helix/real/assembly.h" 1
+ 2884 0470 C2FB0E34 		smlal r3,r4,r2,lr
+ 2885              	@ 0 "" 2
+ 2886              	.LVL465:
+ 2887              		.thumb
+ 2888              		.syntax unified
+ 2889              	.LBE737:
+ 2890              	.LBE736:
+ 286:lib/helix/real/polyphase.c **** 
+ 2891              		.loc 1 286 0 discriminator 3
+ 2892 0474 DBF838E0 		ldr	lr, [fp, #56]
+ 2893              	.LVL466:
+ 2894 0478 DBF83C80 		ldr	r8, [fp, #60]
+ 2895              	.LVL467:
+ 2896 047c 0BF1400B 		add	fp, fp, #64
+ 2897              	.LVL468:
+ 2898 0480 DCF81CA0 		ldr	r10, [ip, #28]
+ 2899              	.LVL469:
+ 2900 0484 DCF84090 		ldr	r9, [ip, #64]
+ 2901              	.LVL470:
+ 2902              	.LBB738:
+ 2903              	.LBB739:
+ 389:lib/helix/real/assembly.h **** 
+ 2904              		.loc 2 389 0 discriminator 3
+ 2905              		.syntax unified
+ 2906              	@ 389 "lib/helix/real/assembly.h" 1
+ 2907 0488 CAFB0E07 		smlal r0,r7,r10,lr
+ 2908              	@ 0 "" 2
+ 2909              	.LVL471:
+ 2910              		.thumb
+ 2911              		.syntax unified
+ 2912              	.LBE739:
+ 2913              	.LBE738:
+ 2914              	.LBB740:
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 67
+
+
+ 2915              	.LBB741:
+ 2916 048c 039A     		ldr	r2, [sp, #12]
+ 2917              		.syntax unified
+ 2918              	@ 389 "lib/helix/real/assembly.h" 1
+ 2919 048e CAFB0825 		smlal r2,r5,r10,r8
+ 2920              	@ 0 "" 2
+ 2921              	.LVL472:
+ 2922              		.thumb
+ 2923              		.syntax unified
+ 2924              	.LBE741:
+ 2925              	.LBE740:
+ 286:lib/helix/real/polyphase.c **** 
+ 2926              		.loc 1 286 0 discriminator 3
+ 2927 0492 C8F1000A 		rsb	r10, r8, #0
+ 2928              	.LVL473:
+ 2929              	.LBB742:
+ 2930              	.LBB743:
+ 389:lib/helix/real/assembly.h **** 
+ 2931              		.loc 2 389 0 discriminator 3
+ 2932              		.syntax unified
+ 2933              	@ 389 "lib/helix/real/assembly.h" 1
+ 2934 0496 C9FB0A07 		smlal r0,r7,r9,r10
+ 2935              	@ 0 "" 2
+ 2936              	.LVL474:
+ 2937              		.thumb
+ 2938              		.syntax unified
+ 2939              	.LBE743:
+ 2940              	.LBE742:
+ 2941              	.LBB744:
+ 2942              	.LBB745:
+ 2943              		.syntax unified
+ 2944              	@ 389 "lib/helix/real/assembly.h" 1
+ 2945 049a C9FB0E25 		smlal r2,r5,r9,lr
+ 2946              	@ 0 "" 2
+ 2947              		.thumb
+ 2948              		.syntax unified
+ 2949 049e 0392     		str	r2, [sp, #12]
+ 2950              	.LVL475:
+ 2951              	.LBE745:
+ 2952              	.LBE744:
+ 286:lib/helix/real/polyphase.c **** 
+ 2953              		.loc 1 286 0 discriminator 3
+ 2954 04a0 DCF89C90 		ldr	r9, [ip, #156]
+ 2955              	.LVL476:
+ 2956              	.LBB746:
+ 2957              	.LBB747:
+ 389:lib/helix/real/assembly.h **** 
+ 2958              		.loc 2 389 0 discriminator 3
+ 2959              		.syntax unified
+ 2960              	@ 389 "lib/helix/real/assembly.h" 1
+ 2961 04a4 C9FB0E16 		smlal r1,r6,r9,lr
+ 2962              	@ 0 "" 2
+ 2963              	.LVL477:
+ 2964              		.thumb
+ 2965              		.syntax unified
+ 2966              	.LBE747:
+ 2967              	.LBE746:
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 68
+
+
+ 2968              	.LBB748:
+ 2969              	.LBB749:
+ 2970              		.syntax unified
+ 2971              	@ 389 "lib/helix/real/assembly.h" 1
+ 2972 04a8 C9FB0834 		smlal r3,r4,r9,r8
+ 2973              	@ 0 "" 2
+ 2974              	.LVL478:
+ 2975              		.thumb
+ 2976              		.syntax unified
+ 2977              	.LBE749:
+ 2978              	.LBE748:
+ 2979              	.LBB750:
+ 2980              	.LBB751:
+ 2981 04ac DCF8C020 		ldr	r2, [ip, #192]
+ 2982              		.syntax unified
+ 2983              	@ 389 "lib/helix/real/assembly.h" 1
+ 2984 04b0 C2FB0A16 		smlal r1,r6,r2,r10
+ 2985              	@ 0 "" 2
+ 2986              	.LVL479:
+ 2987              		.thumb
+ 2988              		.syntax unified
+ 2989              	.LBE751:
+ 2990              	.LBE750:
+ 2991              	.LBB752:
+ 2992              	.LBB753:
+ 2993              		.syntax unified
+ 2994              	@ 389 "lib/helix/real/assembly.h" 1
+ 2995 04b4 C2FB0E34 		smlal r3,r4,r2,lr
+ 2996              	@ 0 "" 2
+ 2997              	.LVL480:
+ 2998              		.thumb
+ 2999              		.syntax unified
+ 3000              	.LBE753:
+ 3001              	.LBE752:
+ 288:lib/helix/real/polyphase.c **** 		*(pcm + 0)         = ClipToShort((int)SAR64(sum1L, (32-CSHIFT)), DEF_NFRACBITS);
+ 3002              		.loc 1 288 0 discriminator 3
+ 3003 04b8 0CF5807C 		add	ip, ip, #256
+ 3004              	.LVL481:
+ 3005              	.LBB754:
+ 3006              	.LBB755:
+ 3007              		.loc 2 395 0 discriminator 3
+ 3008 04bc 000D     		lsrs	r0, r0, #20
+ 3009 04be 40EA0730 		orr	r0, r0, r7, lsl #12
+ 3010              	.LVL482:
+ 3011              	.LBE755:
+ 3012              	.LBE754:
+ 3013              	.LBB756:
+ 3014              	.LBB757:
+  64:lib/helix/real/polyphase.c **** 	
+ 3015              		.loc 1 64 0 discriminator 3
+ 3016 04c2 8711     		asrs	r7, r0, #6
+ 3017              	.LVL483:
+  67:lib/helix/real/polyphase.c **** 	if (sign != (x >> 15))
+ 3018              		.loc 1 67 0 discriminator 3
+ 3019 04c4 4FEAE07E 		asr	lr, r0, #31
+ 3020              	.LVL484:
+  68:lib/helix/real/polyphase.c **** 		x = sign ^ ((1 << 15) - 1);
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 69
+
+
+ 3021              		.loc 1 68 0 discriminator 3
+ 3022 04c8 BEEB605F 		cmp	lr, r0, asr #21
+ 3023 04cc 03D0     		beq	.L16
+  69:lib/helix/real/polyphase.c **** 
+ 3024              		.loc 1 69 0
+ 3025 04ce 47F6FF77 		movw	r7, #32767
+ 3026              	.LVL485:
+ 3027 04d2 8EEA0707 		eor	r7, lr, r7
+ 3028              	.LVL486:
+ 3029              	.L16:
+ 3030              	.LBE757:
+ 3031              	.LBE756:
+ 289:lib/helix/real/polyphase.c **** 		*(pcm + 1)         = ClipToShort((int)SAR64(sum1R, (32-CSHIFT)), DEF_NFRACBITS);
+ 3032              		.loc 1 289 0
+ 3033 04d6 019A     		ldr	r2, [sp, #4]
+ 3034              	.LVL487:
+ 3035 04d8 1780     		strh	r7, [r2]	@ movhi
+ 3036              	.LVL488:
+ 3037              	.LBB758:
+ 3038              	.LBB759:
+ 3039              		.loc 2 395 0
+ 3040 04da 090D     		lsrs	r1, r1, #20
+ 3041 04dc 41EA0631 		orr	r1, r1, r6, lsl #12
+ 3042              	.LVL489:
+ 3043              	.LBE759:
+ 3044              	.LBE758:
+ 3045              	.LBB760:
+ 3046              	.LBB761:
+  64:lib/helix/real/polyphase.c **** 	
+ 3047              		.loc 1 64 0
+ 3048 04e0 8811     		asrs	r0, r1, #6
+ 3049              	.LVL490:
+  67:lib/helix/real/polyphase.c **** 	if (sign != (x >> 15))
+ 3050              		.loc 1 67 0
+ 3051 04e2 CE17     		asrs	r6, r1, #31
+ 3052              	.LVL491:
+  68:lib/helix/real/polyphase.c **** 		x = sign ^ ((1 << 15) - 1);
+ 3053              		.loc 1 68 0
+ 3054 04e4 B6EB615F 		cmp	r6, r1, asr #21
+ 3055 04e8 02D0     		beq	.L17
+  69:lib/helix/real/polyphase.c **** 
+ 3056              		.loc 1 69 0
+ 3057 04ea 47F6FF70 		movw	r0, #32767
+ 3058              	.LVL492:
+ 3059 04ee 7040     		eors	r0, r0, r6
+ 3060              	.LVL493:
+ 3061              	.L17:
+ 3062              	.LBE761:
+ 3063              	.LBE760:
+ 290:lib/helix/real/polyphase.c **** 		*(pcm + 2*2*i + 0) = ClipToShort((int)SAR64(sum2L, (32-CSHIFT)), DEF_NFRACBITS);
+ 3064              		.loc 1 290 0
+ 3065 04f0 019E     		ldr	r6, [sp, #4]
+ 3066 04f2 7080     		strh	r0, [r6, #2]	@ movhi
+ 3067              	.LVL494:
+ 3068              	.LBB762:
+ 3069              	.LBB763:
+ 3070              		.loc 2 395 0
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 70
+
+
+ 3071 04f4 039A     		ldr	r2, [sp, #12]
+ 3072 04f6 120D     		lsrs	r2, r2, #20
+ 3073 04f8 42EA0532 		orr	r2, r2, r5, lsl #12
+ 3074              	.LVL495:
+ 3075              	.LBE763:
+ 3076              	.LBE762:
+ 291:lib/helix/real/polyphase.c **** 		*(pcm + 2*2*i + 1) = ClipToShort((int)SAR64(sum2R, (32-CSHIFT)), DEF_NFRACBITS);
+ 3077              		.loc 1 291 0
+ 3078 04fc 0299     		ldr	r1, [sp, #8]
+ 3079 04fe C900     		lsls	r1, r1, #3
+ 3080 0500 0E44     		add	r6, r6, r1
+ 3081              	.LVL496:
+ 3082              	.LBB764:
+ 3083              	.LBB765:
+  64:lib/helix/real/polyphase.c **** 	
+ 3084              		.loc 1 64 0
+ 3085 0502 9011     		asrs	r0, r2, #6
+ 3086              	.LVL497:
+  67:lib/helix/real/polyphase.c **** 	if (sign != (x >> 15))
+ 3087              		.loc 1 67 0
+ 3088 0504 D517     		asrs	r5, r2, #31
+ 3089              	.LVL498:
+  68:lib/helix/real/polyphase.c **** 		x = sign ^ ((1 << 15) - 1);
+ 3090              		.loc 1 68 0
+ 3091 0506 B5EB625F 		cmp	r5, r2, asr #21
+ 3092 050a 02D0     		beq	.L18
+  69:lib/helix/real/polyphase.c **** 
+ 3093              		.loc 1 69 0
+ 3094 050c 47F6FF70 		movw	r0, #32767
+ 3095              	.LVL499:
+ 3096 0510 6840     		eors	r0, r0, r5
+ 3097              	.LVL500:
+ 3098              	.L18:
+ 3099              	.LBE765:
+ 3100              	.LBE764:
+ 291:lib/helix/real/polyphase.c **** 		*(pcm + 2*2*i + 1) = ClipToShort((int)SAR64(sum2R, (32-CSHIFT)), DEF_NFRACBITS);
+ 3101              		.loc 1 291 0
+ 3102 0512 3080     		strh	r0, [r6]	@ movhi
+ 3103              	.LVL501:
+ 3104              	.LBB766:
+ 3105              	.LBB767:
+ 3106              		.loc 2 395 0
+ 3107 0514 1B0D     		lsrs	r3, r3, #20
+ 3108 0516 43EA0433 		orr	r3, r3, r4, lsl #12
+ 3109              	.LVL502:
+ 3110              	.LBE767:
+ 3111              	.LBE766:
+ 292:lib/helix/real/polyphase.c **** 		pcm += 2;
+ 3112              		.loc 1 292 0
+ 3113 051a 0231     		adds	r1, r1, #2
+ 3114 051c 019A     		ldr	r2, [sp, #4]
+ 3115 051e 1144     		add	r1, r1, r2
+ 3116              	.LVL503:
+ 3117              	.LBB768:
+ 3118              	.LBB769:
+  64:lib/helix/real/polyphase.c **** 	
+ 3119              		.loc 1 64 0
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 71
+
+
+ 3120 0520 9A11     		asrs	r2, r3, #6
+ 3121              	.LVL504:
+  67:lib/helix/real/polyphase.c **** 	if (sign != (x >> 15))
+ 3122              		.loc 1 67 0
+ 3123 0522 D817     		asrs	r0, r3, #31
+ 3124              	.LVL505:
+  68:lib/helix/real/polyphase.c **** 		x = sign ^ ((1 << 15) - 1);
+ 3125              		.loc 1 68 0
+ 3126 0524 B0EB635F 		cmp	r0, r3, asr #21
+ 3127 0528 3FF4B1AE 		beq	.L19
+  69:lib/helix/real/polyphase.c **** 
+ 3128              		.loc 1 69 0
+ 3129 052c 47F6FF72 		movw	r2, #32767
+ 3130              	.LVL506:
+ 3131 0530 4240     		eors	r2, r2, r0
+ 3132              	.LVL507:
+ 3133 0532 ACE6     		b	.L19
+ 3134              	.LVL508:
+ 3135              	.L22:
+ 3136              	.LBE769:
+ 3137              	.LBE768:
+ 294:lib/helix/real/polyphase.c **** 	}
+ 295:lib/helix/real/polyphase.c **** }
+ 3138              		.loc 1 295 0
+ 3139 0534 05B0     		add	sp, sp, #20
+ 3140              	.LCFI5:
+ 3141              		.cfi_def_cfa_offset 36
+ 3142              		@ sp needed
+ 3143 0536 BDE8F08F 		pop	{r4, r5, r6, r7, r8, r9, r10, fp, pc}
+ 3144              		.cfi_endproc
+ 3145              	.LFE7:
+ 3147              		.text
+ 3148              	.Letext0:
+ 3149              		.file 3 "lib/helix/real/../pub/mp3common.h"
+ 3150              		.file 4 "lib/helix/real/../pub/../platform.h"
+ 3151              		.file 5 "lib/helix/real/coder.h"
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s 			page 72
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 polyphase.c
+C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s:18     .text.xmp3fixpt_PolyphaseMono:00000000 $t
+C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s:25     .text.xmp3fixpt_PolyphaseMono:00000000 xmp3fixpt_PolyphaseMono
+C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s:1133   .text.xmp3fixpt_PolyphaseStereo:00000000 $t
+C:\Users\Patryk\AppData\Local\Temp\cc5Usckj.s:1140   .text.xmp3fixpt_PolyphaseStereo:00000000 xmp3fixpt_PolyphaseStereo
+
+NO UNDEFINED SYMBOLS

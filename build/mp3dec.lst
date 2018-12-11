@@ -1,0 +1,1574 @@
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccIgt8X7.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"mp3dec.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.MP3ClearBadFrame,"ax",%progbits
+  18              		.align	1
+  19              		.syntax unified
+  20              		.thumb
+  21              		.thumb_func
+  22              		.fpu fpv5-sp-d16
+  24              	MP3ClearBadFrame:
+  25              	.LFB6:
+  26              		.file 1 "lib/helix/mp3dec.c"
+   1:lib/helix/mp3dec.c **** /* ***** BEGIN LICENSE BLOCK ***** 
+   2:lib/helix/mp3dec.c ****  * Version: RCSL 1.0/RPSL 1.0 
+   3:lib/helix/mp3dec.c ****  *  
+   4:lib/helix/mp3dec.c ****  * Portions Copyright (c) 1995-2002 RealNetworks, Inc. All Rights Reserved. 
+   5:lib/helix/mp3dec.c ****  *      
+   6:lib/helix/mp3dec.c ****  * The contents of this file, and the files included with this file, are 
+   7:lib/helix/mp3dec.c ****  * subject to the current version of the RealNetworks Public Source License 
+   8:lib/helix/mp3dec.c ****  * Version 1.0 (the "RPSL") available at 
+   9:lib/helix/mp3dec.c ****  * http://www.helixcommunity.org/content/rpsl unless you have licensed 
+  10:lib/helix/mp3dec.c ****  * the file under the RealNetworks Community Source License Version 1.0 
+  11:lib/helix/mp3dec.c ****  * (the "RCSL") available at http://www.helixcommunity.org/content/rcsl, 
+  12:lib/helix/mp3dec.c ****  * in which case the RCSL will apply. You may also obtain the license terms 
+  13:lib/helix/mp3dec.c ****  * directly from RealNetworks.  You may not use this file except in 
+  14:lib/helix/mp3dec.c ****  * compliance with the RPSL or, if you have a valid RCSL with RealNetworks 
+  15:lib/helix/mp3dec.c ****  * applicable to this file, the RCSL.  Please see the applicable RPSL or 
+  16:lib/helix/mp3dec.c ****  * RCSL for the rights, obligations and limitations governing use of the 
+  17:lib/helix/mp3dec.c ****  * contents of the file.  
+  18:lib/helix/mp3dec.c ****  *  
+  19:lib/helix/mp3dec.c ****  * This file is part of the Helix DNA Technology. RealNetworks is the 
+  20:lib/helix/mp3dec.c ****  * developer of the Original Code and owns the copyrights in the portions 
+  21:lib/helix/mp3dec.c ****  * it created. 
+  22:lib/helix/mp3dec.c ****  *  
+  23:lib/helix/mp3dec.c ****  * This file, and the files included with this file, is distributed and made 
+  24:lib/helix/mp3dec.c ****  * available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER 
+  25:lib/helix/mp3dec.c ****  * EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS ALL SUCH WARRANTIES, 
+  26:lib/helix/mp3dec.c ****  * INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF MERCHANTABILITY, FITNESS 
+  27:lib/helix/mp3dec.c ****  * FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT. 
+  28:lib/helix/mp3dec.c ****  * 
+  29:lib/helix/mp3dec.c ****  * Technology Compatibility Kit Test Suite(s) Location: 
+  30:lib/helix/mp3dec.c ****  *    http://www.helixcommunity.org/content/tck 
+  31:lib/helix/mp3dec.c ****  * 
+  32:lib/helix/mp3dec.c ****  * Contributor(s): 
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccIgt8X7.s 			page 2
+
+
+  33:lib/helix/mp3dec.c ****  *  
+  34:lib/helix/mp3dec.c ****  * ***** END LICENSE BLOCK ***** */ 
+  35:lib/helix/mp3dec.c **** 
+  36:lib/helix/mp3dec.c **** /**************************************************************************************
+  37:lib/helix/mp3dec.c ****  * Fixed-point MP3 decoder
+  38:lib/helix/mp3dec.c ****  * Jon Recker (jrecker@real.com), Ken Cooke (kenc@real.com)
+  39:lib/helix/mp3dec.c ****  * June 2003
+  40:lib/helix/mp3dec.c ****  *
+  41:lib/helix/mp3dec.c ****  * mp3dec.c - platform-independent top level MP3 decoder API
+  42:lib/helix/mp3dec.c ****  **************************************************************************************/
+  43:lib/helix/mp3dec.c **** 
+  44:lib/helix/mp3dec.c **** #include <string.h>		/* for memmove, memcpy (can replace with different implementations if desired)
+  45:lib/helix/mp3dec.c **** #include "pub/mp3common.h"	/* includes mp3dec.h (public API) and internal, platform-independent API
+  46:lib/helix/mp3dec.c **** //#include "hxthreadyield.h"
+  47:lib/helix/mp3dec.c **** 
+  48:lib/helix/mp3dec.c **** /**************************************************************************************
+  49:lib/helix/mp3dec.c ****  * Function:    MP3InitDecoder
+  50:lib/helix/mp3dec.c ****  *
+  51:lib/helix/mp3dec.c ****  * Description: allocate memory for platform-specific data
+  52:lib/helix/mp3dec.c ****  *              clear all the user-accessible fields
+  53:lib/helix/mp3dec.c ****  *
+  54:lib/helix/mp3dec.c ****  * Inputs:      none
+  55:lib/helix/mp3dec.c ****  *
+  56:lib/helix/mp3dec.c ****  * Outputs:     none
+  57:lib/helix/mp3dec.c ****  *
+  58:lib/helix/mp3dec.c ****  * Return:      handle to mp3 decoder instance, 0 if malloc fails
+  59:lib/helix/mp3dec.c ****  **************************************************************************************/
+  60:lib/helix/mp3dec.c **** HMP3Decoder MP3InitDecoder(void)
+  61:lib/helix/mp3dec.c **** {
+  62:lib/helix/mp3dec.c **** 	MP3DecInfo *mp3DecInfo;
+  63:lib/helix/mp3dec.c **** 
+  64:lib/helix/mp3dec.c **** 	mp3DecInfo = AllocateBuffers();
+  65:lib/helix/mp3dec.c **** 
+  66:lib/helix/mp3dec.c **** 	return (HMP3Decoder)mp3DecInfo;
+  67:lib/helix/mp3dec.c **** }
+  68:lib/helix/mp3dec.c **** 
+  69:lib/helix/mp3dec.c **** /**************************************************************************************
+  70:lib/helix/mp3dec.c ****  * Function:    MP3FreeDecoder
+  71:lib/helix/mp3dec.c ****  *
+  72:lib/helix/mp3dec.c ****  * Description: free platform-specific data allocated by InitMP3Decoder
+  73:lib/helix/mp3dec.c ****  *              zero out the contents of MP3DecInfo struct
+  74:lib/helix/mp3dec.c ****  *
+  75:lib/helix/mp3dec.c ****  * Inputs:      valid MP3 decoder instance pointer (HMP3Decoder)
+  76:lib/helix/mp3dec.c ****  *
+  77:lib/helix/mp3dec.c ****  * Outputs:     none
+  78:lib/helix/mp3dec.c ****  *
+  79:lib/helix/mp3dec.c ****  * Return:      none
+  80:lib/helix/mp3dec.c ****  **************************************************************************************/
+  81:lib/helix/mp3dec.c **** void MP3FreeDecoder(HMP3Decoder hMP3Decoder)
+  82:lib/helix/mp3dec.c **** {
+  83:lib/helix/mp3dec.c **** 	MP3DecInfo *mp3DecInfo = (MP3DecInfo *)hMP3Decoder;
+  84:lib/helix/mp3dec.c **** 
+  85:lib/helix/mp3dec.c **** 	if (!mp3DecInfo)
+  86:lib/helix/mp3dec.c **** 		return;
+  87:lib/helix/mp3dec.c **** 
+  88:lib/helix/mp3dec.c **** 	FreeBuffers(mp3DecInfo);
+  89:lib/helix/mp3dec.c **** }
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccIgt8X7.s 			page 3
+
+
+  90:lib/helix/mp3dec.c **** 
+  91:lib/helix/mp3dec.c **** /**************************************************************************************
+  92:lib/helix/mp3dec.c ****  * Function:    MP3FindSyncWord
+  93:lib/helix/mp3dec.c ****  *
+  94:lib/helix/mp3dec.c ****  * Description: locate the next byte-alinged sync word in the raw mp3 stream
+  95:lib/helix/mp3dec.c ****  *
+  96:lib/helix/mp3dec.c ****  * Inputs:      buffer to search for sync word
+  97:lib/helix/mp3dec.c ****  *              max number of bytes to search in buffer
+  98:lib/helix/mp3dec.c ****  *
+  99:lib/helix/mp3dec.c ****  * Outputs:     none
+ 100:lib/helix/mp3dec.c ****  *
+ 101:lib/helix/mp3dec.c ****  * Return:      offset to first sync word (bytes from start of buf)
+ 102:lib/helix/mp3dec.c ****  *              -1 if sync not found after searching nBytes
+ 103:lib/helix/mp3dec.c ****  **************************************************************************************/
+ 104:lib/helix/mp3dec.c **** int MP3FindSyncWord(unsigned char *buf, int nBytes)
+ 105:lib/helix/mp3dec.c **** {
+ 106:lib/helix/mp3dec.c **** 	int i;
+ 107:lib/helix/mp3dec.c **** 
+ 108:lib/helix/mp3dec.c **** 	/* find byte-aligned syncword - need 12 (MPEG 1,2) or 11 (MPEG 2.5) matching bits */
+ 109:lib/helix/mp3dec.c **** 	for (i = 0; i < nBytes - 1; i++) {
+ 110:lib/helix/mp3dec.c **** 		if ( (buf[i+0] & SYNCWORDH) == SYNCWORDH && (buf[i+1] & SYNCWORDL) == SYNCWORDL )
+ 111:lib/helix/mp3dec.c **** 			return i;
+ 112:lib/helix/mp3dec.c **** 	}
+ 113:lib/helix/mp3dec.c **** 	
+ 114:lib/helix/mp3dec.c **** 	return -1;
+ 115:lib/helix/mp3dec.c **** }
+ 116:lib/helix/mp3dec.c **** 
+ 117:lib/helix/mp3dec.c **** /**************************************************************************************
+ 118:lib/helix/mp3dec.c ****  * Function:    MP3FindFreeSync
+ 119:lib/helix/mp3dec.c ****  *
+ 120:lib/helix/mp3dec.c ****  * Description: figure out number of bytes between adjacent sync words in "free" mode
+ 121:lib/helix/mp3dec.c ****  *
+ 122:lib/helix/mp3dec.c ****  * Inputs:      buffer to search for next sync word
+ 123:lib/helix/mp3dec.c ****  *              the 4-byte frame header starting at the current sync word
+ 124:lib/helix/mp3dec.c ****  *              max number of bytes to search in buffer
+ 125:lib/helix/mp3dec.c ****  *
+ 126:lib/helix/mp3dec.c ****  * Outputs:     none
+ 127:lib/helix/mp3dec.c ****  *
+ 128:lib/helix/mp3dec.c ****  * Return:      offset to next sync word, minus any pad byte (i.e. nSlots)
+ 129:lib/helix/mp3dec.c ****  *              -1 if sync not found after searching nBytes
+ 130:lib/helix/mp3dec.c ****  *
+ 131:lib/helix/mp3dec.c ****  * Notes:       this checks that the first 22 bits of the next frame header are the
+ 132:lib/helix/mp3dec.c ****  *                same as the current frame header, but it's still not foolproof
+ 133:lib/helix/mp3dec.c ****  *                (could accidentally find a sequence in the bitstream which 
+ 134:lib/helix/mp3dec.c ****  *                 appears to match but is not actually the next frame header)
+ 135:lib/helix/mp3dec.c ****  *              this could be made more error-resilient by checking several frames
+ 136:lib/helix/mp3dec.c ****  *                in a row and verifying that nSlots is the same in each case
+ 137:lib/helix/mp3dec.c ****  *              since free mode requires CBR (see spec) we generally only call
+ 138:lib/helix/mp3dec.c ****  *                this function once (first frame) then store the result (nSlots)
+ 139:lib/helix/mp3dec.c ****  *                and just use it from then on
+ 140:lib/helix/mp3dec.c ****  **************************************************************************************/
+ 141:lib/helix/mp3dec.c **** static int MP3FindFreeSync(unsigned char *buf, unsigned char firstFH[4], int nBytes)
+ 142:lib/helix/mp3dec.c **** {
+ 143:lib/helix/mp3dec.c **** 	int offset = 0;
+ 144:lib/helix/mp3dec.c **** 	unsigned char *bufPtr = buf;
+ 145:lib/helix/mp3dec.c **** 
+ 146:lib/helix/mp3dec.c **** 	/* loop until we either: 
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccIgt8X7.s 			page 4
+
+
+ 147:lib/helix/mp3dec.c **** 	 *  - run out of nBytes (FindMP3SyncWord() returns -1)
+ 148:lib/helix/mp3dec.c **** 	 *  - find the next valid frame header (sync word, version, layer, CRC flag, bitrate, and sample r
+ 149:lib/helix/mp3dec.c **** 	 *      in next header must match current header)
+ 150:lib/helix/mp3dec.c **** 	 */
+ 151:lib/helix/mp3dec.c **** 	while (1) {
+ 152:lib/helix/mp3dec.c **** 		offset = MP3FindSyncWord(bufPtr, nBytes);
+ 153:lib/helix/mp3dec.c **** 		bufPtr += offset;
+ 154:lib/helix/mp3dec.c **** 		if (offset < 0) {
+ 155:lib/helix/mp3dec.c **** 			return -1;
+ 156:lib/helix/mp3dec.c **** 		} else if ( (bufPtr[0] == firstFH[0]) && (bufPtr[1] == firstFH[1]) && ((bufPtr[2] & 0xfc) == (fir
+ 157:lib/helix/mp3dec.c **** 			/* want to return number of bytes per frame, NOT counting the padding byte, so subtract one if p
+ 158:lib/helix/mp3dec.c **** 			if ((firstFH[2] >> 1) & 0x01)
+ 159:lib/helix/mp3dec.c **** 				bufPtr--;
+ 160:lib/helix/mp3dec.c **** 			return bufPtr - buf;
+ 161:lib/helix/mp3dec.c **** 		}
+ 162:lib/helix/mp3dec.c **** 		bufPtr += 3;
+ 163:lib/helix/mp3dec.c **** 		nBytes -= (offset + 3);
+ 164:lib/helix/mp3dec.c **** 	};
+ 165:lib/helix/mp3dec.c **** 
+ 166:lib/helix/mp3dec.c **** 	return -1;
+ 167:lib/helix/mp3dec.c **** }
+ 168:lib/helix/mp3dec.c **** 
+ 169:lib/helix/mp3dec.c **** /**************************************************************************************
+ 170:lib/helix/mp3dec.c ****  * Function:    MP3GetLastFrameInfo
+ 171:lib/helix/mp3dec.c ****  *
+ 172:lib/helix/mp3dec.c ****  * Description: get info about last MP3 frame decoded (number of sampled decoded, 
+ 173:lib/helix/mp3dec.c ****  *                sample rate, bitrate, etc.)
+ 174:lib/helix/mp3dec.c ****  *
+ 175:lib/helix/mp3dec.c ****  * Inputs:      valid MP3 decoder instance pointer (HMP3Decoder)
+ 176:lib/helix/mp3dec.c ****  *              pointer to MP3FrameInfo struct
+ 177:lib/helix/mp3dec.c ****  *
+ 178:lib/helix/mp3dec.c ****  * Outputs:     filled-in MP3FrameInfo struct
+ 179:lib/helix/mp3dec.c ****  *
+ 180:lib/helix/mp3dec.c ****  * Return:      none
+ 181:lib/helix/mp3dec.c ****  *
+ 182:lib/helix/mp3dec.c ****  * Notes:       call this right after calling MP3Decode
+ 183:lib/helix/mp3dec.c ****  **************************************************************************************/
+ 184:lib/helix/mp3dec.c **** void MP3GetLastFrameInfo(HMP3Decoder hMP3Decoder, MP3FrameInfo *mp3FrameInfo)
+ 185:lib/helix/mp3dec.c **** {
+ 186:lib/helix/mp3dec.c **** 	MP3DecInfo *mp3DecInfo = (MP3DecInfo *)hMP3Decoder;
+ 187:lib/helix/mp3dec.c **** 
+ 188:lib/helix/mp3dec.c **** 	if (!mp3DecInfo || mp3DecInfo->layer != 3) {
+ 189:lib/helix/mp3dec.c **** 		mp3FrameInfo->bitrate = 0;
+ 190:lib/helix/mp3dec.c **** 		mp3FrameInfo->nChans = 0;
+ 191:lib/helix/mp3dec.c **** 		mp3FrameInfo->samprate = 0;
+ 192:lib/helix/mp3dec.c **** 		mp3FrameInfo->bitsPerSample = 0;
+ 193:lib/helix/mp3dec.c **** 		mp3FrameInfo->outputSamps = 0;
+ 194:lib/helix/mp3dec.c **** 		mp3FrameInfo->layer = 0;
+ 195:lib/helix/mp3dec.c **** 		mp3FrameInfo->version = 0;
+ 196:lib/helix/mp3dec.c **** 	} else {
+ 197:lib/helix/mp3dec.c **** 		mp3FrameInfo->bitrate = mp3DecInfo->bitrate;
+ 198:lib/helix/mp3dec.c **** 		mp3FrameInfo->nChans = mp3DecInfo->nChans;
+ 199:lib/helix/mp3dec.c **** 		mp3FrameInfo->samprate = mp3DecInfo->samprate;
+ 200:lib/helix/mp3dec.c **** 		mp3FrameInfo->bitsPerSample = 16;
+ 201:lib/helix/mp3dec.c **** 		mp3FrameInfo->outputSamps = mp3DecInfo->nChans * (int)samplesPerFrameTab[mp3DecInfo->version][mp3
+ 202:lib/helix/mp3dec.c **** 		mp3FrameInfo->layer = mp3DecInfo->layer;
+ 203:lib/helix/mp3dec.c **** 		mp3FrameInfo->version = mp3DecInfo->version;
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccIgt8X7.s 			page 5
+
+
+ 204:lib/helix/mp3dec.c **** 	}
+ 205:lib/helix/mp3dec.c **** }
+ 206:lib/helix/mp3dec.c **** 
+ 207:lib/helix/mp3dec.c **** /**************************************************************************************
+ 208:lib/helix/mp3dec.c ****  * Function:    MP3GetNextFrameInfo
+ 209:lib/helix/mp3dec.c ****  *
+ 210:lib/helix/mp3dec.c ****  * Description: parse MP3 frame header
+ 211:lib/helix/mp3dec.c ****  *
+ 212:lib/helix/mp3dec.c ****  * Inputs:      valid MP3 decoder instance pointer (HMP3Decoder)
+ 213:lib/helix/mp3dec.c ****  *              pointer to MP3FrameInfo struct
+ 214:lib/helix/mp3dec.c ****  *              pointer to buffer containing valid MP3 frame header (located using 
+ 215:lib/helix/mp3dec.c ****  *                MP3FindSyncWord(), above)
+ 216:lib/helix/mp3dec.c ****  *
+ 217:lib/helix/mp3dec.c ****  * Outputs:     filled-in MP3FrameInfo struct
+ 218:lib/helix/mp3dec.c ****  *
+ 219:lib/helix/mp3dec.c ****  * Return:      error code, defined in mp3dec.h (0 means no error, < 0 means error)
+ 220:lib/helix/mp3dec.c ****  **************************************************************************************/
+ 221:lib/helix/mp3dec.c **** int MP3GetNextFrameInfo(HMP3Decoder hMP3Decoder, MP3FrameInfo *mp3FrameInfo, unsigned char *buf)
+ 222:lib/helix/mp3dec.c **** {
+ 223:lib/helix/mp3dec.c **** 	MP3DecInfo *mp3DecInfo = (MP3DecInfo *)hMP3Decoder;
+ 224:lib/helix/mp3dec.c **** 
+ 225:lib/helix/mp3dec.c **** 	if (!mp3DecInfo)
+ 226:lib/helix/mp3dec.c **** 		return ERR_MP3_NULL_POINTER;
+ 227:lib/helix/mp3dec.c **** 
+ 228:lib/helix/mp3dec.c **** 	if (UnpackFrameHeader(mp3DecInfo, buf) == -1 || mp3DecInfo->layer != 3)
+ 229:lib/helix/mp3dec.c **** 		return ERR_MP3_INVALID_FRAMEHEADER;
+ 230:lib/helix/mp3dec.c **** 
+ 231:lib/helix/mp3dec.c **** 	MP3GetLastFrameInfo(mp3DecInfo, mp3FrameInfo);
+ 232:lib/helix/mp3dec.c **** 
+ 233:lib/helix/mp3dec.c **** 	return ERR_MP3_NONE;
+ 234:lib/helix/mp3dec.c **** }
+ 235:lib/helix/mp3dec.c **** 
+ 236:lib/helix/mp3dec.c **** /**************************************************************************************
+ 237:lib/helix/mp3dec.c ****  * Function:    MP3ClearBadFrame
+ 238:lib/helix/mp3dec.c ****  *
+ 239:lib/helix/mp3dec.c ****  * Description: zero out pcm buffer if error decoding MP3 frame
+ 240:lib/helix/mp3dec.c ****  *
+ 241:lib/helix/mp3dec.c ****  * Inputs:      mp3DecInfo struct with correct frame size parameters filled in
+ 242:lib/helix/mp3dec.c ****  *              pointer pcm output buffer
+ 243:lib/helix/mp3dec.c ****  *
+ 244:lib/helix/mp3dec.c ****  * Outputs:     zeroed out pcm buffer
+ 245:lib/helix/mp3dec.c ****  *
+ 246:lib/helix/mp3dec.c ****  * Return:      none
+ 247:lib/helix/mp3dec.c ****  **************************************************************************************/
+ 248:lib/helix/mp3dec.c **** static void MP3ClearBadFrame(MP3DecInfo *mp3DecInfo, short *outbuf)
+ 249:lib/helix/mp3dec.c **** {
+  27              		.loc 1 249 0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 0
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31              		@ link register save eliminated.
+  32              	.LVL0:
+ 250:lib/helix/mp3dec.c **** 	int i;
+ 251:lib/helix/mp3dec.c **** 
+ 252:lib/helix/mp3dec.c **** 	if (!mp3DecInfo)
+  33              		.loc 1 252 0
+  34 0000 B0B1     		cbz	r0, .L6
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccIgt8X7.s 			page 6
+
+
+ 249:lib/helix/mp3dec.c **** 	int i;
+  35              		.loc 1 249 0
+  36 0002 10B4     		push	{r4}
+  37              	.LCFI0:
+  38              		.cfi_def_cfa_offset 4
+  39              		.cfi_offset 4, -4
+  40 0004 0446     		mov	r4, r0
+ 253:lib/helix/mp3dec.c **** 		return;
+ 254:lib/helix/mp3dec.c **** 
+ 255:lib/helix/mp3dec.c **** 	for (i = 0; i < mp3DecInfo->nGrans * mp3DecInfo->nGranSamps * mp3DecInfo->nChans; i++)
+  41              		.loc 1 255 0
+  42 0006 0020     		movs	r0, #0
+  43              	.LVL1:
+  44 0008 03E0     		b	.L3
+  45              	.LVL2:
+  46              	.L4:
+ 256:lib/helix/mp3dec.c **** 		outbuf[i] = 0;
+  47              		.loc 1 256 0 discriminator 3
+  48 000a 0023     		movs	r3, #0
+  49 000c 21F81030 		strh	r3, [r1, r0, lsl #1]	@ movhi
+ 255:lib/helix/mp3dec.c **** 		outbuf[i] = 0;
+  50              		.loc 1 255 0 discriminator 3
+  51 0010 0130     		adds	r0, r0, #1
+  52              	.LVL3:
+  53              	.L3:
+ 255:lib/helix/mp3dec.c **** 		outbuf[i] = 0;
+  54              		.loc 1 255 0 is_stmt 0 discriminator 1
+  55 0012 D4F8C427 		ldr	r2, [r4, #1988]
+  56 0016 D4F8C837 		ldr	r3, [r4, #1992]
+  57 001a 03FB02F2 		mul	r2, r3, r2
+  58 001e D4F8BC37 		ldr	r3, [r4, #1980]
+  59 0022 03FB02F3 		mul	r3, r3, r2
+  60 0026 8342     		cmp	r3, r0
+  61 0028 EFDC     		bgt	.L4
+ 257:lib/helix/mp3dec.c **** }
+  62              		.loc 1 257 0 is_stmt 1
+  63 002a 5DF8044B 		ldr	r4, [sp], #4
+  64              	.LCFI1:
+  65              		.cfi_restore 4
+  66              		.cfi_def_cfa_offset 0
+  67              	.LVL4:
+  68 002e 7047     		bx	lr
+  69              	.LVL5:
+  70              	.L6:
+  71 0030 7047     		bx	lr
+  72              		.cfi_endproc
+  73              	.LFE6:
+  75              		.section	.text.MP3InitDecoder,"ax",%progbits
+  76              		.align	1
+  77              		.global	MP3InitDecoder
+  78              		.syntax unified
+  79              		.thumb
+  80              		.thumb_func
+  81              		.fpu fpv5-sp-d16
+  83              	MP3InitDecoder:
+  84              	.LFB0:
+  61:lib/helix/mp3dec.c **** 	MP3DecInfo *mp3DecInfo;
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccIgt8X7.s 			page 7
+
+
+  85              		.loc 1 61 0
+  86              		.cfi_startproc
+  87              		@ args = 0, pretend = 0, frame = 0
+  88              		@ frame_needed = 0, uses_anonymous_args = 0
+  89 0000 08B5     		push	{r3, lr}
+  90              	.LCFI2:
+  91              		.cfi_def_cfa_offset 8
+  92              		.cfi_offset 3, -8
+  93              		.cfi_offset 14, -4
+  64:lib/helix/mp3dec.c **** 
+  94              		.loc 1 64 0
+  95 0002 FFF7FEFF 		bl	xmp3fixpt_AllocateBuffers
+  96              	.LVL6:
+  67:lib/helix/mp3dec.c **** 
+  97              		.loc 1 67 0
+  98 0006 08BD     		pop	{r3, pc}
+  99              		.cfi_endproc
+ 100              	.LFE0:
+ 102              		.section	.text.MP3FreeDecoder,"ax",%progbits
+ 103              		.align	1
+ 104              		.global	MP3FreeDecoder
+ 105              		.syntax unified
+ 106              		.thumb
+ 107              		.thumb_func
+ 108              		.fpu fpv5-sp-d16
+ 110              	MP3FreeDecoder:
+ 111              	.LFB1:
+  82:lib/helix/mp3dec.c **** 	MP3DecInfo *mp3DecInfo = (MP3DecInfo *)hMP3Decoder;
+ 112              		.loc 1 82 0
+ 113              		.cfi_startproc
+ 114              		@ args = 0, pretend = 0, frame = 0
+ 115              		@ frame_needed = 0, uses_anonymous_args = 0
+ 116              	.LVL7:
+  85:lib/helix/mp3dec.c **** 		return;
+ 117              		.loc 1 85 0
+ 118 0000 18B1     		cbz	r0, .L14
+  82:lib/helix/mp3dec.c **** 	MP3DecInfo *mp3DecInfo = (MP3DecInfo *)hMP3Decoder;
+ 119              		.loc 1 82 0
+ 120 0002 08B5     		push	{r3, lr}
+ 121              	.LCFI3:
+ 122              		.cfi_def_cfa_offset 8
+ 123              		.cfi_offset 3, -8
+ 124              		.cfi_offset 14, -4
+  88:lib/helix/mp3dec.c **** }
+ 125              		.loc 1 88 0
+ 126 0004 FFF7FEFF 		bl	xmp3fixpt_FreeBuffers
+ 127              	.LVL8:
+  89:lib/helix/mp3dec.c **** 
+ 128              		.loc 1 89 0
+ 129 0008 08BD     		pop	{r3, pc}
+ 130              	.LVL9:
+ 131              	.L14:
+ 132              	.LCFI4:
+ 133              		.cfi_def_cfa_offset 0
+ 134              		.cfi_restore 3
+ 135              		.cfi_restore 14
+ 136 000a 7047     		bx	lr
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccIgt8X7.s 			page 8
+
+
+ 137              		.cfi_endproc
+ 138              	.LFE1:
+ 140              		.section	.text.MP3FindSyncWord,"ax",%progbits
+ 141              		.align	1
+ 142              		.global	MP3FindSyncWord
+ 143              		.syntax unified
+ 144              		.thumb
+ 145              		.thumb_func
+ 146              		.fpu fpv5-sp-d16
+ 148              	MP3FindSyncWord:
+ 149              	.LFB2:
+ 105:lib/helix/mp3dec.c **** 	int i;
+ 150              		.loc 1 105 0
+ 151              		.cfi_startproc
+ 152              		@ args = 0, pretend = 0, frame = 0
+ 153              		@ frame_needed = 0, uses_anonymous_args = 0
+ 154              		@ link register save eliminated.
+ 155              	.LVL10:
+ 109:lib/helix/mp3dec.c **** 		if ( (buf[i+0] & SYNCWORDH) == SYNCWORDH && (buf[i+1] & SYNCWORDL) == SYNCWORDL )
+ 156              		.loc 1 109 0
+ 157 0000 0023     		movs	r3, #0
+ 158 0002 00E0     		b	.L18
+ 159              	.LVL11:
+ 160              	.L19:
+ 109:lib/helix/mp3dec.c **** 		if ( (buf[i+0] & SYNCWORDH) == SYNCWORDH && (buf[i+1] & SYNCWORDL) == SYNCWORDL )
+ 161              		.loc 1 109 0 is_stmt 0 discriminator 2
+ 162 0004 0133     		adds	r3, r3, #1
+ 163              	.LVL12:
+ 164              	.L18:
+ 109:lib/helix/mp3dec.c **** 		if ( (buf[i+0] & SYNCWORDH) == SYNCWORDH && (buf[i+1] & SYNCWORDL) == SYNCWORDL )
+ 165              		.loc 1 109 0 discriminator 1
+ 166 0006 4A1E     		subs	r2, r1, #1
+ 167 0008 9A42     		cmp	r2, r3
+ 168 000a 09DD     		ble	.L22
+ 110:lib/helix/mp3dec.c **** 			return i;
+ 169              		.loc 1 110 0 is_stmt 1
+ 170 000c C25C     		ldrb	r2, [r0, r3]	@ zero_extendqisi2
+ 171 000e FF2A     		cmp	r2, #255
+ 172 0010 F8D1     		bne	.L19
+ 110:lib/helix/mp3dec.c **** 			return i;
+ 173              		.loc 1 110 0 is_stmt 0 discriminator 1
+ 174 0012 C218     		adds	r2, r0, r3
+ 175 0014 5278     		ldrb	r2, [r2, #1]	@ zero_extendqisi2
+ 176 0016 02F0E002 		and	r2, r2, #224
+ 177 001a E02A     		cmp	r2, #224
+ 178 001c F2D1     		bne	.L19
+ 179 001e 01E0     		b	.L17
+ 180              	.L22:
+ 114:lib/helix/mp3dec.c **** }
+ 181              		.loc 1 114 0 is_stmt 1
+ 182 0020 4FF0FF33 		mov	r3, #-1
+ 183              	.LVL13:
+ 184              	.L17:
+ 115:lib/helix/mp3dec.c **** 
+ 185              		.loc 1 115 0
+ 186 0024 1846     		mov	r0, r3
+ 187              	.LVL14:
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccIgt8X7.s 			page 9
+
+
+ 188 0026 7047     		bx	lr
+ 189              		.cfi_endproc
+ 190              	.LFE2:
+ 192              		.section	.text.MP3FindFreeSync,"ax",%progbits
+ 193              		.align	1
+ 194              		.syntax unified
+ 195              		.thumb
+ 196              		.thumb_func
+ 197              		.fpu fpv5-sp-d16
+ 199              	MP3FindFreeSync:
+ 200              	.LFB3:
+ 142:lib/helix/mp3dec.c **** 	int offset = 0;
+ 201              		.loc 1 142 0
+ 202              		.cfi_startproc
+ 203              		@ args = 0, pretend = 0, frame = 0
+ 204              		@ frame_needed = 0, uses_anonymous_args = 0
+ 205              	.LVL15:
+ 206 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 207              	.LCFI5:
+ 208              		.cfi_def_cfa_offset 24
+ 209              		.cfi_offset 3, -24
+ 210              		.cfi_offset 4, -20
+ 211              		.cfi_offset 5, -16
+ 212              		.cfi_offset 6, -12
+ 213              		.cfi_offset 7, -8
+ 214              		.cfi_offset 14, -4
+ 215 0002 0746     		mov	r7, r0
+ 216 0004 0E46     		mov	r6, r1
+ 217 0006 1546     		mov	r5, r2
+ 218              	.LVL16:
+ 144:lib/helix/mp3dec.c **** 
+ 219              		.loc 1 144 0
+ 220 0008 0446     		mov	r4, r0
+ 221 000a 02E0     		b	.L27
+ 222              	.LVL17:
+ 223              	.L25:
+ 162:lib/helix/mp3dec.c **** 		nBytes -= (offset + 3);
+ 224              		.loc 1 162 0
+ 225 000c DC1C     		adds	r4, r3, #3
+ 226              	.LVL18:
+ 163:lib/helix/mp3dec.c **** 	};
+ 227              		.loc 1 163 0
+ 228 000e 0330     		adds	r0, r0, #3
+ 229              	.LVL19:
+ 230 0010 2D1A     		subs	r5, r5, r0
+ 231              	.LVL20:
+ 232              	.L27:
+ 152:lib/helix/mp3dec.c **** 		bufPtr += offset;
+ 233              		.loc 1 152 0
+ 234 0012 2946     		mov	r1, r5
+ 235 0014 2046     		mov	r0, r4
+ 236 0016 FFF7FEFF 		bl	MP3FindSyncWord
+ 237              	.LVL21:
+ 153:lib/helix/mp3dec.c **** 		if (offset < 0) {
+ 238              		.loc 1 153 0
+ 239 001a 2318     		adds	r3, r4, r0
+ 240              	.LVL22:
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccIgt8X7.s 			page 10
+
+
+ 154:lib/helix/mp3dec.c **** 			return -1;
+ 241              		.loc 1 154 0
+ 242 001c 0028     		cmp	r0, #0
+ 243 001e 13DB     		blt	.L28
+ 156:lib/helix/mp3dec.c **** 			/* want to return number of bytes per frame, NOT counting the padding byte, so subtract one if p
+ 244              		.loc 1 156 0
+ 245 0020 215C     		ldrb	r1, [r4, r0]	@ zero_extendqisi2
+ 246 0022 3278     		ldrb	r2, [r6]	@ zero_extendqisi2
+ 247 0024 9142     		cmp	r1, r2
+ 248 0026 F1D1     		bne	.L25
+ 156:lib/helix/mp3dec.c **** 			/* want to return number of bytes per frame, NOT counting the padding byte, so subtract one if p
+ 249              		.loc 1 156 0 is_stmt 0 discriminator 1
+ 250 0028 5978     		ldrb	r1, [r3, #1]	@ zero_extendqisi2
+ 251 002a 7278     		ldrb	r2, [r6, #1]	@ zero_extendqisi2
+ 252 002c 9142     		cmp	r1, r2
+ 253 002e EDD1     		bne	.L25
+ 156:lib/helix/mp3dec.c **** 			/* want to return number of bytes per frame, NOT counting the padding byte, so subtract one if p
+ 254              		.loc 1 156 0 discriminator 2
+ 255 0030 9A78     		ldrb	r2, [r3, #2]	@ zero_extendqisi2
+ 256 0032 B178     		ldrb	r1, [r6, #2]	@ zero_extendqisi2
+ 257 0034 4A40     		eors	r2, r2, r1
+ 258 0036 12F0FC0F 		tst	r2, #252
+ 259 003a E7D1     		bne	.L25
+ 158:lib/helix/mp3dec.c **** 				bufPtr--;
+ 260              		.loc 1 158 0 is_stmt 1
+ 261 003c 11F0020F 		tst	r1, #2
+ 262 0040 00D0     		beq	.L26
+ 159:lib/helix/mp3dec.c **** 			return bufPtr - buf;
+ 263              		.loc 1 159 0
+ 264 0042 013B     		subs	r3, r3, #1
+ 265              	.LVL23:
+ 266              	.L26:
+ 160:lib/helix/mp3dec.c **** 		}
+ 267              		.loc 1 160 0
+ 268 0044 D81B     		subs	r0, r3, r7
+ 269              	.LVL24:
+ 270 0046 01E0     		b	.L23
+ 271              	.LVL25:
+ 272              	.L28:
+ 155:lib/helix/mp3dec.c **** 		} else if ( (bufPtr[0] == firstFH[0]) && (bufPtr[1] == firstFH[1]) && ((bufPtr[2] & 0xfc) == (fir
+ 273              		.loc 1 155 0
+ 274 0048 4FF0FF30 		mov	r0, #-1
+ 275              	.LVL26:
+ 276              	.L23:
+ 167:lib/helix/mp3dec.c **** 
+ 277              		.loc 1 167 0
+ 278 004c F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 279              		.cfi_endproc
+ 280              	.LFE3:
+ 282              		.section	.text.MP3GetLastFrameInfo,"ax",%progbits
+ 283              		.align	1
+ 284              		.global	MP3GetLastFrameInfo
+ 285              		.syntax unified
+ 286              		.thumb
+ 287              		.thumb_func
+ 288              		.fpu fpv5-sp-d16
+ 290              	MP3GetLastFrameInfo:
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccIgt8X7.s 			page 11
+
+
+ 291              	.LFB4:
+ 185:lib/helix/mp3dec.c **** 	MP3DecInfo *mp3DecInfo = (MP3DecInfo *)hMP3Decoder;
+ 292              		.loc 1 185 0
+ 293              		.cfi_startproc
+ 294              		@ args = 0, pretend = 0, frame = 0
+ 295              		@ frame_needed = 0, uses_anonymous_args = 0
+ 296              		@ link register save eliminated.
+ 297              	.LVL27:
+ 188:lib/helix/mp3dec.c **** 		mp3FrameInfo->bitrate = 0;
+ 298              		.loc 1 188 0
+ 299 0000 20B1     		cbz	r0, .L31
+ 300 0002 0346     		mov	r3, r0
+ 188:lib/helix/mp3dec.c **** 		mp3FrameInfo->bitrate = 0;
+ 301              		.loc 1 188 0 is_stmt 0 discriminator 1
+ 302 0004 D0F8D027 		ldr	r2, [r0, #2000]
+ 303 0008 032A     		cmp	r2, #3
+ 304 000a 08D0     		beq	.L32
+ 305              	.L31:
+ 189:lib/helix/mp3dec.c **** 		mp3FrameInfo->nChans = 0;
+ 306              		.loc 1 189 0 is_stmt 1
+ 307 000c 0023     		movs	r3, #0
+ 308 000e 0B60     		str	r3, [r1]
+ 190:lib/helix/mp3dec.c **** 		mp3FrameInfo->samprate = 0;
+ 309              		.loc 1 190 0
+ 310 0010 4B60     		str	r3, [r1, #4]
+ 191:lib/helix/mp3dec.c **** 		mp3FrameInfo->bitsPerSample = 0;
+ 311              		.loc 1 191 0
+ 312 0012 8B60     		str	r3, [r1, #8]
+ 192:lib/helix/mp3dec.c **** 		mp3FrameInfo->outputSamps = 0;
+ 313              		.loc 1 192 0
+ 314 0014 CB60     		str	r3, [r1, #12]
+ 193:lib/helix/mp3dec.c **** 		mp3FrameInfo->layer = 0;
+ 315              		.loc 1 193 0
+ 316 0016 0B61     		str	r3, [r1, #16]
+ 194:lib/helix/mp3dec.c **** 		mp3FrameInfo->version = 0;
+ 317              		.loc 1 194 0
+ 318 0018 4B61     		str	r3, [r1, #20]
+ 195:lib/helix/mp3dec.c **** 	} else {
+ 319              		.loc 1 195 0
+ 320 001a 8B61     		str	r3, [r1, #24]
+ 321 001c 7047     		bx	lr
+ 322              	.L32:
+ 185:lib/helix/mp3dec.c **** 	MP3DecInfo *mp3DecInfo = (MP3DecInfo *)hMP3Decoder;
+ 323              		.loc 1 185 0
+ 324 001e 10B4     		push	{r4}
+ 325              	.LCFI6:
+ 326              		.cfi_def_cfa_offset 4
+ 327              		.cfi_offset 4, -4
+ 197:lib/helix/mp3dec.c **** 		mp3FrameInfo->nChans = mp3DecInfo->nChans;
+ 328              		.loc 1 197 0
+ 329 0020 D0F8B827 		ldr	r2, [r0, #1976]
+ 330 0024 0A60     		str	r2, [r1]
+ 198:lib/helix/mp3dec.c **** 		mp3FrameInfo->samprate = mp3DecInfo->samprate;
+ 331              		.loc 1 198 0
+ 332 0026 D0F8BC27 		ldr	r2, [r0, #1980]
+ 333 002a 4A60     		str	r2, [r1, #4]
+ 199:lib/helix/mp3dec.c **** 		mp3FrameInfo->bitsPerSample = 16;
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccIgt8X7.s 			page 12
+
+
+ 334              		.loc 1 199 0
+ 335 002c D0F8C027 		ldr	r2, [r0, #1984]
+ 336 0030 8A60     		str	r2, [r1, #8]
+ 200:lib/helix/mp3dec.c **** 		mp3FrameInfo->outputSamps = mp3DecInfo->nChans * (int)samplesPerFrameTab[mp3DecInfo->version][mp3
+ 337              		.loc 1 200 0
+ 338 0032 1022     		movs	r2, #16
+ 339 0034 CA60     		str	r2, [r1, #12]
+ 201:lib/helix/mp3dec.c **** 		mp3FrameInfo->layer = mp3DecInfo->layer;
+ 340              		.loc 1 201 0
+ 341 0036 D0F8BC47 		ldr	r4, [r0, #1980]
+ 342 003a 90F8D427 		ldrb	r2, [r0, #2004]	@ zero_extendqisi2
+ 343 003e D0F8D007 		ldr	r0, [r0, #2000]
+ 344              	.LVL28:
+ 345 0042 0138     		subs	r0, r0, #1
+ 346 0044 02EB4202 		add	r2, r2, r2, lsl #1
+ 347 0048 0244     		add	r2, r2, r0
+ 348 004a 0748     		ldr	r0, .L37
+ 349 004c 30F91220 		ldrsh	r2, [r0, r2, lsl #1]
+ 350 0050 02FB04F2 		mul	r2, r2, r4
+ 351 0054 0A61     		str	r2, [r1, #16]
+ 202:lib/helix/mp3dec.c **** 		mp3FrameInfo->version = mp3DecInfo->version;
+ 352              		.loc 1 202 0
+ 353 0056 D3F8D027 		ldr	r2, [r3, #2000]
+ 354 005a 4A61     		str	r2, [r1, #20]
+ 203:lib/helix/mp3dec.c **** 	}
+ 355              		.loc 1 203 0
+ 356 005c 93F8D437 		ldrb	r3, [r3, #2004]	@ zero_extendqisi2
+ 357              	.LVL29:
+ 358 0060 8B61     		str	r3, [r1, #24]
+ 205:lib/helix/mp3dec.c **** 
+ 359              		.loc 1 205 0
+ 360 0062 5DF8044B 		ldr	r4, [sp], #4
+ 361              	.LCFI7:
+ 362              		.cfi_restore 4
+ 363              		.cfi_def_cfa_offset 0
+ 364 0066 7047     		bx	lr
+ 365              	.L38:
+ 366              		.align	2
+ 367              	.L37:
+ 368 0068 00000000 		.word	xmp3fixpt_samplesPerFrameTab
+ 369              		.cfi_endproc
+ 370              	.LFE4:
+ 372              		.section	.text.MP3GetNextFrameInfo,"ax",%progbits
+ 373              		.align	1
+ 374              		.global	MP3GetNextFrameInfo
+ 375              		.syntax unified
+ 376              		.thumb
+ 377              		.thumb_func
+ 378              		.fpu fpv5-sp-d16
+ 380              	MP3GetNextFrameInfo:
+ 381              	.LFB5:
+ 222:lib/helix/mp3dec.c **** 	MP3DecInfo *mp3DecInfo = (MP3DecInfo *)hMP3Decoder;
+ 382              		.loc 1 222 0
+ 383              		.cfi_startproc
+ 384              		@ args = 0, pretend = 0, frame = 0
+ 385              		@ frame_needed = 0, uses_anonymous_args = 0
+ 386              	.LVL30:
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccIgt8X7.s 			page 13
+
+
+ 225:lib/helix/mp3dec.c **** 		return ERR_MP3_NULL_POINTER;
+ 387              		.loc 1 225 0
+ 388 0000 90B1     		cbz	r0, .L41
+ 222:lib/helix/mp3dec.c **** 	MP3DecInfo *mp3DecInfo = (MP3DecInfo *)hMP3Decoder;
+ 389              		.loc 1 222 0
+ 390 0002 38B5     		push	{r3, r4, r5, lr}
+ 391              	.LCFI8:
+ 392              		.cfi_def_cfa_offset 16
+ 393              		.cfi_offset 3, -16
+ 394              		.cfi_offset 4, -12
+ 395              		.cfi_offset 5, -8
+ 396              		.cfi_offset 14, -4
+ 397 0004 0446     		mov	r4, r0
+ 398 0006 0D46     		mov	r5, r1
+ 228:lib/helix/mp3dec.c **** 		return ERR_MP3_INVALID_FRAMEHEADER;
+ 399              		.loc 1 228 0
+ 400 0008 1146     		mov	r1, r2
+ 401              	.LVL31:
+ 402 000a FFF7FEFF 		bl	xmp3fixpt_UnpackFrameHeader
+ 403              	.LVL32:
+ 404 000e B0F1FF3F 		cmp	r0, #-1
+ 405 0012 0CD0     		beq	.L42
+ 228:lib/helix/mp3dec.c **** 		return ERR_MP3_INVALID_FRAMEHEADER;
+ 406              		.loc 1 228 0 is_stmt 0 discriminator 1
+ 407 0014 D4F8D037 		ldr	r3, [r4, #2000]
+ 408 0018 032B     		cmp	r3, #3
+ 409 001a 0BD1     		bne	.L43
+ 231:lib/helix/mp3dec.c **** 
+ 410              		.loc 1 231 0 is_stmt 1
+ 411 001c 2946     		mov	r1, r5
+ 412 001e 2046     		mov	r0, r4
+ 413 0020 FFF7FEFF 		bl	MP3GetLastFrameInfo
+ 414              	.LVL33:
+ 233:lib/helix/mp3dec.c **** }
+ 415              		.loc 1 233 0
+ 416 0024 0020     		movs	r0, #0
+ 417              	.L39:
+ 234:lib/helix/mp3dec.c **** 
+ 418              		.loc 1 234 0
+ 419 0026 38BD     		pop	{r3, r4, r5, pc}
+ 420              	.LVL34:
+ 421              	.L41:
+ 422              	.LCFI9:
+ 423              		.cfi_def_cfa_offset 0
+ 424              		.cfi_restore 3
+ 425              		.cfi_restore 4
+ 426              		.cfi_restore 5
+ 427              		.cfi_restore 14
+ 226:lib/helix/mp3dec.c **** 
+ 428              		.loc 1 226 0
+ 429 0028 6FF00400 		mvn	r0, #4
+ 430              	.LVL35:
+ 234:lib/helix/mp3dec.c **** 
+ 431              		.loc 1 234 0
+ 432 002c 7047     		bx	lr
+ 433              	.LVL36:
+ 434              	.L42:
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccIgt8X7.s 			page 14
+
+
+ 435              	.LCFI10:
+ 436              		.cfi_def_cfa_offset 16
+ 437              		.cfi_offset 3, -16
+ 438              		.cfi_offset 4, -12
+ 439              		.cfi_offset 5, -8
+ 440              		.cfi_offset 14, -4
+ 229:lib/helix/mp3dec.c **** 
+ 441              		.loc 1 229 0
+ 442 002e 6FF00500 		mvn	r0, #5
+ 443 0032 F8E7     		b	.L39
+ 444              	.L43:
+ 445 0034 6FF00500 		mvn	r0, #5
+ 446 0038 F5E7     		b	.L39
+ 447              		.cfi_endproc
+ 448              	.LFE5:
+ 450              		.section	.text.MP3Decode,"ax",%progbits
+ 451              		.align	1
+ 452              		.global	MP3Decode
+ 453              		.syntax unified
+ 454              		.thumb
+ 455              		.thumb_func
+ 456              		.fpu fpv5-sp-d16
+ 458              	MP3Decode:
+ 459              	.LFB7:
+ 258:lib/helix/mp3dec.c **** 
+ 259:lib/helix/mp3dec.c **** /**************************************************************************************
+ 260:lib/helix/mp3dec.c ****  * Function:    MP3Decode
+ 261:lib/helix/mp3dec.c ****  *
+ 262:lib/helix/mp3dec.c ****  * Description: decode one frame of MP3 data
+ 263:lib/helix/mp3dec.c ****  *
+ 264:lib/helix/mp3dec.c ****  * Inputs:      valid MP3 decoder instance pointer (HMP3Decoder)
+ 265:lib/helix/mp3dec.c ****  *              double pointer to buffer of MP3 data (containing headers + mainData)
+ 266:lib/helix/mp3dec.c ****  *              number of valid bytes remaining in inbuf
+ 267:lib/helix/mp3dec.c ****  *              pointer to outbuf, big enough to hold one frame of decoded PCM samples
+ 268:lib/helix/mp3dec.c ****  *              flag indicating whether MP3 data is normal MPEG format (useSize = 0)
+ 269:lib/helix/mp3dec.c ****  *                or reformatted as "self-contained" frames (useSize = 1)
+ 270:lib/helix/mp3dec.c ****  *
+ 271:lib/helix/mp3dec.c ****  * Outputs:     PCM data in outbuf, interleaved LRLRLR... if stereo
+ 272:lib/helix/mp3dec.c ****  *                number of output samples = nGrans * nGranSamps * nChans
+ 273:lib/helix/mp3dec.c ****  *              updated inbuf pointer, updated bytesLeft
+ 274:lib/helix/mp3dec.c ****  *
+ 275:lib/helix/mp3dec.c ****  * Return:      error code, defined in mp3dec.h (0 means no error, < 0 means error)
+ 276:lib/helix/mp3dec.c ****  *
+ 277:lib/helix/mp3dec.c ****  * Notes:       switching useSize on and off between frames in the same stream 
+ 278:lib/helix/mp3dec.c ****  *                is not supported (bit reservoir is not maintained if useSize on)
+ 279:lib/helix/mp3dec.c ****  **************************************************************************************/
+ 280:lib/helix/mp3dec.c **** int MP3Decode(HMP3Decoder hMP3Decoder, unsigned char **inbuf, int *bytesLeft, short *outbuf, int us
+ 281:lib/helix/mp3dec.c **** {
+ 460              		.loc 1 281 0
+ 461              		.cfi_startproc
+ 462              		@ args = 4, pretend = 0, frame = 8
+ 463              		@ frame_needed = 0, uses_anonymous_args = 0
+ 464              	.LVL37:
+ 282:lib/helix/mp3dec.c **** 	int offset, bitOffset, mainBits, gr, ch, fhBytes, siBytes, freeFrameBytes;
+ 283:lib/helix/mp3dec.c **** 	int prevBitOffset, sfBlockBits, huffBlockBits;
+ 284:lib/helix/mp3dec.c **** 	unsigned char *mainPtr;
+ 285:lib/helix/mp3dec.c **** 	MP3DecInfo *mp3DecInfo = (MP3DecInfo *)hMP3Decoder;
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccIgt8X7.s 			page 15
+
+
+ 286:lib/helix/mp3dec.c **** //	ULONG32 ulTime;
+ 287:lib/helix/mp3dec.c **** //	StartYield(&ulTime);
+ 288:lib/helix/mp3dec.c **** 	if (!mp3DecInfo)
+ 465              		.loc 1 288 0
+ 466 0000 0028     		cmp	r0, #0
+ 467 0002 00F05981 		beq	.L70
+ 281:lib/helix/mp3dec.c **** 	int offset, bitOffset, mainBits, gr, ch, fhBytes, siBytes, freeFrameBytes;
+ 468              		.loc 1 281 0
+ 469 0006 2DE9F047 		push	{r4, r5, r6, r7, r8, r9, r10, lr}
+ 470              	.LCFI11:
+ 471              		.cfi_def_cfa_offset 32
+ 472              		.cfi_offset 4, -32
+ 473              		.cfi_offset 5, -28
+ 474              		.cfi_offset 6, -24
+ 475              		.cfi_offset 7, -20
+ 476              		.cfi_offset 8, -16
+ 477              		.cfi_offset 9, -12
+ 478              		.cfi_offset 10, -8
+ 479              		.cfi_offset 14, -4
+ 480 000a 84B0     		sub	sp, sp, #16
+ 481              	.LCFI12:
+ 482              		.cfi_def_cfa_offset 48
+ 483 000c 0446     		mov	r4, r0
+ 484 000e 9A46     		mov	r10, r3
+ 485 0010 1746     		mov	r7, r2
+ 486 0012 0D46     		mov	r5, r1
+ 289:lib/helix/mp3dec.c **** 		return ERR_MP3_NULL_POINTER;
+ 290:lib/helix/mp3dec.c **** 
+ 291:lib/helix/mp3dec.c **** 	/* unpack frame header */
+ 292:lib/helix/mp3dec.c **** 	fhBytes = UnpackFrameHeader(mp3DecInfo, *inbuf);
+ 487              		.loc 1 292 0
+ 488 0014 0968     		ldr	r1, [r1]
+ 489              	.LVL38:
+ 490 0016 FFF7FEFF 		bl	xmp3fixpt_UnpackFrameHeader
+ 491              	.LVL39:
+ 293:lib/helix/mp3dec.c **** 	if (fhBytes < 0)	
+ 492              		.loc 1 293 0
+ 493 001a 061E     		subs	r6, r0, #0
+ 494 001c C0F24F81 		blt	.L71
+ 294:lib/helix/mp3dec.c **** 		return ERR_MP3_INVALID_FRAMEHEADER;		/* don't clear outbuf since we don't know size (failed to pa
+ 295:lib/helix/mp3dec.c **** 	*inbuf += fhBytes;
+ 495              		.loc 1 295 0
+ 496 0020 2968     		ldr	r1, [r5]
+ 497 0022 3144     		add	r1, r1, r6
+ 498 0024 2960     		str	r1, [r5]
+ 296:lib/helix/mp3dec.c **** 	
+ 297:lib/helix/mp3dec.c **** 	/* unpack side info */
+ 298:lib/helix/mp3dec.c **** 	siBytes = UnpackSideInfo(mp3DecInfo, *inbuf);
+ 499              		.loc 1 298 0
+ 500 0026 2046     		mov	r0, r4
+ 501              	.LVL40:
+ 502 0028 FFF7FEFF 		bl	xmp3fixpt_UnpackSideInfo
+ 503              	.LVL41:
+ 299:lib/helix/mp3dec.c **** 	if (siBytes < 0) {
+ 504              		.loc 1 299 0
+ 505 002c B0F10008 		subs	r8, r0, #0
+ 506 0030 C0F29480 		blt	.L78
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccIgt8X7.s 			page 16
+
+
+ 300:lib/helix/mp3dec.c **** 		MP3ClearBadFrame(mp3DecInfo, outbuf);
+ 301:lib/helix/mp3dec.c **** 		return ERR_MP3_INVALID_SIDEINFO;
+ 302:lib/helix/mp3dec.c **** 	}
+ 303:lib/helix/mp3dec.c **** 	*inbuf += siBytes;
+ 507              		.loc 1 303 0
+ 508 0034 2B68     		ldr	r3, [r5]
+ 509 0036 4344     		add	r3, r3, r8
+ 510 0038 2B60     		str	r3, [r5]
+ 304:lib/helix/mp3dec.c **** 	*bytesLeft -= (fhBytes + siBytes);
+ 511              		.loc 1 304 0
+ 512 003a 06EB0802 		add	r2, r6, r8
+ 513 003e 3B68     		ldr	r3, [r7]
+ 514 0040 9B1A     		subs	r3, r3, r2
+ 515 0042 3B60     		str	r3, [r7]
+ 305:lib/helix/mp3dec.c **** 	
+ 306:lib/helix/mp3dec.c **** 	/* if free mode, need to calculate bitrate and nSlots manually, based on frame size */
+ 307:lib/helix/mp3dec.c **** 	if (mp3DecInfo->bitrate == 0 || mp3DecInfo->freeBitrateFlag) {
+ 516              		.loc 1 307 0
+ 517 0044 D4F8B837 		ldr	r3, [r4, #1976]
+ 518 0048 13B1     		cbz	r3, .L51
+ 519              		.loc 1 307 0 is_stmt 0 discriminator 1
+ 520 004a D4F8B037 		ldr	r3, [r4, #1968]
+ 521 004e 53B3     		cbz	r3, .L52
+ 522              	.L51:
+ 308:lib/helix/mp3dec.c **** 		if (!mp3DecInfo->freeBitrateFlag) {
+ 523              		.loc 1 308 0 is_stmt 1
+ 524 0050 D4F8B037 		ldr	r3, [r4, #1968]
+ 525 0054 FBB9     		cbnz	r3, .L53
+ 309:lib/helix/mp3dec.c **** 			/* first time through, need to scan for next sync word and figure out frame size */
+ 310:lib/helix/mp3dec.c **** 			mp3DecInfo->freeBitrateFlag = 1;
+ 526              		.loc 1 310 0
+ 527 0056 0123     		movs	r3, #1
+ 528 0058 C4F8B037 		str	r3, [r4, #1968]
+ 311:lib/helix/mp3dec.c **** 			mp3DecInfo->freeBitrateSlots = MP3FindFreeSync(*inbuf, *inbuf - fhBytes - siBytes, *bytesLeft);
+ 529              		.loc 1 311 0
+ 530 005c 2868     		ldr	r0, [r5]
+ 531              	.LVL42:
+ 532 005e 7142     		negs	r1, r6
+ 533 0060 A1EB0801 		sub	r1, r1, r8
+ 534 0064 3A68     		ldr	r2, [r7]
+ 535 0066 0144     		add	r1, r1, r0
+ 536 0068 FFF7FEFF 		bl	MP3FindFreeSync
+ 537              	.LVL43:
+ 538 006c C4F8B407 		str	r0, [r4, #1972]
+ 312:lib/helix/mp3dec.c **** 			if (mp3DecInfo->freeBitrateSlots < 0) {
+ 539              		.loc 1 312 0
+ 540 0070 0028     		cmp	r0, #0
+ 541 0072 7ADB     		blt	.L79
+ 313:lib/helix/mp3dec.c **** 				MP3ClearBadFrame(mp3DecInfo, outbuf);
+ 314:lib/helix/mp3dec.c **** 				return ERR_MP3_FREE_BITRATE_SYNC;
+ 315:lib/helix/mp3dec.c **** 			}
+ 316:lib/helix/mp3dec.c **** 			freeFrameBytes = mp3DecInfo->freeBitrateSlots + fhBytes + siBytes;
+ 542              		.loc 1 316 0
+ 543 0074 8319     		adds	r3, r0, r6
+ 544 0076 4344     		add	r3, r3, r8
+ 545              	.LVL44:
+ 317:lib/helix/mp3dec.c **** 			mp3DecInfo->bitrate = (freeFrameBytes * mp3DecInfo->samprate * 8) / (mp3DecInfo->nGrans * mp3Dec
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccIgt8X7.s 			page 17
+
+
+ 546              		.loc 1 317 0
+ 547 0078 D4F8C027 		ldr	r2, [r4, #1984]
+ 548 007c 03FB02F3 		mul	r3, r3, r2
+ 549              	.LVL45:
+ 550 0080 DB00     		lsls	r3, r3, #3
+ 551 0082 D4F8C417 		ldr	r1, [r4, #1988]
+ 552 0086 D4F8C827 		ldr	r2, [r4, #1992]
+ 553 008a 02FB01F2 		mul	r2, r2, r1
+ 554 008e 93FBF2F3 		sdiv	r3, r3, r2
+ 555 0092 C4F8B837 		str	r3, [r4, #1976]
+ 556              	.LVL46:
+ 557              	.L53:
+ 318:lib/helix/mp3dec.c **** 		}
+ 319:lib/helix/mp3dec.c **** 		mp3DecInfo->nSlots = mp3DecInfo->freeBitrateSlots + CheckPadBit(mp3DecInfo);	/* add pad byte, if 
+ 558              		.loc 1 319 0
+ 559 0096 D4F8B467 		ldr	r6, [r4, #1972]
+ 560              	.LVL47:
+ 561 009a 2046     		mov	r0, r4
+ 562 009c FFF7FEFF 		bl	xmp3fixpt_CheckPadBit
+ 563              	.LVL48:
+ 564 00a0 3044     		add	r0, r0, r6
+ 565 00a2 C4F8CC07 		str	r0, [r4, #1996]
+ 566              	.L52:
+ 320:lib/helix/mp3dec.c **** 	}
+ 321:lib/helix/mp3dec.c **** 
+ 322:lib/helix/mp3dec.c **** 	/* useSize != 0 means we're getting reformatted (RTP) packets (see RFC 3119)
+ 323:lib/helix/mp3dec.c **** 	 *  - calling function assembles "self-contained" MP3 frames by shifting any main_data 
+ 324:lib/helix/mp3dec.c **** 	 *      from the bit reservoir (in previous frames) to AFTER the sync word and side info
+ 325:lib/helix/mp3dec.c **** 	 *  - calling function should set mainDataBegin to 0, and tell us exactly how large this
+ 326:lib/helix/mp3dec.c **** 	 *      frame is (in bytesLeft)
+ 327:lib/helix/mp3dec.c **** 	 */
+ 328:lib/helix/mp3dec.c **** 	if (useSize) {
+ 567              		.loc 1 328 0
+ 568 00a6 0C9B     		ldr	r3, [sp, #48]
+ 569 00a8 002B     		cmp	r3, #0
+ 570 00aa 6CD0     		beq	.L55
+ 329:lib/helix/mp3dec.c **** 		mp3DecInfo->nSlots = *bytesLeft;
+ 571              		.loc 1 329 0
+ 572 00ac 3B68     		ldr	r3, [r7]
+ 573 00ae C4F8CC37 		str	r3, [r4, #1996]
+ 330:lib/helix/mp3dec.c **** 		if (mp3DecInfo->mainDataBegin != 0 || mp3DecInfo->nSlots <= 0) {
+ 574              		.loc 1 330 0
+ 575 00b2 D4F8D827 		ldr	r2, [r4, #2008]
+ 576 00b6 002A     		cmp	r2, #0
+ 577 00b8 5ED1     		bne	.L56
+ 578              		.loc 1 330 0 is_stmt 0 discriminator 1
+ 579 00ba 002B     		cmp	r3, #0
+ 580 00bc 5CDD     		ble	.L56
+ 331:lib/helix/mp3dec.c **** 			/* error - non self-contained frame, or missing frame (size <= 0), could do loss concealment her
+ 332:lib/helix/mp3dec.c **** 			MP3ClearBadFrame(mp3DecInfo, outbuf);
+ 333:lib/helix/mp3dec.c **** 			return ERR_MP3_INVALID_FRAMEHEADER;
+ 334:lib/helix/mp3dec.c **** 		}
+ 335:lib/helix/mp3dec.c **** 
+ 336:lib/helix/mp3dec.c **** 		/* can operate in-place on reformatted frames */
+ 337:lib/helix/mp3dec.c **** 		mp3DecInfo->mainDataBytes = mp3DecInfo->nSlots;
+ 581              		.loc 1 337 0 is_stmt 1
+ 582 00be C4F8DC37 		str	r3, [r4, #2012]
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccIgt8X7.s 			page 18
+
+
+ 338:lib/helix/mp3dec.c **** 		mainPtr = *inbuf;
+ 583              		.loc 1 338 0
+ 584 00c2 2E68     		ldr	r6, [r5]
+ 585              	.LVL49:
+ 339:lib/helix/mp3dec.c **** 		*inbuf += mp3DecInfo->nSlots;
+ 586              		.loc 1 339 0
+ 587 00c4 3344     		add	r3, r3, r6
+ 588 00c6 2B60     		str	r3, [r5]
+ 340:lib/helix/mp3dec.c **** 		*bytesLeft -= (mp3DecInfo->nSlots);
+ 589              		.loc 1 340 0
+ 590 00c8 D4F8CC27 		ldr	r2, [r4, #1996]
+ 591 00cc 3B68     		ldr	r3, [r7]
+ 592 00ce 9B1A     		subs	r3, r3, r2
+ 593 00d0 3B60     		str	r3, [r7]
+ 594              	.L58:
+ 341:lib/helix/mp3dec.c **** 	} else {
+ 342:lib/helix/mp3dec.c **** 		/* out of data - assume last or truncated frame */
+ 343:lib/helix/mp3dec.c **** 		if (mp3DecInfo->nSlots > *bytesLeft) {
+ 344:lib/helix/mp3dec.c **** 			MP3ClearBadFrame(mp3DecInfo, outbuf);
+ 345:lib/helix/mp3dec.c **** 			return ERR_MP3_INDATA_UNDERFLOW;	
+ 346:lib/helix/mp3dec.c **** 		}
+ 347:lib/helix/mp3dec.c **** 		/* fill main data buffer with enough new data for this frame */
+ 348:lib/helix/mp3dec.c **** 		if (mp3DecInfo->mainDataBytes >= mp3DecInfo->mainDataBegin) {
+ 349:lib/helix/mp3dec.c **** 			/* adequate "old" main data available (i.e. bit reservoir) */
+ 350:lib/helix/mp3dec.c **** 			memmove(mp3DecInfo->mainBuf, mp3DecInfo->mainBuf + mp3DecInfo->mainDataBytes - mp3DecInfo->mainD
+ 351:lib/helix/mp3dec.c **** 			memcpy(mp3DecInfo->mainBuf + mp3DecInfo->mainDataBegin, *inbuf, mp3DecInfo->nSlots);
+ 352:lib/helix/mp3dec.c **** 
+ 353:lib/helix/mp3dec.c **** 			mp3DecInfo->mainDataBytes = mp3DecInfo->mainDataBegin + mp3DecInfo->nSlots;
+ 354:lib/helix/mp3dec.c **** 			*inbuf += mp3DecInfo->nSlots;
+ 355:lib/helix/mp3dec.c **** 			*bytesLeft -= (mp3DecInfo->nSlots);
+ 356:lib/helix/mp3dec.c **** 			mainPtr = mp3DecInfo->mainBuf;
+ 357:lib/helix/mp3dec.c **** 		} else {
+ 358:lib/helix/mp3dec.c **** 			/* not enough data in bit reservoir from previous frames (perhaps starting in middle of file) */
+ 359:lib/helix/mp3dec.c **** 			memcpy(mp3DecInfo->mainBuf + mp3DecInfo->mainDataBytes, *inbuf, mp3DecInfo->nSlots);
+ 360:lib/helix/mp3dec.c **** 			mp3DecInfo->mainDataBytes += mp3DecInfo->nSlots;
+ 361:lib/helix/mp3dec.c **** 			*inbuf += mp3DecInfo->nSlots;
+ 362:lib/helix/mp3dec.c **** 			*bytesLeft -= (mp3DecInfo->nSlots);
+ 363:lib/helix/mp3dec.c **** 			MP3ClearBadFrame(mp3DecInfo, outbuf);
+ 364:lib/helix/mp3dec.c **** 			return ERR_MP3_MAINDATA_UNDERFLOW;
+ 365:lib/helix/mp3dec.c **** 		}
+ 366:lib/helix/mp3dec.c **** 	}
+ 367:lib/helix/mp3dec.c **** 	bitOffset = 0;
+ 595              		.loc 1 367 0
+ 596 00d2 0023     		movs	r3, #0
+ 597 00d4 0393     		str	r3, [sp, #12]
+ 368:lib/helix/mp3dec.c **** 	mainBits = mp3DecInfo->mainDataBytes * 8;
+ 598              		.loc 1 368 0
+ 599 00d6 D4F8DC27 		ldr	r2, [r4, #2012]
+ 600 00da 4FEAC209 		lsl	r9, r2, #3
+ 601              	.LVL50:
+ 369:lib/helix/mp3dec.c **** 
+ 370:lib/helix/mp3dec.c **** 	/* decode one complete frame */
+ 371:lib/helix/mp3dec.c **** 	for (gr = 0; gr < mp3DecInfo->nGrans; gr++) {
+ 602              		.loc 1 371 0
+ 603 00de 9846     		mov	r8, r3
+ 604              	.LVL51:
+ 605              	.L61:
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccIgt8X7.s 			page 19
+
+
+ 606              		.loc 1 371 0 is_stmt 0 discriminator 1
+ 607 00e0 D4F8C437 		ldr	r3, [r4, #1988]
+ 608 00e4 4345     		cmp	r3, r8
+ 609 00e6 40F3E580 		ble	.L80
+ 372:lib/helix/mp3dec.c **** 		for (ch = 0; ch < mp3DecInfo->nChans; ch++) {
+ 610              		.loc 1 372 0 is_stmt 1
+ 611 00ea 0027     		movs	r7, #0
+ 612              	.L69:
+ 613              	.LVL52:
+ 614              		.loc 1 372 0 is_stmt 0 discriminator 1
+ 615 00ec D4F8BC37 		ldr	r3, [r4, #1980]
+ 616 00f0 BB42     		cmp	r3, r7
+ 617 00f2 40F3A680 		ble	.L81
+ 373:lib/helix/mp3dec.c **** 			/* unpack scale factors and compute size of scale factor block */
+ 374:lib/helix/mp3dec.c **** 			prevBitOffset = bitOffset;
+ 618              		.loc 1 374 0 is_stmt 1
+ 619 00f6 04AA     		add	r2, sp, #16
+ 620 00f8 52F8045D 		ldr	r5, [r2, #-4]!
+ 621              	.LVL53:
+ 375:lib/helix/mp3dec.c **** 			offset = UnpackScaleFactors(mp3DecInfo, mainPtr, &bitOffset, mainBits, gr, ch);
+ 622              		.loc 1 375 0
+ 623 00fc 0197     		str	r7, [sp, #4]
+ 624 00fe CDF80080 		str	r8, [sp]
+ 625 0102 4B46     		mov	r3, r9
+ 626 0104 3146     		mov	r1, r6
+ 627 0106 2046     		mov	r0, r4
+ 628 0108 FFF7FEFF 		bl	xmp3fixpt_UnpackScaleFactors
+ 629              	.LVL54:
+ 376:lib/helix/mp3dec.c **** 
+ 377:lib/helix/mp3dec.c **** 			sfBlockBits = 8*offset - prevBitOffset + bitOffset;
+ 630              		.loc 1 377 0
+ 631 010c C5EBC002 		rsb	r2, r5, r0, lsl #3
+ 632 0110 039D     		ldr	r5, [sp, #12]
+ 633              	.LVL55:
+ 634 0112 2A44     		add	r2, r2, r5
+ 635              	.LVL56:
+ 378:lib/helix/mp3dec.c **** 			huffBlockBits = mp3DecInfo->part23Length[gr][ch] - sfBlockBits;
+ 636              		.loc 1 378 0
+ 637 0114 07EB4803 		add	r3, r7, r8, lsl #1
+ 638 0118 03F5FC73 		add	r3, r3, #504
+ 639 011c 54F82330 		ldr	r3, [r4, r3, lsl #2]
+ 640 0120 9B1A     		subs	r3, r3, r2
+ 641              	.LVL57:
+ 379:lib/helix/mp3dec.c **** 			mainPtr += offset;
+ 642              		.loc 1 379 0
+ 643 0122 0644     		add	r6, r6, r0
+ 644              	.LVL58:
+ 380:lib/helix/mp3dec.c **** 			mainBits -= sfBlockBits;
+ 645              		.loc 1 380 0
+ 646 0124 A9EB0209 		sub	r9, r9, r2
+ 647              	.LVL59:
+ 381:lib/helix/mp3dec.c **** 
+ 382:lib/helix/mp3dec.c **** 			if (offset < 0 || mainBits < huffBlockBits) {
+ 648              		.loc 1 382 0
+ 649 0128 4B45     		cmp	r3, r9
+ 650 012a D4BF     		ite	le
+ 651 012c 0022     		movle	r2, #0
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccIgt8X7.s 			page 20
+
+
+ 652              	.LVL60:
+ 653 012e 0122     		movgt	r2, #1
+ 654 0130 52EAD072 		orrs	r2, r2, r0, lsr #31
+ 655 0134 75D1     		bne	.L82
+ 656              	.LVL61:
+ 383:lib/helix/mp3dec.c **** 				MP3ClearBadFrame(mp3DecInfo, outbuf);
+ 384:lib/helix/mp3dec.c **** 				return ERR_MP3_INVALID_SCALEFACT;
+ 385:lib/helix/mp3dec.c **** 			}
+ 386:lib/helix/mp3dec.c **** 
+ 387:lib/helix/mp3dec.c **** 			/* decode Huffman code words */
+ 388:lib/helix/mp3dec.c **** 			prevBitOffset = bitOffset;
+ 389:lib/helix/mp3dec.c **** 			offset = DecodeHuffman(mp3DecInfo, mainPtr, &bitOffset, huffBlockBits, gr, ch);
+ 657              		.loc 1 389 0
+ 658 0136 0197     		str	r7, [sp, #4]
+ 659 0138 CDF80080 		str	r8, [sp]
+ 660 013c 03AA     		add	r2, sp, #12
+ 661 013e 3146     		mov	r1, r6
+ 662 0140 2046     		mov	r0, r4
+ 663              	.LVL62:
+ 664 0142 FFF7FEFF 		bl	xmp3fixpt_DecodeHuffman
+ 665              	.LVL63:
+ 390:lib/helix/mp3dec.c **** 			if (offset < 0) {
+ 666              		.loc 1 390 0
+ 667 0146 0028     		cmp	r0, #0
+ 668 0148 74DB     		blt	.L83
+ 391:lib/helix/mp3dec.c **** 				MP3ClearBadFrame(mp3DecInfo, outbuf);
+ 392:lib/helix/mp3dec.c **** 				return ERR_MP3_INVALID_HUFFCODES;
+ 393:lib/helix/mp3dec.c **** 			}
+ 394:lib/helix/mp3dec.c **** 
+ 395:lib/helix/mp3dec.c **** 			mainPtr += offset;
+ 669              		.loc 1 395 0 discriminator 2
+ 670 014a 0644     		add	r6, r6, r0
+ 671              	.LVL64:
+ 396:lib/helix/mp3dec.c **** 			mainBits -= (8*offset - prevBitOffset + bitOffset);
+ 672              		.loc 1 396 0 discriminator 2
+ 673 014c C5EBC005 		rsb	r5, r5, r0, lsl #3
+ 674              	.LVL65:
+ 675 0150 039A     		ldr	r2, [sp, #12]
+ 676 0152 1544     		add	r5, r5, r2
+ 677 0154 A9EB0509 		sub	r9, r9, r5
+ 678              	.LVL66:
+ 372:lib/helix/mp3dec.c **** 			/* unpack scale factors and compute size of scale factor block */
+ 679              		.loc 1 372 0 discriminator 2
+ 680 0158 0137     		adds	r7, r7, #1
+ 681              	.LVL67:
+ 682 015a C7E7     		b	.L69
+ 683              	.LVL68:
+ 684              	.L78:
+ 300:lib/helix/mp3dec.c **** 		return ERR_MP3_INVALID_SIDEINFO;
+ 685              		.loc 1 300 0
+ 686 015c 5146     		mov	r1, r10
+ 687 015e 2046     		mov	r0, r4
+ 688              	.LVL69:
+ 689 0160 FFF7FEFF 		bl	MP3ClearBadFrame
+ 690              	.LVL70:
+ 301:lib/helix/mp3dec.c **** 	}
+ 691              		.loc 1 301 0
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccIgt8X7.s 			page 21
+
+
+ 692 0164 6FF00600 		mvn	r0, #6
+ 693 0168 61E0     		b	.L48
+ 694              	.L79:
+ 313:lib/helix/mp3dec.c **** 				return ERR_MP3_FREE_BITRATE_SYNC;
+ 695              		.loc 1 313 0
+ 696 016a 5146     		mov	r1, r10
+ 697 016c 2046     		mov	r0, r4
+ 698 016e FFF7FEFF 		bl	MP3ClearBadFrame
+ 699              	.LVL71:
+ 314:lib/helix/mp3dec.c **** 			}
+ 700              		.loc 1 314 0
+ 701 0172 6FF00200 		mvn	r0, #2
+ 702 0176 5AE0     		b	.L48
+ 703              	.LVL72:
+ 704              	.L56:
+ 332:lib/helix/mp3dec.c **** 			return ERR_MP3_INVALID_FRAMEHEADER;
+ 705              		.loc 1 332 0
+ 706 0178 5146     		mov	r1, r10
+ 707 017a 2046     		mov	r0, r4
+ 708 017c FFF7FEFF 		bl	MP3ClearBadFrame
+ 709              	.LVL73:
+ 333:lib/helix/mp3dec.c **** 		}
+ 710              		.loc 1 333 0
+ 711 0180 6FF00500 		mvn	r0, #5
+ 712 0184 53E0     		b	.L48
+ 713              	.L55:
+ 343:lib/helix/mp3dec.c **** 			MP3ClearBadFrame(mp3DecInfo, outbuf);
+ 714              		.loc 1 343 0
+ 715 0186 D4F8CC17 		ldr	r1, [r4, #1996]
+ 716 018a 3B68     		ldr	r3, [r7]
+ 717 018c 9942     		cmp	r1, r3
+ 718 018e 24DC     		bgt	.L84
+ 348:lib/helix/mp3dec.c **** 			/* adequate "old" main data available (i.e. bit reservoir) */
+ 719              		.loc 1 348 0
+ 720 0190 D4F8DC37 		ldr	r3, [r4, #2012]
+ 721 0194 D4F8D827 		ldr	r2, [r4, #2008]
+ 722 0198 9342     		cmp	r3, r2
+ 723 019a 25DB     		blt	.L60
+ 350:lib/helix/mp3dec.c **** 			memcpy(mp3DecInfo->mainBuf + mp3DecInfo->mainDataBegin, *inbuf, mp3DecInfo->nSlots);
+ 724              		.loc 1 350 0
+ 725 019c 04F11C06 		add	r6, r4, #28
+ 726 01a0 991A     		subs	r1, r3, r2
+ 727 01a2 3144     		add	r1, r1, r6
+ 728 01a4 3046     		mov	r0, r6
+ 729 01a6 FFF7FEFF 		bl	memmove
+ 730              	.LVL74:
+ 351:lib/helix/mp3dec.c **** 
+ 731              		.loc 1 351 0
+ 732 01aa D4F8D807 		ldr	r0, [r4, #2008]
+ 733 01ae D4F8CC27 		ldr	r2, [r4, #1996]
+ 734 01b2 2968     		ldr	r1, [r5]
+ 735 01b4 3044     		add	r0, r0, r6
+ 736 01b6 FFF7FEFF 		bl	memcpy
+ 737              	.LVL75:
+ 353:lib/helix/mp3dec.c **** 			*inbuf += mp3DecInfo->nSlots;
+ 738              		.loc 1 353 0
+ 739 01ba D4F8D827 		ldr	r2, [r4, #2008]
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccIgt8X7.s 			page 22
+
+
+ 740 01be D4F8CC17 		ldr	r1, [r4, #1996]
+ 741 01c2 0A44     		add	r2, r2, r1
+ 742 01c4 C4F8DC27 		str	r2, [r4, #2012]
+ 354:lib/helix/mp3dec.c **** 			*bytesLeft -= (mp3DecInfo->nSlots);
+ 743              		.loc 1 354 0
+ 744 01c8 2B68     		ldr	r3, [r5]
+ 745 01ca 0B44     		add	r3, r3, r1
+ 746 01cc 2B60     		str	r3, [r5]
+ 355:lib/helix/mp3dec.c **** 			mainPtr = mp3DecInfo->mainBuf;
+ 747              		.loc 1 355 0
+ 748 01ce D4F8CC27 		ldr	r2, [r4, #1996]
+ 749 01d2 3B68     		ldr	r3, [r7]
+ 750 01d4 9B1A     		subs	r3, r3, r2
+ 751 01d6 3B60     		str	r3, [r7]
+ 752              	.LVL76:
+ 753 01d8 7BE7     		b	.L58
+ 754              	.LVL77:
+ 755              	.L84:
+ 344:lib/helix/mp3dec.c **** 			return ERR_MP3_INDATA_UNDERFLOW;	
+ 756              		.loc 1 344 0
+ 757 01da 5146     		mov	r1, r10
+ 758 01dc 2046     		mov	r0, r4
+ 759 01de FFF7FEFF 		bl	MP3ClearBadFrame
+ 760              	.LVL78:
+ 345:lib/helix/mp3dec.c **** 		}
+ 761              		.loc 1 345 0
+ 762 01e2 4FF0FF30 		mov	r0, #-1
+ 763 01e6 22E0     		b	.L48
+ 764              	.L60:
+ 359:lib/helix/mp3dec.c **** 			mp3DecInfo->mainDataBytes += mp3DecInfo->nSlots;
+ 765              		.loc 1 359 0
+ 766 01e8 04F11C00 		add	r0, r4, #28
+ 767 01ec 0A46     		mov	r2, r1
+ 768 01ee 2968     		ldr	r1, [r5]
+ 769 01f0 1844     		add	r0, r0, r3
+ 770 01f2 FFF7FEFF 		bl	memcpy
+ 771              	.LVL79:
+ 360:lib/helix/mp3dec.c **** 			*inbuf += mp3DecInfo->nSlots;
+ 772              		.loc 1 360 0
+ 773 01f6 D4F8CC27 		ldr	r2, [r4, #1996]
+ 774 01fa D4F8DC37 		ldr	r3, [r4, #2012]
+ 775 01fe 1344     		add	r3, r3, r2
+ 776 0200 C4F8DC37 		str	r3, [r4, #2012]
+ 361:lib/helix/mp3dec.c **** 			*bytesLeft -= (mp3DecInfo->nSlots);
+ 777              		.loc 1 361 0
+ 778 0204 2B68     		ldr	r3, [r5]
+ 779 0206 1344     		add	r3, r3, r2
+ 780 0208 2B60     		str	r3, [r5]
+ 362:lib/helix/mp3dec.c **** 			MP3ClearBadFrame(mp3DecInfo, outbuf);
+ 781              		.loc 1 362 0
+ 782 020a D4F8CC27 		ldr	r2, [r4, #1996]
+ 783 020e 3B68     		ldr	r3, [r7]
+ 784 0210 9B1A     		subs	r3, r3, r2
+ 785 0212 3B60     		str	r3, [r7]
+ 363:lib/helix/mp3dec.c **** 			return ERR_MP3_MAINDATA_UNDERFLOW;
+ 786              		.loc 1 363 0
+ 787 0214 5146     		mov	r1, r10
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccIgt8X7.s 			page 23
+
+
+ 788 0216 2046     		mov	r0, r4
+ 789 0218 FFF7FEFF 		bl	MP3ClearBadFrame
+ 790              	.LVL80:
+ 364:lib/helix/mp3dec.c **** 		}
+ 791              		.loc 1 364 0
+ 792 021c 6FF00100 		mvn	r0, #1
+ 793 0220 05E0     		b	.L48
+ 794              	.LVL81:
+ 795              	.L82:
+ 383:lib/helix/mp3dec.c **** 				return ERR_MP3_INVALID_SCALEFACT;
+ 796              		.loc 1 383 0
+ 797 0222 5146     		mov	r1, r10
+ 798 0224 2046     		mov	r0, r4
+ 799              	.LVL82:
+ 800 0226 FFF7FEFF 		bl	MP3ClearBadFrame
+ 801              	.LVL83:
+ 384:lib/helix/mp3dec.c **** 			}
+ 802              		.loc 1 384 0
+ 803 022a 6FF00700 		mvn	r0, #7
+ 804              	.LVL84:
+ 805              	.L48:
+ 397:lib/helix/mp3dec.c **** 		}
+ 398:lib/helix/mp3dec.c **** //		YieldIfRequired(&ulTime);
+ 399:lib/helix/mp3dec.c **** 		/* dequantize coefficients, decode stereo, reorder short blocks */
+ 400:lib/helix/mp3dec.c **** 		if (Dequantize(mp3DecInfo, gr) < 0) {
+ 401:lib/helix/mp3dec.c **** 			MP3ClearBadFrame(mp3DecInfo, outbuf);
+ 402:lib/helix/mp3dec.c **** 			return ERR_MP3_INVALID_DEQUANTIZE;			
+ 403:lib/helix/mp3dec.c **** 		}
+ 404:lib/helix/mp3dec.c **** 
+ 405:lib/helix/mp3dec.c **** 		/* alias reduction, inverse MDCT, overlap-add, frequency inversion */
+ 406:lib/helix/mp3dec.c **** 		for (ch = 0; ch < mp3DecInfo->nChans; ch++)
+ 407:lib/helix/mp3dec.c **** 			if (IMDCT(mp3DecInfo, gr, ch) < 0) {
+ 408:lib/helix/mp3dec.c **** 				MP3ClearBadFrame(mp3DecInfo, outbuf);
+ 409:lib/helix/mp3dec.c **** 				return ERR_MP3_INVALID_IMDCT;			
+ 410:lib/helix/mp3dec.c **** 			}
+ 411:lib/helix/mp3dec.c **** 
+ 412:lib/helix/mp3dec.c **** 		/* subband transform - if stereo, interleaves pcm LRLRLR */
+ 413:lib/helix/mp3dec.c **** 		if (Subband(mp3DecInfo, outbuf + gr*mp3DecInfo->nGranSamps*mp3DecInfo->nChans) < 0) {
+ 414:lib/helix/mp3dec.c **** 			MP3ClearBadFrame(mp3DecInfo, outbuf);
+ 415:lib/helix/mp3dec.c **** 			return ERR_MP3_INVALID_SUBBAND;			
+ 416:lib/helix/mp3dec.c **** 		}
+ 417:lib/helix/mp3dec.c **** 	}
+ 418:lib/helix/mp3dec.c **** 	return ERR_MP3_NONE;
+ 419:lib/helix/mp3dec.c **** }
+ 806              		.loc 1 419 0
+ 807 022e 04B0     		add	sp, sp, #16
+ 808              	.LCFI13:
+ 809              		.cfi_remember_state
+ 810              		.cfi_def_cfa_offset 32
+ 811              		@ sp needed
+ 812 0230 BDE8F087 		pop	{r4, r5, r6, r7, r8, r9, r10, pc}
+ 813              	.LVL85:
+ 814              	.L83:
+ 815              	.LCFI14:
+ 816              		.cfi_restore_state
+ 391:lib/helix/mp3dec.c **** 				return ERR_MP3_INVALID_HUFFCODES;
+ 817              		.loc 1 391 0
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccIgt8X7.s 			page 24
+
+
+ 818 0234 5146     		mov	r1, r10
+ 819 0236 2046     		mov	r0, r4
+ 820              	.LVL86:
+ 821 0238 FFF7FEFF 		bl	MP3ClearBadFrame
+ 822              	.LVL87:
+ 392:lib/helix/mp3dec.c **** 			}
+ 823              		.loc 1 392 0
+ 824 023c 6FF00800 		mvn	r0, #8
+ 825 0240 F5E7     		b	.L48
+ 826              	.LVL88:
+ 827              	.L81:
+ 400:lib/helix/mp3dec.c **** 			MP3ClearBadFrame(mp3DecInfo, outbuf);
+ 828              		.loc 1 400 0
+ 829 0242 4146     		mov	r1, r8
+ 830 0244 2046     		mov	r0, r4
+ 831 0246 FFF7FEFF 		bl	xmp3fixpt_Dequantize
+ 832              	.LVL89:
+ 833 024a 0028     		cmp	r0, #0
+ 834 024c 0DDB     		blt	.L85
+ 406:lib/helix/mp3dec.c **** 			if (IMDCT(mp3DecInfo, gr, ch) < 0) {
+ 835              		.loc 1 406 0
+ 836 024e 0025     		movs	r5, #0
+ 837              	.LVL90:
+ 838              	.L65:
+ 406:lib/helix/mp3dec.c **** 			if (IMDCT(mp3DecInfo, gr, ch) < 0) {
+ 839              		.loc 1 406 0 is_stmt 0 discriminator 1
+ 840 0250 D4F8BC17 		ldr	r1, [r4, #1980]
+ 841 0254 A942     		cmp	r1, r5
+ 842 0256 16DD     		ble	.L86
+ 407:lib/helix/mp3dec.c **** 				MP3ClearBadFrame(mp3DecInfo, outbuf);
+ 843              		.loc 1 407 0 is_stmt 1
+ 844 0258 2A46     		mov	r2, r5
+ 845 025a 4146     		mov	r1, r8
+ 846 025c 2046     		mov	r0, r4
+ 847 025e FFF7FEFF 		bl	xmp3fixpt_IMDCT
+ 848              	.LVL91:
+ 849 0262 0028     		cmp	r0, #0
+ 850 0264 08DB     		blt	.L87
+ 406:lib/helix/mp3dec.c **** 			if (IMDCT(mp3DecInfo, gr, ch) < 0) {
+ 851              		.loc 1 406 0 discriminator 2
+ 852 0266 0135     		adds	r5, r5, #1
+ 853              	.LVL92:
+ 854 0268 F2E7     		b	.L65
+ 855              	.LVL93:
+ 856              	.L85:
+ 401:lib/helix/mp3dec.c **** 			return ERR_MP3_INVALID_DEQUANTIZE;			
+ 857              		.loc 1 401 0
+ 858 026a 5146     		mov	r1, r10
+ 859 026c 2046     		mov	r0, r4
+ 860 026e FFF7FEFF 		bl	MP3ClearBadFrame
+ 861              	.LVL94:
+ 402:lib/helix/mp3dec.c **** 		}
+ 862              		.loc 1 402 0
+ 863 0272 6FF00900 		mvn	r0, #9
+ 864 0276 DAE7     		b	.L48
+ 865              	.LVL95:
+ 866              	.L87:
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccIgt8X7.s 			page 25
+
+
+ 408:lib/helix/mp3dec.c **** 				return ERR_MP3_INVALID_IMDCT;			
+ 867              		.loc 1 408 0
+ 868 0278 5146     		mov	r1, r10
+ 869 027a 2046     		mov	r0, r4
+ 870 027c FFF7FEFF 		bl	MP3ClearBadFrame
+ 871              	.LVL96:
+ 409:lib/helix/mp3dec.c **** 			}
+ 872              		.loc 1 409 0
+ 873 0280 6FF00A00 		mvn	r0, #10
+ 874 0284 D3E7     		b	.L48
+ 875              	.L86:
+ 413:lib/helix/mp3dec.c **** 			MP3ClearBadFrame(mp3DecInfo, outbuf);
+ 876              		.loc 1 413 0
+ 877 0286 D4F8C837 		ldr	r3, [r4, #1992]
+ 878 028a 08FB03F3 		mul	r3, r8, r3
+ 879 028e 03FB01F1 		mul	r1, r3, r1
+ 880 0292 0AEB4101 		add	r1, r10, r1, lsl #1
+ 881 0296 2046     		mov	r0, r4
+ 882 0298 FFF7FEFF 		bl	xmp3fixpt_Subband
+ 883              	.LVL97:
+ 884 029c 0028     		cmp	r0, #0
+ 885 029e 02DB     		blt	.L88
+ 371:lib/helix/mp3dec.c **** 		for (ch = 0; ch < mp3DecInfo->nChans; ch++) {
+ 886              		.loc 1 371 0 discriminator 2
+ 887 02a0 08F10108 		add	r8, r8, #1
+ 888              	.LVL98:
+ 889 02a4 1CE7     		b	.L61
+ 890              	.L88:
+ 414:lib/helix/mp3dec.c **** 			return ERR_MP3_INVALID_SUBBAND;			
+ 891              		.loc 1 414 0
+ 892 02a6 5146     		mov	r1, r10
+ 893 02a8 2046     		mov	r0, r4
+ 894 02aa FFF7FEFF 		bl	MP3ClearBadFrame
+ 895              	.LVL99:
+ 415:lib/helix/mp3dec.c **** 		}
+ 896              		.loc 1 415 0
+ 897 02ae 6FF00B00 		mvn	r0, #11
+ 898 02b2 BCE7     		b	.L48
+ 899              	.LVL100:
+ 900              	.L80:
+ 418:lib/helix/mp3dec.c **** }
+ 901              		.loc 1 418 0
+ 902 02b4 0020     		movs	r0, #0
+ 903 02b6 BAE7     		b	.L48
+ 904              	.LVL101:
+ 905              	.L70:
+ 906              	.LCFI15:
+ 907              		.cfi_def_cfa_offset 0
+ 908              		.cfi_restore 4
+ 909              		.cfi_restore 5
+ 910              		.cfi_restore 6
+ 911              		.cfi_restore 7
+ 912              		.cfi_restore 8
+ 913              		.cfi_restore 9
+ 914              		.cfi_restore 10
+ 915              		.cfi_restore 14
+ 289:lib/helix/mp3dec.c **** 
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccIgt8X7.s 			page 26
+
+
+ 916              		.loc 1 289 0
+ 917 02b8 6FF00400 		mvn	r0, #4
+ 918              	.LVL102:
+ 919              		.loc 1 419 0
+ 920 02bc 7047     		bx	lr
+ 921              	.LVL103:
+ 922              	.L71:
+ 923              	.LCFI16:
+ 924              		.cfi_def_cfa_offset 48
+ 925              		.cfi_offset 4, -32
+ 926              		.cfi_offset 5, -28
+ 927              		.cfi_offset 6, -24
+ 928              		.cfi_offset 7, -20
+ 929              		.cfi_offset 8, -16
+ 930              		.cfi_offset 9, -12
+ 931              		.cfi_offset 10, -8
+ 932              		.cfi_offset 14, -4
+ 294:lib/helix/mp3dec.c **** 	*inbuf += fhBytes;
+ 933              		.loc 1 294 0
+ 934 02be 6FF00500 		mvn	r0, #5
+ 935              	.LVL104:
+ 936 02c2 B4E7     		b	.L48
+ 937              		.cfi_endproc
+ 938              	.LFE7:
+ 940              		.text
+ 941              	.Letext0:
+ 942              		.file 2 "c:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\lock.h"
+ 943              		.file 3 "c:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\_types.h"
+ 944              		.file 4 "c:\\program files (x86)\\gnu\\7_2018-q2-update\\lib\\gcc\\arm-none-eabi\\7.3.1\\include\\
+ 945              		.file 5 "c:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\reent.h"
+ 946              		.file 6 "lib/helix/pub/mp3dec.h"
+ 947              		.file 7 "lib/helix/pub/mp3common.h"
+ 948              		.file 8 "c:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\string.h"
+ 949              		.file 9 "<built-in>"
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccIgt8X7.s 			page 27
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 mp3dec.c
+C:\Users\Patryk\AppData\Local\Temp\ccIgt8X7.s:18     .text.MP3ClearBadFrame:00000000 $t
+C:\Users\Patryk\AppData\Local\Temp\ccIgt8X7.s:24     .text.MP3ClearBadFrame:00000000 MP3ClearBadFrame
+C:\Users\Patryk\AppData\Local\Temp\ccIgt8X7.s:76     .text.MP3InitDecoder:00000000 $t
+C:\Users\Patryk\AppData\Local\Temp\ccIgt8X7.s:83     .text.MP3InitDecoder:00000000 MP3InitDecoder
+C:\Users\Patryk\AppData\Local\Temp\ccIgt8X7.s:103    .text.MP3FreeDecoder:00000000 $t
+C:\Users\Patryk\AppData\Local\Temp\ccIgt8X7.s:110    .text.MP3FreeDecoder:00000000 MP3FreeDecoder
+C:\Users\Patryk\AppData\Local\Temp\ccIgt8X7.s:141    .text.MP3FindSyncWord:00000000 $t
+C:\Users\Patryk\AppData\Local\Temp\ccIgt8X7.s:148    .text.MP3FindSyncWord:00000000 MP3FindSyncWord
+C:\Users\Patryk\AppData\Local\Temp\ccIgt8X7.s:193    .text.MP3FindFreeSync:00000000 $t
+C:\Users\Patryk\AppData\Local\Temp\ccIgt8X7.s:199    .text.MP3FindFreeSync:00000000 MP3FindFreeSync
+C:\Users\Patryk\AppData\Local\Temp\ccIgt8X7.s:283    .text.MP3GetLastFrameInfo:00000000 $t
+C:\Users\Patryk\AppData\Local\Temp\ccIgt8X7.s:290    .text.MP3GetLastFrameInfo:00000000 MP3GetLastFrameInfo
+C:\Users\Patryk\AppData\Local\Temp\ccIgt8X7.s:368    .text.MP3GetLastFrameInfo:00000068 $d
+C:\Users\Patryk\AppData\Local\Temp\ccIgt8X7.s:373    .text.MP3GetNextFrameInfo:00000000 $t
+C:\Users\Patryk\AppData\Local\Temp\ccIgt8X7.s:380    .text.MP3GetNextFrameInfo:00000000 MP3GetNextFrameInfo
+C:\Users\Patryk\AppData\Local\Temp\ccIgt8X7.s:451    .text.MP3Decode:00000000 $t
+C:\Users\Patryk\AppData\Local\Temp\ccIgt8X7.s:458    .text.MP3Decode:00000000 MP3Decode
+
+UNDEFINED SYMBOLS
+xmp3fixpt_AllocateBuffers
+xmp3fixpt_FreeBuffers
+xmp3fixpt_samplesPerFrameTab
+xmp3fixpt_UnpackFrameHeader
+xmp3fixpt_UnpackSideInfo
+xmp3fixpt_CheckPadBit
+xmp3fixpt_UnpackScaleFactors
+xmp3fixpt_DecodeHuffman
+memmove
+memcpy
+xmp3fixpt_Dequantize
+xmp3fixpt_IMDCT
+xmp3fixpt_Subband

@@ -1,0 +1,494 @@
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccHdD6zH.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"buffers.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.ClearBuffer,"ax",%progbits
+  18              		.align	1
+  19              		.syntax unified
+  20              		.thumb
+  21              		.thumb_func
+  22              		.fpu fpv5-sp-d16
+  24              	ClearBuffer:
+  25              	.LFB0:
+  26              		.file 1 "lib/helix/real/buffers.c"
+   1:lib/helix/real/buffers.c **** /* ***** BEGIN LICENSE BLOCK ***** 
+   2:lib/helix/real/buffers.c ****  * Version: RCSL 1.0/RPSL 1.0 
+   3:lib/helix/real/buffers.c ****  *  
+   4:lib/helix/real/buffers.c ****  * Portions Copyright (c) 1995-2002 RealNetworks, Inc. All Rights Reserved. 
+   5:lib/helix/real/buffers.c ****  *      
+   6:lib/helix/real/buffers.c ****  * The contents of this file, and the files included with this file, are 
+   7:lib/helix/real/buffers.c ****  * subject to the current version of the RealNetworks Public Source License 
+   8:lib/helix/real/buffers.c ****  * Version 1.0 (the "RPSL") available at 
+   9:lib/helix/real/buffers.c ****  * http://www.helixcommunity.org/content/rpsl unless you have licensed 
+  10:lib/helix/real/buffers.c ****  * the file under the RealNetworks Community Source License Version 1.0 
+  11:lib/helix/real/buffers.c ****  * (the "RCSL") available at http://www.helixcommunity.org/content/rcsl, 
+  12:lib/helix/real/buffers.c ****  * in which case the RCSL will apply. You may also obtain the license terms 
+  13:lib/helix/real/buffers.c ****  * directly from RealNetworks.  You may not use this file except in 
+  14:lib/helix/real/buffers.c ****  * compliance with the RPSL or, if you have a valid RCSL with RealNetworks 
+  15:lib/helix/real/buffers.c ****  * applicable to this file, the RCSL.  Please see the applicable RPSL or 
+  16:lib/helix/real/buffers.c ****  * RCSL for the rights, obligations and limitations governing use of the 
+  17:lib/helix/real/buffers.c ****  * contents of the file.  
+  18:lib/helix/real/buffers.c ****  *  
+  19:lib/helix/real/buffers.c ****  * This file is part of the Helix DNA Technology. RealNetworks is the 
+  20:lib/helix/real/buffers.c ****  * developer of the Original Code and owns the copyrights in the portions 
+  21:lib/helix/real/buffers.c ****  * it created. 
+  22:lib/helix/real/buffers.c ****  *  
+  23:lib/helix/real/buffers.c ****  * This file, and the files included with this file, is distributed and made 
+  24:lib/helix/real/buffers.c ****  * available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER 
+  25:lib/helix/real/buffers.c ****  * EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS ALL SUCH WARRANTIES, 
+  26:lib/helix/real/buffers.c ****  * INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF MERCHANTABILITY, FITNESS 
+  27:lib/helix/real/buffers.c ****  * FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT. 
+  28:lib/helix/real/buffers.c ****  * 
+  29:lib/helix/real/buffers.c ****  * Technology Compatibility Kit Test Suite(s) Location: 
+  30:lib/helix/real/buffers.c ****  *    http://www.helixcommunity.org/content/tck 
+  31:lib/helix/real/buffers.c ****  * 
+  32:lib/helix/real/buffers.c ****  * Contributor(s): 
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccHdD6zH.s 			page 2
+
+
+  33:lib/helix/real/buffers.c ****  *  
+  34:lib/helix/real/buffers.c ****  * ***** END LICENSE BLOCK ***** */ 
+  35:lib/helix/real/buffers.c **** 
+  36:lib/helix/real/buffers.c **** /**************************************************************************************
+  37:lib/helix/real/buffers.c ****  * Fixed-point MP3 decoder
+  38:lib/helix/real/buffers.c ****  * Jon Recker (jrecker@real.com), Ken Cooke (kenc@real.com)
+  39:lib/helix/real/buffers.c ****  * June 2003
+  40:lib/helix/real/buffers.c ****  *
+  41:lib/helix/real/buffers.c ****  * buffers.c - allocation and freeing of internal MP3 decoder buffers
+  42:lib/helix/real/buffers.c ****  *
+  43:lib/helix/real/buffers.c ****  * All memory allocation for the codec is done in this file, so if you don't want 
+  44:lib/helix/real/buffers.c ****  *  to use other the default system malloc() and free() for heap management this is 
+  45:lib/helix/real/buffers.c ****  *  the only file you'll need to change.
+  46:lib/helix/real/buffers.c ****  **************************************************************************************/
+  47:lib/helix/real/buffers.c **** 
+  48:lib/helix/real/buffers.c **** #include <stdlib.h>		/* for malloc, free */
+  49:lib/helix/real/buffers.c **** #include "coder.h"
+  50:lib/helix/real/buffers.c **** 
+  51:lib/helix/real/buffers.c **** /**************************************************************************************
+  52:lib/helix/real/buffers.c ****  * Function:    ClearBuffer
+  53:lib/helix/real/buffers.c ****  *
+  54:lib/helix/real/buffers.c ****  * Description: fill buffer with 0's
+  55:lib/helix/real/buffers.c ****  *
+  56:lib/helix/real/buffers.c ****  * Inputs:      pointer to buffer
+  57:lib/helix/real/buffers.c ****  *              number of bytes to fill with 0
+  58:lib/helix/real/buffers.c ****  *
+  59:lib/helix/real/buffers.c ****  * Outputs:     cleared buffer
+  60:lib/helix/real/buffers.c ****  *
+  61:lib/helix/real/buffers.c ****  * Return:      none
+  62:lib/helix/real/buffers.c ****  *
+  63:lib/helix/real/buffers.c ****  * Notes:       slow, platform-independent equivalent to memset(buf, 0, nBytes)
+  64:lib/helix/real/buffers.c ****  **************************************************************************************/
+  65:lib/helix/real/buffers.c **** static void ClearBuffer(void *buf, int nBytes)
+  66:lib/helix/real/buffers.c **** {
+  27              		.loc 1 66 0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 0
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31              		@ link register save eliminated.
+  32              	.LVL0:
+  67:lib/helix/real/buffers.c **** 	int i;
+  68:lib/helix/real/buffers.c **** 	unsigned char *cbuf = (unsigned char *)buf;
+  69:lib/helix/real/buffers.c **** 
+  70:lib/helix/real/buffers.c **** 	for (i = 0; i < nBytes; i++)
+  33              		.loc 1 70 0
+  34 0000 0023     		movs	r3, #0
+  35 0002 02E0     		b	.L2
+  36              	.LVL1:
+  37              	.L3:
+  71:lib/helix/real/buffers.c **** 		cbuf[i] = 0;
+  38              		.loc 1 71 0 discriminator 3
+  39 0004 0022     		movs	r2, #0
+  40 0006 C254     		strb	r2, [r0, r3]
+  70:lib/helix/real/buffers.c **** 		cbuf[i] = 0;
+  41              		.loc 1 70 0 discriminator 3
+  42 0008 0133     		adds	r3, r3, #1
+  43              	.LVL2:
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccHdD6zH.s 			page 3
+
+
+  44              	.L2:
+  70:lib/helix/real/buffers.c **** 		cbuf[i] = 0;
+  45              		.loc 1 70 0 is_stmt 0 discriminator 1
+  46 000a 8B42     		cmp	r3, r1
+  47 000c FADB     		blt	.L3
+  72:lib/helix/real/buffers.c **** 
+  73:lib/helix/real/buffers.c **** 	return;
+  74:lib/helix/real/buffers.c **** }
+  48              		.loc 1 74 0 is_stmt 1
+  49 000e 7047     		bx	lr
+  50              		.cfi_endproc
+  51              	.LFE0:
+  53              		.section	.text.xmp3fixpt_AllocateBuffers,"ax",%progbits
+  54              		.align	1
+  55              		.global	xmp3fixpt_AllocateBuffers
+  56              		.syntax unified
+  57              		.thumb
+  58              		.thumb_func
+  59              		.fpu fpv5-sp-d16
+  61              	xmp3fixpt_AllocateBuffers:
+  62              	.LFB1:
+  75:lib/helix/real/buffers.c **** 
+  76:lib/helix/real/buffers.c **** /**************************************************************************************
+  77:lib/helix/real/buffers.c ****  * Function:    AllocateBuffers
+  78:lib/helix/real/buffers.c ****  *
+  79:lib/helix/real/buffers.c ****  * Description: allocate all the memory needed for the MP3 decoder
+  80:lib/helix/real/buffers.c ****  *
+  81:lib/helix/real/buffers.c ****  * Inputs:      none
+  82:lib/helix/real/buffers.c ****  *
+  83:lib/helix/real/buffers.c ****  * Outputs:     none
+  84:lib/helix/real/buffers.c ****  *
+  85:lib/helix/real/buffers.c ****  * Return:      pointer to MP3DecInfo structure (initialized with pointers to all 
+  86:lib/helix/real/buffers.c ****  *                the internal buffers needed for decoding, all other members of 
+  87:lib/helix/real/buffers.c ****  *                MP3DecInfo structure set to 0)
+  88:lib/helix/real/buffers.c ****  *
+  89:lib/helix/real/buffers.c ****  * Notes:       if one or more mallocs fail, function frees any buffers already
+  90:lib/helix/real/buffers.c ****  *                allocated before returning
+  91:lib/helix/real/buffers.c ****  **************************************************************************************/
+  92:lib/helix/real/buffers.c **** MP3DecInfo *AllocateBuffers(void)
+  93:lib/helix/real/buffers.c **** {
+  63              		.loc 1 93 0
+  64              		.cfi_startproc
+  65              		@ args = 0, pretend = 0, frame = 0
+  66              		@ frame_needed = 0, uses_anonymous_args = 0
+  67 0000 2DE9F047 		push	{r4, r5, r6, r7, r8, r9, r10, lr}
+  68              	.LCFI0:
+  69              		.cfi_def_cfa_offset 32
+  70              		.cfi_offset 4, -32
+  71              		.cfi_offset 5, -28
+  72              		.cfi_offset 6, -24
+  73              		.cfi_offset 7, -20
+  74              		.cfi_offset 8, -16
+  75              		.cfi_offset 9, -12
+  76              		.cfi_offset 10, -8
+  77              		.cfi_offset 14, -4
+  78              	.LVL3:
+  94:lib/helix/real/buffers.c **** 	MP3DecInfo *mp3DecInfo;
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccHdD6zH.s 			page 4
+
+
+  95:lib/helix/real/buffers.c **** 	FrameHeader *fh;
+  96:lib/helix/real/buffers.c **** 	SideInfo *si;
+  97:lib/helix/real/buffers.c **** 	ScaleFactorInfo *sfi;
+  98:lib/helix/real/buffers.c **** 	HuffmanInfo *hi;
+  99:lib/helix/real/buffers.c **** 	DequantInfo *di;
+ 100:lib/helix/real/buffers.c **** 	IMDCTInfo *mi;
+ 101:lib/helix/real/buffers.c **** 	SubbandInfo *sbi;
+ 102:lib/helix/real/buffers.c **** 
+ 103:lib/helix/real/buffers.c **** 	/*
+ 104:lib/helix/real/buffers.c **** 	 * Use static buffers to make the RAM usage
+ 105:lib/helix/real/buffers.c **** 	 * known at compile time.
+ 106:lib/helix/real/buffers.c **** 	 */
+ 107:lib/helix/real/buffers.c **** 	static MP3DecInfo s_mp3DecInfo;
+ 108:lib/helix/real/buffers.c **** 	static FrameHeader s_fh;
+ 109:lib/helix/real/buffers.c **** 	static SideInfo s_si;
+ 110:lib/helix/real/buffers.c **** 	static ScaleFactorInfo s_sfi;
+ 111:lib/helix/real/buffers.c **** 	static HuffmanInfo s_hi;
+ 112:lib/helix/real/buffers.c **** 	static DequantInfo s_di;
+ 113:lib/helix/real/buffers.c **** 	static IMDCTInfo s_mi;
+ 114:lib/helix/real/buffers.c **** 	static SubbandInfo s_sbi;
+ 115:lib/helix/real/buffers.c **** 	
+ 116:lib/helix/real/buffers.c **** 	mp3DecInfo = &s_mp3DecInfo;
+ 117:lib/helix/real/buffers.c **** 	fh = &s_fh;
+ 118:lib/helix/real/buffers.c **** 	si = &s_si;
+ 119:lib/helix/real/buffers.c **** 	sfi = &s_sfi;
+ 120:lib/helix/real/buffers.c **** 	hi = &s_hi;
+ 121:lib/helix/real/buffers.c **** 	di = &s_di;
+ 122:lib/helix/real/buffers.c **** 	mi = &s_mi;
+ 123:lib/helix/real/buffers.c **** 	sbi = &s_sbi;
+ 124:lib/helix/real/buffers.c **** 
+ 125:lib/helix/real/buffers.c **** //	mp3DecInfo = (MP3DecInfo *)malloc(sizeof(MP3DecInfo));
+ 126:lib/helix/real/buffers.c **** //	if (!mp3DecInfo) {
+ 127:lib/helix/real/buffers.c **** //		return 0;
+ 128:lib/helix/real/buffers.c **** //	}
+ 129:lib/helix/real/buffers.c **** //	ClearBuffer(mp3DecInfo, sizeof(MP3DecInfo));
+ 130:lib/helix/real/buffers.c **** //
+ 131:lib/helix/real/buffers.c **** //	fh =  (FrameHeader *)     malloc(sizeof(FrameHeader));
+ 132:lib/helix/real/buffers.c **** //	si =  (SideInfo *)        malloc(sizeof(SideInfo));
+ 133:lib/helix/real/buffers.c **** //	sfi = (ScaleFactorInfo *) malloc(sizeof(ScaleFactorInfo));
+ 134:lib/helix/real/buffers.c **** //	hi =  (HuffmanInfo *)     malloc(sizeof(HuffmanInfo));
+ 135:lib/helix/real/buffers.c **** //	di =  (DequantInfo *)     malloc(sizeof(DequantInfo));
+ 136:lib/helix/real/buffers.c **** //	mi =  (IMDCTInfo *)       malloc(sizeof(IMDCTInfo));
+ 137:lib/helix/real/buffers.c **** //	sbi = (SubbandInfo *)     malloc(sizeof(SubbandInfo));
+ 138:lib/helix/real/buffers.c **** 
+ 139:lib/helix/real/buffers.c **** 	mp3DecInfo->FrameHeaderPS =     (void *)fh;
+  79              		.loc 1 139 0
+  80 0004 1C4C     		ldr	r4, .L6
+  81 0006 1D48     		ldr	r0, .L6+4
+  82 0008 2060     		str	r0, [r4]
+ 140:lib/helix/real/buffers.c **** 	mp3DecInfo->SideInfoPS =        (void *)si;
+  83              		.loc 1 140 0
+  84 000a DFF880A0 		ldr	r10, .L6+20
+  85 000e C4F804A0 		str	r10, [r4, #4]
+ 141:lib/helix/real/buffers.c **** 	mp3DecInfo->ScaleFactorInfoPS = (void *)sfi;
+  86              		.loc 1 141 0
+  87 0012 DFF87C90 		ldr	r9, .L6+24
+  88 0016 C4F80890 		str	r9, [r4, #8]
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccHdD6zH.s 			page 5
+
+
+ 142:lib/helix/real/buffers.c **** 	mp3DecInfo->HuffmanInfoPS =     (void *)hi;
+  89              		.loc 1 142 0
+  90 001a DFF87880 		ldr	r8, .L6+28
+  91 001e C4F80C80 		str	r8, [r4, #12]
+ 143:lib/helix/real/buffers.c **** 	mp3DecInfo->DequantInfoPS =     (void *)di;
+  92              		.loc 1 143 0
+  93 0022 174F     		ldr	r7, .L6+8
+  94 0024 2761     		str	r7, [r4, #16]
+ 144:lib/helix/real/buffers.c **** 	mp3DecInfo->IMDCTInfoPS =       (void *)mi;
+  95              		.loc 1 144 0
+  96 0026 174E     		ldr	r6, .L6+12
+  97 0028 6661     		str	r6, [r4, #20]
+ 145:lib/helix/real/buffers.c **** 	mp3DecInfo->SubbandInfoPS =     (void *)sbi;
+  98              		.loc 1 145 0
+  99 002a 174D     		ldr	r5, .L6+16
+ 100 002c A561     		str	r5, [r4, #24]
+ 146:lib/helix/real/buffers.c **** 
+ 147:lib/helix/real/buffers.c **** 	if (!fh || !si || !sfi || !hi || !di || !mi || !sbi) {
+ 148:lib/helix/real/buffers.c **** 		FreeBuffers(mp3DecInfo);	/* safe to call - only frees memory that was successfully allocated */
+ 149:lib/helix/real/buffers.c **** 		return 0;
+ 150:lib/helix/real/buffers.c **** 	}
+ 151:lib/helix/real/buffers.c **** 
+ 152:lib/helix/real/buffers.c **** 	/* important to do this - DSP primitives assume a bunch of state variables are 0 on first use */
+ 153:lib/helix/real/buffers.c **** 	ClearBuffer(fh,  sizeof(FrameHeader));
+ 101              		.loc 1 153 0
+ 102 002e 3821     		movs	r1, #56
+ 103 0030 FFF7FEFF 		bl	ClearBuffer
+ 104              	.LVL4:
+ 154:lib/helix/real/buffers.c **** 	ClearBuffer(si,  sizeof(SideInfo));
+ 105              		.loc 1 154 0
+ 106 0034 4FF4A471 		mov	r1, #328
+ 107 0038 5046     		mov	r0, r10
+ 108 003a FFF7FEFF 		bl	ClearBuffer
+ 109              	.LVL5:
+ 155:lib/helix/real/buffers.c **** 	ClearBuffer(sfi, sizeof(ScaleFactorInfo));
+ 110              		.loc 1 155 0
+ 111 003e 4FF48E71 		mov	r1, #284
+ 112 0042 4846     		mov	r0, r9
+ 113 0044 FFF7FEFF 		bl	ClearBuffer
+ 114              	.LVL6:
+ 156:lib/helix/real/buffers.c **** 	ClearBuffer(hi,  sizeof(HuffmanInfo));
+ 115              		.loc 1 156 0
+ 116 0048 41F21021 		movw	r1, #4624
+ 117 004c 4046     		mov	r0, r8
+ 118 004e FFF7FEFF 		bl	ClearBuffer
+ 119              	.LVL7:
+ 157:lib/helix/real/buffers.c **** 	ClearBuffer(di,  sizeof(DequantInfo));
+ 120              		.loc 1 157 0
+ 121 0052 4FF45271 		mov	r1, #840
+ 122 0056 3846     		mov	r0, r7
+ 123 0058 FFF7FEFF 		bl	ClearBuffer
+ 124              	.LVL8:
+ 158:lib/helix/real/buffers.c **** 	ClearBuffer(mi,  sizeof(IMDCTInfo));
+ 125              		.loc 1 158 0
+ 126 005c 4FF4D951 		mov	r1, #6944
+ 127 0060 3046     		mov	r0, r6
+ 128 0062 FFF7FEFF 		bl	ClearBuffer
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccHdD6zH.s 			page 6
+
+
+ 129              	.LVL9:
+ 159:lib/helix/real/buffers.c **** 	ClearBuffer(sbi, sizeof(SubbandInfo));
+ 130              		.loc 1 159 0
+ 131 0066 42F20421 		movw	r1, #8708
+ 132 006a 2846     		mov	r0, r5
+ 133 006c FFF7FEFF 		bl	ClearBuffer
+ 134              	.LVL10:
+ 160:lib/helix/real/buffers.c **** 
+ 161:lib/helix/real/buffers.c **** 	return mp3DecInfo;
+ 162:lib/helix/real/buffers.c **** }
+ 135              		.loc 1 162 0
+ 136 0070 2046     		mov	r0, r4
+ 137 0072 BDE8F087 		pop	{r4, r5, r6, r7, r8, r9, r10, pc}
+ 138              	.L7:
+ 139 0076 00BF     		.align	2
+ 140              	.L6:
+ 141 0078 00000000 		.word	.LANCHOR0
+ 142 007c 00000000 		.word	.LANCHOR1
+ 143 0080 00000000 		.word	.LANCHOR4
+ 144 0084 00000000 		.word	s_mi.6370
+ 145 0088 00000000 		.word	s_sbi.6371
+ 146 008c 00000000 		.word	.LANCHOR2
+ 147 0090 00000000 		.word	.LANCHOR3
+ 148 0094 00000000 		.word	s_hi.6368
+ 149              		.cfi_endproc
+ 150              	.LFE1:
+ 152              		.section	.text.xmp3fixpt_FreeBuffers,"ax",%progbits
+ 153              		.align	1
+ 154              		.global	xmp3fixpt_FreeBuffers
+ 155              		.syntax unified
+ 156              		.thumb
+ 157              		.thumb_func
+ 158              		.fpu fpv5-sp-d16
+ 160              	xmp3fixpt_FreeBuffers:
+ 161              	.LFB2:
+ 163:lib/helix/real/buffers.c **** 
+ 164:lib/helix/real/buffers.c **** #define SAFE_FREE(x)	{if (x)	free(x);	(x) = 0;}	/* helper macro */
+ 165:lib/helix/real/buffers.c **** 
+ 166:lib/helix/real/buffers.c **** /**************************************************************************************
+ 167:lib/helix/real/buffers.c ****  * Function:    FreeBuffers
+ 168:lib/helix/real/buffers.c ****  *
+ 169:lib/helix/real/buffers.c ****  * Description: frees all the memory used by the MP3 decoder
+ 170:lib/helix/real/buffers.c ****  *
+ 171:lib/helix/real/buffers.c ****  * Inputs:      pointer to initialized MP3DecInfo structure
+ 172:lib/helix/real/buffers.c ****  *
+ 173:lib/helix/real/buffers.c ****  * Outputs:     none
+ 174:lib/helix/real/buffers.c ****  *
+ 175:lib/helix/real/buffers.c ****  * Return:      none
+ 176:lib/helix/real/buffers.c ****  *
+ 177:lib/helix/real/buffers.c ****  * Notes:       safe to call even if some buffers were not allocated (uses SAFE_FREE)
+ 178:lib/helix/real/buffers.c ****  **************************************************************************************/
+ 179:lib/helix/real/buffers.c **** void FreeBuffers(MP3DecInfo *mp3DecInfo)
+ 180:lib/helix/real/buffers.c **** {
+ 162              		.loc 1 180 0
+ 163              		.cfi_startproc
+ 164              		@ args = 0, pretend = 0, frame = 0
+ 165              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccHdD6zH.s 			page 7
+
+
+ 166              		@ link register save eliminated.
+ 167              	.LVL11:
+ 181:lib/helix/real/buffers.c **** 	if (!mp3DecInfo)
+ 182:lib/helix/real/buffers.c **** 		return;
+ 183:lib/helix/real/buffers.c **** 	// Malloc not used, nothing to do
+ 184:lib/helix/real/buffers.c **** //	SAFE_FREE(mp3DecInfo->FrameHeaderPS);
+ 185:lib/helix/real/buffers.c **** //	SAFE_FREE(mp3DecInfo->SideInfoPS);
+ 186:lib/helix/real/buffers.c **** //	SAFE_FREE(mp3DecInfo->ScaleFactorInfoPS);
+ 187:lib/helix/real/buffers.c **** //	SAFE_FREE(mp3DecInfo->HuffmanInfoPS);
+ 188:lib/helix/real/buffers.c **** //	SAFE_FREE(mp3DecInfo->DequantInfoPS);
+ 189:lib/helix/real/buffers.c **** //	SAFE_FREE(mp3DecInfo->IMDCTInfoPS);
+ 190:lib/helix/real/buffers.c **** //	SAFE_FREE(mp3DecInfo->SubbandInfoPS);
+ 191:lib/helix/real/buffers.c **** //
+ 192:lib/helix/real/buffers.c **** //	SAFE_FREE(mp3DecInfo);
+ 193:lib/helix/real/buffers.c **** }
+ 168              		.loc 1 193 0
+ 169 0000 7047     		bx	lr
+ 170              		.cfi_endproc
+ 171              	.LFE2:
+ 173              		.section	.bss.s_di.6369,"aw",%nobits
+ 174              		.align	2
+ 175              		.set	.LANCHOR4,. + 0
+ 178              	s_di.6369:
+ 179 0000 00000000 		.space	840
+ 179      00000000 
+ 179      00000000 
+ 179      00000000 
+ 179      00000000 
+ 180              		.section	.bss.s_fh.6365,"aw",%nobits
+ 181              		.align	2
+ 182              		.set	.LANCHOR1,. + 0
+ 185              	s_fh.6365:
+ 186 0000 00000000 		.space	56
+ 186      00000000 
+ 186      00000000 
+ 186      00000000 
+ 186      00000000 
+ 187              		.section	.bss.s_hi.6368,"aw",%nobits
+ 188              		.align	2
+ 191              	s_hi.6368:
+ 192 0000 00000000 		.space	4624
+ 192      00000000 
+ 192      00000000 
+ 192      00000000 
+ 192      00000000 
+ 193              		.section	.bss.s_mi.6370,"aw",%nobits
+ 194              		.align	2
+ 197              	s_mi.6370:
+ 198 0000 00000000 		.space	6944
+ 198      00000000 
+ 198      00000000 
+ 198      00000000 
+ 198      00000000 
+ 199              		.section	.bss.s_mp3DecInfo.6364,"aw",%nobits
+ 200              		.align	2
+ 201              		.set	.LANCHOR0,. + 0
+ 204              	s_mp3DecInfo.6364:
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccHdD6zH.s 			page 8
+
+
+ 205 0000 00000000 		.space	2032
+ 205      00000000 
+ 205      00000000 
+ 205      00000000 
+ 205      00000000 
+ 206              		.section	.bss.s_sbi.6371,"aw",%nobits
+ 207              		.align	2
+ 210              	s_sbi.6371:
+ 211 0000 00000000 		.space	8708
+ 211      00000000 
+ 211      00000000 
+ 211      00000000 
+ 211      00000000 
+ 212              		.section	.bss.s_sfi.6367,"aw",%nobits
+ 213              		.align	2
+ 214              		.set	.LANCHOR3,. + 0
+ 217              	s_sfi.6367:
+ 218 0000 00000000 		.space	284
+ 218      00000000 
+ 218      00000000 
+ 218      00000000 
+ 218      00000000 
+ 219              		.section	.bss.s_si.6366,"aw",%nobits
+ 220              		.align	2
+ 221              		.set	.LANCHOR2,. + 0
+ 224              	s_si.6366:
+ 225 0000 00000000 		.space	328
+ 225      00000000 
+ 225      00000000 
+ 225      00000000 
+ 225      00000000 
+ 226              		.text
+ 227              	.Letext0:
+ 228              		.file 2 "c:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\lock.h"
+ 229              		.file 3 "c:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\_types.h"
+ 230              		.file 4 "c:\\program files (x86)\\gnu\\7_2018-q2-update\\lib\\gcc\\arm-none-eabi\\7.3.1\\include\\
+ 231              		.file 5 "c:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\reent.h"
+ 232              		.file 6 "c:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\stdlib.h"
+ 233              		.file 7 "lib/helix/real/../pub/mp3dec.h"
+ 234              		.file 8 "lib/helix/real/../pub/mp3common.h"
+ 235              		.file 9 "lib/helix/real/coder.h"
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccHdD6zH.s 			page 9
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 buffers.c
+C:\Users\Patryk\AppData\Local\Temp\ccHdD6zH.s:18     .text.ClearBuffer:00000000 $t
+C:\Users\Patryk\AppData\Local\Temp\ccHdD6zH.s:24     .text.ClearBuffer:00000000 ClearBuffer
+C:\Users\Patryk\AppData\Local\Temp\ccHdD6zH.s:54     .text.xmp3fixpt_AllocateBuffers:00000000 $t
+C:\Users\Patryk\AppData\Local\Temp\ccHdD6zH.s:61     .text.xmp3fixpt_AllocateBuffers:00000000 xmp3fixpt_AllocateBuffers
+C:\Users\Patryk\AppData\Local\Temp\ccHdD6zH.s:141    .text.xmp3fixpt_AllocateBuffers:00000078 $d
+C:\Users\Patryk\AppData\Local\Temp\ccHdD6zH.s:197    .bss.s_mi.6370:00000000 s_mi.6370
+C:\Users\Patryk\AppData\Local\Temp\ccHdD6zH.s:210    .bss.s_sbi.6371:00000000 s_sbi.6371
+C:\Users\Patryk\AppData\Local\Temp\ccHdD6zH.s:191    .bss.s_hi.6368:00000000 s_hi.6368
+C:\Users\Patryk\AppData\Local\Temp\ccHdD6zH.s:153    .text.xmp3fixpt_FreeBuffers:00000000 $t
+C:\Users\Patryk\AppData\Local\Temp\ccHdD6zH.s:160    .text.xmp3fixpt_FreeBuffers:00000000 xmp3fixpt_FreeBuffers
+C:\Users\Patryk\AppData\Local\Temp\ccHdD6zH.s:174    .bss.s_di.6369:00000000 $d
+C:\Users\Patryk\AppData\Local\Temp\ccHdD6zH.s:178    .bss.s_di.6369:00000000 s_di.6369
+C:\Users\Patryk\AppData\Local\Temp\ccHdD6zH.s:181    .bss.s_fh.6365:00000000 $d
+C:\Users\Patryk\AppData\Local\Temp\ccHdD6zH.s:185    .bss.s_fh.6365:00000000 s_fh.6365
+C:\Users\Patryk\AppData\Local\Temp\ccHdD6zH.s:188    .bss.s_hi.6368:00000000 $d
+C:\Users\Patryk\AppData\Local\Temp\ccHdD6zH.s:194    .bss.s_mi.6370:00000000 $d
+C:\Users\Patryk\AppData\Local\Temp\ccHdD6zH.s:200    .bss.s_mp3DecInfo.6364:00000000 $d
+C:\Users\Patryk\AppData\Local\Temp\ccHdD6zH.s:204    .bss.s_mp3DecInfo.6364:00000000 s_mp3DecInfo.6364
+C:\Users\Patryk\AppData\Local\Temp\ccHdD6zH.s:207    .bss.s_sbi.6371:00000000 $d
+C:\Users\Patryk\AppData\Local\Temp\ccHdD6zH.s:213    .bss.s_sfi.6367:00000000 $d
+C:\Users\Patryk\AppData\Local\Temp\ccHdD6zH.s:217    .bss.s_sfi.6367:00000000 s_sfi.6367
+C:\Users\Patryk\AppData\Local\Temp\ccHdD6zH.s:220    .bss.s_si.6366:00000000 $d
+C:\Users\Patryk\AppData\Local\Temp\ccHdD6zH.s:224    .bss.s_si.6366:00000000 s_si.6366
+
+NO UNDEFINED SYMBOLS

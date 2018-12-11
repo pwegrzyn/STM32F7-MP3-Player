@@ -1,0 +1,1755 @@
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccXk83jA.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"scalfact.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.UnpackSFMPEG1,"ax",%progbits
+  18              		.align	1
+  19              		.syntax unified
+  20              		.thumb
+  21              		.thumb_func
+  22              		.fpu fpv5-sp-d16
+  24              	UnpackSFMPEG1:
+  25              	.LFB0:
+  26              		.file 1 "lib/helix/real/scalfact.c"
+   1:lib/helix/real/scalfact.c **** /* ***** BEGIN LICENSE BLOCK ***** 
+   2:lib/helix/real/scalfact.c ****  * Version: RCSL 1.0/RPSL 1.0 
+   3:lib/helix/real/scalfact.c ****  *  
+   4:lib/helix/real/scalfact.c ****  * Portions Copyright (c) 1995-2002 RealNetworks, Inc. All Rights Reserved. 
+   5:lib/helix/real/scalfact.c ****  *      
+   6:lib/helix/real/scalfact.c ****  * The contents of this file, and the files included with this file, are 
+   7:lib/helix/real/scalfact.c ****  * subject to the current version of the RealNetworks Public Source License 
+   8:lib/helix/real/scalfact.c ****  * Version 1.0 (the "RPSL") available at 
+   9:lib/helix/real/scalfact.c ****  * http://www.helixcommunity.org/content/rpsl unless you have licensed 
+  10:lib/helix/real/scalfact.c ****  * the file under the RealNetworks Community Source License Version 1.0 
+  11:lib/helix/real/scalfact.c ****  * (the "RCSL") available at http://www.helixcommunity.org/content/rcsl, 
+  12:lib/helix/real/scalfact.c ****  * in which case the RCSL will apply. You may also obtain the license terms 
+  13:lib/helix/real/scalfact.c ****  * directly from RealNetworks.  You may not use this file except in 
+  14:lib/helix/real/scalfact.c ****  * compliance with the RPSL or, if you have a valid RCSL with RealNetworks 
+  15:lib/helix/real/scalfact.c ****  * applicable to this file, the RCSL.  Please see the applicable RPSL or 
+  16:lib/helix/real/scalfact.c ****  * RCSL for the rights, obligations and limitations governing use of the 
+  17:lib/helix/real/scalfact.c ****  * contents of the file.  
+  18:lib/helix/real/scalfact.c ****  *  
+  19:lib/helix/real/scalfact.c ****  * This file is part of the Helix DNA Technology. RealNetworks is the 
+  20:lib/helix/real/scalfact.c ****  * developer of the Original Code and owns the copyrights in the portions 
+  21:lib/helix/real/scalfact.c ****  * it created. 
+  22:lib/helix/real/scalfact.c ****  *  
+  23:lib/helix/real/scalfact.c ****  * This file, and the files included with this file, is distributed and made 
+  24:lib/helix/real/scalfact.c ****  * available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER 
+  25:lib/helix/real/scalfact.c ****  * EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS ALL SUCH WARRANTIES, 
+  26:lib/helix/real/scalfact.c ****  * INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF MERCHANTABILITY, FITNESS 
+  27:lib/helix/real/scalfact.c ****  * FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT. 
+  28:lib/helix/real/scalfact.c ****  * 
+  29:lib/helix/real/scalfact.c ****  * Technology Compatibility Kit Test Suite(s) Location: 
+  30:lib/helix/real/scalfact.c ****  *    http://www.helixcommunity.org/content/tck 
+  31:lib/helix/real/scalfact.c ****  * 
+  32:lib/helix/real/scalfact.c ****  * Contributor(s): 
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccXk83jA.s 			page 2
+
+
+  33:lib/helix/real/scalfact.c ****  *  
+  34:lib/helix/real/scalfact.c ****  * ***** END LICENSE BLOCK ***** */ 
+  35:lib/helix/real/scalfact.c **** 
+  36:lib/helix/real/scalfact.c **** /**************************************************************************************
+  37:lib/helix/real/scalfact.c ****  * Fixed-point MP3 decoder
+  38:lib/helix/real/scalfact.c ****  * Jon Recker (jrecker@real.com), Ken Cooke (kenc@real.com)
+  39:lib/helix/real/scalfact.c ****  * June 2003
+  40:lib/helix/real/scalfact.c ****  *
+  41:lib/helix/real/scalfact.c ****  * scalfact.c - scalefactor unpacking functions
+  42:lib/helix/real/scalfact.c ****  **************************************************************************************/
+  43:lib/helix/real/scalfact.c **** 
+  44:lib/helix/real/scalfact.c **** #include "coder.h"
+  45:lib/helix/real/scalfact.c **** 
+  46:lib/helix/real/scalfact.c **** /* scale factor lengths (num bits) */
+  47:lib/helix/real/scalfact.c **** static const char SFLenTab[16][2] = {
+  48:lib/helix/real/scalfact.c **** 	{0, 0},    {0, 1},
+  49:lib/helix/real/scalfact.c **** 	{0, 2},    {0, 3},
+  50:lib/helix/real/scalfact.c **** 	{3, 0},    {1, 1},
+  51:lib/helix/real/scalfact.c **** 	{1, 2},    {1, 3},
+  52:lib/helix/real/scalfact.c **** 	{2, 1},    {2, 2},
+  53:lib/helix/real/scalfact.c **** 	{2, 3},    {3, 1},
+  54:lib/helix/real/scalfact.c **** 	{3, 2},    {3, 3},
+  55:lib/helix/real/scalfact.c **** 	{4, 2},    {4, 3},
+  56:lib/helix/real/scalfact.c **** };
+  57:lib/helix/real/scalfact.c **** 
+  58:lib/helix/real/scalfact.c **** /**************************************************************************************
+  59:lib/helix/real/scalfact.c ****  * Function:    UnpackSFMPEG1
+  60:lib/helix/real/scalfact.c ****  *
+  61:lib/helix/real/scalfact.c ****  * Description: unpack MPEG 1 scalefactors from bitstream
+  62:lib/helix/real/scalfact.c ****  *
+  63:lib/helix/real/scalfact.c ****  * Inputs:      BitStreamInfo, SideInfoSub, ScaleFactorInfoSub structs for this
+  64:lib/helix/real/scalfact.c ****  *                granule/channel
+  65:lib/helix/real/scalfact.c ****  *              vector of scfsi flags from side info, length = 4 (MAX_SCFBD)
+  66:lib/helix/real/scalfact.c ****  *              index of current granule
+  67:lib/helix/real/scalfact.c ****  *              ScaleFactorInfoSub from granule 0 (for granule 1, if scfsi[i] is set, 
+  68:lib/helix/real/scalfact.c ****  *                then we just replicate the scale factors from granule 0 in the
+  69:lib/helix/real/scalfact.c ****  *                i'th set of scalefactor bands)
+  70:lib/helix/real/scalfact.c ****  *
+  71:lib/helix/real/scalfact.c ****  * Outputs:     updated BitStreamInfo struct
+  72:lib/helix/real/scalfact.c ****  *              scalefactors in sfis (short and/or long arrays, as appropriate)
+  73:lib/helix/real/scalfact.c ****  *
+  74:lib/helix/real/scalfact.c ****  * Return:      none
+  75:lib/helix/real/scalfact.c ****  *
+  76:lib/helix/real/scalfact.c ****  * Notes:       set order of short blocks to s[band][window] instead of s[window][band]
+  77:lib/helix/real/scalfact.c ****  *                so that we index through consectutive memory locations when unpacking 
+  78:lib/helix/real/scalfact.c ****  *                (make sure dequantizer follows same convention)
+  79:lib/helix/real/scalfact.c ****  *              Illegal Intensity Position = 7 (always) for MPEG1 scale factors
+  80:lib/helix/real/scalfact.c ****  **************************************************************************************/
+  81:lib/helix/real/scalfact.c **** static void UnpackSFMPEG1(BitStreamInfo *bsi, SideInfoSub *sis, ScaleFactorInfoSub *sfis, int *scfs
+  82:lib/helix/real/scalfact.c **** {
+  27              		.loc 1 82 0
+  28              		.cfi_startproc
+  29              		@ args = 8, pretend = 0, frame = 0
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31              	.LVL0:
+  32 0000 2DE9F047 		push	{r4, r5, r6, r7, r8, r9, r10, lr}
+  33              	.LCFI0:
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccXk83jA.s 			page 3
+
+
+  34              		.cfi_def_cfa_offset 32
+  35              		.cfi_offset 4, -32
+  36              		.cfi_offset 5, -28
+  37              		.cfi_offset 6, -24
+  38              		.cfi_offset 7, -20
+  39              		.cfi_offset 8, -16
+  40              		.cfi_offset 9, -12
+  41              		.cfi_offset 10, -8
+  42              		.cfi_offset 14, -4
+  43 0004 0546     		mov	r5, r0
+  44 0006 1646     		mov	r6, r2
+  45 0008 9A46     		mov	r10, r3
+  46 000a 089C     		ldr	r4, [sp, #32]
+  47 000c DDF82490 		ldr	r9, [sp, #36]
+  83:lib/helix/real/scalfact.c **** 	int sfb;
+  84:lib/helix/real/scalfact.c **** 	int slen0, slen1;
+  85:lib/helix/real/scalfact.c **** 	
+  86:lib/helix/real/scalfact.c **** 	/* these can be 0, so make sure GetBits(bsi, 0) returns 0 (no >> 32 or anything) */
+  87:lib/helix/real/scalfact.c **** 	slen0 = (int)SFLenTab[sis->sfCompress][0];
+  48              		.loc 1 87 0
+  49 0010 CA68     		ldr	r2, [r1, #12]
+  50              	.LVL1:
+  51 0012 5B4B     		ldr	r3, .L42
+  52              	.LVL2:
+  53 0014 13F81270 		ldrb	r7, [r3, r2, lsl #1]	@ zero_extendqisi2
+  54              	.LVL3:
+  88:lib/helix/real/scalfact.c **** 	slen1 = (int)SFLenTab[sis->sfCompress][1];
+  55              		.loc 1 88 0
+  56 0018 03EB4203 		add	r3, r3, r2, lsl #1
+  57 001c 93F80180 		ldrb	r8, [r3, #1]	@ zero_extendqisi2
+  58              	.LVL4:
+  89:lib/helix/real/scalfact.c **** 	
+  90:lib/helix/real/scalfact.c **** 	if (sis->blockType == 2) {
+  59              		.loc 1 90 0
+  60 0020 4B69     		ldr	r3, [r1, #20]
+  61 0022 022B     		cmp	r3, #2
+  62 0024 07D0     		beq	.L40
+  91:lib/helix/real/scalfact.c **** 		/* short block, type 2 (implies winSwitchFlag == 1) */
+  92:lib/helix/real/scalfact.c **** 		if (sis->mixedBlock) {          
+  93:lib/helix/real/scalfact.c **** 			/* do long block portion */
+  94:lib/helix/real/scalfact.c **** 			for (sfb = 0; sfb < 8; sfb++)
+  95:lib/helix/real/scalfact.c **** 				sfis->l[sfb] =    (char)GetBits(bsi, slen0);
+  96:lib/helix/real/scalfact.c **** 			sfb = 3;
+  97:lib/helix/real/scalfact.c **** 		} else {
+  98:lib/helix/real/scalfact.c **** 			/* all short blocks */
+  99:lib/helix/real/scalfact.c **** 			sfb = 0;
+ 100:lib/helix/real/scalfact.c **** 		}
+ 101:lib/helix/real/scalfact.c **** 
+ 102:lib/helix/real/scalfact.c **** 		for (      ; sfb < 6; sfb++) {
+ 103:lib/helix/real/scalfact.c **** 			sfis->s[sfb][0] = (char)GetBits(bsi, slen0);
+ 104:lib/helix/real/scalfact.c **** 			sfis->s[sfb][1] = (char)GetBits(bsi, slen0);
+ 105:lib/helix/real/scalfact.c **** 			sfis->s[sfb][2] = (char)GetBits(bsi, slen0);
+ 106:lib/helix/real/scalfact.c **** 		}
+ 107:lib/helix/real/scalfact.c **** 
+ 108:lib/helix/real/scalfact.c **** 		for (      ; sfb < 12; sfb++) {
+ 109:lib/helix/real/scalfact.c **** 			sfis->s[sfb][0] = (char)GetBits(bsi, slen1);
+ 110:lib/helix/real/scalfact.c **** 			sfis->s[sfb][1] = (char)GetBits(bsi, slen1);
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccXk83jA.s 			page 4
+
+
+ 111:lib/helix/real/scalfact.c **** 			sfis->s[sfb][2] = (char)GetBits(bsi, slen1);
+ 112:lib/helix/real/scalfact.c **** 		}
+ 113:lib/helix/real/scalfact.c **** 
+ 114:lib/helix/real/scalfact.c **** 		/* last sf band not transmitted */
+ 115:lib/helix/real/scalfact.c **** 		sfis->s[12][0] = sfis->s[12][1] = sfis->s[12][2] = 0;
+ 116:lib/helix/real/scalfact.c **** 	} else {
+ 117:lib/helix/real/scalfact.c **** 		/* long blocks, type 0, 1, or 3 */
+ 118:lib/helix/real/scalfact.c **** 		if(gr == 0) {
+  63              		.loc 1 118 0
+  64 0026 002C     		cmp	r4, #0
+  65 0028 51D0     		beq	.L11
+  66              	.LVL5:
+ 119:lib/helix/real/scalfact.c **** 			/* first granule */
+ 120:lib/helix/real/scalfact.c **** 			for (sfb = 0;  sfb < 11; sfb++) 
+ 121:lib/helix/real/scalfact.c **** 				sfis->l[sfb] = (char)GetBits(bsi, slen0);
+ 122:lib/helix/real/scalfact.c **** 			for (sfb = 11; sfb < 21; sfb++) 
+ 123:lib/helix/real/scalfact.c **** 				sfis->l[sfb] = (char)GetBits(bsi, slen1);
+ 124:lib/helix/real/scalfact.c **** 			return;
+ 125:lib/helix/real/scalfact.c **** 		} else {
+ 126:lib/helix/real/scalfact.c **** 			/* second granule
+ 127:lib/helix/real/scalfact.c **** 			 * scfsi: 0 = different scalefactors for each granule, 1 = copy sf's from granule 0 into granule
+ 128:lib/helix/real/scalfact.c **** 			 * for block type == 2, scfsi is always 0
+ 129:lib/helix/real/scalfact.c **** 			 */
+ 130:lib/helix/real/scalfact.c **** 			sfb = 0;
+ 131:lib/helix/real/scalfact.c **** 			if(scfsi[0])  for(  ; sfb < 6 ; sfb++) sfis->l[sfb] = sfisGr0->l[sfb];
+  67              		.loc 1 131 0
+  68 002a DAF80040 		ldr	r4, [r10]
+  69 002e 002C     		cmp	r4, #0
+  70 0030 6AD0     		beq	.L17
+ 130:lib/helix/real/scalfact.c **** 			if(scfsi[0])  for(  ; sfb < 6 ; sfb++) sfis->l[sfb] = sfisGr0->l[sfb];
+  71              		.loc 1 130 0
+  72 0032 0024     		movs	r4, #0
+  73 0034 5CE0     		b	.L16
+  74              	.LVL6:
+  75              	.L40:
+  92:lib/helix/real/scalfact.c **** 			/* do long block portion */
+  76              		.loc 1 92 0
+  77 0036 8C69     		ldr	r4, [r1, #24]
+  78 0038 14BB     		cbnz	r4, .L36
+  79              	.LVL7:
+  80              	.L6:
+ 102:lib/helix/real/scalfact.c **** 			sfis->s[sfb][0] = (char)GetBits(bsi, slen0);
+  81              		.loc 1 102 0 discriminator 1
+  82 003a 052C     		cmp	r4, #5
+  83 003c 22DC     		bgt	.L8
+ 103:lib/helix/real/scalfact.c **** 			sfis->s[sfb][1] = (char)GetBits(bsi, slen0);
+  84              		.loc 1 103 0 discriminator 2
+  85 003e 3946     		mov	r1, r7
+  86 0040 2846     		mov	r0, r5
+  87 0042 FFF7FEFF 		bl	xmp3fixpt_GetBits
+  88              	.LVL8:
+  89 0046 04EB4409 		add	r9, r4, r4, lsl #1
+  90 004a B144     		add	r9, r9, r6
+  91 004c 89F81700 		strb	r0, [r9, #23]
+ 104:lib/helix/real/scalfact.c **** 			sfis->s[sfb][2] = (char)GetBits(bsi, slen0);
+  92              		.loc 1 104 0 discriminator 2
+  93 0050 3946     		mov	r1, r7
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccXk83jA.s 			page 5
+
+
+  94 0052 2846     		mov	r0, r5
+  95 0054 FFF7FEFF 		bl	xmp3fixpt_GetBits
+  96              	.LVL9:
+  97 0058 89F81800 		strb	r0, [r9, #24]
+ 105:lib/helix/real/scalfact.c **** 		}
+  98              		.loc 1 105 0 discriminator 2
+  99 005c 3946     		mov	r1, r7
+ 100 005e 2846     		mov	r0, r5
+ 101 0060 FFF7FEFF 		bl	xmp3fixpt_GetBits
+ 102              	.LVL10:
+ 103 0064 89F81900 		strb	r0, [r9, #25]
+ 102:lib/helix/real/scalfact.c **** 			sfis->s[sfb][0] = (char)GetBits(bsi, slen0);
+ 104              		.loc 1 102 0 discriminator 2
+ 105 0068 0134     		adds	r4, r4, #1
+ 106              	.LVL11:
+ 107 006a E6E7     		b	.L6
+ 108              	.L5:
+  95:lib/helix/real/scalfact.c **** 			sfb = 3;
+ 109              		.loc 1 95 0 discriminator 3
+ 110 006c 3946     		mov	r1, r7
+ 111 006e 2846     		mov	r0, r5
+ 112 0070 FFF7FEFF 		bl	xmp3fixpt_GetBits
+ 113              	.LVL12:
+ 114 0074 3055     		strb	r0, [r6, r4]
+  94:lib/helix/real/scalfact.c **** 				sfis->l[sfb] =    (char)GetBits(bsi, slen0);
+ 115              		.loc 1 94 0 discriminator 3
+ 116 0076 0134     		adds	r4, r4, #1
+ 117              	.LVL13:
+ 118              	.L3:
+  94:lib/helix/real/scalfact.c **** 				sfis->l[sfb] =    (char)GetBits(bsi, slen0);
+ 119              		.loc 1 94 0 is_stmt 0 discriminator 1
+ 120 0078 072C     		cmp	r4, #7
+ 121 007a F7DD     		ble	.L5
+  96:lib/helix/real/scalfact.c **** 		} else {
+ 122              		.loc 1 96 0 is_stmt 1
+ 123 007c 0324     		movs	r4, #3
+ 124              	.LVL14:
+ 125 007e DCE7     		b	.L6
+ 126              	.LVL15:
+ 127              	.L36:
+  94:lib/helix/real/scalfact.c **** 				sfis->l[sfb] =    (char)GetBits(bsi, slen0);
+ 128              		.loc 1 94 0
+ 129 0080 0024     		movs	r4, #0
+ 130 0082 F9E7     		b	.L3
+ 131              	.LVL16:
+ 132              	.L8:
+ 108:lib/helix/real/scalfact.c **** 			sfis->s[sfb][0] = (char)GetBits(bsi, slen1);
+ 133              		.loc 1 108 0 discriminator 1
+ 134 0084 0B2C     		cmp	r4, #11
+ 135 0086 13DC     		bgt	.L41
+ 109:lib/helix/real/scalfact.c **** 			sfis->s[sfb][1] = (char)GetBits(bsi, slen1);
+ 136              		.loc 1 109 0 discriminator 2
+ 137 0088 4146     		mov	r1, r8
+ 138 008a 2846     		mov	r0, r5
+ 139 008c FFF7FEFF 		bl	xmp3fixpt_GetBits
+ 140              	.LVL17:
+ 141 0090 04EB4407 		add	r7, r4, r4, lsl #1
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccXk83jA.s 			page 6
+
+
+ 142 0094 3744     		add	r7, r7, r6
+ 143 0096 F875     		strb	r0, [r7, #23]
+ 110:lib/helix/real/scalfact.c **** 			sfis->s[sfb][2] = (char)GetBits(bsi, slen1);
+ 144              		.loc 1 110 0 discriminator 2
+ 145 0098 4146     		mov	r1, r8
+ 146 009a 2846     		mov	r0, r5
+ 147 009c FFF7FEFF 		bl	xmp3fixpt_GetBits
+ 148              	.LVL18:
+ 149 00a0 3876     		strb	r0, [r7, #24]
+ 111:lib/helix/real/scalfact.c **** 		}
+ 150              		.loc 1 111 0 discriminator 2
+ 151 00a2 4146     		mov	r1, r8
+ 152 00a4 2846     		mov	r0, r5
+ 153 00a6 FFF7FEFF 		bl	xmp3fixpt_GetBits
+ 154              	.LVL19:
+ 155 00aa 7876     		strb	r0, [r7, #25]
+ 108:lib/helix/real/scalfact.c **** 			sfis->s[sfb][0] = (char)GetBits(bsi, slen1);
+ 156              		.loc 1 108 0 discriminator 2
+ 157 00ac 0134     		adds	r4, r4, #1
+ 158              	.LVL20:
+ 159 00ae E9E7     		b	.L8
+ 160              	.L41:
+ 115:lib/helix/real/scalfact.c **** 	} else {
+ 161              		.loc 1 115 0
+ 162 00b0 0023     		movs	r3, #0
+ 163 00b2 86F83D30 		strb	r3, [r6, #61]
+ 164 00b6 86F83C30 		strb	r3, [r6, #60]
+ 165 00ba 86F83B30 		strb	r3, [r6, #59]
+ 166              	.L1:
+ 132:lib/helix/real/scalfact.c **** 			else          for(  ; sfb < 6 ; sfb++) sfis->l[sfb] = (char)GetBits(bsi, slen0);
+ 133:lib/helix/real/scalfact.c **** 			if(scfsi[1])  for(  ; sfb <11 ; sfb++) sfis->l[sfb] = sfisGr0->l[sfb];
+ 134:lib/helix/real/scalfact.c **** 			else          for(  ; sfb <11 ; sfb++) sfis->l[sfb] = (char)GetBits(bsi, slen0);
+ 135:lib/helix/real/scalfact.c **** 			if(scfsi[2])  for(  ; sfb <16 ; sfb++) sfis->l[sfb] = sfisGr0->l[sfb];
+ 136:lib/helix/real/scalfact.c **** 			else          for(  ; sfb <16 ; sfb++) sfis->l[sfb] = (char)GetBits(bsi, slen1);
+ 137:lib/helix/real/scalfact.c **** 			if(scfsi[3])  for(  ; sfb <21 ; sfb++) sfis->l[sfb] = sfisGr0->l[sfb];
+ 138:lib/helix/real/scalfact.c **** 			else          for(  ; sfb <21 ; sfb++) sfis->l[sfb] = (char)GetBits(bsi, slen1);
+ 139:lib/helix/real/scalfact.c **** 		}
+ 140:lib/helix/real/scalfact.c **** 		/* last sf band not transmitted */
+ 141:lib/helix/real/scalfact.c **** 		sfis->l[21] = 0;
+ 142:lib/helix/real/scalfact.c **** 		sfis->l[22] = 0;
+ 143:lib/helix/real/scalfact.c **** 	}
+ 144:lib/helix/real/scalfact.c **** }
+ 167              		.loc 1 144 0
+ 168 00be BDE8F087 		pop	{r4, r5, r6, r7, r8, r9, r10, pc}
+ 169              	.LVL21:
+ 170              	.L13:
+ 121:lib/helix/real/scalfact.c **** 			for (sfb = 11; sfb < 21; sfb++) 
+ 171              		.loc 1 121 0 discriminator 3
+ 172 00c2 3946     		mov	r1, r7
+ 173 00c4 2846     		mov	r0, r5
+ 174 00c6 FFF7FEFF 		bl	xmp3fixpt_GetBits
+ 175              	.LVL22:
+ 176 00ca 3055     		strb	r0, [r6, r4]
+ 120:lib/helix/real/scalfact.c **** 				sfis->l[sfb] = (char)GetBits(bsi, slen0);
+ 177              		.loc 1 120 0 discriminator 3
+ 178 00cc 0134     		adds	r4, r4, #1
+ 179              	.LVL23:
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccXk83jA.s 			page 7
+
+
+ 180              	.L11:
+ 120:lib/helix/real/scalfact.c **** 				sfis->l[sfb] = (char)GetBits(bsi, slen0);
+ 181              		.loc 1 120 0 is_stmt 0 discriminator 1
+ 182 00ce 0A2C     		cmp	r4, #10
+ 183 00d0 F7DD     		ble	.L13
+ 122:lib/helix/real/scalfact.c **** 				sfis->l[sfb] = (char)GetBits(bsi, slen1);
+ 184              		.loc 1 122 0 is_stmt 1
+ 185 00d2 0B24     		movs	r4, #11
+ 186              	.LVL24:
+ 187 00d4 05E0     		b	.L14
+ 188              	.LVL25:
+ 189              	.L15:
+ 123:lib/helix/real/scalfact.c **** 			return;
+ 190              		.loc 1 123 0 discriminator 3
+ 191 00d6 4146     		mov	r1, r8
+ 192 00d8 2846     		mov	r0, r5
+ 193 00da FFF7FEFF 		bl	xmp3fixpt_GetBits
+ 194              	.LVL26:
+ 195 00de 3055     		strb	r0, [r6, r4]
+ 122:lib/helix/real/scalfact.c **** 				sfis->l[sfb] = (char)GetBits(bsi, slen1);
+ 196              		.loc 1 122 0 discriminator 3
+ 197 00e0 0134     		adds	r4, r4, #1
+ 198              	.LVL27:
+ 199              	.L14:
+ 122:lib/helix/real/scalfact.c **** 				sfis->l[sfb] = (char)GetBits(bsi, slen1);
+ 200              		.loc 1 122 0 is_stmt 0 discriminator 1
+ 201 00e2 142C     		cmp	r4, #20
+ 202 00e4 F7DD     		ble	.L15
+ 203 00e6 EAE7     		b	.L1
+ 204              	.LVL28:
+ 205              	.L18:
+ 131:lib/helix/real/scalfact.c **** 			else          for(  ; sfb < 6 ; sfb++) sfis->l[sfb] = (char)GetBits(bsi, slen0);
+ 206              		.loc 1 131 0 is_stmt 1 discriminator 2
+ 207 00e8 19F80430 		ldrb	r3, [r9, r4]	@ zero_extendqisi2
+ 208 00ec 3355     		strb	r3, [r6, r4]
+ 209 00ee 0134     		adds	r4, r4, #1
+ 210              	.LVL29:
+ 211              	.L16:
+ 131:lib/helix/real/scalfact.c **** 			else          for(  ; sfb < 6 ; sfb++) sfis->l[sfb] = (char)GetBits(bsi, slen0);
+ 212              		.loc 1 131 0 is_stmt 0 discriminator 1
+ 213 00f0 052C     		cmp	r4, #5
+ 214 00f2 F9DD     		ble	.L18
+ 215              	.LVL30:
+ 216              	.L19:
+ 133:lib/helix/real/scalfact.c **** 			else          for(  ; sfb <11 ; sfb++) sfis->l[sfb] = (char)GetBits(bsi, slen0);
+ 217              		.loc 1 133 0 is_stmt 1
+ 218 00f4 DAF80430 		ldr	r3, [r10, #4]
+ 219 00f8 6BB9     		cbnz	r3, .L21
+ 220 00fa 18E0     		b	.L22
+ 221              	.L20:
+ 132:lib/helix/real/scalfact.c **** 			if(scfsi[1])  for(  ; sfb <11 ; sfb++) sfis->l[sfb] = sfisGr0->l[sfb];
+ 222              		.loc 1 132 0 discriminator 2
+ 223 00fc 3946     		mov	r1, r7
+ 224 00fe 2846     		mov	r0, r5
+ 225 0100 FFF7FEFF 		bl	xmp3fixpt_GetBits
+ 226              	.LVL31:
+ 227 0104 3055     		strb	r0, [r6, r4]
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccXk83jA.s 			page 8
+
+
+ 228 0106 0134     		adds	r4, r4, #1
+ 229              	.LVL32:
+ 230              	.L17:
+ 132:lib/helix/real/scalfact.c **** 			if(scfsi[1])  for(  ; sfb <11 ; sfb++) sfis->l[sfb] = sfisGr0->l[sfb];
+ 231              		.loc 1 132 0 is_stmt 0 discriminator 1
+ 232 0108 052C     		cmp	r4, #5
+ 233 010a F7DD     		ble	.L20
+ 234 010c F2E7     		b	.L19
+ 235              	.L23:
+ 133:lib/helix/real/scalfact.c **** 			else          for(  ; sfb <11 ; sfb++) sfis->l[sfb] = (char)GetBits(bsi, slen0);
+ 236              		.loc 1 133 0 is_stmt 1 discriminator 2
+ 237 010e 19F80430 		ldrb	r3, [r9, r4]	@ zero_extendqisi2
+ 238 0112 3355     		strb	r3, [r6, r4]
+ 239 0114 0134     		adds	r4, r4, #1
+ 240              	.LVL33:
+ 241              	.L21:
+ 133:lib/helix/real/scalfact.c **** 			else          for(  ; sfb <11 ; sfb++) sfis->l[sfb] = (char)GetBits(bsi, slen0);
+ 242              		.loc 1 133 0 is_stmt 0 discriminator 1
+ 243 0116 0A2C     		cmp	r4, #10
+ 244 0118 F9DD     		ble	.L23
+ 245              	.L24:
+ 135:lib/helix/real/scalfact.c **** 			else          for(  ; sfb <16 ; sfb++) sfis->l[sfb] = (char)GetBits(bsi, slen1);
+ 246              		.loc 1 135 0 is_stmt 1
+ 247 011a DAF80830 		ldr	r3, [r10, #8]
+ 248 011e 6BB9     		cbnz	r3, .L26
+ 249 0120 18E0     		b	.L27
+ 250              	.L25:
+ 134:lib/helix/real/scalfact.c **** 			if(scfsi[2])  for(  ; sfb <16 ; sfb++) sfis->l[sfb] = sfisGr0->l[sfb];
+ 251              		.loc 1 134 0 discriminator 2
+ 252 0122 3946     		mov	r1, r7
+ 253 0124 2846     		mov	r0, r5
+ 254 0126 FFF7FEFF 		bl	xmp3fixpt_GetBits
+ 255              	.LVL34:
+ 256 012a 3055     		strb	r0, [r6, r4]
+ 257 012c 0134     		adds	r4, r4, #1
+ 258              	.LVL35:
+ 259              	.L22:
+ 134:lib/helix/real/scalfact.c **** 			if(scfsi[2])  for(  ; sfb <16 ; sfb++) sfis->l[sfb] = sfisGr0->l[sfb];
+ 260              		.loc 1 134 0 is_stmt 0 discriminator 1
+ 261 012e 0A2C     		cmp	r4, #10
+ 262 0130 F7DD     		ble	.L25
+ 263 0132 F2E7     		b	.L24
+ 264              	.L28:
+ 135:lib/helix/real/scalfact.c **** 			else          for(  ; sfb <16 ; sfb++) sfis->l[sfb] = (char)GetBits(bsi, slen1);
+ 265              		.loc 1 135 0 is_stmt 1 discriminator 2
+ 266 0134 19F80430 		ldrb	r3, [r9, r4]	@ zero_extendqisi2
+ 267 0138 3355     		strb	r3, [r6, r4]
+ 268 013a 0134     		adds	r4, r4, #1
+ 269              	.LVL36:
+ 270              	.L26:
+ 135:lib/helix/real/scalfact.c **** 			else          for(  ; sfb <16 ; sfb++) sfis->l[sfb] = (char)GetBits(bsi, slen1);
+ 271              		.loc 1 135 0 is_stmt 0 discriminator 1
+ 272 013c 0F2C     		cmp	r4, #15
+ 273 013e F9DD     		ble	.L28
+ 274              	.L29:
+ 137:lib/helix/real/scalfact.c **** 			else          for(  ; sfb <21 ; sfb++) sfis->l[sfb] = (char)GetBits(bsi, slen1);
+ 275              		.loc 1 137 0 is_stmt 1
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccXk83jA.s 			page 9
+
+
+ 276 0140 DAF80C30 		ldr	r3, [r10, #12]
+ 277 0144 6BB9     		cbnz	r3, .L31
+ 278 0146 18E0     		b	.L32
+ 279              	.L30:
+ 136:lib/helix/real/scalfact.c **** 			if(scfsi[3])  for(  ; sfb <21 ; sfb++) sfis->l[sfb] = sfisGr0->l[sfb];
+ 280              		.loc 1 136 0 discriminator 2
+ 281 0148 4146     		mov	r1, r8
+ 282 014a 2846     		mov	r0, r5
+ 283 014c FFF7FEFF 		bl	xmp3fixpt_GetBits
+ 284              	.LVL37:
+ 285 0150 3055     		strb	r0, [r6, r4]
+ 286 0152 0134     		adds	r4, r4, #1
+ 287              	.LVL38:
+ 288              	.L27:
+ 136:lib/helix/real/scalfact.c **** 			if(scfsi[3])  for(  ; sfb <21 ; sfb++) sfis->l[sfb] = sfisGr0->l[sfb];
+ 289              		.loc 1 136 0 is_stmt 0 discriminator 1
+ 290 0154 0F2C     		cmp	r4, #15
+ 291 0156 F7DD     		ble	.L30
+ 292 0158 F2E7     		b	.L29
+ 293              	.L33:
+ 137:lib/helix/real/scalfact.c **** 			else          for(  ; sfb <21 ; sfb++) sfis->l[sfb] = (char)GetBits(bsi, slen1);
+ 294              		.loc 1 137 0 is_stmt 1 discriminator 2
+ 295 015a 19F80430 		ldrb	r3, [r9, r4]	@ zero_extendqisi2
+ 296 015e 3355     		strb	r3, [r6, r4]
+ 297 0160 0134     		adds	r4, r4, #1
+ 298              	.LVL39:
+ 299              	.L31:
+ 137:lib/helix/real/scalfact.c **** 			else          for(  ; sfb <21 ; sfb++) sfis->l[sfb] = (char)GetBits(bsi, slen1);
+ 300              		.loc 1 137 0 is_stmt 0 discriminator 1
+ 301 0162 142C     		cmp	r4, #20
+ 302 0164 F9DD     		ble	.L33
+ 303              	.L34:
+ 141:lib/helix/real/scalfact.c **** 		sfis->l[22] = 0;
+ 304              		.loc 1 141 0 is_stmt 1
+ 305 0166 0023     		movs	r3, #0
+ 306 0168 7375     		strb	r3, [r6, #21]
+ 142:lib/helix/real/scalfact.c **** 	}
+ 307              		.loc 1 142 0
+ 308 016a B375     		strb	r3, [r6, #22]
+ 309 016c A7E7     		b	.L1
+ 310              	.L35:
+ 138:lib/helix/real/scalfact.c **** 		}
+ 311              		.loc 1 138 0 discriminator 2
+ 312 016e 4146     		mov	r1, r8
+ 313 0170 2846     		mov	r0, r5
+ 314 0172 FFF7FEFF 		bl	xmp3fixpt_GetBits
+ 315              	.LVL40:
+ 316 0176 3055     		strb	r0, [r6, r4]
+ 317 0178 0134     		adds	r4, r4, #1
+ 318              	.LVL41:
+ 319              	.L32:
+ 138:lib/helix/real/scalfact.c **** 		}
+ 320              		.loc 1 138 0 is_stmt 0 discriminator 1
+ 321 017a 142C     		cmp	r4, #20
+ 322 017c F7DD     		ble	.L35
+ 323 017e F2E7     		b	.L34
+ 324              	.L43:
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccXk83jA.s 			page 10
+
+
+ 325              		.align	2
+ 326              	.L42:
+ 327 0180 00000000 		.word	.LANCHOR0
+ 328              		.cfi_endproc
+ 329              	.LFE0:
+ 331              		.section	.text.UnpackSFMPEG2,"ax",%progbits
+ 332              		.align	1
+ 333              		.syntax unified
+ 334              		.thumb
+ 335              		.thumb_func
+ 336              		.fpu fpv5-sp-d16
+ 338              	UnpackSFMPEG2:
+ 339              	.LFB1:
+ 145:lib/helix/real/scalfact.c **** 
+ 146:lib/helix/real/scalfact.c **** /* NRTab[size + 3*is_right][block type][partition]
+ 147:lib/helix/real/scalfact.c ****  *   block type index: 0 = (bt0,bt1,bt3), 1 = bt2 non-mixed, 2 = bt2 mixed
+ 148:lib/helix/real/scalfact.c ****  *   partition: scale factor groups (sfb1 through sfb4)
+ 149:lib/helix/real/scalfact.c ****  * for block type = 2 (mixed or non-mixed) / by 3 is rolled into this table
+ 150:lib/helix/real/scalfact.c ****  *   (for 3 short blocks per long block)
+ 151:lib/helix/real/scalfact.c ****  * see 2.4.3.2 in MPEG 2 (low sample rate) spec
+ 152:lib/helix/real/scalfact.c ****  * stuff rolled into this table:
+ 153:lib/helix/real/scalfact.c ****  *   NRTab[x][1][y]   --> (NRTab[x][1][y])   / 3
+ 154:lib/helix/real/scalfact.c ****  *   NRTab[x][2][>=1] --> (NRTab[x][2][>=1]) / 3  (first partition is long block)
+ 155:lib/helix/real/scalfact.c ****  */
+ 156:lib/helix/real/scalfact.c **** static const char NRTab[6][3][4] = {
+ 157:lib/helix/real/scalfact.c **** 	/* non-intensity stereo */
+ 158:lib/helix/real/scalfact.c **** 	{	{6, 5, 5, 5},		
+ 159:lib/helix/real/scalfact.c **** 		{3, 3, 3, 3},	/* includes / 3 */	
+ 160:lib/helix/real/scalfact.c **** 		{6, 3, 3, 3},   /* includes / 3 except for first entry */
+ 161:lib/helix/real/scalfact.c **** 	},
+ 162:lib/helix/real/scalfact.c **** 	{	{6, 5, 7, 3}, 
+ 163:lib/helix/real/scalfact.c **** 		{3, 3, 4, 2},
+ 164:lib/helix/real/scalfact.c **** 		{6, 3, 4, 2},
+ 165:lib/helix/real/scalfact.c **** 	},
+ 166:lib/helix/real/scalfact.c **** 	{	{11, 10, 0, 0},
+ 167:lib/helix/real/scalfact.c **** 		{6, 6, 0, 0},
+ 168:lib/helix/real/scalfact.c **** 		{6, 3, 6, 0},  /* spec = [15,18,0,0], but 15 = 6L + 9S, so move 9/3=3 into col 1, 18/3=6 into col
+ 169:lib/helix/real/scalfact.c **** 	},
+ 170:lib/helix/real/scalfact.c **** 	/* intensity stereo, right chan */
+ 171:lib/helix/real/scalfact.c **** 	{	{7, 7, 7, 0},
+ 172:lib/helix/real/scalfact.c **** 		{4, 4, 4, 0},
+ 173:lib/helix/real/scalfact.c **** 		{6, 5, 4, 0},
+ 174:lib/helix/real/scalfact.c **** 	},
+ 175:lib/helix/real/scalfact.c **** 	{	{6, 6, 6, 3}, 
+ 176:lib/helix/real/scalfact.c **** 		{4, 3, 3, 2},
+ 177:lib/helix/real/scalfact.c **** 		{6, 4, 3, 2},
+ 178:lib/helix/real/scalfact.c **** 	},
+ 179:lib/helix/real/scalfact.c **** 	{	{8, 8, 5, 0},
+ 180:lib/helix/real/scalfact.c **** 		{5, 4, 3, 0},
+ 181:lib/helix/real/scalfact.c **** 		{6, 6, 3, 0},
+ 182:lib/helix/real/scalfact.c **** 	}
+ 183:lib/helix/real/scalfact.c **** };
+ 184:lib/helix/real/scalfact.c **** 
+ 185:lib/helix/real/scalfact.c **** /**************************************************************************************
+ 186:lib/helix/real/scalfact.c ****  * Function:    UnpackSFMPEG2
+ 187:lib/helix/real/scalfact.c ****  *
+ 188:lib/helix/real/scalfact.c ****  * Description: unpack MPEG 2 scalefactors from bitstream
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccXk83jA.s 			page 11
+
+
+ 189:lib/helix/real/scalfact.c ****  *
+ 190:lib/helix/real/scalfact.c ****  * Inputs:      BitStreamInfo, SideInfoSub, ScaleFactorInfoSub structs for this
+ 191:lib/helix/real/scalfact.c ****  *                granule/channel
+ 192:lib/helix/real/scalfact.c ****  *              index of current granule and channel
+ 193:lib/helix/real/scalfact.c ****  *              ScaleFactorInfoSub from this granule 
+ 194:lib/helix/real/scalfact.c ****  *              modeExt field from frame header, to tell whether intensity stereo is on
+ 195:lib/helix/real/scalfact.c ****  *              ScaleFactorJS struct for storing IIP info used in Dequant()
+ 196:lib/helix/real/scalfact.c ****  *
+ 197:lib/helix/real/scalfact.c ****  * Outputs:     updated BitStreamInfo struct
+ 198:lib/helix/real/scalfact.c ****  *              scalefactors in sfis (short and/or long arrays, as appropriate)
+ 199:lib/helix/real/scalfact.c ****  *              updated intensityScale and preFlag flags
+ 200:lib/helix/real/scalfact.c ****  *
+ 201:lib/helix/real/scalfact.c ****  * Return:      none
+ 202:lib/helix/real/scalfact.c ****  *
+ 203:lib/helix/real/scalfact.c ****  * Notes:       Illegal Intensity Position = (2^slen) - 1 for MPEG2 scale factors
+ 204:lib/helix/real/scalfact.c ****  *
+ 205:lib/helix/real/scalfact.c ****  * TODO:        optimize the / and % stuff (only do one divide, get modulo x 
+ 206:lib/helix/real/scalfact.c ****  *                with (x / m) * m, etc.)
+ 207:lib/helix/real/scalfact.c ****  **************************************************************************************/
+ 208:lib/helix/real/scalfact.c **** static void UnpackSFMPEG2(BitStreamInfo *bsi, SideInfoSub *sis, ScaleFactorInfoSub *sfis, int gr, i
+ 209:lib/helix/real/scalfact.c **** {
+ 340              		.loc 1 209 0 is_stmt 1
+ 341              		.cfi_startproc
+ 342              		@ args = 12, pretend = 0, frame = 32
+ 343              		@ frame_needed = 0, uses_anonymous_args = 0
+ 344              	.LVL42:
+ 345 0000 2DE9F047 		push	{r4, r5, r6, r7, r8, r9, r10, lr}
+ 346              	.LCFI1:
+ 347              		.cfi_def_cfa_offset 32
+ 348              		.cfi_offset 4, -32
+ 349              		.cfi_offset 5, -28
+ 350              		.cfi_offset 6, -24
+ 351              		.cfi_offset 7, -20
+ 352              		.cfi_offset 8, -16
+ 353              		.cfi_offset 9, -12
+ 354              		.cfi_offset 10, -8
+ 355              		.cfi_offset 14, -4
+ 356 0004 88B0     		sub	sp, sp, #32
+ 357              	.LCFI2:
+ 358              		.cfi_def_cfa_offset 64
+ 359 0006 0646     		mov	r6, r0
+ 360 0008 1746     		mov	r7, r2
+ 361 000a 119A     		ldr	r2, [sp, #68]
+ 362              	.LVL43:
+ 363 000c DDF84880 		ldr	r8, [sp, #72]
+ 210:lib/helix/real/scalfact.c **** 
+ 211:lib/helix/real/scalfact.c **** 	int i, sfb, sfcIdx, btIdx, nrIdx, iipTest;
+ 212:lib/helix/real/scalfact.c **** 	int slen[4], nr[4];
+ 213:lib/helix/real/scalfact.c **** 	int sfCompress, preFlag, intensityScale;
+ 214:lib/helix/real/scalfact.c **** 	
+ 215:lib/helix/real/scalfact.c **** 	sfCompress = sis->sfCompress;
+ 364              		.loc 1 215 0
+ 365 0010 CB68     		ldr	r3, [r1, #12]
+ 366              	.LVL44:
+ 216:lib/helix/real/scalfact.c **** 	preFlag = 0;
+ 217:lib/helix/real/scalfact.c **** 	intensityScale = 0;
+ 218:lib/helix/real/scalfact.c **** 
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccXk83jA.s 			page 12
+
+
+ 219:lib/helix/real/scalfact.c **** 	/* stereo mode bits (1 = on): bit 1 = mid-side on/off, bit 0 = intensity on/off */
+ 220:lib/helix/real/scalfact.c **** 	if (! ((modeExt & 0x01) && (ch == 1)) ) {
+ 367              		.loc 1 220 0
+ 368 0012 12F0010C 		ands	ip, r2, #1
+ 369 0016 02D0     		beq	.L45
+ 370              		.loc 1 220 0 is_stmt 0 discriminator 1
+ 371 0018 109A     		ldr	r2, [sp, #64]
+ 372 001a 012A     		cmp	r2, #1
+ 373 001c 51D0     		beq	.L46
+ 374              	.L45:
+ 221:lib/helix/real/scalfact.c **** 		/* in other words: if ((modeExt & 0x01) == 0 || ch == 0) */
+ 222:lib/helix/real/scalfact.c **** 		if (sfCompress < 400) {
+ 375              		.loc 1 222 0 is_stmt 1
+ 376 001e B3F5C87F 		cmp	r3, #400
+ 377 0022 1BDA     		bge	.L47
+ 223:lib/helix/real/scalfact.c **** 			/* max slen = floor[(399/16) / 5] = 4 */
+ 224:lib/helix/real/scalfact.c **** 			slen[0] = (sfCompress >> 4) / 5;
+ 378              		.loc 1 224 0
+ 379 0024 1C11     		asrs	r4, r3, #4
+ 380 0026 9648     		ldr	r0, .L82
+ 381              	.LVL45:
+ 382 0028 80FB0420 		smull	r2, r0, r0, r4
+ 383 002c DA17     		asrs	r2, r3, #31
+ 384 002e C2EB6002 		rsb	r2, r2, r0, asr #1
+ 385 0032 0492     		str	r2, [sp, #16]
+ 225:lib/helix/real/scalfact.c **** 			slen[1]= (sfCompress >> 4) % 5;
+ 386              		.loc 1 225 0
+ 387 0034 02EB8202 		add	r2, r2, r2, lsl #2
+ 388 0038 A01A     		subs	r0, r4, r2
+ 389 003a 0590     		str	r0, [sp, #20]
+ 226:lib/helix/real/scalfact.c **** 			slen[2]= (sfCompress & 0x0f) >> 2;
+ 390              		.loc 1 226 0
+ 391 003c C3F38102 		ubfx	r2, r3, #2, #2
+ 392 0040 0692     		str	r2, [sp, #24]
+ 227:lib/helix/real/scalfact.c **** 			slen[3]= (sfCompress & 0x03);
+ 393              		.loc 1 227 0
+ 394 0042 03F00303 		and	r3, r3, #3
+ 395              	.LVL46:
+ 396 0046 0793     		str	r3, [sp, #28]
+ 397              	.LVL47:
+ 217:lib/helix/real/scalfact.c **** 
+ 398              		.loc 1 217 0
+ 399 0048 4FF00009 		mov	r9, #0
+ 216:lib/helix/real/scalfact.c **** 	intensityScale = 0;
+ 400              		.loc 1 216 0
+ 401 004c 4D46     		mov	r5, r9
+ 228:lib/helix/real/scalfact.c **** 			sfcIdx = 0;
+ 402              		.loc 1 228 0
+ 403 004e 4846     		mov	r0, r9
+ 404              	.LVL48:
+ 405              	.L48:
+ 229:lib/helix/real/scalfact.c **** 		} else if (sfCompress < 500) {
+ 230:lib/helix/real/scalfact.c **** 			/* max slen = floor[(99/4) / 5] = 4 */
+ 231:lib/helix/real/scalfact.c **** 			sfCompress -= 400;
+ 232:lib/helix/real/scalfact.c **** 			slen[0] = (sfCompress >> 2) / 5;
+ 233:lib/helix/real/scalfact.c **** 			slen[1]= (sfCompress >> 2) % 5;
+ 234:lib/helix/real/scalfact.c **** 			slen[2]= (sfCompress & 0x03);
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccXk83jA.s 			page 13
+
+
+ 235:lib/helix/real/scalfact.c **** 			slen[3]= 0;
+ 236:lib/helix/real/scalfact.c **** 			sfcIdx = 1;
+ 237:lib/helix/real/scalfact.c **** 		} else {
+ 238:lib/helix/real/scalfact.c **** 			/* max slen = floor[11/3] = 3 (sfCompress = 9 bits in MPEG2) */
+ 239:lib/helix/real/scalfact.c **** 			sfCompress -= 500;
+ 240:lib/helix/real/scalfact.c **** 			slen[0] = sfCompress / 3;
+ 241:lib/helix/real/scalfact.c **** 			slen[1] = sfCompress % 3;
+ 242:lib/helix/real/scalfact.c **** 			slen[2] = slen[3] = 0;
+ 243:lib/helix/real/scalfact.c **** 			if (sis->mixedBlock) {
+ 244:lib/helix/real/scalfact.c **** 				/* adjust for long/short mix logic (see comment above in NRTab[] definition) */
+ 245:lib/helix/real/scalfact.c **** 				slen[2] = slen[1];  
+ 246:lib/helix/real/scalfact.c **** 				slen[1] = slen[0];
+ 247:lib/helix/real/scalfact.c **** 			}  
+ 248:lib/helix/real/scalfact.c **** 			preFlag = 1;
+ 249:lib/helix/real/scalfact.c **** 			sfcIdx = 2;
+ 250:lib/helix/real/scalfact.c **** 		}
+ 251:lib/helix/real/scalfact.c **** 	} else {    
+ 252:lib/helix/real/scalfact.c **** 		/* intensity stereo ch = 1 (right) */
+ 253:lib/helix/real/scalfact.c **** 		intensityScale = sfCompress & 0x01;
+ 254:lib/helix/real/scalfact.c **** 		sfCompress >>= 1;
+ 255:lib/helix/real/scalfact.c **** 		if (sfCompress < 180) {
+ 256:lib/helix/real/scalfact.c **** 			/* max slen = floor[35/6] = 5 (from mod 36) */
+ 257:lib/helix/real/scalfact.c **** 			slen[0] = (sfCompress / 36);
+ 258:lib/helix/real/scalfact.c **** 			slen[1] = (sfCompress % 36) / 6;
+ 259:lib/helix/real/scalfact.c **** 			slen[2] = (sfCompress % 36) % 6;
+ 260:lib/helix/real/scalfact.c **** 			slen[3] = 0;
+ 261:lib/helix/real/scalfact.c **** 			sfcIdx = 3;
+ 262:lib/helix/real/scalfact.c **** 		} else if (sfCompress < 244) {
+ 263:lib/helix/real/scalfact.c **** 			/* max slen = floor[63/16] = 3 */
+ 264:lib/helix/real/scalfact.c **** 			sfCompress -= 180;
+ 265:lib/helix/real/scalfact.c **** 			slen[0] = (sfCompress & 0x3f) >> 4;
+ 266:lib/helix/real/scalfact.c **** 			slen[1] = (sfCompress & 0x0f) >> 2;
+ 267:lib/helix/real/scalfact.c **** 			slen[2] = (sfCompress & 0x03);
+ 268:lib/helix/real/scalfact.c **** 			slen[3] = 0;
+ 269:lib/helix/real/scalfact.c **** 			sfcIdx = 4;
+ 270:lib/helix/real/scalfact.c **** 		} else {
+ 271:lib/helix/real/scalfact.c **** 			/* max slen = floor[11/3] = 3 (max sfCompress >> 1 = 511/2 = 255) */
+ 272:lib/helix/real/scalfact.c **** 			sfCompress -= 244;
+ 273:lib/helix/real/scalfact.c **** 			slen[0] = (sfCompress / 3);
+ 274:lib/helix/real/scalfact.c **** 			slen[1] = (sfCompress % 3);
+ 275:lib/helix/real/scalfact.c **** 			slen[2] = slen[3] = 0;
+ 276:lib/helix/real/scalfact.c **** 			sfcIdx = 5;
+ 277:lib/helix/real/scalfact.c **** 		}
+ 278:lib/helix/real/scalfact.c **** 	}
+ 279:lib/helix/real/scalfact.c **** 	
+ 280:lib/helix/real/scalfact.c **** 	/* set index based on block type: (0,1,3) --> 0, (2 non-mixed) --> 1, (2 mixed) ---> 2 */
+ 281:lib/helix/real/scalfact.c **** 	btIdx = 0;
+ 282:lib/helix/real/scalfact.c **** 	if (sis->blockType == 2) 
+ 406              		.loc 1 282 0
+ 407 0050 4C69     		ldr	r4, [r1, #20]
+ 408 0052 022C     		cmp	r4, #2
+ 409 0054 77D0     		beq	.L77
+ 281:lib/helix/real/scalfact.c **** 	if (sis->blockType == 2) 
+ 410              		.loc 1 281 0
+ 411 0056 0024     		movs	r4, #0
+ 412              	.L52:
+ 413              	.LVL49:
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccXk83jA.s 			page 14
+
+
+ 283:lib/helix/real/scalfact.c **** 		btIdx = (sis->mixedBlock ? 2 : 1);
+ 284:lib/helix/real/scalfact.c **** 	for (i = 0; i < 4; i++)
+ 414              		.loc 1 284 0
+ 415 0058 0023     		movs	r3, #0
+ 416 005a 88E0     		b	.L53
+ 417              	.LVL50:
+ 418              	.L47:
+ 229:lib/helix/real/scalfact.c **** 			/* max slen = floor[(99/4) / 5] = 4 */
+ 419              		.loc 1 229 0
+ 420 005c B3F5FA7F 		cmp	r3, #500
+ 421 0060 15DA     		bge	.L49
+ 231:lib/helix/real/scalfact.c **** 			slen[0] = (sfCompress >> 2) / 5;
+ 422              		.loc 1 231 0
+ 423 0062 A3F5C873 		sub	r3, r3, #400
+ 424              	.LVL51:
+ 232:lib/helix/real/scalfact.c **** 			slen[1]= (sfCompress >> 2) % 5;
+ 425              		.loc 1 232 0
+ 426 0066 9C10     		asrs	r4, r3, #2
+ 427 0068 8548     		ldr	r0, .L82
+ 428              	.LVL52:
+ 429 006a 80FB0420 		smull	r2, r0, r0, r4
+ 430 006e DA17     		asrs	r2, r3, #31
+ 431 0070 C2EB6002 		rsb	r2, r2, r0, asr #1
+ 432 0074 0492     		str	r2, [sp, #16]
+ 233:lib/helix/real/scalfact.c **** 			slen[2]= (sfCompress & 0x03);
+ 433              		.loc 1 233 0
+ 434 0076 02EB8202 		add	r2, r2, r2, lsl #2
+ 435 007a A01A     		subs	r0, r4, r2
+ 436 007c 0590     		str	r0, [sp, #20]
+ 234:lib/helix/real/scalfact.c **** 			slen[3]= 0;
+ 437              		.loc 1 234 0
+ 438 007e 03F00303 		and	r3, r3, #3
+ 439              	.LVL53:
+ 440 0082 0693     		str	r3, [sp, #24]
+ 235:lib/helix/real/scalfact.c **** 			sfcIdx = 1;
+ 441              		.loc 1 235 0
+ 442 0084 0025     		movs	r5, #0
+ 443 0086 0795     		str	r5, [sp, #28]
+ 444              	.LVL54:
+ 217:lib/helix/real/scalfact.c **** 
+ 445              		.loc 1 217 0
+ 446 0088 A946     		mov	r9, r5
+ 236:lib/helix/real/scalfact.c **** 		} else {
+ 447              		.loc 1 236 0
+ 448 008a 0120     		movs	r0, #1
+ 449 008c E0E7     		b	.L48
+ 450              	.LVL55:
+ 451              	.L49:
+ 239:lib/helix/real/scalfact.c **** 			slen[0] = sfCompress / 3;
+ 452              		.loc 1 239 0
+ 453 008e A3F5FA73 		sub	r3, r3, #500
+ 454              	.LVL56:
+ 240:lib/helix/real/scalfact.c **** 			slen[1] = sfCompress % 3;
+ 455              		.loc 1 240 0
+ 456 0092 7C4A     		ldr	r2, .L82+4
+ 457 0094 82FB0302 		smull	r0, r2, r2, r3
+ 458              	.LVL57:
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccXk83jA.s 			page 15
+
+
+ 459 0098 A2EBE372 		sub	r2, r2, r3, asr #31
+ 460 009c 0492     		str	r2, [sp, #16]
+ 241:lib/helix/real/scalfact.c **** 			slen[2] = slen[3] = 0;
+ 461              		.loc 1 241 0
+ 462 009e 02EB4200 		add	r0, r2, r2, lsl #1
+ 463 00a2 181A     		subs	r0, r3, r0
+ 464 00a4 0590     		str	r0, [sp, #20]
+ 242:lib/helix/real/scalfact.c **** 			if (sis->mixedBlock) {
+ 465              		.loc 1 242 0
+ 466 00a6 0023     		movs	r3, #0
+ 467              	.LVL58:
+ 468 00a8 0793     		str	r3, [sp, #28]
+ 469 00aa 0693     		str	r3, [sp, #24]
+ 243:lib/helix/real/scalfact.c **** 				/* adjust for long/short mix logic (see comment above in NRTab[] definition) */
+ 470              		.loc 1 243 0
+ 471 00ac D1F81890 		ldr	r9, [r1, #24]
+ 472 00b0 B9F1000F 		cmp	r9, #0
+ 473 00b4 44D0     		beq	.L70
+ 245:lib/helix/real/scalfact.c **** 				slen[1] = slen[0];
+ 474              		.loc 1 245 0
+ 475 00b6 0690     		str	r0, [sp, #24]
+ 246:lib/helix/real/scalfact.c **** 			}  
+ 476              		.loc 1 246 0
+ 477 00b8 0592     		str	r2, [sp, #20]
+ 217:lib/helix/real/scalfact.c **** 
+ 478              		.loc 1 217 0
+ 479 00ba 9946     		mov	r9, r3
+ 248:lib/helix/real/scalfact.c **** 			sfcIdx = 2;
+ 480              		.loc 1 248 0
+ 481 00bc 0125     		movs	r5, #1
+ 249:lib/helix/real/scalfact.c **** 		}
+ 482              		.loc 1 249 0
+ 483 00be 0220     		movs	r0, #2
+ 484 00c0 C6E7     		b	.L48
+ 485              	.LVL59:
+ 486              	.L46:
+ 253:lib/helix/real/scalfact.c **** 		sfCompress >>= 1;
+ 487              		.loc 1 253 0
+ 488 00c2 03F00109 		and	r9, r3, #1
+ 489              	.LVL60:
+ 254:lib/helix/real/scalfact.c **** 		if (sfCompress < 180) {
+ 490              		.loc 1 254 0
+ 491 00c6 5B10     		asrs	r3, r3, #1
+ 492              	.LVL61:
+ 255:lib/helix/real/scalfact.c **** 			/* max slen = floor[35/6] = 5 (from mod 36) */
+ 493              		.loc 1 255 0
+ 494 00c8 B32B     		cmp	r3, #179
+ 495 00ca 19DC     		bgt	.L50
+ 257:lib/helix/real/scalfact.c **** 			slen[1] = (sfCompress % 36) / 6;
+ 496              		.loc 1 257 0
+ 497 00cc 6E48     		ldr	r0, .L82+8
+ 498              	.LVL62:
+ 499 00ce 80FB0320 		smull	r2, r0, r0, r3
+ 500 00d2 DA17     		asrs	r2, r3, #31
+ 501 00d4 C2EBE002 		rsb	r2, r2, r0, asr #3
+ 502 00d8 0492     		str	r2, [sp, #16]
+ 258:lib/helix/real/scalfact.c **** 			slen[2] = (sfCompress % 36) % 6;
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccXk83jA.s 			page 16
+
+
+ 503              		.loc 1 258 0
+ 504 00da 02EBC202 		add	r2, r2, r2, lsl #3
+ 505 00de 9000     		lsls	r0, r2, #2
+ 506 00e0 181A     		subs	r0, r3, r0
+ 507 00e2 6A4B     		ldr	r3, .L82+12
+ 508              	.LVL63:
+ 509 00e4 83FB0023 		smull	r2, r3, r3, r0
+ 510 00e8 A3EBE073 		sub	r3, r3, r0, asr #31
+ 511 00ec 0593     		str	r3, [sp, #20]
+ 259:lib/helix/real/scalfact.c **** 			slen[3] = 0;
+ 512              		.loc 1 259 0
+ 513 00ee 03EB4303 		add	r3, r3, r3, lsl #1
+ 514 00f2 5A00     		lsls	r2, r3, #1
+ 515 00f4 821A     		subs	r2, r0, r2
+ 516 00f6 0692     		str	r2, [sp, #24]
+ 260:lib/helix/real/scalfact.c **** 			sfcIdx = 3;
+ 517              		.loc 1 260 0
+ 518 00f8 0025     		movs	r5, #0
+ 519 00fa 0795     		str	r5, [sp, #28]
+ 520              	.LVL64:
+ 261:lib/helix/real/scalfact.c **** 		} else if (sfCompress < 244) {
+ 521              		.loc 1 261 0
+ 522 00fc 0320     		movs	r0, #3
+ 523 00fe A7E7     		b	.L48
+ 524              	.LVL65:
+ 525              	.L50:
+ 262:lib/helix/real/scalfact.c **** 			/* max slen = floor[63/16] = 3 */
+ 526              		.loc 1 262 0
+ 527 0100 F32B     		cmp	r3, #243
+ 528 0102 0DDC     		bgt	.L51
+ 264:lib/helix/real/scalfact.c **** 			slen[0] = (sfCompress & 0x3f) >> 4;
+ 529              		.loc 1 264 0
+ 530 0104 B43B     		subs	r3, r3, #180
+ 531              	.LVL66:
+ 265:lib/helix/real/scalfact.c **** 			slen[1] = (sfCompress & 0x0f) >> 2;
+ 532              		.loc 1 265 0
+ 533 0106 C3F30112 		ubfx	r2, r3, #4, #2
+ 534 010a 0492     		str	r2, [sp, #16]
+ 266:lib/helix/real/scalfact.c **** 			slen[2] = (sfCompress & 0x03);
+ 535              		.loc 1 266 0
+ 536 010c C3F38102 		ubfx	r2, r3, #2, #2
+ 537 0110 0592     		str	r2, [sp, #20]
+ 267:lib/helix/real/scalfact.c **** 			slen[3] = 0;
+ 538              		.loc 1 267 0
+ 539 0112 03F00303 		and	r3, r3, #3
+ 540              	.LVL67:
+ 541 0116 0693     		str	r3, [sp, #24]
+ 268:lib/helix/real/scalfact.c **** 			sfcIdx = 4;
+ 542              		.loc 1 268 0
+ 543 0118 0025     		movs	r5, #0
+ 544 011a 0795     		str	r5, [sp, #28]
+ 545              	.LVL68:
+ 269:lib/helix/real/scalfact.c **** 		} else {
+ 546              		.loc 1 269 0
+ 547 011c 0420     		movs	r0, #4
+ 548              	.LVL69:
+ 549 011e 97E7     		b	.L48
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccXk83jA.s 			page 17
+
+
+ 550              	.LVL70:
+ 551              	.L51:
+ 272:lib/helix/real/scalfact.c **** 			slen[0] = (sfCompress / 3);
+ 552              		.loc 1 272 0
+ 553 0120 F43B     		subs	r3, r3, #244
+ 554              	.LVL71:
+ 273:lib/helix/real/scalfact.c **** 			slen[1] = (sfCompress % 3);
+ 555              		.loc 1 273 0
+ 556 0122 584A     		ldr	r2, .L82+4
+ 557 0124 82FB0302 		smull	r0, r2, r2, r3
+ 558              	.LVL72:
+ 559 0128 A2EBE372 		sub	r2, r2, r3, asr #31
+ 560 012c 0492     		str	r2, [sp, #16]
+ 274:lib/helix/real/scalfact.c **** 			slen[2] = slen[3] = 0;
+ 561              		.loc 1 274 0
+ 562 012e 02EB4202 		add	r2, r2, r2, lsl #1
+ 563 0132 981A     		subs	r0, r3, r2
+ 564 0134 0590     		str	r0, [sp, #20]
+ 275:lib/helix/real/scalfact.c **** 			sfcIdx = 5;
+ 565              		.loc 1 275 0
+ 566 0136 0025     		movs	r5, #0
+ 567 0138 0795     		str	r5, [sp, #28]
+ 568 013a 0695     		str	r5, [sp, #24]
+ 569              	.LVL73:
+ 276:lib/helix/real/scalfact.c **** 		}
+ 570              		.loc 1 276 0
+ 571 013c 0520     		movs	r0, #5
+ 572 013e 87E7     		b	.L48
+ 573              	.LVL74:
+ 574              	.L70:
+ 248:lib/helix/real/scalfact.c **** 			sfcIdx = 2;
+ 575              		.loc 1 248 0
+ 576 0140 0125     		movs	r5, #1
+ 249:lib/helix/real/scalfact.c **** 		}
+ 577              		.loc 1 249 0
+ 578 0142 0220     		movs	r0, #2
+ 579 0144 84E7     		b	.L48
+ 580              	.LVL75:
+ 581              	.L77:
+ 283:lib/helix/real/scalfact.c **** 	for (i = 0; i < 4; i++)
+ 582              		.loc 1 283 0
+ 583 0146 8B69     		ldr	r3, [r1, #24]
+ 584 0148 002B     		cmp	r3, #0
+ 585 014a 85D1     		bne	.L52
+ 586 014c 0124     		movs	r4, #1
+ 587 014e 83E7     		b	.L52
+ 588              	.LVL76:
+ 589              	.L54:
+ 285:lib/helix/real/scalfact.c **** 		nr[i] = (int)NRTab[sfcIdx][btIdx][i];
+ 590              		.loc 1 285 0 discriminator 3
+ 591 0150 00EB4002 		add	r2, r0, r0, lsl #1
+ 592 0154 02EB040A 		add	r10, r2, r4
+ 593 0158 4D4A     		ldr	r2, .L82+16
+ 594 015a 02EB8A02 		add	r2, r2, r10, lsl #2
+ 595 015e 12F803A0 		ldrb	r10, [r2, r3]	@ zero_extendqisi2
+ 596 0162 08AA     		add	r2, sp, #32
+ 597 0164 02EB8302 		add	r2, r2, r3, lsl #2
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccXk83jA.s 			page 18
+
+
+ 598 0168 42F820AC 		str	r10, [r2, #-32]
+ 284:lib/helix/real/scalfact.c **** 		nr[i] = (int)NRTab[sfcIdx][btIdx][i];
+ 599              		.loc 1 284 0 discriminator 3
+ 600 016c 0133     		adds	r3, r3, #1
+ 601              	.LVL77:
+ 602              	.L53:
+ 284:lib/helix/real/scalfact.c **** 		nr[i] = (int)NRTab[sfcIdx][btIdx][i];
+ 603              		.loc 1 284 0 is_stmt 0 discriminator 1
+ 604 016e 032B     		cmp	r3, #3
+ 605 0170 EEDD     		ble	.L54
+ 286:lib/helix/real/scalfact.c **** 
+ 287:lib/helix/real/scalfact.c **** 	/* save intensity stereo scale factor info */
+ 288:lib/helix/real/scalfact.c **** 	if( (modeExt & 0x01) && (ch == 1) ) {
+ 606              		.loc 1 288 0 is_stmt 1
+ 607 0172 BCF1000F 		cmp	ip, #0
+ 608 0176 02D0     		beq	.L55
+ 609              		.loc 1 288 0 is_stmt 0 discriminator 1
+ 610 0178 109B     		ldr	r3, [sp, #64]
+ 611              	.LVL78:
+ 612 017a 012B     		cmp	r3, #1
+ 613 017c 1AD0     		beq	.L78
+ 614              	.LVL79:
+ 615              	.L55:
+ 289:lib/helix/real/scalfact.c **** 		for (i = 0; i < 4; i++) {
+ 290:lib/helix/real/scalfact.c **** 			sfjs->slen[i] = slen[i];
+ 291:lib/helix/real/scalfact.c **** 			sfjs->nr[i] = nr[i];
+ 292:lib/helix/real/scalfact.c **** 		}
+ 293:lib/helix/real/scalfact.c **** 		sfjs->intensityScale = intensityScale;
+ 294:lib/helix/real/scalfact.c **** 	}
+ 295:lib/helix/real/scalfact.c **** 	sis->preFlag = preFlag;
+ 616              		.loc 1 295 0 is_stmt 1
+ 617 017e CD63     		str	r5, [r1, #60]
+ 296:lib/helix/real/scalfact.c **** 
+ 297:lib/helix/real/scalfact.c **** 	/* short blocks */
+ 298:lib/helix/real/scalfact.c **** 	if(sis->blockType == 2) {
+ 618              		.loc 1 298 0
+ 619 0180 4B69     		ldr	r3, [r1, #20]
+ 620 0182 022B     		cmp	r3, #2
+ 621 0184 18D0     		beq	.L79
+ 299:lib/helix/real/scalfact.c **** 		if(sis->mixedBlock) {
+ 300:lib/helix/real/scalfact.c **** 			/* do long block portion */
+ 301:lib/helix/real/scalfact.c **** 			iipTest = (1 << slen[0]) - 1;
+ 302:lib/helix/real/scalfact.c **** 			for (sfb=0; sfb < 6; sfb++) {
+ 303:lib/helix/real/scalfact.c **** 				sfis->l[sfb] = (char)GetBits(bsi, slen[0]);
+ 304:lib/helix/real/scalfact.c **** 			}
+ 305:lib/helix/real/scalfact.c **** 			sfb = 3;  /* start sfb for short */
+ 306:lib/helix/real/scalfact.c **** 			nrIdx = 1;
+ 307:lib/helix/real/scalfact.c **** 		} else {      
+ 308:lib/helix/real/scalfact.c **** 			/* all short blocks, so start nr, sfb at 0 */
+ 309:lib/helix/real/scalfact.c **** 			sfb = 0;
+ 310:lib/helix/real/scalfact.c **** 			nrIdx = 0;
+ 311:lib/helix/real/scalfact.c **** 		}
+ 312:lib/helix/real/scalfact.c **** 
+ 313:lib/helix/real/scalfact.c **** 		/* remaining short blocks, sfb just keeps incrementing */
+ 314:lib/helix/real/scalfact.c **** 		for (    ; nrIdx <= 3; nrIdx++) {
+ 315:lib/helix/real/scalfact.c **** 			iipTest = (1 << slen[nrIdx]) - 1;
+ 316:lib/helix/real/scalfact.c **** 			for (i=0; i < nr[nrIdx]; i++, sfb++) {
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccXk83jA.s 			page 19
+
+
+ 317:lib/helix/real/scalfact.c **** 				sfis->s[sfb][0] = (char)GetBits(bsi, slen[nrIdx]);
+ 318:lib/helix/real/scalfact.c **** 				sfis->s[sfb][1] = (char)GetBits(bsi, slen[nrIdx]);
+ 319:lib/helix/real/scalfact.c **** 				sfis->s[sfb][2] = (char)GetBits(bsi, slen[nrIdx]);
+ 320:lib/helix/real/scalfact.c **** 			}
+ 321:lib/helix/real/scalfact.c **** 		}
+ 322:lib/helix/real/scalfact.c **** 		/* last sf band not transmitted */
+ 323:lib/helix/real/scalfact.c **** 		sfis->s[12][0] = sfis->s[12][1] = sfis->s[12][2] = 0;
+ 324:lib/helix/real/scalfact.c **** 	} else {
+ 325:lib/helix/real/scalfact.c **** 		/* long blocks */
+ 326:lib/helix/real/scalfact.c **** 		sfb = 0;
+ 327:lib/helix/real/scalfact.c **** 		for (nrIdx = 0; nrIdx <= 3; nrIdx++) {
+ 622              		.loc 1 327 0
+ 623 0186 4FF00008 		mov	r8, #0
+ 326:lib/helix/real/scalfact.c **** 		for (nrIdx = 0; nrIdx <= 3; nrIdx++) {
+ 624              		.loc 1 326 0
+ 625 018a 4546     		mov	r5, r8
+ 626              	.LVL80:
+ 627 018c 68E0     		b	.L58
+ 628              	.LVL81:
+ 629              	.L57:
+ 290:lib/helix/real/scalfact.c **** 			sfjs->nr[i] = nr[i];
+ 630              		.loc 1 290 0 discriminator 3
+ 631 018e 9800     		lsls	r0, r3, #2
+ 632 0190 08AA     		add	r2, sp, #32
+ 633 0192 1418     		adds	r4, r2, r0
+ 634 0194 54F8102C 		ldr	r2, [r4, #-16]
+ 635 0198 4044     		add	r0, r0, r8
+ 636 019a 4260     		str	r2, [r0, #4]
+ 291:lib/helix/real/scalfact.c **** 		}
+ 637              		.loc 1 291 0 discriminator 3
+ 638 019c 54F8200C 		ldr	r0, [r4, #-32]
+ 639 01a0 1A1D     		adds	r2, r3, #4
+ 640 01a2 08EB8202 		add	r2, r8, r2, lsl #2
+ 641 01a6 5060     		str	r0, [r2, #4]
+ 289:lib/helix/real/scalfact.c **** 			sfjs->slen[i] = slen[i];
+ 642              		.loc 1 289 0 discriminator 3
+ 643 01a8 0133     		adds	r3, r3, #1
+ 644              	.LVL82:
+ 645              	.L56:
+ 289:lib/helix/real/scalfact.c **** 			sfjs->slen[i] = slen[i];
+ 646              		.loc 1 289 0 is_stmt 0 discriminator 1
+ 647 01aa 032B     		cmp	r3, #3
+ 648 01ac EFDD     		ble	.L57
+ 293:lib/helix/real/scalfact.c **** 	}
+ 649              		.loc 1 293 0 is_stmt 1
+ 650 01ae C8F80090 		str	r9, [r8]
+ 651 01b2 E4E7     		b	.L55
+ 652              	.LVL83:
+ 653              	.L78:
+ 289:lib/helix/real/scalfact.c **** 			sfjs->slen[i] = slen[i];
+ 654              		.loc 1 289 0
+ 655 01b4 0023     		movs	r3, #0
+ 656 01b6 F8E7     		b	.L56
+ 657              	.LVL84:
+ 658              	.L79:
+ 299:lib/helix/real/scalfact.c **** 			/* do long block portion */
+ 659              		.loc 1 299 0
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccXk83jA.s 			page 20
+
+
+ 660 01b8 8D69     		ldr	r5, [r1, #24]
+ 661              	.LVL85:
+ 662 01ba BDB3     		cbz	r5, .L75
+ 301:lib/helix/real/scalfact.c **** 			for (sfb=0; sfb < 6; sfb++) {
+ 663              		.loc 1 301 0
+ 664 01bc 049D     		ldr	r5, [sp, #16]
+ 665              	.LVL86:
+ 302:lib/helix/real/scalfact.c **** 				sfis->l[sfb] = (char)GetBits(bsi, slen[0]);
+ 666              		.loc 1 302 0
+ 667 01be 0024     		movs	r4, #0
+ 668 01c0 05E0     		b	.L60
+ 669              	.LVL87:
+ 670              	.L61:
+ 303:lib/helix/real/scalfact.c **** 			}
+ 671              		.loc 1 303 0 discriminator 3
+ 672 01c2 2946     		mov	r1, r5
+ 673 01c4 3046     		mov	r0, r6
+ 674 01c6 FFF7FEFF 		bl	xmp3fixpt_GetBits
+ 675              	.LVL88:
+ 676 01ca 3855     		strb	r0, [r7, r4]
+ 302:lib/helix/real/scalfact.c **** 				sfis->l[sfb] = (char)GetBits(bsi, slen[0]);
+ 677              		.loc 1 302 0 discriminator 3
+ 678 01cc 0134     		adds	r4, r4, #1
+ 679              	.LVL89:
+ 680              	.L60:
+ 302:lib/helix/real/scalfact.c **** 				sfis->l[sfb] = (char)GetBits(bsi, slen[0]);
+ 681              		.loc 1 302 0 is_stmt 0 discriminator 1
+ 682 01ce 052C     		cmp	r4, #5
+ 683 01d0 F7DD     		ble	.L61
+ 306:lib/helix/real/scalfact.c **** 		} else {      
+ 684              		.loc 1 306 0 is_stmt 1
+ 685 01d2 4FF0010A 		mov	r10, #1
+ 305:lib/helix/real/scalfact.c **** 			nrIdx = 1;
+ 686              		.loc 1 305 0
+ 687 01d6 0325     		movs	r5, #3
+ 688              	.LVL90:
+ 689 01d8 1DE0     		b	.L64
+ 690              	.LVL91:
+ 691              	.L63:
+ 317:lib/helix/real/scalfact.c **** 				sfis->s[sfb][1] = (char)GetBits(bsi, slen[nrIdx]);
+ 692              		.loc 1 317 0 discriminator 3
+ 693 01da 4946     		mov	r1, r9
+ 694 01dc 3046     		mov	r0, r6
+ 695 01de FFF7FEFF 		bl	xmp3fixpt_GetBits
+ 696              	.LVL92:
+ 697 01e2 05EB4504 		add	r4, r5, r5, lsl #1
+ 698 01e6 3C44     		add	r4, r4, r7
+ 699 01e8 E075     		strb	r0, [r4, #23]
+ 318:lib/helix/real/scalfact.c **** 				sfis->s[sfb][2] = (char)GetBits(bsi, slen[nrIdx]);
+ 700              		.loc 1 318 0 discriminator 3
+ 701 01ea 4946     		mov	r1, r9
+ 702 01ec 3046     		mov	r0, r6
+ 703 01ee FFF7FEFF 		bl	xmp3fixpt_GetBits
+ 704              	.LVL93:
+ 705 01f2 2076     		strb	r0, [r4, #24]
+ 319:lib/helix/real/scalfact.c **** 			}
+ 706              		.loc 1 319 0 discriminator 3
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccXk83jA.s 			page 21
+
+
+ 707 01f4 4946     		mov	r1, r9
+ 708 01f6 3046     		mov	r0, r6
+ 709 01f8 FFF7FEFF 		bl	xmp3fixpt_GetBits
+ 710              	.LVL94:
+ 711 01fc 6076     		strb	r0, [r4, #25]
+ 316:lib/helix/real/scalfact.c **** 				sfis->s[sfb][0] = (char)GetBits(bsi, slen[nrIdx]);
+ 712              		.loc 1 316 0 discriminator 3
+ 713 01fe 08F10108 		add	r8, r8, #1
+ 714              	.LVL95:
+ 715 0202 0135     		adds	r5, r5, #1
+ 716              	.LVL96:
+ 717              	.L62:
+ 316:lib/helix/real/scalfact.c **** 				sfis->s[sfb][0] = (char)GetBits(bsi, slen[nrIdx]);
+ 718              		.loc 1 316 0 is_stmt 0 discriminator 1
+ 719 0204 08AB     		add	r3, sp, #32
+ 720 0206 03EB8A03 		add	r3, r3, r10, lsl #2
+ 721 020a 53F8203C 		ldr	r3, [r3, #-32]
+ 722 020e 4345     		cmp	r3, r8
+ 723 0210 E3DC     		bgt	.L63
+ 314:lib/helix/real/scalfact.c **** 			iipTest = (1 << slen[nrIdx]) - 1;
+ 724              		.loc 1 314 0 is_stmt 1
+ 725 0212 0AF1010A 		add	r10, r10, #1
+ 726              	.LVL97:
+ 727              	.L64:
+ 314:lib/helix/real/scalfact.c **** 			iipTest = (1 << slen[nrIdx]) - 1;
+ 728              		.loc 1 314 0 is_stmt 0 discriminator 1
+ 729 0216 BAF1030F 		cmp	r10, #3
+ 730 021a 09DC     		bgt	.L80
+ 315:lib/helix/real/scalfact.c **** 			for (i=0; i < nr[nrIdx]; i++, sfb++) {
+ 731              		.loc 1 315 0 is_stmt 1
+ 732 021c 08AB     		add	r3, sp, #32
+ 733 021e 03EB8A03 		add	r3, r3, r10, lsl #2
+ 734 0222 53F8109C 		ldr	r9, [r3, #-16]
+ 735              	.LVL98:
+ 316:lib/helix/real/scalfact.c **** 				sfis->s[sfb][0] = (char)GetBits(bsi, slen[nrIdx]);
+ 736              		.loc 1 316 0
+ 737 0226 4FF00008 		mov	r8, #0
+ 738 022a EBE7     		b	.L62
+ 739              	.LVL99:
+ 740              	.L75:
+ 310:lib/helix/real/scalfact.c **** 		}
+ 741              		.loc 1 310 0
+ 742 022c AA46     		mov	r10, r5
+ 743 022e F2E7     		b	.L64
+ 744              	.LVL100:
+ 745              	.L80:
+ 323:lib/helix/real/scalfact.c **** 	} else {
+ 746              		.loc 1 323 0
+ 747 0230 0023     		movs	r3, #0
+ 748 0232 87F83D30 		strb	r3, [r7, #61]
+ 749 0236 87F83C30 		strb	r3, [r7, #60]
+ 750 023a 87F83B30 		strb	r3, [r7, #59]
+ 751 023e 1CE0     		b	.L44
+ 752              	.LVL101:
+ 753              	.L68:
+ 328:lib/helix/real/scalfact.c **** 			iipTest = (1 << slen[nrIdx]) - 1;
+ 329:lib/helix/real/scalfact.c **** 			for(i=0; i < nr[nrIdx]; i++, sfb++) {
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccXk83jA.s 			page 22
+
+
+ 330:lib/helix/real/scalfact.c **** 				sfis->l[sfb] = (char)GetBits(bsi, slen[nrIdx]);
+ 754              		.loc 1 330 0 discriminator 3
+ 755 0240 4946     		mov	r1, r9
+ 756 0242 3046     		mov	r0, r6
+ 757 0244 FFF7FEFF 		bl	xmp3fixpt_GetBits
+ 758              	.LVL102:
+ 759 0248 7855     		strb	r0, [r7, r5]
+ 329:lib/helix/real/scalfact.c **** 				sfis->l[sfb] = (char)GetBits(bsi, slen[nrIdx]);
+ 760              		.loc 1 329 0 discriminator 3
+ 761 024a 0134     		adds	r4, r4, #1
+ 762              	.LVL103:
+ 763 024c 0135     		adds	r5, r5, #1
+ 764              	.LVL104:
+ 765              	.L67:
+ 329:lib/helix/real/scalfact.c **** 				sfis->l[sfb] = (char)GetBits(bsi, slen[nrIdx]);
+ 766              		.loc 1 329 0 is_stmt 0 discriminator 1
+ 767 024e 08AB     		add	r3, sp, #32
+ 768 0250 03EB8803 		add	r3, r3, r8, lsl #2
+ 769 0254 53F8203C 		ldr	r3, [r3, #-32]
+ 770 0258 A342     		cmp	r3, r4
+ 771 025a F1DC     		bgt	.L68
+ 327:lib/helix/real/scalfact.c **** 			iipTest = (1 << slen[nrIdx]) - 1;
+ 772              		.loc 1 327 0 is_stmt 1 discriminator 2
+ 773 025c 08F10108 		add	r8, r8, #1
+ 774              	.LVL105:
+ 775              	.L58:
+ 327:lib/helix/real/scalfact.c **** 			iipTest = (1 << slen[nrIdx]) - 1;
+ 776              		.loc 1 327 0 is_stmt 0 discriminator 1
+ 777 0260 B8F1030F 		cmp	r8, #3
+ 778 0264 06DC     		bgt	.L81
+ 328:lib/helix/real/scalfact.c **** 			iipTest = (1 << slen[nrIdx]) - 1;
+ 779              		.loc 1 328 0 is_stmt 1
+ 780 0266 08AB     		add	r3, sp, #32
+ 781 0268 03EB8803 		add	r3, r3, r8, lsl #2
+ 782 026c 53F8109C 		ldr	r9, [r3, #-16]
+ 783              	.LVL106:
+ 329:lib/helix/real/scalfact.c **** 				sfis->l[sfb] = (char)GetBits(bsi, slen[nrIdx]);
+ 784              		.loc 1 329 0
+ 785 0270 0024     		movs	r4, #0
+ 786 0272 ECE7     		b	.L67
+ 787              	.LVL107:
+ 788              	.L81:
+ 331:lib/helix/real/scalfact.c **** 			}
+ 332:lib/helix/real/scalfact.c **** 		}
+ 333:lib/helix/real/scalfact.c **** 		/* last sf band not transmitted */
+ 334:lib/helix/real/scalfact.c **** 		sfis->l[21] = sfis->l[22] = 0;
+ 789              		.loc 1 334 0
+ 790 0274 0023     		movs	r3, #0
+ 791 0276 BB75     		strb	r3, [r7, #22]
+ 792 0278 7B75     		strb	r3, [r7, #21]
+ 793              	.LVL108:
+ 794              	.L44:
+ 335:lib/helix/real/scalfact.c **** 
+ 336:lib/helix/real/scalfact.c **** 	}
+ 337:lib/helix/real/scalfact.c **** }
+ 795              		.loc 1 337 0
+ 796 027a 08B0     		add	sp, sp, #32
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccXk83jA.s 			page 23
+
+
+ 797              	.LCFI3:
+ 798              		.cfi_def_cfa_offset 32
+ 799              		@ sp needed
+ 800 027c BDE8F087 		pop	{r4, r5, r6, r7, r8, r9, r10, pc}
+ 801              	.LVL109:
+ 802              	.L83:
+ 803              		.align	2
+ 804              	.L82:
+ 805 0280 67666666 		.word	1717986919
+ 806 0284 56555555 		.word	1431655766
+ 807 0288 398EE338 		.word	954437177
+ 808 028c ABAAAA2A 		.word	715827883
+ 809 0290 00000000 		.word	.LANCHOR1
+ 810              		.cfi_endproc
+ 811              	.LFE1:
+ 813              		.section	.text.xmp3fixpt_UnpackScaleFactors,"ax",%progbits
+ 814              		.align	1
+ 815              		.global	xmp3fixpt_UnpackScaleFactors
+ 816              		.syntax unified
+ 817              		.thumb
+ 818              		.thumb_func
+ 819              		.fpu fpv5-sp-d16
+ 821              	xmp3fixpt_UnpackScaleFactors:
+ 822              	.LFB2:
+ 338:lib/helix/real/scalfact.c **** 
+ 339:lib/helix/real/scalfact.c **** /**************************************************************************************
+ 340:lib/helix/real/scalfact.c ****  * Function:    UnpackScaleFactors
+ 341:lib/helix/real/scalfact.c ****  *
+ 342:lib/helix/real/scalfact.c ****  * Description: parse the fields of the MP3 scale factor data section
+ 343:lib/helix/real/scalfact.c ****  *
+ 344:lib/helix/real/scalfact.c ****  * Inputs:      MP3DecInfo structure filled by UnpackFrameHeader() and UnpackSideInfo()
+ 345:lib/helix/real/scalfact.c ****  *              buffer pointing to the MP3 scale factor data
+ 346:lib/helix/real/scalfact.c ****  *              pointer to bit offset (0-7) indicating starting bit in buf[0]
+ 347:lib/helix/real/scalfact.c ****  *              number of bits available in data buffer
+ 348:lib/helix/real/scalfact.c ****  *              index of current granule and channel
+ 349:lib/helix/real/scalfact.c ****  *
+ 350:lib/helix/real/scalfact.c ****  * Outputs:     updated platform-specific ScaleFactorInfo struct
+ 351:lib/helix/real/scalfact.c ****  *              updated bitOffset
+ 352:lib/helix/real/scalfact.c ****  *
+ 353:lib/helix/real/scalfact.c ****  * Return:      length (in bytes) of scale factor data, -1 if null input pointers
+ 354:lib/helix/real/scalfact.c ****  **************************************************************************************/
+ 355:lib/helix/real/scalfact.c **** int UnpackScaleFactors(MP3DecInfo *mp3DecInfo, unsigned char *buf, int *bitOffset, int bitsAvail, i
+ 356:lib/helix/real/scalfact.c **** {
+ 823              		.loc 1 356 0
+ 824              		.cfi_startproc
+ 825              		@ args = 8, pretend = 0, frame = 16
+ 826              		@ frame_needed = 0, uses_anonymous_args = 0
+ 827              	.LVL110:
+ 828 0000 2DE9F04F 		push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
+ 829              	.LCFI4:
+ 830              		.cfi_def_cfa_offset 36
+ 831              		.cfi_offset 4, -36
+ 832              		.cfi_offset 5, -32
+ 833              		.cfi_offset 6, -28
+ 834              		.cfi_offset 7, -24
+ 835              		.cfi_offset 8, -20
+ 836              		.cfi_offset 9, -16
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccXk83jA.s 			page 24
+
+
+ 837              		.cfi_offset 10, -12
+ 838              		.cfi_offset 11, -8
+ 839              		.cfi_offset 14, -4
+ 840 0004 89B0     		sub	sp, sp, #36
+ 841              	.LCFI5:
+ 842              		.cfi_def_cfa_offset 72
+ 843 0006 129D     		ldr	r5, [sp, #72]
+ 844 0008 139C     		ldr	r4, [sp, #76]
+ 357:lib/helix/real/scalfact.c **** 	int bitsUsed;
+ 358:lib/helix/real/scalfact.c **** 	unsigned char *startBuf;
+ 359:lib/helix/real/scalfact.c **** 	BitStreamInfo bitStreamInfo, *bsi;
+ 360:lib/helix/real/scalfact.c **** 	FrameHeader *fh;
+ 361:lib/helix/real/scalfact.c **** 	SideInfo *si;
+ 362:lib/helix/real/scalfact.c **** 	ScaleFactorInfo *sfi;
+ 363:lib/helix/real/scalfact.c **** 
+ 364:lib/helix/real/scalfact.c **** 	/* validate pointers */
+ 365:lib/helix/real/scalfact.c **** 	if (!mp3DecInfo || !mp3DecInfo->FrameHeaderPS || !mp3DecInfo->SideInfoPS || !mp3DecInfo->ScaleFact
+ 845              		.loc 1 365 0
+ 846 000a 0028     		cmp	r0, #0
+ 847 000c 00F08580 		beq	.L90
+ 848 0010 0746     		mov	r7, r0
+ 849              		.loc 1 365 0 is_stmt 0 discriminator 1
+ 850 0012 D0F800B0 		ldr	fp, [r0]
+ 851 0016 BBF1000F 		cmp	fp, #0
+ 852 001a 00F08180 		beq	.L91
+ 853              		.loc 1 365 0 discriminator 2
+ 854 001e D0F80480 		ldr	r8, [r0, #4]
+ 855 0022 B8F1000F 		cmp	r8, #0
+ 856 0026 7ED0     		beq	.L92
+ 857              		.loc 1 365 0 discriminator 3
+ 858 0028 D0F808A0 		ldr	r10, [r0, #8]
+ 859 002c BAF1000F 		cmp	r10, #0
+ 860 0030 7CD0     		beq	.L93
+ 861              	.LVL111:
+ 366:lib/helix/real/scalfact.c **** 		return -1;
+ 367:lib/helix/real/scalfact.c **** 	fh = ((FrameHeader *)(mp3DecInfo->FrameHeaderPS));
+ 368:lib/helix/real/scalfact.c **** 	si = ((SideInfo *)(mp3DecInfo->SideInfoPS));
+ 369:lib/helix/real/scalfact.c **** 	sfi = ((ScaleFactorInfo *)(mp3DecInfo->ScaleFactorInfoPS));
+ 370:lib/helix/real/scalfact.c **** 
+ 371:lib/helix/real/scalfact.c **** 	/* init GetBits reader */
+ 372:lib/helix/real/scalfact.c **** 	startBuf = buf;
+ 373:lib/helix/real/scalfact.c **** 	bsi = &bitStreamInfo;
+ 374:lib/helix/real/scalfact.c **** 	SetBitstreamPointer(bsi, (bitsAvail + *bitOffset + 7) / 8, buf);
+ 862              		.loc 1 374 0 is_stmt 1
+ 863 0032 1068     		ldr	r0, [r2]
+ 864              	.LVL112:
+ 865 0034 0344     		add	r3, r3, r0
+ 866              	.LVL113:
+ 867 0036 0733     		adds	r3, r3, #7
+ 868 0038 4CD4     		bmi	.L95
+ 869              	.L86:
+ 870 003a 1646     		mov	r6, r2
+ 871 003c 8946     		mov	r9, r1
+ 872 003e 0A46     		mov	r2, r1
+ 873              	.LVL114:
+ 874 0040 D910     		asrs	r1, r3, #3
+ 875              	.LVL115:
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccXk83jA.s 			page 25
+
+
+ 876 0042 04A8     		add	r0, sp, #16
+ 877              	.LVL116:
+ 878 0044 FFF7FEFF 		bl	xmp3fixpt_SetBitstreamPointer
+ 879              	.LVL117:
+ 375:lib/helix/real/scalfact.c **** 	if (*bitOffset)
+ 880              		.loc 1 375 0
+ 881 0048 3168     		ldr	r1, [r6]
+ 882 004a 0029     		cmp	r1, #0
+ 883 004c 44D1     		bne	.L96
+ 884              	.L87:
+ 376:lib/helix/real/scalfact.c **** 		GetBits(bsi, *bitOffset);
+ 377:lib/helix/real/scalfact.c **** 
+ 378:lib/helix/real/scalfact.c **** 	if (fh->ver == MPEG1) 
+ 885              		.loc 1 378 0
+ 886 004e 9BF80030 		ldrb	r3, [fp]	@ zero_extendqisi2
+ 887 0052 002B     		cmp	r3, #0
+ 888 0054 44D1     		bne	.L88
+ 379:lib/helix/real/scalfact.c **** 		UnpackSFMPEG1(bsi, &si->sis[gr][ch], &sfi->sfis[gr][ch], si->scfsi[ch], gr, &sfi->sfis[0][ch]);
+ 889              		.loc 1 379 0
+ 890 0056 2301     		lsls	r3, r4, #4
+ 891 0058 0833     		adds	r3, r3, #8
+ 892 005a 6001     		lsls	r0, r4, #5
+ 893 005c 021B     		subs	r2, r0, r4
+ 894 005e 5100     		lsls	r1, r2, #1
+ 895 0060 C5EB451C 		rsb	ip, r5, r5, lsl #5
+ 896 0064 4FEA8C02 		lsl	r2, ip, #2
+ 897 0068 0A44     		add	r2, r2, r1
+ 898 006a 04EBC40C 		add	ip, r4, r4, lsl #3
+ 899 006e 4FEACC01 		lsl	r1, ip, #3
+ 900 0072 05EBC50E 		add	lr, r5, r5, lsl #3
+ 901 0076 4FEA0E1C 		lsl	ip, lr, #4
+ 902 007a 6144     		add	r1, r1, ip
+ 903 007c 2831     		adds	r1, r1, #40
+ 904 007e 001B     		subs	r0, r0, r4
+ 905 0080 4FEA400C 		lsl	ip, r0, #1
+ 906 0084 0AEB0C00 		add	r0, r10, ip
+ 907 0088 0190     		str	r0, [sp, #4]
+ 908 008a 0095     		str	r5, [sp]
+ 909 008c 4344     		add	r3, r3, r8
+ 910 008e 5244     		add	r2, r2, r10
+ 911 0090 4144     		add	r1, r1, r8
+ 912 0092 04A8     		add	r0, sp, #16
+ 913              	.LVL118:
+ 914 0094 FFF7FEFF 		bl	UnpackSFMPEG1
+ 915              	.LVL119:
+ 916              	.L89:
+ 380:lib/helix/real/scalfact.c **** 	else 
+ 381:lib/helix/real/scalfact.c **** 		UnpackSFMPEG2(bsi, &si->sis[gr][ch], &sfi->sfis[gr][ch], gr, ch, fh->modeExt, &sfi->sfjs);
+ 382:lib/helix/real/scalfact.c **** 
+ 383:lib/helix/real/scalfact.c **** 	mp3DecInfo->part23Length[gr][ch] = si->sis[gr][ch].part23Length;
+ 917              		.loc 1 383 0
+ 918 0098 04EBC402 		add	r2, r4, r4, lsl #3
+ 919 009c D300     		lsls	r3, r2, #3
+ 920 009e 05EBC501 		add	r1, r5, r5, lsl #3
+ 921 00a2 0A01     		lsls	r2, r1, #4
+ 922 00a4 1344     		add	r3, r3, r2
+ 923 00a6 9844     		add	r8, r8, r3
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccXk83jA.s 			page 26
+
+
+ 924              	.LVL120:
+ 925 00a8 D8F82830 		ldr	r3, [r8, #40]
+ 926 00ac 04EB4504 		add	r4, r4, r5, lsl #1
+ 927 00b0 04F5FC74 		add	r4, r4, #504
+ 928 00b4 47F82430 		str	r3, [r7, r4, lsl #2]
+ 384:lib/helix/real/scalfact.c **** 
+ 385:lib/helix/real/scalfact.c **** 	bitsUsed = CalcBitsUsed(bsi, buf, *bitOffset);
+ 929              		.loc 1 385 0
+ 930 00b8 3268     		ldr	r2, [r6]
+ 931 00ba 4946     		mov	r1, r9
+ 932 00bc 04A8     		add	r0, sp, #16
+ 933              	.LVL121:
+ 934 00be FFF7FEFF 		bl	xmp3fixpt_CalcBitsUsed
+ 935              	.LVL122:
+ 386:lib/helix/real/scalfact.c **** 	buf += (bitsUsed + *bitOffset) >> 3;
+ 936              		.loc 1 386 0
+ 937 00c2 3368     		ldr	r3, [r6]
+ 938 00c4 0344     		add	r3, r3, r0
+ 939 00c6 D810     		asrs	r0, r3, #3
+ 940              	.LVL123:
+ 387:lib/helix/real/scalfact.c **** 	*bitOffset = (bitsUsed + *bitOffset) & 0x07;
+ 941              		.loc 1 387 0
+ 942 00c8 03F00703 		and	r3, r3, #7
+ 943 00cc 3360     		str	r3, [r6]
+ 944              	.LVL124:
+ 945              	.L84:
+ 388:lib/helix/real/scalfact.c **** 
+ 389:lib/helix/real/scalfact.c **** 	return (buf - startBuf);
+ 390:lib/helix/real/scalfact.c **** }
+ 946              		.loc 1 390 0
+ 947 00ce 09B0     		add	sp, sp, #36
+ 948              	.LCFI6:
+ 949              		.cfi_remember_state
+ 950              		.cfi_def_cfa_offset 36
+ 951              		@ sp needed
+ 952 00d0 BDE8F08F 		pop	{r4, r5, r6, r7, r8, r9, r10, fp, pc}
+ 953              	.LVL125:
+ 954              	.L95:
+ 955              	.LCFI7:
+ 956              		.cfi_restore_state
+ 374:lib/helix/real/scalfact.c **** 	if (*bitOffset)
+ 957              		.loc 1 374 0
+ 958 00d4 0733     		adds	r3, r3, #7
+ 959 00d6 B0E7     		b	.L86
+ 960              	.LVL126:
+ 961              	.L96:
+ 376:lib/helix/real/scalfact.c **** 
+ 962              		.loc 1 376 0
+ 963 00d8 04A8     		add	r0, sp, #16
+ 964              	.LVL127:
+ 965 00da FFF7FEFF 		bl	xmp3fixpt_GetBits
+ 966              	.LVL128:
+ 967 00de B6E7     		b	.L87
+ 968              	.L88:
+ 381:lib/helix/real/scalfact.c **** 
+ 969              		.loc 1 381 0
+ 970 00e0 C4EB4412 		rsb	r2, r4, r4, lsl #5
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccXk83jA.s 			page 27
+
+
+ 971 00e4 5300     		lsls	r3, r2, #1
+ 972 00e6 C5EB4511 		rsb	r1, r5, r5, lsl #5
+ 973 00ea 8A00     		lsls	r2, r1, #2
+ 974 00ec 1A44     		add	r2, r2, r3
+ 975 00ee 04EBC403 		add	r3, r4, r4, lsl #3
+ 976 00f2 D900     		lsls	r1, r3, #3
+ 977 00f4 05EBC500 		add	r0, r5, r5, lsl #3
+ 978 00f8 0301     		lsls	r3, r0, #4
+ 979 00fa 1944     		add	r1, r1, r3
+ 980 00fc 2831     		adds	r1, r1, #40
+ 981 00fe 0AF1F803 		add	r3, r10, #248
+ 982 0102 0293     		str	r3, [sp, #8]
+ 983 0104 DBF82030 		ldr	r3, [fp, #32]
+ 984 0108 0193     		str	r3, [sp, #4]
+ 985 010a 0094     		str	r4, [sp]
+ 986 010c 2B46     		mov	r3, r5
+ 987 010e 5244     		add	r2, r2, r10
+ 988 0110 4144     		add	r1, r1, r8
+ 989 0112 04A8     		add	r0, sp, #16
+ 990              	.LVL129:
+ 991 0114 FFF7FEFF 		bl	UnpackSFMPEG2
+ 992              	.LVL130:
+ 993 0118 BEE7     		b	.L89
+ 994              	.LVL131:
+ 995              	.L90:
+ 366:lib/helix/real/scalfact.c **** 	fh = ((FrameHeader *)(mp3DecInfo->FrameHeaderPS));
+ 996              		.loc 1 366 0
+ 997 011a 4FF0FF30 		mov	r0, #-1
+ 998              	.LVL132:
+ 999 011e D6E7     		b	.L84
+ 1000              	.LVL133:
+ 1001              	.L91:
+ 1002 0120 4FF0FF30 		mov	r0, #-1
+ 1003              	.LVL134:
+ 1004 0124 D3E7     		b	.L84
+ 1005              	.LVL135:
+ 1006              	.L92:
+ 1007 0126 4FF0FF30 		mov	r0, #-1
+ 1008              	.LVL136:
+ 1009 012a D0E7     		b	.L84
+ 1010              	.LVL137:
+ 1011              	.L93:
+ 1012 012c 4FF0FF30 		mov	r0, #-1
+ 1013              	.LVL138:
+ 1014 0130 CDE7     		b	.L84
+ 1015              		.cfi_endproc
+ 1016              	.LFE2:
+ 1018              		.section	.rodata.NRTab,"a",%progbits
+ 1019              		.align	2
+ 1020              		.set	.LANCHOR1,. + 0
+ 1023              	NRTab:
+ 1024 0000 06       		.byte	6
+ 1025 0001 05       		.byte	5
+ 1026 0002 05       		.byte	5
+ 1027 0003 05       		.byte	5
+ 1028 0004 03       		.byte	3
+ 1029 0005 03       		.byte	3
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccXk83jA.s 			page 28
+
+
+ 1030 0006 03       		.byte	3
+ 1031 0007 03       		.byte	3
+ 1032 0008 06       		.byte	6
+ 1033 0009 03       		.byte	3
+ 1034 000a 03       		.byte	3
+ 1035 000b 03       		.byte	3
+ 1036 000c 06       		.byte	6
+ 1037 000d 05       		.byte	5
+ 1038 000e 07       		.byte	7
+ 1039 000f 03       		.byte	3
+ 1040 0010 03       		.byte	3
+ 1041 0011 03       		.byte	3
+ 1042 0012 04       		.byte	4
+ 1043 0013 02       		.byte	2
+ 1044 0014 06       		.byte	6
+ 1045 0015 03       		.byte	3
+ 1046 0016 04       		.byte	4
+ 1047 0017 02       		.byte	2
+ 1048 0018 0B       		.byte	11
+ 1049 0019 0A       		.byte	10
+ 1050 001a 00       		.byte	0
+ 1051 001b 00       		.byte	0
+ 1052 001c 06       		.byte	6
+ 1053 001d 06       		.byte	6
+ 1054 001e 00       		.byte	0
+ 1055 001f 00       		.byte	0
+ 1056 0020 06       		.byte	6
+ 1057 0021 03       		.byte	3
+ 1058 0022 06       		.byte	6
+ 1059 0023 00       		.byte	0
+ 1060 0024 07       		.byte	7
+ 1061 0025 07       		.byte	7
+ 1062 0026 07       		.byte	7
+ 1063 0027 00       		.byte	0
+ 1064 0028 04       		.byte	4
+ 1065 0029 04       		.byte	4
+ 1066 002a 04       		.byte	4
+ 1067 002b 00       		.byte	0
+ 1068 002c 06       		.byte	6
+ 1069 002d 05       		.byte	5
+ 1070 002e 04       		.byte	4
+ 1071 002f 00       		.byte	0
+ 1072 0030 06       		.byte	6
+ 1073 0031 06       		.byte	6
+ 1074 0032 06       		.byte	6
+ 1075 0033 03       		.byte	3
+ 1076 0034 04       		.byte	4
+ 1077 0035 03       		.byte	3
+ 1078 0036 03       		.byte	3
+ 1079 0037 02       		.byte	2
+ 1080 0038 06       		.byte	6
+ 1081 0039 04       		.byte	4
+ 1082 003a 03       		.byte	3
+ 1083 003b 02       		.byte	2
+ 1084 003c 08       		.byte	8
+ 1085 003d 08       		.byte	8
+ 1086 003e 05       		.byte	5
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccXk83jA.s 			page 29
+
+
+ 1087 003f 00       		.byte	0
+ 1088 0040 05       		.byte	5
+ 1089 0041 04       		.byte	4
+ 1090 0042 03       		.byte	3
+ 1091 0043 00       		.byte	0
+ 1092 0044 06       		.byte	6
+ 1093 0045 06       		.byte	6
+ 1094 0046 03       		.byte	3
+ 1095 0047 00       		.byte	0
+ 1096              		.section	.rodata.SFLenTab,"a",%progbits
+ 1097              		.align	2
+ 1098              		.set	.LANCHOR0,. + 0
+ 1101              	SFLenTab:
+ 1102 0000 00       		.byte	0
+ 1103 0001 00       		.byte	0
+ 1104 0002 00       		.byte	0
+ 1105 0003 01       		.byte	1
+ 1106 0004 00       		.byte	0
+ 1107 0005 02       		.byte	2
+ 1108 0006 00       		.byte	0
+ 1109 0007 03       		.byte	3
+ 1110 0008 03       		.byte	3
+ 1111 0009 00       		.byte	0
+ 1112 000a 01       		.byte	1
+ 1113 000b 01       		.byte	1
+ 1114 000c 01       		.byte	1
+ 1115 000d 02       		.byte	2
+ 1116 000e 01       		.byte	1
+ 1117 000f 03       		.byte	3
+ 1118 0010 02       		.byte	2
+ 1119 0011 01       		.byte	1
+ 1120 0012 02       		.byte	2
+ 1121 0013 02       		.byte	2
+ 1122 0014 02       		.byte	2
+ 1123 0015 03       		.byte	3
+ 1124 0016 03       		.byte	3
+ 1125 0017 01       		.byte	1
+ 1126 0018 03       		.byte	3
+ 1127 0019 02       		.byte	2
+ 1128 001a 03       		.byte	3
+ 1129 001b 03       		.byte	3
+ 1130 001c 04       		.byte	4
+ 1131 001d 02       		.byte	2
+ 1132 001e 04       		.byte	4
+ 1133 001f 03       		.byte	3
+ 1134              		.text
+ 1135              	.Letext0:
+ 1136              		.file 2 "lib/helix/real/../pub/mp3common.h"
+ 1137              		.file 3 "lib/helix/real/../pub/mp3dec.h"
+ 1138              		.file 4 "lib/helix/real/coder.h"
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccXk83jA.s 			page 30
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 scalfact.c
+C:\Users\Patryk\AppData\Local\Temp\ccXk83jA.s:18     .text.UnpackSFMPEG1:00000000 $t
+C:\Users\Patryk\AppData\Local\Temp\ccXk83jA.s:24     .text.UnpackSFMPEG1:00000000 UnpackSFMPEG1
+C:\Users\Patryk\AppData\Local\Temp\ccXk83jA.s:327    .text.UnpackSFMPEG1:00000180 $d
+C:\Users\Patryk\AppData\Local\Temp\ccXk83jA.s:332    .text.UnpackSFMPEG2:00000000 $t
+C:\Users\Patryk\AppData\Local\Temp\ccXk83jA.s:338    .text.UnpackSFMPEG2:00000000 UnpackSFMPEG2
+C:\Users\Patryk\AppData\Local\Temp\ccXk83jA.s:805    .text.UnpackSFMPEG2:00000280 $d
+C:\Users\Patryk\AppData\Local\Temp\ccXk83jA.s:814    .text.xmp3fixpt_UnpackScaleFactors:00000000 $t
+C:\Users\Patryk\AppData\Local\Temp\ccXk83jA.s:821    .text.xmp3fixpt_UnpackScaleFactors:00000000 xmp3fixpt_UnpackScaleFactors
+C:\Users\Patryk\AppData\Local\Temp\ccXk83jA.s:1019   .rodata.NRTab:00000000 $d
+C:\Users\Patryk\AppData\Local\Temp\ccXk83jA.s:1023   .rodata.NRTab:00000000 NRTab
+C:\Users\Patryk\AppData\Local\Temp\ccXk83jA.s:1097   .rodata.SFLenTab:00000000 $d
+C:\Users\Patryk\AppData\Local\Temp\ccXk83jA.s:1101   .rodata.SFLenTab:00000000 SFLenTab
+
+UNDEFINED SYMBOLS
+xmp3fixpt_GetBits
+xmp3fixpt_SetBitstreamPointer
+xmp3fixpt_CalcBitsUsed

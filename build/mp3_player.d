@@ -1,4 +1,5 @@
-build/mp3_player.o: Src/mp3_player.c Inc/mp3_player.h Inc/fatfs.h \
+build/mp3_player.o: Src/mp3_player.c Inc/mp3_player.h Inc/gui.h \
+ lib\helix\pub\mp3dec.h lib\helix\pub\../platform.h Inc/fatfs.h \
  Middlewares/Third_Party/FatFs/src/ff.h \
  Middlewares/Third_Party/FatFs/src/integer.h Inc/ffconf.h \
  Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal.h \
@@ -79,14 +80,19 @@ build/mp3_player.o: Src/mp3_player.c Inc/mp3_player.h Inc/fatfs.h \
  Middlewares/Third_Party/FatFs/src/ff_gen_drv.h \
  Middlewares/Third_Party/FatFs/src/diskio.h \
  Middlewares/Third_Party/FatFs/src/ff.h Inc/sd_diskio.h Inc/usbh_diskio.h \
- lib\helix\pub\mp3dec.h d:\sw\lib\helix\platform.h Inc/fatfs.h \
  Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_audio.h \
- d:\sw\drivers\bsp\components\wm8994\wm8994.h \
- d:\sw\drivers\bsp\components\common\audio.h \
+ Drivers/BSP/STM32746G-Discovery/../Components/wm8994/wm8994.h \
+ Drivers/BSP/STM32746G-Discovery/../Components/wm8994/../Common/audio.h \
  Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.h Inc/term_io.h \
  Inc/dbgu.h Inc/ansi.h Inc/dbgu.h Inc/ansi.h
 
 Inc/mp3_player.h:
+
+Inc/gui.h:
+
+lib\helix\pub\mp3dec.h:
+
+lib\helix\pub\../platform.h:
 
 Inc/fatfs.h:
 
@@ -264,17 +270,11 @@ Inc/sd_diskio.h:
 
 Inc/usbh_diskio.h:
 
-lib\helix\pub\mp3dec.h:
-
-d:\sw\lib\helix\platform.h:
-
-Inc/fatfs.h:
-
 Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_audio.h:
 
-d:\sw\drivers\bsp\components\wm8994\wm8994.h:
+Drivers/BSP/STM32746G-Discovery/../Components/wm8994/wm8994.h:
 
-d:\sw\drivers\bsp\components\common\audio.h:
+Drivers/BSP/STM32746G-Discovery/../Components/wm8994/../Common/audio.h:
 
 Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.h:
 

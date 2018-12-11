@@ -1,0 +1,2170 @@
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccVJ41FR.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"stproc.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.xmp3fixpt_MidSideProc,"ax",%progbits
+  18              		.align	1
+  19              		.global	xmp3fixpt_MidSideProc
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  23              		.fpu fpv5-sp-d16
+  25              	xmp3fixpt_MidSideProc:
+  26              	.LFB5:
+  27              		.file 1 "lib/helix/real/stproc.c"
+   1:lib/helix/real/stproc.c **** /* ***** BEGIN LICENSE BLOCK ***** 
+   2:lib/helix/real/stproc.c ****  * Version: RCSL 1.0/RPSL 1.0 
+   3:lib/helix/real/stproc.c ****  *  
+   4:lib/helix/real/stproc.c ****  * Portions Copyright (c) 1995-2002 RealNetworks, Inc. All Rights Reserved. 
+   5:lib/helix/real/stproc.c ****  *      
+   6:lib/helix/real/stproc.c ****  * The contents of this file, and the files included with this file, are 
+   7:lib/helix/real/stproc.c ****  * subject to the current version of the RealNetworks Public Source License 
+   8:lib/helix/real/stproc.c ****  * Version 1.0 (the "RPSL") available at 
+   9:lib/helix/real/stproc.c ****  * http://www.helixcommunity.org/content/rpsl unless you have licensed 
+  10:lib/helix/real/stproc.c ****  * the file under the RealNetworks Community Source License Version 1.0 
+  11:lib/helix/real/stproc.c ****  * (the "RCSL") available at http://www.helixcommunity.org/content/rcsl, 
+  12:lib/helix/real/stproc.c ****  * in which case the RCSL will apply. You may also obtain the license terms 
+  13:lib/helix/real/stproc.c ****  * directly from RealNetworks.  You may not use this file except in 
+  14:lib/helix/real/stproc.c ****  * compliance with the RPSL or, if you have a valid RCSL with RealNetworks 
+  15:lib/helix/real/stproc.c ****  * applicable to this file, the RCSL.  Please see the applicable RPSL or 
+  16:lib/helix/real/stproc.c ****  * RCSL for the rights, obligations and limitations governing use of the 
+  17:lib/helix/real/stproc.c ****  * contents of the file.  
+  18:lib/helix/real/stproc.c ****  *  
+  19:lib/helix/real/stproc.c ****  * This file is part of the Helix DNA Technology. RealNetworks is the 
+  20:lib/helix/real/stproc.c ****  * developer of the Original Code and owns the copyrights in the portions 
+  21:lib/helix/real/stproc.c ****  * it created. 
+  22:lib/helix/real/stproc.c ****  *  
+  23:lib/helix/real/stproc.c ****  * This file, and the files included with this file, is distributed and made 
+  24:lib/helix/real/stproc.c ****  * available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER 
+  25:lib/helix/real/stproc.c ****  * EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS ALL SUCH WARRANTIES, 
+  26:lib/helix/real/stproc.c ****  * INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF MERCHANTABILITY, FITNESS 
+  27:lib/helix/real/stproc.c ****  * FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT. 
+  28:lib/helix/real/stproc.c ****  * 
+  29:lib/helix/real/stproc.c ****  * Technology Compatibility Kit Test Suite(s) Location: 
+  30:lib/helix/real/stproc.c ****  *    http://www.helixcommunity.org/content/tck 
+  31:lib/helix/real/stproc.c ****  * 
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccVJ41FR.s 			page 2
+
+
+  32:lib/helix/real/stproc.c ****  * Contributor(s): 
+  33:lib/helix/real/stproc.c ****  *  
+  34:lib/helix/real/stproc.c ****  * ***** END LICENSE BLOCK ***** */ 
+  35:lib/helix/real/stproc.c **** 
+  36:lib/helix/real/stproc.c **** /**************************************************************************************
+  37:lib/helix/real/stproc.c ****  * Fixed-point MP3 decoder
+  38:lib/helix/real/stproc.c ****  * Jon Recker (jrecker@real.com), Ken Cooke (kenc@real.com)
+  39:lib/helix/real/stproc.c ****  * June 2003
+  40:lib/helix/real/stproc.c ****  *
+  41:lib/helix/real/stproc.c ****  * stproc.c - mid-side and intensity (MPEG1 and MPEG2) stereo processing
+  42:lib/helix/real/stproc.c ****  **************************************************************************************/
+  43:lib/helix/real/stproc.c **** 
+  44:lib/helix/real/stproc.c **** #include "coder.h"
+  45:lib/helix/real/stproc.c **** #include "assembly.h"
+  46:lib/helix/real/stproc.c **** 
+  47:lib/helix/real/stproc.c **** /**************************************************************************************
+  48:lib/helix/real/stproc.c ****  * Function:    MidSideProc
+  49:lib/helix/real/stproc.c ****  *
+  50:lib/helix/real/stproc.c ****  * Description: sum-difference stereo reconstruction
+  51:lib/helix/real/stproc.c ****  *
+  52:lib/helix/real/stproc.c ****  * Inputs:      vector x with dequantized samples from left and right channels
+  53:lib/helix/real/stproc.c ****  *              number of non-zero samples (MAX of left and right)
+  54:lib/helix/real/stproc.c ****  *              assume 1 guard bit in input
+  55:lib/helix/real/stproc.c ****  *              guard bit mask (left and right channels)
+  56:lib/helix/real/stproc.c ****  *
+  57:lib/helix/real/stproc.c ****  * Outputs:     updated sample vector x
+  58:lib/helix/real/stproc.c ****  *              updated guard bit mask
+  59:lib/helix/real/stproc.c ****  *
+  60:lib/helix/real/stproc.c ****  * Return:      none
+  61:lib/helix/real/stproc.c ****  *
+  62:lib/helix/real/stproc.c ****  * Notes:       assume at least 1 GB in input
+  63:lib/helix/real/stproc.c ****  **************************************************************************************/
+  64:lib/helix/real/stproc.c **** void MidSideProc(int x[MAX_NCHAN][MAX_NSAMP], int nSamps, int mOut[2])  
+  65:lib/helix/real/stproc.c **** {
+  28              		.loc 1 65 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              	.LVL0:
+  33 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 20
+  36              		.cfi_offset 4, -20
+  37              		.cfi_offset 5, -16
+  38              		.cfi_offset 6, -12
+  39              		.cfi_offset 7, -8
+  40              		.cfi_offset 14, -4
+  41              	.LVL1:
+  66:lib/helix/real/stproc.c **** 	int i, xr, xl, mOutL, mOutR;
+  67:lib/helix/real/stproc.c **** 	
+  68:lib/helix/real/stproc.c **** 	/* L = (M+S)/sqrt(2), R = (M-S)/sqrt(2) 
+  69:lib/helix/real/stproc.c **** 	 * NOTE: 1/sqrt(2) done in DequantChannel() - see comments there
+  70:lib/helix/real/stproc.c **** 	 */
+  71:lib/helix/real/stproc.c **** 	mOutL = mOutR = 0;
+  42              		.loc 1 71 0
+  43 0002 0026     		movs	r6, #0
+  44 0004 3746     		mov	r7, r6
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccVJ41FR.s 			page 3
+
+
+  72:lib/helix/real/stproc.c **** 	for(i = 0; i < nSamps; i++) {
+  45              		.loc 1 72 0
+  46 0006 3546     		mov	r5, r6
+  47 0008 19E0     		b	.L2
+  48              	.LVL2:
+  49              	.L3:
+  73:lib/helix/real/stproc.c **** 		xl = x[0][i];
+  50              		.loc 1 73 0 discriminator 3
+  51 000a 50F82530 		ldr	r3, [r0, r5, lsl #2]
+  52              	.LVL3:
+  74:lib/helix/real/stproc.c **** 		xr = x[1][i];
+  53              		.loc 1 74 0 discriminator 3
+  54 000e 00EB850C 		add	ip, r0, r5, lsl #2
+  55 0012 DCF800E9 		ldr	lr, [ip, #2304]
+  56              	.LVL4:
+  75:lib/helix/real/stproc.c **** 		x[0][i] = xl + xr;
+  57              		.loc 1 75 0 discriminator 3
+  58 0016 03EB0E04 		add	r4, r3, lr
+  59 001a 40F82540 		str	r4, [r0, r5, lsl #2]
+  76:lib/helix/real/stproc.c **** 		x[1][i] = xl - xr;
+  60              		.loc 1 76 0 discriminator 3
+  61 001e A3EB0E03 		sub	r3, r3, lr
+  62              	.LVL5:
+  63 0022 CCF80039 		str	r3, [ip, #2304]
+  64              	.LVL6:
+  65              	.LBB54:
+  66              	.LBB55:
+  67              		.file 2 "lib/helix/real/assembly.h"
+   1:lib/helix/real/assembly.h **** /* ***** BEGIN LICENSE BLOCK ***** 
+   2:lib/helix/real/assembly.h ****  * Version: RCSL 1.0/RPSL 1.0 
+   3:lib/helix/real/assembly.h ****  *  
+   4:lib/helix/real/assembly.h ****  * Portions Copyright (c) 1995-2002 RealNetworks, Inc. All Rights Reserved. 
+   5:lib/helix/real/assembly.h ****  *      
+   6:lib/helix/real/assembly.h ****  * The contents of this file, and the files included with this file, are 
+   7:lib/helix/real/assembly.h ****  * subject to the current version of the RealNetworks Public Source License 
+   8:lib/helix/real/assembly.h ****  * Version 1.0 (the "RPSL") available at 
+   9:lib/helix/real/assembly.h ****  * http://www.helixcommunity.org/content/rpsl unless you have licensed 
+  10:lib/helix/real/assembly.h ****  * the file under the RealNetworks Community Source License Version 1.0 
+  11:lib/helix/real/assembly.h ****  * (the "RCSL") available at http://www.helixcommunity.org/content/rcsl, 
+  12:lib/helix/real/assembly.h ****  * in which case the RCSL will apply. You may also obtain the license terms 
+  13:lib/helix/real/assembly.h ****  * directly from RealNetworks.  You may not use this file except in 
+  14:lib/helix/real/assembly.h ****  * compliance with the RPSL or, if you have a valid RCSL with RealNetworks 
+  15:lib/helix/real/assembly.h ****  * applicable to this file, the RCSL.  Please see the applicable RPSL or 
+  16:lib/helix/real/assembly.h ****  * RCSL for the rights, obligations and limitations governing use of the 
+  17:lib/helix/real/assembly.h ****  * contents of the file.  
+  18:lib/helix/real/assembly.h ****  *  
+  19:lib/helix/real/assembly.h ****  * This file is part of the Helix DNA Technology. RealNetworks is the 
+  20:lib/helix/real/assembly.h ****  * developer of the Original Code and owns the copyrights in the portions 
+  21:lib/helix/real/assembly.h ****  * it created. 
+  22:lib/helix/real/assembly.h ****  *  
+  23:lib/helix/real/assembly.h ****  * This file, and the files included with this file, is distributed and made 
+  24:lib/helix/real/assembly.h ****  * available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER 
+  25:lib/helix/real/assembly.h ****  * EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS ALL SUCH WARRANTIES, 
+  26:lib/helix/real/assembly.h ****  * INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF MERCHANTABILITY, FITNESS 
+  27:lib/helix/real/assembly.h ****  * FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT. 
+  28:lib/helix/real/assembly.h ****  * 
+  29:lib/helix/real/assembly.h ****  * Technology Compatibility Kit Test Suite(s) Location: 
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccVJ41FR.s 			page 4
+
+
+  30:lib/helix/real/assembly.h ****  *    http://www.helixcommunity.org/content/tck 
+  31:lib/helix/real/assembly.h ****  * 
+  32:lib/helix/real/assembly.h ****  * Contributor(s): 
+  33:lib/helix/real/assembly.h ****  *  
+  34:lib/helix/real/assembly.h ****  * ***** END LICENSE BLOCK ***** */ 
+  35:lib/helix/real/assembly.h **** 
+  36:lib/helix/real/assembly.h **** /**************************************************************************************
+  37:lib/helix/real/assembly.h ****  * Fixed-point MP3 decoder
+  38:lib/helix/real/assembly.h ****  * Jon Recker (jrecker@real.com), Ken Cooke (kenc@real.com)
+  39:lib/helix/real/assembly.h ****  * June 2003
+  40:lib/helix/real/assembly.h ****  *
+  41:lib/helix/real/assembly.h ****  * assembly.h - assembly language functions and prototypes for supported platforms
+  42:lib/helix/real/assembly.h ****  *
+  43:lib/helix/real/assembly.h ****  * - inline rountines with access to 64-bit multiply results 
+  44:lib/helix/real/assembly.h ****  * - x86 (_WIN32) and ARM (ARM_ADS, _WIN32_WCE) versions included
+  45:lib/helix/real/assembly.h ****  * - some inline functions are mix of asm and C for speed
+  46:lib/helix/real/assembly.h ****  * - some functions are in native asm files, so only the prototype is given here
+  47:lib/helix/real/assembly.h ****  *
+  48:lib/helix/real/assembly.h ****  * MULSHIFT32(x, y)    signed multiply of two 32-bit integers (x and y), returns top 32 bits of 64-
+  49:lib/helix/real/assembly.h ****  * FASTABS(x)          branchless absolute value of signed integer x
+  50:lib/helix/real/assembly.h ****  * CLZ(x)              count leading zeros in x
+  51:lib/helix/real/assembly.h ****  * MADD64(sum, x, y)   (Windows only) sum [64-bit] += x [32-bit] * y [32-bit]
+  52:lib/helix/real/assembly.h ****  * SHL64(sum, x, y)    (Windows only) 64-bit left shift using __int64
+  53:lib/helix/real/assembly.h ****  * SAR64(sum, x, y)    (Windows only) 64-bit right shift using __int64
+  54:lib/helix/real/assembly.h ****  */
+  55:lib/helix/real/assembly.h **** 
+  56:lib/helix/real/assembly.h **** #ifndef _ASSEMBLY_H
+  57:lib/helix/real/assembly.h **** #define _ASSEMBLY_H
+  58:lib/helix/real/assembly.h **** 
+  59:lib/helix/real/assembly.h **** #include "../platform.h"
+  60:lib/helix/real/assembly.h **** 
+  61:lib/helix/real/assembly.h **** #if (defined _WIN32 && !defined _WIN32_WCE) || (defined __WINS__ && defined _SYMBIAN) || defined(_O
+  62:lib/helix/real/assembly.h **** 
+  63:lib/helix/real/assembly.h **** #pragma warning( disable : 4035 )	/* complains about inline asm not returning a value */
+  64:lib/helix/real/assembly.h **** 
+  65:lib/helix/real/assembly.h **** static __inline int MULSHIFT32(int x, int y)	
+  66:lib/helix/real/assembly.h **** {
+  67:lib/helix/real/assembly.h ****     __asm {
+  68:lib/helix/real/assembly.h **** 		mov		eax, x
+  69:lib/helix/real/assembly.h **** 	    imul	y
+  70:lib/helix/real/assembly.h **** 	    mov		eax, edx
+  71:lib/helix/real/assembly.h **** 	}
+  72:lib/helix/real/assembly.h **** }
+  73:lib/helix/real/assembly.h **** 
+  74:lib/helix/real/assembly.h **** static __inline int FASTABS(int x) 
+  75:lib/helix/real/assembly.h **** {
+  76:lib/helix/real/assembly.h **** 	int sign;
+  77:lib/helix/real/assembly.h **** 
+  78:lib/helix/real/assembly.h **** 	sign = x >> (sizeof(int) * 8 - 1);
+  79:lib/helix/real/assembly.h **** 	x ^= sign;
+  80:lib/helix/real/assembly.h **** 	x -= sign;
+  81:lib/helix/real/assembly.h **** 
+  82:lib/helix/real/assembly.h **** 	return x;
+  83:lib/helix/real/assembly.h **** }
+  84:lib/helix/real/assembly.h **** 
+  85:lib/helix/real/assembly.h **** static __inline int CLZ(int x)
+  86:lib/helix/real/assembly.h **** {
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccVJ41FR.s 			page 5
+
+
+  87:lib/helix/real/assembly.h **** 	int numZeros;
+  88:lib/helix/real/assembly.h **** 
+  89:lib/helix/real/assembly.h **** 	if (!x)
+  90:lib/helix/real/assembly.h **** 		return (sizeof(int) * 8);
+  91:lib/helix/real/assembly.h **** 
+  92:lib/helix/real/assembly.h **** 	numZeros = 0;
+  93:lib/helix/real/assembly.h **** 	while (!(x & 0x80000000)) {
+  94:lib/helix/real/assembly.h **** 		numZeros++;
+  95:lib/helix/real/assembly.h **** 		x <<= 1;
+  96:lib/helix/real/assembly.h **** 	} 
+  97:lib/helix/real/assembly.h **** 
+  98:lib/helix/real/assembly.h **** 	return numZeros;
+  99:lib/helix/real/assembly.h **** }
+ 100:lib/helix/real/assembly.h **** 
+ 101:lib/helix/real/assembly.h **** /* MADD64, SHL64, SAR64:
+ 102:lib/helix/real/assembly.h ****  * write in assembly to avoid dependency on run-time lib for 64-bit shifts, muls
+ 103:lib/helix/real/assembly.h ****  *  (sometimes compiler thunks to function calls instead of code generating)
+ 104:lib/helix/real/assembly.h ****  * required for Symbian emulator
+ 105:lib/helix/real/assembly.h ****  */
+ 106:lib/helix/real/assembly.h **** #ifdef __CW32__
+ 107:lib/helix/real/assembly.h **** typedef long long Word64;
+ 108:lib/helix/real/assembly.h **** #else
+ 109:lib/helix/real/assembly.h **** typedef __int64 Word64;
+ 110:lib/helix/real/assembly.h **** #endif
+ 111:lib/helix/real/assembly.h **** 
+ 112:lib/helix/real/assembly.h **** static __inline Word64 MADD64(Word64 sum, int x, int y)
+ 113:lib/helix/real/assembly.h **** {
+ 114:lib/helix/real/assembly.h **** 	unsigned int sumLo = ((unsigned int *)&sum)[0];
+ 115:lib/helix/real/assembly.h **** 	int sumHi = ((int *)&sum)[1];
+ 116:lib/helix/real/assembly.h **** 
+ 117:lib/helix/real/assembly.h **** 	__asm {
+ 118:lib/helix/real/assembly.h **** 		mov		eax, x
+ 119:lib/helix/real/assembly.h **** 		imul	y
+ 120:lib/helix/real/assembly.h **** 		add		eax, sumLo
+ 121:lib/helix/real/assembly.h **** 		adc		edx, sumHi
+ 122:lib/helix/real/assembly.h **** 	}
+ 123:lib/helix/real/assembly.h **** 
+ 124:lib/helix/real/assembly.h **** 	/* equivalent to return (sum + ((__int64)x * y)); */
+ 125:lib/helix/real/assembly.h **** }
+ 126:lib/helix/real/assembly.h **** 
+ 127:lib/helix/real/assembly.h **** static __inline Word64 SHL64(Word64 x, int n)
+ 128:lib/helix/real/assembly.h **** {
+ 129:lib/helix/real/assembly.h **** 	unsigned int xLo = ((unsigned int *)&x)[0];
+ 130:lib/helix/real/assembly.h **** 	int xHi = ((int *)&x)[1];
+ 131:lib/helix/real/assembly.h **** 	unsigned char nb = (unsigned char)n;
+ 132:lib/helix/real/assembly.h **** 
+ 133:lib/helix/real/assembly.h **** 	if (n < 32) {
+ 134:lib/helix/real/assembly.h **** 		__asm {
+ 135:lib/helix/real/assembly.h **** 			mov		edx, xHi
+ 136:lib/helix/real/assembly.h **** 			mov		eax, xLo
+ 137:lib/helix/real/assembly.h **** 			mov		cl, nb
+ 138:lib/helix/real/assembly.h **** 			shld    edx, eax, cl
+ 139:lib/helix/real/assembly.h **** 			shl     eax, cl
+ 140:lib/helix/real/assembly.h **** 		}
+ 141:lib/helix/real/assembly.h **** 	} else if (n < 64) {
+ 142:lib/helix/real/assembly.h **** 		/* shl masks cl to 0x1f */
+ 143:lib/helix/real/assembly.h **** 		__asm {
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccVJ41FR.s 			page 6
+
+
+ 144:lib/helix/real/assembly.h **** 			mov		edx, xLo
+ 145:lib/helix/real/assembly.h **** 			mov		cl, nb
+ 146:lib/helix/real/assembly.h **** 			xor     eax, eax
+ 147:lib/helix/real/assembly.h **** 			shl     edx, cl
+ 148:lib/helix/real/assembly.h **** 		}
+ 149:lib/helix/real/assembly.h **** 	} else {
+ 150:lib/helix/real/assembly.h **** 		__asm {
+ 151:lib/helix/real/assembly.h **** 			xor		edx, edx
+ 152:lib/helix/real/assembly.h **** 			xor		eax, eax
+ 153:lib/helix/real/assembly.h **** 		}
+ 154:lib/helix/real/assembly.h **** 	}
+ 155:lib/helix/real/assembly.h **** }
+ 156:lib/helix/real/assembly.h **** 
+ 157:lib/helix/real/assembly.h **** static __inline Word64 SAR64(Word64 x, int n)
+ 158:lib/helix/real/assembly.h **** {
+ 159:lib/helix/real/assembly.h **** 	unsigned int xLo = ((unsigned int *)&x)[0];
+ 160:lib/helix/real/assembly.h **** 	int xHi = ((int *)&x)[1];
+ 161:lib/helix/real/assembly.h **** 	unsigned char nb = (unsigned char)n;
+ 162:lib/helix/real/assembly.h **** 
+ 163:lib/helix/real/assembly.h **** 	if (n < 32) {
+ 164:lib/helix/real/assembly.h **** 		__asm {
+ 165:lib/helix/real/assembly.h **** 			mov		edx, xHi
+ 166:lib/helix/real/assembly.h **** 			mov		eax, xLo
+ 167:lib/helix/real/assembly.h **** 			mov		cl, nb
+ 168:lib/helix/real/assembly.h **** 			shrd	eax, edx, cl
+ 169:lib/helix/real/assembly.h **** 			sar		edx, cl
+ 170:lib/helix/real/assembly.h **** 		}
+ 171:lib/helix/real/assembly.h **** 	} else if (n < 64) {
+ 172:lib/helix/real/assembly.h **** 		/* sar masks cl to 0x1f */
+ 173:lib/helix/real/assembly.h **** 		__asm {
+ 174:lib/helix/real/assembly.h **** 			mov		edx, xHi
+ 175:lib/helix/real/assembly.h **** 			mov		eax, xHi
+ 176:lib/helix/real/assembly.h **** 			mov		cl, nb
+ 177:lib/helix/real/assembly.h **** 			sar		edx, 31
+ 178:lib/helix/real/assembly.h **** 			sar		eax, cl
+ 179:lib/helix/real/assembly.h **** 		}
+ 180:lib/helix/real/assembly.h **** 	} else {
+ 181:lib/helix/real/assembly.h **** 		__asm {
+ 182:lib/helix/real/assembly.h **** 			sar		xHi, 31
+ 183:lib/helix/real/assembly.h **** 			mov		eax, xHi
+ 184:lib/helix/real/assembly.h **** 			mov		edx, xHi
+ 185:lib/helix/real/assembly.h **** 		}
+ 186:lib/helix/real/assembly.h **** 	}
+ 187:lib/helix/real/assembly.h **** }
+ 188:lib/helix/real/assembly.h **** 
+ 189:lib/helix/real/assembly.h **** #elif (defined _WIN32) && (defined _WIN32_WCE)
+ 190:lib/helix/real/assembly.h **** 
+ 191:lib/helix/real/assembly.h **** /* use asm function for now (EVC++ 3.0 does horrible job compiling __int64 version) */
+ 192:lib/helix/real/assembly.h **** #define MULSHIFT32	xmp3_MULSHIFT32
+ 193:lib/helix/real/assembly.h **** int MULSHIFT32(int x, int y);
+ 194:lib/helix/real/assembly.h **** 
+ 195:lib/helix/real/assembly.h **** static __inline int FASTABS(int x) 
+ 196:lib/helix/real/assembly.h **** {
+ 197:lib/helix/real/assembly.h **** 	int sign;
+ 198:lib/helix/real/assembly.h **** 
+ 199:lib/helix/real/assembly.h **** 	sign = x >> (sizeof(int) * 8 - 1);
+ 200:lib/helix/real/assembly.h **** 	x ^= sign;
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccVJ41FR.s 			page 7
+
+
+ 201:lib/helix/real/assembly.h **** 	x -= sign;
+ 202:lib/helix/real/assembly.h **** 
+ 203:lib/helix/real/assembly.h **** 	return x;
+ 204:lib/helix/real/assembly.h **** }
+ 205:lib/helix/real/assembly.h **** 
+ 206:lib/helix/real/assembly.h **** static __inline int CLZ(int x)
+ 207:lib/helix/real/assembly.h **** {
+ 208:lib/helix/real/assembly.h **** 	int numZeros;
+ 209:lib/helix/real/assembly.h **** 
+ 210:lib/helix/real/assembly.h **** 	if (!x)
+ 211:lib/helix/real/assembly.h **** 		return (sizeof(int) * 8);
+ 212:lib/helix/real/assembly.h **** 
+ 213:lib/helix/real/assembly.h **** 	numZeros = 0;
+ 214:lib/helix/real/assembly.h **** 	while (!(x & 0x80000000)) {
+ 215:lib/helix/real/assembly.h **** 		numZeros++;
+ 216:lib/helix/real/assembly.h **** 		x <<= 1;
+ 217:lib/helix/real/assembly.h **** 	} 
+ 218:lib/helix/real/assembly.h **** 
+ 219:lib/helix/real/assembly.h **** 	return numZeros;
+ 220:lib/helix/real/assembly.h **** }
+ 221:lib/helix/real/assembly.h **** 
+ 222:lib/helix/real/assembly.h **** #elif defined ARM_ADS
+ 223:lib/helix/real/assembly.h **** 
+ 224:lib/helix/real/assembly.h **** static __inline int MULSHIFT32(int x, int y)
+ 225:lib/helix/real/assembly.h **** {
+ 226:lib/helix/real/assembly.h ****     /* important rules for smull RdLo, RdHi, Rm, Rs:
+ 227:lib/helix/real/assembly.h ****      *     RdHi and Rm can't be the same register
+ 228:lib/helix/real/assembly.h ****      *     RdLo and Rm can't be the same register
+ 229:lib/helix/real/assembly.h ****      *     RdHi and RdLo can't be the same register
+ 230:lib/helix/real/assembly.h ****      * Note: Rs determines early termination (leading sign bits) so if you want to specify
+ 231:lib/helix/real/assembly.h ****      *   which operand is Rs, put it in the SECOND argument (y)
+ 232:lib/helix/real/assembly.h **** 	 * For inline assembly, x and y are not assumed to be R0, R1 so it shouldn't matter
+ 233:lib/helix/real/assembly.h **** 	 *   which one is returned. (If this were a function call, returning y (R1) would 
+ 234:lib/helix/real/assembly.h **** 	 *   require an extra "mov r0, r1")
+ 235:lib/helix/real/assembly.h ****      */
+ 236:lib/helix/real/assembly.h ****     int zlow;
+ 237:lib/helix/real/assembly.h ****     __asm {
+ 238:lib/helix/real/assembly.h ****     	smull zlow,y,x,y
+ 239:lib/helix/real/assembly.h ****    	}
+ 240:lib/helix/real/assembly.h **** 
+ 241:lib/helix/real/assembly.h ****     return y;
+ 242:lib/helix/real/assembly.h **** }
+ 243:lib/helix/real/assembly.h **** 
+ 244:lib/helix/real/assembly.h **** static __inline int FASTABS(int x) 
+ 245:lib/helix/real/assembly.h **** {
+ 246:lib/helix/real/assembly.h **** 	int t=0; /*Really is not necessary to initialiaze only to avoid warning*/
+ 247:lib/helix/real/assembly.h **** 
+ 248:lib/helix/real/assembly.h **** 	__asm {
+ 249:lib/helix/real/assembly.h **** 		eor	t, x, x, asr #31
+ 250:lib/helix/real/assembly.h **** 		sub	t, t, x, asr #31
+ 251:lib/helix/real/assembly.h **** 	}
+ 252:lib/helix/real/assembly.h **** 
+ 253:lib/helix/real/assembly.h **** 	return t;
+ 254:lib/helix/real/assembly.h **** }
+ 255:lib/helix/real/assembly.h **** 
+ 256:lib/helix/real/assembly.h **** static __inline int CLZ(int x)
+ 257:lib/helix/real/assembly.h **** {
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccVJ41FR.s 			page 8
+
+
+ 258:lib/helix/real/assembly.h **** 	int numZeros;
+ 259:lib/helix/real/assembly.h **** 
+ 260:lib/helix/real/assembly.h **** 	if (!x)
+ 261:lib/helix/real/assembly.h **** 		return (sizeof(int) * 8);
+ 262:lib/helix/real/assembly.h **** 
+ 263:lib/helix/real/assembly.h **** 	numZeros = 0;
+ 264:lib/helix/real/assembly.h **** 	while (!(x & 0x80000000)) {
+ 265:lib/helix/real/assembly.h **** 		numZeros++;
+ 266:lib/helix/real/assembly.h **** 		x <<= 1;
+ 267:lib/helix/real/assembly.h **** 	} 
+ 268:lib/helix/real/assembly.h **** 
+ 269:lib/helix/real/assembly.h **** 	return numZeros;
+ 270:lib/helix/real/assembly.h **** }
+ 271:lib/helix/real/assembly.h **** 
+ 272:lib/helix/real/assembly.h **** #elif defined(__GNUC__) && defined(ARM)
+ 273:lib/helix/real/assembly.h **** 
+ 274:lib/helix/real/assembly.h **** static __inline int MULSHIFT32(int x, int y)
+ 275:lib/helix/real/assembly.h **** {
+ 276:lib/helix/real/assembly.h ****     /* important rules for smull RdLo, RdHi, Rm, Rs:
+ 277:lib/helix/real/assembly.h ****      *     RdHi and Rm can't be the same register
+ 278:lib/helix/real/assembly.h ****      *     RdLo and Rm can't be the same register
+ 279:lib/helix/real/assembly.h ****      *     RdHi and RdLo can't be the same register
+ 280:lib/helix/real/assembly.h ****      * Note: Rs determines early termination (leading sign bits) so if you want to specify
+ 281:lib/helix/real/assembly.h ****      *   which operand is Rs, put it in the SECOND argument (y)
+ 282:lib/helix/real/assembly.h **** 	 * For inline assembly, x and y are not assumed to be R0, R1 so it shouldn't matter
+ 283:lib/helix/real/assembly.h **** 	 *   which one is returned. (If this were a function call, returning y (R1) would 
+ 284:lib/helix/real/assembly.h **** 	 *   require an extra "mov r0, r1")
+ 285:lib/helix/real/assembly.h ****      */
+ 286:lib/helix/real/assembly.h ****     int zlow;
+ 287:lib/helix/real/assembly.h ****     __asm__ volatile ("smull %0,%1,%2,%3" : "=&r" (zlow), "=r" (y) : "r" (x), "1" (y)) ;
+ 288:lib/helix/real/assembly.h **** 
+ 289:lib/helix/real/assembly.h ****     return y;
+ 290:lib/helix/real/assembly.h **** }
+ 291:lib/helix/real/assembly.h **** 
+ 292:lib/helix/real/assembly.h **** static __inline int FASTABS(int x) 
+ 293:lib/helix/real/assembly.h **** {
+ 294:lib/helix/real/assembly.h **** 	int t=0; /*Really is not necessary to initialiaze only to avoid warning*/
+ 295:lib/helix/real/assembly.h **** 
+ 296:lib/helix/real/assembly.h **** 	__asm__ volatile (
+ 297:lib/helix/real/assembly.h **** 		"eor %0,%2,%2, asr #31;"
+ 298:lib/helix/real/assembly.h **** 		"sub %0,%1,%2, asr #31;"
+ 299:lib/helix/real/assembly.h **** 		: "=&r" (t) 
+ 300:lib/helix/real/assembly.h **** 		: "0" (t), "r" (x)
+ 301:lib/helix/real/assembly.h **** 	 );
+ 302:lib/helix/real/assembly.h **** 
+ 303:lib/helix/real/assembly.h **** 	return t;
+ 304:lib/helix/real/assembly.h **** }
+ 305:lib/helix/real/assembly.h **** 
+ 306:lib/helix/real/assembly.h **** static __inline int CLZ(int x)
+ 307:lib/helix/real/assembly.h **** {
+ 308:lib/helix/real/assembly.h **** 	int numZeros;
+ 309:lib/helix/real/assembly.h **** 
+ 310:lib/helix/real/assembly.h **** 	if (!x)
+ 311:lib/helix/real/assembly.h **** 		return (sizeof(int) * 8);
+ 312:lib/helix/real/assembly.h **** 
+ 313:lib/helix/real/assembly.h **** 	numZeros = 0;
+ 314:lib/helix/real/assembly.h **** 	while (!(x & 0x80000000)) {
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccVJ41FR.s 			page 9
+
+
+ 315:lib/helix/real/assembly.h **** 		numZeros++;
+ 316:lib/helix/real/assembly.h **** 		x <<= 1;
+ 317:lib/helix/real/assembly.h **** 	} 
+ 318:lib/helix/real/assembly.h **** 
+ 319:lib/helix/real/assembly.h **** 	return numZeros;
+ 320:lib/helix/real/assembly.h **** }
+ 321:lib/helix/real/assembly.h **** 
+ 322:lib/helix/real/assembly.h **** #elif defined(ARM_TEST)
+ 323:lib/helix/real/assembly.h **** static __inline__ int MULSHIFT32(int x, int y)
+ 324:lib/helix/real/assembly.h **** {
+ 325:lib/helix/real/assembly.h **** 	int zlow;
+ 326:lib/helix/real/assembly.h **** 	__asm__ volatile ("smull %0,%1,%2,%3" : "=&r" (zlow), "=r" (y) : "r" (x), "1" (y) : "cc");
+ 327:lib/helix/real/assembly.h **** 	return y;
+ 328:lib/helix/real/assembly.h **** }
+ 329:lib/helix/real/assembly.h **** 
+ 330:lib/helix/real/assembly.h **** static __inline int FASTABS(int x)
+ 331:lib/helix/real/assembly.h **** {
+ 332:lib/helix/real/assembly.h **** 	int sign;
+ 333:lib/helix/real/assembly.h **** 
+ 334:lib/helix/real/assembly.h **** 	sign = x >> (sizeof(int) * 8 - 1);
+  68              		.loc 2 334 0 discriminator 3
+  69 0026 4FEAE47C 		asr	ip, r4, #31
+  70              	.LVL7:
+ 335:lib/helix/real/assembly.h **** 	x ^= sign;
+  71              		.loc 2 335 0 discriminator 3
+  72 002a 84EA0C04 		eor	r4, r4, ip
+  73              	.LVL8:
+ 336:lib/helix/real/assembly.h **** 	x -= sign;
+  74              		.loc 2 336 0 discriminator 3
+  75 002e A4EB0C04 		sub	r4, r4, ip
+  76              	.LVL9:
+  77              	.LBE55:
+  78              	.LBE54:
+  77:lib/helix/real/stproc.c **** 		mOutL |= FASTABS(x[0][i]);
+  79              		.loc 1 77 0 discriminator 3
+  80 0032 2743     		orrs	r7, r7, r4
+  81              	.LVL10:
+  82              	.LBB56:
+  83              	.LBB57:
+ 334:lib/helix/real/assembly.h **** 	x ^= sign;
+  84              		.loc 2 334 0 discriminator 3
+  85 0034 DC17     		asrs	r4, r3, #31
+  86              	.LVL11:
+ 335:lib/helix/real/assembly.h **** 	x -= sign;
+  87              		.loc 2 335 0 discriminator 3
+  88 0036 6340     		eors	r3, r3, r4
+  89              	.LVL12:
+  90              		.loc 2 336 0 discriminator 3
+  91 0038 1B1B     		subs	r3, r3, r4
+  92              	.LVL13:
+  93              	.LBE57:
+  94              	.LBE56:
+  78:lib/helix/real/stproc.c **** 		mOutR |= FASTABS(x[1][i]);
+  95              		.loc 1 78 0 discriminator 3
+  96 003a 1E43     		orrs	r6, r6, r3
+  97              	.LVL14:
+  72:lib/helix/real/stproc.c **** 		xl = x[0][i];
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccVJ41FR.s 			page 10
+
+
+  98              		.loc 1 72 0 discriminator 3
+  99 003c 0135     		adds	r5, r5, #1
+ 100              	.LVL15:
+ 101              	.L2:
+  72:lib/helix/real/stproc.c **** 		xl = x[0][i];
+ 102              		.loc 1 72 0 is_stmt 0 discriminator 1
+ 103 003e 8D42     		cmp	r5, r1
+ 104 0040 E3DB     		blt	.L3
+  79:lib/helix/real/stproc.c **** 	}
+  80:lib/helix/real/stproc.c **** 	mOut[0] |= mOutL;
+ 105              		.loc 1 80 0 is_stmt 1
+ 106 0042 1368     		ldr	r3, [r2]
+ 107 0044 1F43     		orrs	r7, r7, r3
+ 108              	.LVL16:
+ 109 0046 1760     		str	r7, [r2]
+  81:lib/helix/real/stproc.c **** 	mOut[1] |= mOutR;
+ 110              		.loc 1 81 0
+ 111 0048 5368     		ldr	r3, [r2, #4]
+ 112 004a 1E43     		orrs	r6, r6, r3
+ 113              	.LVL17:
+ 114 004c 5660     		str	r6, [r2, #4]
+  82:lib/helix/real/stproc.c **** }
+ 115              		.loc 1 82 0
+ 116 004e F0BD     		pop	{r4, r5, r6, r7, pc}
+ 117              		.cfi_endproc
+ 118              	.LFE5:
+ 120              		.section	.text.xmp3fixpt_IntensityProcMPEG1,"ax",%progbits
+ 121              		.align	1
+ 122              		.global	xmp3fixpt_IntensityProcMPEG1
+ 123              		.syntax unified
+ 124              		.thumb
+ 125              		.thumb_func
+ 126              		.fpu fpv5-sp-d16
+ 128              	xmp3fixpt_IntensityProcMPEG1:
+ 129              	.LFB6:
+  83:lib/helix/real/stproc.c **** 
+  84:lib/helix/real/stproc.c **** /**************************************************************************************
+  85:lib/helix/real/stproc.c ****  * Function:    IntensityProcMPEG1
+  86:lib/helix/real/stproc.c ****  *
+  87:lib/helix/real/stproc.c ****  * Description: intensity stereo processing for MPEG1
+  88:lib/helix/real/stproc.c ****  *
+  89:lib/helix/real/stproc.c ****  * Inputs:      vector x with dequantized samples from left and right channels
+  90:lib/helix/real/stproc.c ****  *              number of non-zero samples in left channel
+  91:lib/helix/real/stproc.c ****  *              valid FrameHeader struct
+  92:lib/helix/real/stproc.c ****  *              two each of ScaleFactorInfoSub, CriticalBandInfo structs (both channels)
+  93:lib/helix/real/stproc.c ****  *              flags indicating midSide on/off, mixedBlock on/off
+  94:lib/helix/real/stproc.c ****  *              guard bit mask (left and right channels)
+  95:lib/helix/real/stproc.c ****  *
+  96:lib/helix/real/stproc.c ****  * Outputs:     updated sample vector x
+  97:lib/helix/real/stproc.c ****  *              updated guard bit mask
+  98:lib/helix/real/stproc.c ****  *
+  99:lib/helix/real/stproc.c ****  * Return:      none
+ 100:lib/helix/real/stproc.c ****  *
+ 101:lib/helix/real/stproc.c ****  * Notes:       assume at least 1 GB in input
+ 102:lib/helix/real/stproc.c ****  *
+ 103:lib/helix/real/stproc.c ****  * TODO:        combine MPEG1/2 into one function (maybe)
+ 104:lib/helix/real/stproc.c ****  *              make sure all the mixed-block and IIP logic is right
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccVJ41FR.s 			page 11
+
+
+ 105:lib/helix/real/stproc.c ****  **************************************************************************************/
+ 106:lib/helix/real/stproc.c **** void IntensityProcMPEG1(int x[MAX_NCHAN][MAX_NSAMP], int nSamps, FrameHeader *fh, ScaleFactorInfoSu
+ 107:lib/helix/real/stproc.c **** 						CriticalBandInfo *cbi, int midSideFlag, int mixFlag, int mOut[2])
+ 108:lib/helix/real/stproc.c **** {
+ 130              		.loc 1 108 0
+ 131              		.cfi_startproc
+ 132              		@ args = 16, pretend = 0, frame = 48
+ 133              		@ frame_needed = 0, uses_anonymous_args = 0
+ 134              	.LVL18:
+ 135 0000 2DE9F04F 		push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
+ 136              	.LCFI1:
+ 137              		.cfi_def_cfa_offset 36
+ 138              		.cfi_offset 4, -36
+ 139              		.cfi_offset 5, -32
+ 140              		.cfi_offset 6, -28
+ 141              		.cfi_offset 7, -24
+ 142              		.cfi_offset 8, -20
+ 143              		.cfi_offset 9, -16
+ 144              		.cfi_offset 10, -12
+ 145              		.cfi_offset 11, -8
+ 146              		.cfi_offset 14, -4
+ 147 0004 8DB0     		sub	sp, sp, #52
+ 148              	.LCFI2:
+ 149              		.cfi_def_cfa_offset 88
+ 150 0006 0292     		str	r2, [sp, #8]
+ 151 0008 0193     		str	r3, [sp, #4]
+ 152 000a 169B     		ldr	r3, [sp, #88]
+ 153              	.LVL19:
+ 109:lib/helix/real/stproc.c **** 	int i=0, j=0, n=0, cb=0, w=0;
+ 110:lib/helix/real/stproc.c **** 	int sampsLeft, isf, mOutL, mOutR, xl, xr;
+ 111:lib/helix/real/stproc.c **** 	int fl, fr, fls[3], frs[3];
+ 112:lib/helix/real/stproc.c **** 	int cbStartL=0, cbStartS=0, cbEndL=0, cbEndS=0;
+ 113:lib/helix/real/stproc.c **** 	int *isfTab;
+ 114:lib/helix/real/stproc.c **** 	
+ 115:lib/helix/real/stproc.c **** 	/* NOTE - this works fine for mixed blocks, as long as the switch point starts in the
+ 116:lib/helix/real/stproc.c **** 	 *  short block section (i.e. on or after sample 36 = sfBand->l[8] = 3*sfBand->s[3]
+ 117:lib/helix/real/stproc.c **** 	 * is this a safe assumption?
+ 118:lib/helix/real/stproc.c **** 	 * TODO - intensity + mixed not quite right (diff = 11 on he_mode)
+ 119:lib/helix/real/stproc.c **** 	 *  figure out correct implementation (spec ambiguous about when to do short block reorder)
+ 120:lib/helix/real/stproc.c **** 	 */
+ 121:lib/helix/real/stproc.c **** 	if (cbi[1].cbType == 0) {
+ 154              		.loc 1 121 0
+ 155 000c 9F69     		ldr	r7, [r3, #24]
+ 156 000e B7B9     		cbnz	r7, .L6
+ 122:lib/helix/real/stproc.c **** 		/* long block */
+ 123:lib/helix/real/stproc.c **** 		cbStartL = cbi[1].cbEndL + 1;
+ 157              		.loc 1 123 0
+ 158 0010 DE6A     		ldr	r6, [r3, #44]
+ 159 0012 0136     		adds	r6, r6, #1
+ 160              	.LVL20:
+ 124:lib/helix/real/stproc.c **** 		cbEndL =   cbi[0].cbEndL + 1;
+ 161              		.loc 1 124 0
+ 162 0014 5B69     		ldr	r3, [r3, #20]
+ 163 0016 0133     		adds	r3, r3, #1
+ 164 0018 0393     		str	r3, [sp, #12]
+ 165              	.LVL21:
+ 125:lib/helix/real/stproc.c **** 		cbStartS = cbEndS = 0;
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccVJ41FR.s 			page 12
+
+
+ 126:lib/helix/real/stproc.c **** 		i = fh->sfBand->l[cbStartL];
+ 166              		.loc 1 126 0
+ 167 001a 536B     		ldr	r3, [r2, #52]
+ 168              	.LVL22:
+ 169 001c 33F91650 		ldrsh	r5, [r3, r6, lsl #1]
+ 170              	.LVL23:
+ 125:lib/helix/real/stproc.c **** 		cbStartS = cbEndS = 0;
+ 171              		.loc 1 125 0
+ 172 0020 0497     		str	r7, [sp, #16]
+ 173              	.LVL24:
+ 174              	.L7:
+ 127:lib/helix/real/stproc.c **** 	} else if (cbi[1].cbType == 1 || cbi[1].cbType == 2) {
+ 128:lib/helix/real/stproc.c **** 		/* short or mixed block */
+ 129:lib/helix/real/stproc.c **** 		cbStartS = cbi[1].cbEndSMax + 1;
+ 130:lib/helix/real/stproc.c **** 		cbEndS =   cbi[0].cbEndSMax + 1;
+ 131:lib/helix/real/stproc.c **** 		cbStartL = cbEndL = 0;
+ 132:lib/helix/real/stproc.c **** 		i = 3 * fh->sfBand->s[cbStartS];
+ 133:lib/helix/real/stproc.c **** 	}
+ 134:lib/helix/real/stproc.c **** 
+ 135:lib/helix/real/stproc.c **** 	sampsLeft = nSamps - i;		/* process to length of left */
+ 175              		.loc 1 135 0
+ 176 0022 491B     		subs	r1, r1, r5
+ 177              	.LVL25:
+ 136:lib/helix/real/stproc.c **** 	isfTab = (int *)ISFMpeg1[midSideFlag];
+ 178              		.loc 1 136 0
+ 179 0024 179B     		ldr	r3, [sp, #92]
+ 180 0026 C3EBC303 		rsb	r3, r3, r3, lsl #3
+ 181 002a 4FEA8309 		lsl	r9, r3, #2
+ 182 002e A34B     		ldr	r3, .L30
+ 183 0030 9944     		add	r9, r9, r3
+ 184              	.LVL26:
+ 137:lib/helix/real/stproc.c **** 	mOutL = mOutR = 0;
+ 185              		.loc 1 137 0
+ 186 0032 0023     		movs	r3, #0
+ 187 0034 1A46     		mov	r2, r3
+ 188 0036 0597     		str	r7, [sp, #20]
+ 189 0038 DDF80880 		ldr	r8, [sp, #8]
+ 138:lib/helix/real/stproc.c **** 
+ 139:lib/helix/real/stproc.c **** 	/* long blocks */
+ 140:lib/helix/real/stproc.c **** 	for (cb = cbStartL; cb < cbEndL && sampsLeft > 0; cb++) {
+ 190              		.loc 1 140 0
+ 191 003c 53E0     		b	.L8
+ 192              	.LVL27:
+ 193              	.L6:
+ 127:lib/helix/real/stproc.c **** 		/* short or mixed block */
+ 194              		.loc 1 127 0
+ 195 003e 013F     		subs	r7, r7, #1
+ 196 0040 012F     		cmp	r7, #1
+ 197 0042 06D9     		bls	.L24
+ 112:lib/helix/real/stproc.c **** 	int *isfTab;
+ 198              		.loc 1 112 0
+ 199 0044 0023     		movs	r3, #0
+ 200 0046 1D46     		mov	r5, r3
+ 201 0048 0493     		str	r3, [sp, #16]
+ 202 004a 0393     		str	r3, [sp, #12]
+ 203 004c 1F46     		mov	r7, r3
+ 204 004e 1E46     		mov	r6, r3
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccVJ41FR.s 			page 13
+
+
+ 205 0050 E7E7     		b	.L7
+ 206              	.L24:
+ 129:lib/helix/real/stproc.c **** 		cbEndS =   cbi[0].cbEndSMax + 1;
+ 207              		.loc 1 129 0
+ 208 0052 9A6A     		ldr	r2, [r3, #40]
+ 209              	.LVL28:
+ 210 0054 571C     		adds	r7, r2, #1
+ 211              	.LVL29:
+ 130:lib/helix/real/stproc.c **** 		cbStartL = cbEndL = 0;
+ 212              		.loc 1 130 0
+ 213 0056 1B69     		ldr	r3, [r3, #16]
+ 214 0058 0133     		adds	r3, r3, #1
+ 215 005a 0493     		str	r3, [sp, #16]
+ 216              	.LVL30:
+ 132:lib/helix/real/stproc.c **** 	}
+ 217              		.loc 1 132 0
+ 218 005c 029B     		ldr	r3, [sp, #8]
+ 219              	.LVL31:
+ 220 005e 5B6B     		ldr	r3, [r3, #52]
+ 221 0060 1532     		adds	r2, r2, #21
+ 222 0062 03EB4202 		add	r2, r3, r2, lsl #1
+ 223 0066 B2F90650 		ldrsh	r5, [r2, #6]
+ 224 006a 05EB4505 		add	r5, r5, r5, lsl #1
+ 225              	.LVL32:
+ 131:lib/helix/real/stproc.c **** 		i = 3 * fh->sfBand->s[cbStartS];
+ 226              		.loc 1 131 0
+ 227 006e 0023     		movs	r3, #0
+ 228 0070 0393     		str	r3, [sp, #12]
+ 229 0072 1E46     		mov	r6, r3
+ 230 0074 D5E7     		b	.L7
+ 231              	.LVL33:
+ 232              	.L26:
+ 141:lib/helix/real/stproc.c **** 		isf = sfis->l[cb];
+ 142:lib/helix/real/stproc.c **** 		if (isf == 7) {
+ 143:lib/helix/real/stproc.c **** 			fl = ISFIIP[midSideFlag][0];
+ 233              		.loc 1 143 0
+ 234 0076 DFF848C2 		ldr	ip, .L30+4
+ 235 007a 179F     		ldr	r7, [sp, #92]
+ 236 007c 5CF83770 		ldr	r7, [ip, r7, lsl #3]
+ 237              	.LVL34:
+ 144:lib/helix/real/stproc.c **** 			fr = ISFIIP[midSideFlag][1];
+ 238              		.loc 1 144 0
+ 239 0080 179C     		ldr	r4, [sp, #92]
+ 240              	.LVL35:
+ 241 0082 0CEBC404 		add	r4, ip, r4, lsl #3
+ 242 0086 D4F804C0 		ldr	ip, [r4, #4]
+ 243              	.LVL36:
+ 244 008a 3FE0     		b	.L10
+ 245              	.LVL37:
+ 246              	.L12:
+ 145:lib/helix/real/stproc.c **** 		} else {
+ 146:lib/helix/real/stproc.c **** 			fl = isfTab[isf];	
+ 147:lib/helix/real/stproc.c **** 			fr = isfTab[6] - isfTab[isf];
+ 148:lib/helix/real/stproc.c **** 		}
+ 149:lib/helix/real/stproc.c **** 
+ 150:lib/helix/real/stproc.c **** 		n = fh->sfBand->l[cb + 1] - fh->sfBand->l[cb];
+ 151:lib/helix/real/stproc.c **** 		for (j = 0; j < n && sampsLeft > 0; j++, i++) {
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccVJ41FR.s 			page 14
+
+
+ 152:lib/helix/real/stproc.c **** 			xr = MULSHIFT32(fr, x[0][i]) << 2;	x[1][i] = xr; mOutR |= FASTABS(xr);
+ 247              		.loc 1 152 0 discriminator 3
+ 248 008c 50F825B0 		ldr	fp, [r0, r5, lsl #2]
+ 249              	.LVL38:
+ 250              	.LBB58:
+ 251              	.LBB59:
+ 326:lib/helix/real/assembly.h **** 	return y;
+ 252              		.loc 2 326 0 discriminator 3
+ 253 0090 5C46     		mov	r4, fp
+ 254              		.syntax unified
+ 255              	@ 326 "lib/helix/real/assembly.h" 1
+ 256 0092 8CFB04B4 		smull fp,r4,ip,r4
+ 257              	@ 0 "" 2
+ 258              	.LVL39:
+ 259              		.thumb
+ 260              		.syntax unified
+ 261              	.LBE59:
+ 262              	.LBE58:
+ 263              		.loc 1 152 0 discriminator 3
+ 264 0096 A400     		lsls	r4, r4, #2
+ 265              	.LVL40:
+ 266 0098 00EB850B 		add	fp, r0, r5, lsl #2
+ 267 009c CBF80049 		str	r4, [fp, #2304]
+ 268              	.LVL41:
+ 269              	.LBB60:
+ 270              	.LBB61:
+ 334:lib/helix/real/assembly.h **** 	x ^= sign;
+ 271              		.loc 2 334 0 discriminator 3
+ 272 00a0 4FEAE47B 		asr	fp, r4, #31
+ 273              	.LVL42:
+ 335:lib/helix/real/assembly.h **** 	x -= sign;
+ 274              		.loc 2 335 0 discriminator 3
+ 275 00a4 8BEA0404 		eor	r4, fp, r4
+ 276              	.LVL43:
+ 277              		.loc 2 336 0 discriminator 3
+ 278 00a8 A4EB0B04 		sub	r4, r4, fp
+ 279              	.LVL44:
+ 280              	.LBE61:
+ 281              	.LBE60:
+ 282              		.loc 1 152 0 discriminator 3
+ 283 00ac 2343     		orrs	r3, r3, r4
+ 284              	.LVL45:
+ 153:lib/helix/real/stproc.c **** 			xl = MULSHIFT32(fl, x[0][i]) << 2;	x[0][i] = xl; mOutL |= FASTABS(xl);
+ 285              		.loc 1 153 0 discriminator 3
+ 286 00ae 50F825B0 		ldr	fp, [r0, r5, lsl #2]
+ 287              	.LVL46:
+ 288              	.LBB62:
+ 289              	.LBB63:
+ 326:lib/helix/real/assembly.h **** 	return y;
+ 290              		.loc 2 326 0 discriminator 3
+ 291 00b2 5C46     		mov	r4, fp
+ 292              		.syntax unified
+ 293              	@ 326 "lib/helix/real/assembly.h" 1
+ 294 00b4 87FB04B4 		smull fp,r4,r7,r4
+ 295              	@ 0 "" 2
+ 296              	.LVL47:
+ 297              		.thumb
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccVJ41FR.s 			page 15
+
+
+ 298              		.syntax unified
+ 299              	.LBE63:
+ 300              	.LBE62:
+ 301              		.loc 1 153 0 discriminator 3
+ 302 00b8 A400     		lsls	r4, r4, #2
+ 303              	.LVL48:
+ 304 00ba 40F82540 		str	r4, [r0, r5, lsl #2]
+ 305              	.LVL49:
+ 306              	.LBB64:
+ 307              	.LBB65:
+ 334:lib/helix/real/assembly.h **** 	x ^= sign;
+ 308              		.loc 2 334 0 discriminator 3
+ 309 00be 4FEAE47B 		asr	fp, r4, #31
+ 310              	.LVL50:
+ 335:lib/helix/real/assembly.h **** 	x -= sign;
+ 311              		.loc 2 335 0 discriminator 3
+ 312 00c2 8BEA0404 		eor	r4, fp, r4
+ 313              	.LVL51:
+ 314              		.loc 2 336 0 discriminator 3
+ 315 00c6 A4EB0B04 		sub	r4, r4, fp
+ 316              	.LVL52:
+ 317              	.LBE65:
+ 318              	.LBE64:
+ 319              		.loc 1 153 0 discriminator 3
+ 320 00ca 2243     		orrs	r2, r2, r4
+ 321              	.LVL53:
+ 154:lib/helix/real/stproc.c **** 			sampsLeft--;
+ 322              		.loc 1 154 0 discriminator 3
+ 323 00cc 0139     		subs	r1, r1, #1
+ 324              	.LVL54:
+ 151:lib/helix/real/stproc.c **** 			xr = MULSHIFT32(fr, x[0][i]) << 2;	x[1][i] = xr; mOutR |= FASTABS(xr);
+ 325              		.loc 1 151 0 discriminator 3
+ 326 00ce 0136     		adds	r6, r6, #1
+ 327              	.LVL55:
+ 328 00d0 0135     		adds	r5, r5, #1
+ 329              	.LVL56:
+ 330              	.L11:
+ 151:lib/helix/real/stproc.c **** 			xr = MULSHIFT32(fr, x[0][i]) << 2;	x[1][i] = xr; mOutR |= FASTABS(xr);
+ 331              		.loc 1 151 0 is_stmt 0 discriminator 1
+ 332 00d2 7645     		cmp	r6, lr
+ 333 00d4 ACBF     		ite	ge
+ 334 00d6 0024     		movge	r4, #0
+ 335 00d8 0124     		movlt	r4, #1
+ 336 00da 0029     		cmp	r1, #0
+ 337 00dc D8BF     		it	le
+ 338 00de 0024     		movle	r4, #0
+ 339 00e0 002C     		cmp	r4, #0
+ 340 00e2 D3D1     		bne	.L12
+ 140:lib/helix/real/stproc.c **** 		isf = sfis->l[cb];
+ 341              		.loc 1 140 0 is_stmt 1
+ 342 00e4 5646     		mov	r6, r10
+ 343              	.LVL57:
+ 344              	.L8:
+ 140:lib/helix/real/stproc.c **** 		isf = sfis->l[cb];
+ 345              		.loc 1 140 0 is_stmt 0 discriminator 1
+ 346 00e6 039C     		ldr	r4, [sp, #12]
+ 347 00e8 A642     		cmp	r6, r4
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccVJ41FR.s 			page 16
+
+
+ 348 00ea ACBF     		ite	ge
+ 349 00ec 0024     		movge	r4, #0
+ 350 00ee 0124     		movlt	r4, #1
+ 351 00f0 0029     		cmp	r1, #0
+ 352 00f2 D8BF     		it	le
+ 353 00f4 0024     		movle	r4, #0
+ 354 00f6 ACB1     		cbz	r4, .L25
+ 141:lib/helix/real/stproc.c **** 		if (isf == 7) {
+ 355              		.loc 1 141 0 is_stmt 1
+ 356 00f8 019C     		ldr	r4, [sp, #4]
+ 357 00fa A45D     		ldrb	r4, [r4, r6]	@ zero_extendqisi2
+ 358              	.LVL58:
+ 142:lib/helix/real/stproc.c **** 			fl = ISFIIP[midSideFlag][0];
+ 359              		.loc 1 142 0
+ 360 00fc 072C     		cmp	r4, #7
+ 361 00fe BAD0     		beq	.L26
+ 146:lib/helix/real/stproc.c **** 			fr = isfTab[6] - isfTab[isf];
+ 362              		.loc 1 146 0
+ 363 0100 59F82470 		ldr	r7, [r9, r4, lsl #2]
+ 364              	.LVL59:
+ 147:lib/helix/real/stproc.c **** 		}
+ 365              		.loc 1 147 0
+ 366 0104 D9F81840 		ldr	r4, [r9, #24]
+ 367              	.LVL60:
+ 368 0108 A4EB070C 		sub	ip, r4, r7
+ 369              	.LVL61:
+ 370              	.L10:
+ 150:lib/helix/real/stproc.c **** 		for (j = 0; j < n && sampsLeft > 0; j++, i++) {
+ 371              		.loc 1 150 0
+ 372 010c D8F83440 		ldr	r4, [r8, #52]
+ 373 0110 06F1010A 		add	r10, r6, #1
+ 374 0114 34F91AE0 		ldrsh	lr, [r4, r10, lsl #1]
+ 375 0118 34F91640 		ldrsh	r4, [r4, r6, lsl #1]
+ 376 011c AEEB040E 		sub	lr, lr, r4
+ 377              	.LVL62:
+ 151:lib/helix/real/stproc.c **** 			xr = MULSHIFT32(fr, x[0][i]) << 2;	x[1][i] = xr; mOutR |= FASTABS(xr);
+ 378              		.loc 1 151 0
+ 379 0120 0026     		movs	r6, #0
+ 380              	.LVL63:
+ 381 0122 D6E7     		b	.L11
+ 382              	.LVL64:
+ 383              	.L25:
+ 384 0124 059F     		ldr	r7, [sp, #20]
+ 385 0126 B846     		mov	r8, r7
+ 386 0128 DDF804C0 		ldr	ip, [sp, #4]
+ 387 012c DDF85CE0 		ldr	lr, [sp, #92]
+ 388 0130 B2E0     		b	.L14
+ 389              	.LVL65:
+ 390              	.L28:
+ 155:lib/helix/real/stproc.c **** 		}
+ 156:lib/helix/real/stproc.c **** 	}
+ 157:lib/helix/real/stproc.c **** 
+ 158:lib/helix/real/stproc.c **** 	/* short blocks */
+ 159:lib/helix/real/stproc.c **** 	for (cb = cbStartS; cb < cbEndS && sampsLeft >= 3; cb++) {
+ 160:lib/helix/real/stproc.c **** 		for (w = 0; w < 3; w++) {
+ 161:lib/helix/real/stproc.c **** 			isf = sfis->s[cb][w];
+ 162:lib/helix/real/stproc.c **** 			if (isf == 7) {
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccVJ41FR.s 			page 17
+
+
+ 163:lib/helix/real/stproc.c **** 				fls[w] = ISFIIP[midSideFlag][0];
+ 391              		.loc 1 163 0
+ 392 0132 634F     		ldr	r7, .L30+4
+ 393 0134 57F83E40 		ldr	r4, [r7, lr, lsl #3]
+ 394              	.LVL66:
+ 395 0138 0CAB     		add	r3, sp, #48
+ 396 013a 03EB860A 		add	r10, r3, r6, lsl #2
+ 397 013e 4AF80C4C 		str	r4, [r10, #-12]
+ 164:lib/helix/real/stproc.c **** 				frs[w] = ISFIIP[midSideFlag][1];
+ 398              		.loc 1 164 0
+ 399 0142 07EBCE07 		add	r7, r7, lr, lsl #3
+ 400 0146 7C68     		ldr	r4, [r7, #4]
+ 401 0148 4AF8184C 		str	r4, [r10, #-24]
+ 402              	.L16:
+ 160:lib/helix/real/stproc.c **** 			isf = sfis->s[cb][w];
+ 403              		.loc 1 160 0 discriminator 2
+ 404 014c 0136     		adds	r6, r6, #1
+ 405              	.LVL67:
+ 406              	.L20:
+ 160:lib/helix/real/stproc.c **** 			isf = sfis->s[cb][w];
+ 407              		.loc 1 160 0 is_stmt 0 discriminator 1
+ 408 014e 022E     		cmp	r6, #2
+ 409 0150 13DC     		bgt	.L27
+ 161:lib/helix/real/stproc.c **** 			if (isf == 7) {
+ 410              		.loc 1 161 0 is_stmt 1
+ 411 0152 08EB4804 		add	r4, r8, r8, lsl #1
+ 412 0156 6444     		add	r4, r4, ip
+ 413 0158 3444     		add	r4, r4, r6
+ 414 015a E47D     		ldrb	r4, [r4, #23]	@ zero_extendqisi2
+ 415              	.LVL68:
+ 162:lib/helix/real/stproc.c **** 				fls[w] = ISFIIP[midSideFlag][0];
+ 416              		.loc 1 162 0
+ 417 015c 072C     		cmp	r4, #7
+ 418 015e E8D0     		beq	.L28
+ 165:lib/helix/real/stproc.c **** 			} else {
+ 166:lib/helix/real/stproc.c **** 				fls[w] = isfTab[isf];
+ 419              		.loc 1 166 0
+ 420 0160 59F82440 		ldr	r4, [r9, r4, lsl #2]
+ 421              	.LVL69:
+ 422 0164 0CAB     		add	r3, sp, #48
+ 423 0166 03EB8607 		add	r7, r3, r6, lsl #2
+ 424 016a 47F80C4C 		str	r4, [r7, #-12]
+ 167:lib/helix/real/stproc.c **** 				frs[w] = isfTab[6] - isfTab[isf];
+ 425              		.loc 1 167 0
+ 426 016e D9F81830 		ldr	r3, [r9, #24]
+ 427 0172 1C1B     		subs	r4, r3, r4
+ 428 0174 47F8184C 		str	r4, [r7, #-24]
+ 429 0178 E8E7     		b	.L16
+ 430              	.LVL70:
+ 431              	.L27:
+ 432 017a 5B46     		mov	r3, fp
+ 168:lib/helix/real/stproc.c **** 			}
+ 169:lib/helix/real/stproc.c **** 		}
+ 170:lib/helix/real/stproc.c **** 
+ 171:lib/helix/real/stproc.c **** 		n = fh->sfBand->s[cb + 1] - fh->sfBand->s[cb];
+ 433              		.loc 1 171 0
+ 434 017c 029C     		ldr	r4, [sp, #8]
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccVJ41FR.s 			page 18
+
+
+ 435 017e 646B     		ldr	r4, [r4, #52]
+ 436 0180 08F10106 		add	r6, r8, #1
+ 437              	.LVL71:
+ 438 0184 0196     		str	r6, [sp, #4]
+ 439 0186 08F11506 		add	r6, r8, #21
+ 440 018a 04EB4606 		add	r6, r4, r6, lsl #1
+ 441 018e B6F90670 		ldrsh	r7, [r6, #6]
+ 442 0192 08F11408 		add	r8, r8, #20
+ 443              	.LVL72:
+ 444 0196 04EB4804 		add	r4, r4, r8, lsl #1
+ 445 019a B4F90640 		ldrsh	r4, [r4, #6]
+ 446 019e 3F1B     		subs	r7, r7, r4
+ 447              	.LVL73:
+ 172:lib/helix/real/stproc.c **** 		for (j = 0; j < n && sampsLeft >= 3; j++, i+=3) {
+ 448              		.loc 1 172 0
+ 449 01a0 0024     		movs	r4, #0
+ 450 01a2 6EE0     		b	.L18
+ 451              	.LVL74:
+ 452              	.L19:
+ 173:lib/helix/real/stproc.c **** 			xr = MULSHIFT32(frs[0], x[0][i+0]) << 2;	x[1][i+0] = xr;	mOutR |= FASTABS(xr);
+ 453              		.loc 1 173 0 discriminator 3
+ 454 01a4 50F82560 		ldr	r6, [r0, r5, lsl #2]
+ 455              	.LVL75:
+ 456              	.LBB66:
+ 457              	.LBB67:
+ 326:lib/helix/real/assembly.h **** 	return y;
+ 458              		.loc 2 326 0 discriminator 3
+ 459 01a8 B046     		mov	r8, r6
+ 460 01aa 069E     		ldr	r6, [sp, #24]
+ 461              	.LVL76:
+ 462              		.syntax unified
+ 463              	@ 326 "lib/helix/real/assembly.h" 1
+ 464 01ac 86FB08A8 		smull r10,r8,r6,r8
+ 465              	@ 0 "" 2
+ 466              	.LVL77:
+ 467              		.thumb
+ 468              		.syntax unified
+ 469              	.LBE67:
+ 470              	.LBE66:
+ 471              		.loc 1 173 0 discriminator 3
+ 472 01b0 4FEA8806 		lsl	r6, r8, #2
+ 473              	.LVL78:
+ 474 01b4 00EB8508 		add	r8, r0, r5, lsl #2
+ 475 01b8 C8F80069 		str	r6, [r8, #2304]
+ 476              	.LVL79:
+ 477              	.LBB68:
+ 478              	.LBB69:
+ 334:lib/helix/real/assembly.h **** 	x ^= sign;
+ 479              		.loc 2 334 0 discriminator 3
+ 480 01bc 4FEAE67A 		asr	r10, r6, #31
+ 481              	.LVL80:
+ 335:lib/helix/real/assembly.h **** 	x -= sign;
+ 482              		.loc 2 335 0 discriminator 3
+ 483 01c0 86EA0A08 		eor	r8, r6, r10
+ 484              	.LVL81:
+ 485              		.loc 2 336 0 discriminator 3
+ 486 01c4 A8EB0A08 		sub	r8, r8, r10
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccVJ41FR.s 			page 19
+
+
+ 487              	.LVL82:
+ 488              	.LBE69:
+ 489              	.LBE68:
+ 490              		.loc 1 173 0 discriminator 3
+ 491 01c8 43EA0803 		orr	r3, r3, r8
+ 492              	.LVL83:
+ 174:lib/helix/real/stproc.c **** 			xl = MULSHIFT32(fls[0], x[0][i+0]) << 2;	x[0][i+0] = xl;	mOutL |= FASTABS(xl);
+ 493              		.loc 1 174 0 discriminator 3
+ 494 01cc 50F82560 		ldr	r6, [r0, r5, lsl #2]
+ 495              	.LVL84:
+ 496              	.LBB70:
+ 497              	.LBB71:
+ 326:lib/helix/real/assembly.h **** 	return y;
+ 498              		.loc 2 326 0 discriminator 3
+ 499 01d0 B046     		mov	r8, r6
+ 500 01d2 099E     		ldr	r6, [sp, #36]
+ 501              	.LVL85:
+ 502              		.syntax unified
+ 503              	@ 326 "lib/helix/real/assembly.h" 1
+ 504 01d4 86FB08A8 		smull r10,r8,r6,r8
+ 505              	@ 0 "" 2
+ 506              	.LVL86:
+ 507              		.thumb
+ 508              		.syntax unified
+ 509              	.LBE71:
+ 510              	.LBE70:
+ 511              		.loc 1 174 0 discriminator 3
+ 512 01d8 4FEA8806 		lsl	r6, r8, #2
+ 513              	.LVL87:
+ 514 01dc 40F82560 		str	r6, [r0, r5, lsl #2]
+ 515              	.LVL88:
+ 516              	.LBB72:
+ 517              	.LBB73:
+ 334:lib/helix/real/assembly.h **** 	x ^= sign;
+ 518              		.loc 2 334 0 discriminator 3
+ 519 01e0 4FEAE67A 		asr	r10, r6, #31
+ 520              	.LVL89:
+ 335:lib/helix/real/assembly.h **** 	x -= sign;
+ 521              		.loc 2 335 0 discriminator 3
+ 522 01e4 86EA0A08 		eor	r8, r6, r10
+ 523              	.LVL90:
+ 524              		.loc 2 336 0 discriminator 3
+ 525 01e8 A8EB0A08 		sub	r8, r8, r10
+ 526              	.LVL91:
+ 527              	.LBE73:
+ 528              	.LBE72:
+ 529              		.loc 1 174 0 discriminator 3
+ 530 01ec 42EA0802 		orr	r2, r2, r8
+ 531              	.LVL92:
+ 175:lib/helix/real/stproc.c **** 			xr = MULSHIFT32(frs[1], x[0][i+1]) << 2;	x[1][i+1] = xr;	mOutR |= FASTABS(xr);
+ 532              		.loc 1 175 0 discriminator 3
+ 533 01f0 05F1010A 		add	r10, r5, #1
+ 534 01f4 50F82A60 		ldr	r6, [r0, r10, lsl #2]
+ 535              	.LVL93:
+ 536              	.LBB74:
+ 537              	.LBB75:
+ 326:lib/helix/real/assembly.h **** 	return y;
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccVJ41FR.s 			page 20
+
+
+ 538              		.loc 2 326 0 discriminator 3
+ 539 01f8 B046     		mov	r8, r6
+ 540 01fa 079E     		ldr	r6, [sp, #28]
+ 541              	.LVL94:
+ 542              		.syntax unified
+ 543              	@ 326 "lib/helix/real/assembly.h" 1
+ 544 01fc 86FB08B8 		smull fp,r8,r6,r8
+ 545              	@ 0 "" 2
+ 546              	.LVL95:
+ 547              		.thumb
+ 548              		.syntax unified
+ 549              	.LBE75:
+ 550              	.LBE74:
+ 551              		.loc 1 175 0 discriminator 3
+ 552 0200 4FEA8806 		lsl	r6, r8, #2
+ 553              	.LVL96:
+ 554 0204 00EB8A08 		add	r8, r0, r10, lsl #2
+ 555 0208 C8F80069 		str	r6, [r8, #2304]
+ 556              	.LVL97:
+ 557              	.LBB76:
+ 558              	.LBB77:
+ 334:lib/helix/real/assembly.h **** 	x ^= sign;
+ 559              		.loc 2 334 0 discriminator 3
+ 560 020c 4FEAE67B 		asr	fp, r6, #31
+ 561              	.LVL98:
+ 335:lib/helix/real/assembly.h **** 	x -= sign;
+ 562              		.loc 2 335 0 discriminator 3
+ 563 0210 86EA0B08 		eor	r8, r6, fp
+ 564              	.LVL99:
+ 565              		.loc 2 336 0 discriminator 3
+ 566 0214 A8EB0B08 		sub	r8, r8, fp
+ 567              	.LVL100:
+ 568              	.LBE77:
+ 569              	.LBE76:
+ 570              		.loc 1 175 0 discriminator 3
+ 571 0218 43EA0808 		orr	r8, r3, r8
+ 572              	.LVL101:
+ 176:lib/helix/real/stproc.c **** 			xl = MULSHIFT32(fls[1], x[0][i+1]) << 2;	x[0][i+1] = xl;	mOutL |= FASTABS(xl);
+ 573              		.loc 1 176 0 discriminator 3
+ 574 021c 50F82A60 		ldr	r6, [r0, r10, lsl #2]
+ 575              	.LVL102:
+ 576              	.LBB78:
+ 577              	.LBB79:
+ 326:lib/helix/real/assembly.h **** 	return y;
+ 578              		.loc 2 326 0 discriminator 3
+ 579 0220 3346     		mov	r3, r6
+ 580 0222 0A9E     		ldr	r6, [sp, #40]
+ 581              	.LVL103:
+ 582              		.syntax unified
+ 583              	@ 326 "lib/helix/real/assembly.h" 1
+ 584 0224 86FB03B3 		smull fp,r3,r6,r3
+ 585              	@ 0 "" 2
+ 586              	.LVL104:
+ 587              		.thumb
+ 588              		.syntax unified
+ 589              	.LBE79:
+ 590              	.LBE78:
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccVJ41FR.s 			page 21
+
+
+ 591              		.loc 1 176 0 discriminator 3
+ 592 0228 9B00     		lsls	r3, r3, #2
+ 593              	.LVL105:
+ 594 022a 40F82A30 		str	r3, [r0, r10, lsl #2]
+ 595              	.LVL106:
+ 596              	.LBB80:
+ 597              	.LBB81:
+ 334:lib/helix/real/assembly.h **** 	x ^= sign;
+ 598              		.loc 2 334 0 discriminator 3
+ 599 022e DE17     		asrs	r6, r3, #31
+ 600              	.LVL107:
+ 335:lib/helix/real/assembly.h **** 	x -= sign;
+ 601              		.loc 2 335 0 discriminator 3
+ 602 0230 7340     		eors	r3, r3, r6
+ 603              	.LVL108:
+ 604              		.loc 2 336 0 discriminator 3
+ 605 0232 9B1B     		subs	r3, r3, r6
+ 606              	.LVL109:
+ 607              	.LBE81:
+ 608              	.LBE80:
+ 609              		.loc 1 176 0 discriminator 3
+ 610 0234 1A43     		orrs	r2, r2, r3
+ 611              	.LVL110:
+ 177:lib/helix/real/stproc.c **** 			xr = MULSHIFT32(frs[2], x[0][i+2]) << 2;	x[1][i+2] = xr;	mOutR |= FASTABS(xr);
+ 612              		.loc 1 177 0 discriminator 3
+ 613 0236 05F1020A 		add	r10, r5, #2
+ 614              	.LVL111:
+ 615 023a 50F82A60 		ldr	r6, [r0, r10, lsl #2]
+ 616              	.LVL112:
+ 617              	.LBB82:
+ 618              	.LBB83:
+ 326:lib/helix/real/assembly.h **** 	return y;
+ 619              		.loc 2 326 0 discriminator 3
+ 620 023e 3346     		mov	r3, r6
+ 621 0240 089E     		ldr	r6, [sp, #32]
+ 622              	.LVL113:
+ 623              		.syntax unified
+ 624              	@ 326 "lib/helix/real/assembly.h" 1
+ 625 0242 86FB03B3 		smull fp,r3,r6,r3
+ 626              	@ 0 "" 2
+ 627              	.LVL114:
+ 628              		.thumb
+ 629              		.syntax unified
+ 630              	.LBE83:
+ 631              	.LBE82:
+ 632              		.loc 1 177 0 discriminator 3
+ 633 0246 9B00     		lsls	r3, r3, #2
+ 634              	.LVL115:
+ 635 0248 00EB8A06 		add	r6, r0, r10, lsl #2
+ 636 024c C6F80039 		str	r3, [r6, #2304]
+ 637              	.LVL116:
+ 638              	.LBB84:
+ 639              	.LBB85:
+ 334:lib/helix/real/assembly.h **** 	x ^= sign;
+ 640              		.loc 2 334 0 discriminator 3
+ 641 0250 DE17     		asrs	r6, r3, #31
+ 642              	.LVL117:
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccVJ41FR.s 			page 22
+
+
+ 335:lib/helix/real/assembly.h **** 	x -= sign;
+ 643              		.loc 2 335 0 discriminator 3
+ 644 0252 7340     		eors	r3, r3, r6
+ 645              	.LVL118:
+ 646              		.loc 2 336 0 discriminator 3
+ 647 0254 9B1B     		subs	r3, r3, r6
+ 648              	.LVL119:
+ 649              	.LBE85:
+ 650              	.LBE84:
+ 651              		.loc 1 177 0 discriminator 3
+ 652 0256 48EA0303 		orr	r3, r8, r3
+ 653              	.LVL120:
+ 178:lib/helix/real/stproc.c **** 			xl = MULSHIFT32(fls[2], x[0][i+2]) << 2;	x[0][i+2] = xl;	mOutL |= FASTABS(xl);
+ 654              		.loc 1 178 0 discriminator 3
+ 655 025a 50F82A60 		ldr	r6, [r0, r10, lsl #2]
+ 656              	.LVL121:
+ 657              	.LBB86:
+ 658              	.LBB87:
+ 326:lib/helix/real/assembly.h **** 	return y;
+ 659              		.loc 2 326 0 discriminator 3
+ 660 025e B046     		mov	r8, r6
+ 661 0260 0B9E     		ldr	r6, [sp, #44]
+ 662              	.LVL122:
+ 663              		.syntax unified
+ 664              	@ 326 "lib/helix/real/assembly.h" 1
+ 665 0262 86FB08B8 		smull fp,r8,r6,r8
+ 666              	@ 0 "" 2
+ 667              	.LVL123:
+ 668              		.thumb
+ 669              		.syntax unified
+ 670              	.LBE87:
+ 671              	.LBE86:
+ 672              		.loc 1 178 0 discriminator 3
+ 673 0266 4FEA8806 		lsl	r6, r8, #2
+ 674              	.LVL124:
+ 675 026a 40F82A60 		str	r6, [r0, r10, lsl #2]
+ 676              	.LVL125:
+ 677              	.LBB88:
+ 678              	.LBB89:
+ 334:lib/helix/real/assembly.h **** 	x ^= sign;
+ 679              		.loc 2 334 0 discriminator 3
+ 680 026e 4FEAE678 		asr	r8, r6, #31
+ 681              	.LVL126:
+ 335:lib/helix/real/assembly.h **** 	x -= sign;
+ 682              		.loc 2 335 0 discriminator 3
+ 683 0272 86EA0806 		eor	r6, r6, r8
+ 684              	.LVL127:
+ 685              		.loc 2 336 0 discriminator 3
+ 686 0276 A6EB0806 		sub	r6, r6, r8
+ 687              	.LVL128:
+ 688              	.LBE89:
+ 689              	.LBE88:
+ 690              		.loc 1 178 0 discriminator 3
+ 691 027a 3243     		orrs	r2, r2, r6
+ 692              	.LVL129:
+ 179:lib/helix/real/stproc.c **** 			sampsLeft -= 3;
+ 693              		.loc 1 179 0 discriminator 3
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccVJ41FR.s 			page 23
+
+
+ 694 027c 0339     		subs	r1, r1, #3
+ 695              	.LVL130:
+ 172:lib/helix/real/stproc.c **** 			xr = MULSHIFT32(frs[0], x[0][i+0]) << 2;	x[1][i+0] = xr;	mOutR |= FASTABS(xr);
+ 696              		.loc 1 172 0 discriminator 3
+ 697 027e 0134     		adds	r4, r4, #1
+ 698              	.LVL131:
+ 699 0280 0335     		adds	r5, r5, #3
+ 700              	.LVL132:
+ 701              	.L18:
+ 172:lib/helix/real/stproc.c **** 			xr = MULSHIFT32(frs[0], x[0][i+0]) << 2;	x[1][i+0] = xr;	mOutR |= FASTABS(xr);
+ 702              		.loc 1 172 0 is_stmt 0 discriminator 1
+ 703 0282 BC42     		cmp	r4, r7
+ 704 0284 ACBF     		ite	ge
+ 705 0286 0026     		movge	r6, #0
+ 706 0288 0126     		movlt	r6, #1
+ 707 028a 0229     		cmp	r1, #2
+ 708 028c D8BF     		it	le
+ 709 028e 0026     		movle	r6, #0
+ 710 0290 002E     		cmp	r6, #0
+ 711 0292 87D1     		bne	.L19
+ 159:lib/helix/real/stproc.c **** 		for (w = 0; w < 3; w++) {
+ 712              		.loc 1 159 0 is_stmt 1
+ 713 0294 DDF80480 		ldr	r8, [sp, #4]
+ 714              	.LVL133:
+ 715              	.L14:
+ 159:lib/helix/real/stproc.c **** 		for (w = 0; w < 3; w++) {
+ 716              		.loc 1 159 0 is_stmt 0 discriminator 1
+ 717 0298 049C     		ldr	r4, [sp, #16]
+ 718 029a A045     		cmp	r8, r4
+ 719 029c ACBF     		ite	ge
+ 720 029e 0024     		movge	r4, #0
+ 721 02a0 0124     		movlt	r4, #1
+ 722 02a2 0229     		cmp	r1, #2
+ 723 02a4 D8BF     		it	le
+ 724 02a6 0024     		movle	r4, #0
+ 725 02a8 14B1     		cbz	r4, .L29
+ 160:lib/helix/real/stproc.c **** 			isf = sfis->s[cb][w];
+ 726              		.loc 1 160 0 is_stmt 1
+ 727 02aa 0026     		movs	r6, #0
+ 728 02ac 9B46     		mov	fp, r3
+ 729 02ae 4EE7     		b	.L20
+ 730              	.L29:
+ 180:lib/helix/real/stproc.c **** 		}
+ 181:lib/helix/real/stproc.c **** 	}
+ 182:lib/helix/real/stproc.c **** 	mOut[0] = mOutL;
+ 731              		.loc 1 182 0
+ 732 02b0 1999     		ldr	r1, [sp, #100]
+ 733              	.LVL134:
+ 734 02b2 0A60     		str	r2, [r1]
+ 183:lib/helix/real/stproc.c **** 	mOut[1] = mOutR;
+ 735              		.loc 1 183 0
+ 736 02b4 4B60     		str	r3, [r1, #4]
+ 184:lib/helix/real/stproc.c **** 	
+ 185:lib/helix/real/stproc.c **** 	return;
+ 186:lib/helix/real/stproc.c **** }
+ 737              		.loc 1 186 0
+ 738 02b6 0DB0     		add	sp, sp, #52
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccVJ41FR.s 			page 24
+
+
+ 739              	.LCFI3:
+ 740              		.cfi_def_cfa_offset 36
+ 741              		@ sp needed
+ 742 02b8 BDE8F08F 		pop	{r4, r5, r6, r7, r8, r9, r10, fp, pc}
+ 743              	.LVL135:
+ 744              	.L31:
+ 745              		.align	2
+ 746              	.L30:
+ 747 02bc 00000000 		.word	xmp3fixpt_ISFMpeg1
+ 748 02c0 00000000 		.word	xmp3fixpt_ISFIIP
+ 749              		.cfi_endproc
+ 750              	.LFE6:
+ 752              		.section	.text.xmp3fixpt_IntensityProcMPEG2,"ax",%progbits
+ 753              		.align	1
+ 754              		.global	xmp3fixpt_IntensityProcMPEG2
+ 755              		.syntax unified
+ 756              		.thumb
+ 757              		.thumb_func
+ 758              		.fpu fpv5-sp-d16
+ 760              	xmp3fixpt_IntensityProcMPEG2:
+ 761              	.LFB7:
+ 187:lib/helix/real/stproc.c **** 
+ 188:lib/helix/real/stproc.c **** /**************************************************************************************
+ 189:lib/helix/real/stproc.c ****  * Function:    IntensityProcMPEG2
+ 190:lib/helix/real/stproc.c ****  *
+ 191:lib/helix/real/stproc.c ****  * Description: intensity stereo processing for MPEG2
+ 192:lib/helix/real/stproc.c ****  *
+ 193:lib/helix/real/stproc.c ****  * Inputs:      vector x with dequantized samples from left and right channels
+ 194:lib/helix/real/stproc.c ****  *              number of non-zero samples in left channel
+ 195:lib/helix/real/stproc.c ****  *              valid FrameHeader struct
+ 196:lib/helix/real/stproc.c ****  *              two each of ScaleFactorInfoSub, CriticalBandInfo structs (both channels)
+ 197:lib/helix/real/stproc.c ****  *              ScaleFactorJS struct with joint stereo info from UnpackSFMPEG2()
+ 198:lib/helix/real/stproc.c ****  *              flags indicating midSide on/off, mixedBlock on/off
+ 199:lib/helix/real/stproc.c ****  *              guard bit mask (left and right channels)
+ 200:lib/helix/real/stproc.c ****  *
+ 201:lib/helix/real/stproc.c ****  * Outputs:     updated sample vector x
+ 202:lib/helix/real/stproc.c ****  *              updated guard bit mask
+ 203:lib/helix/real/stproc.c ****  *
+ 204:lib/helix/real/stproc.c ****  * Return:      none
+ 205:lib/helix/real/stproc.c ****  *
+ 206:lib/helix/real/stproc.c ****  * Notes:       assume at least 1 GB in input
+ 207:lib/helix/real/stproc.c ****  *
+ 208:lib/helix/real/stproc.c ****  * TODO:        combine MPEG1/2 into one function (maybe)
+ 209:lib/helix/real/stproc.c ****  *              make sure all the mixed-block and IIP logic is right
+ 210:lib/helix/real/stproc.c ****  *                probably redo IIP logic to be simpler
+ 211:lib/helix/real/stproc.c ****  **************************************************************************************/
+ 212:lib/helix/real/stproc.c **** void IntensityProcMPEG2(int x[MAX_NCHAN][MAX_NSAMP], int nSamps, FrameHeader *fh, ScaleFactorInfoSu
+ 213:lib/helix/real/stproc.c **** 						CriticalBandInfo *cbi, ScaleFactorJS *sfjs, int midSideFlag, int mixFlag, int mOut[2])
+ 214:lib/helix/real/stproc.c **** {
+ 762              		.loc 1 214 0
+ 763              		.cfi_startproc
+ 764              		@ args = 20, pretend = 0, frame = 112
+ 765              		@ frame_needed = 0, uses_anonymous_args = 0
+ 766              	.LVL136:
+ 767 0000 2DE9F04F 		push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
+ 768              	.LCFI4:
+ 769              		.cfi_def_cfa_offset 36
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccVJ41FR.s 			page 25
+
+
+ 770              		.cfi_offset 4, -36
+ 771              		.cfi_offset 5, -32
+ 772              		.cfi_offset 6, -28
+ 773              		.cfi_offset 7, -24
+ 774              		.cfi_offset 8, -20
+ 775              		.cfi_offset 9, -16
+ 776              		.cfi_offset 10, -12
+ 777              		.cfi_offset 11, -8
+ 778              		.cfi_offset 14, -4
+ 779 0004 9DB0     		sub	sp, sp, #116
+ 780              	.LCFI5:
+ 781              		.cfi_def_cfa_offset 152
+ 782 0006 9146     		mov	r9, r2
+ 783 0008 0293     		str	r3, [sp, #8]
+ 784 000a 279E     		ldr	r6, [sp, #156]
+ 215:lib/helix/real/stproc.c **** 	int i, j, k, n, r, cb, w;
+ 216:lib/helix/real/stproc.c **** 	int fl, fr, mOutL, mOutR, xl, xr;
+ 217:lib/helix/real/stproc.c **** 	int sampsLeft;
+ 218:lib/helix/real/stproc.c **** 	int isf, sfIdx, tmp, il[23];
+ 219:lib/helix/real/stproc.c **** 	int *isfTab;
+ 220:lib/helix/real/stproc.c **** 	int cbStartL, cbStartS, cbEndL, cbEndS;
+ 221:lib/helix/real/stproc.c **** 	
+ 222:lib/helix/real/stproc.c **** 	isfTab = (int *)ISFMpeg2[sfjs->intensityScale][midSideFlag];
+ 785              		.loc 1 222 0
+ 786 000c 3368     		ldr	r3, [r6]
+ 787              	.LVL137:
+ 788 000e 289A     		ldr	r2, [sp, #160]
+ 789              	.LVL138:
+ 790 0010 02EB4303 		add	r3, r2, r3, lsl #1
+ 791 0014 8E4A     		ldr	r2, .L69
+ 792 0016 02EB8313 		add	r3, r2, r3, lsl #6
+ 793 001a 0193     		str	r3, [sp, #4]
+ 794              	.LVL139:
+ 223:lib/helix/real/stproc.c **** 	mOutL = mOutR = 0;
+ 224:lib/helix/real/stproc.c **** 
+ 225:lib/helix/real/stproc.c **** 	/* fill buffer with illegal intensity positions (depending on slen) */
+ 226:lib/helix/real/stproc.c **** 	for (k = r = 0; r < 4; r++) {
+ 795              		.loc 1 226 0
+ 796 001c 0027     		movs	r7, #0
+ 797 001e 3C46     		mov	r4, r7
+ 798 0020 0DE0     		b	.L33
+ 799              	.LVL140:
+ 800              	.L35:
+ 227:lib/helix/real/stproc.c **** 		tmp = (1 << sfjs->slen[r]) - 1;
+ 228:lib/helix/real/stproc.c **** 		for (j = 0; j < sfjs->nr[r]; j++, k++) 
+ 229:lib/helix/real/stproc.c **** 			il[k] = tmp;
+ 801              		.loc 1 229 0 discriminator 3
+ 802 0022 1CAB     		add	r3, sp, #112
+ 803 0024 03EB8403 		add	r3, r3, r4, lsl #2
+ 804 0028 43F85C5C 		str	r5, [r3, #-92]
+ 228:lib/helix/real/stproc.c **** 			il[k] = tmp;
+ 805              		.loc 1 228 0 discriminator 3
+ 806 002c 0132     		adds	r2, r2, #1
+ 807              	.LVL141:
+ 808 002e 0134     		adds	r4, r4, #1
+ 809              	.LVL142:
+ 810              	.L34:
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccVJ41FR.s 			page 26
+
+
+ 228:lib/helix/real/stproc.c **** 			il[k] = tmp;
+ 811              		.loc 1 228 0 is_stmt 0 discriminator 1
+ 812 0030 3B1D     		adds	r3, r7, #4
+ 813 0032 06EB8303 		add	r3, r6, r3, lsl #2
+ 814 0036 5B68     		ldr	r3, [r3, #4]
+ 815 0038 9342     		cmp	r3, r2
+ 816 003a F2DC     		bgt	.L35
+ 226:lib/helix/real/stproc.c **** 		tmp = (1 << sfjs->slen[r]) - 1;
+ 817              		.loc 1 226 0 is_stmt 1 discriminator 2
+ 818 003c 0137     		adds	r7, r7, #1
+ 819              	.LVL143:
+ 820              	.L33:
+ 226:lib/helix/real/stproc.c **** 		tmp = (1 << sfjs->slen[r]) - 1;
+ 821              		.loc 1 226 0 is_stmt 0 discriminator 1
+ 822 003e 032F     		cmp	r7, #3
+ 823 0040 07DC     		bgt	.L63
+ 227:lib/helix/real/stproc.c **** 		tmp = (1 << sfjs->slen[r]) - 1;
+ 824              		.loc 1 227 0 is_stmt 1
+ 825 0042 06EB8703 		add	r3, r6, r7, lsl #2
+ 826 0046 5B68     		ldr	r3, [r3, #4]
+ 827 0048 0125     		movs	r5, #1
+ 828 004a 9D40     		lsls	r5, r5, r3
+ 829 004c 013D     		subs	r5, r5, #1
+ 830              	.LVL144:
+ 228:lib/helix/real/stproc.c **** 			il[k] = tmp;
+ 831              		.loc 1 228 0
+ 832 004e 0022     		movs	r2, #0
+ 833 0050 EEE7     		b	.L34
+ 834              	.LVL145:
+ 835              	.L63:
+ 230:lib/helix/real/stproc.c **** 	}
+ 231:lib/helix/real/stproc.c **** 
+ 232:lib/helix/real/stproc.c **** 	if (cbi[1].cbType == 0) {
+ 836              		.loc 1 232 0
+ 837 0052 269B     		ldr	r3, [sp, #152]
+ 838 0054 9C69     		ldr	r4, [r3, #24]
+ 839              	.LVL146:
+ 840 0056 0394     		str	r4, [sp, #12]
+ 841 0058 002C     		cmp	r4, #0
+ 842 005a 75D1     		bne	.L37
+ 233:lib/helix/real/stproc.c **** 		/* long blocks */
+ 234:lib/helix/real/stproc.c **** 		il[21] = il[22] = 1;
+ 843              		.loc 1 234 0
+ 844 005c 0123     		movs	r3, #1
+ 845 005e 1B93     		str	r3, [sp, #108]
+ 846 0060 1A93     		str	r3, [sp, #104]
+ 235:lib/helix/real/stproc.c **** 		cbStartL = cbi[1].cbEndL + 1;	/* start at end of right */
+ 847              		.loc 1 235 0
+ 848 0062 269B     		ldr	r3, [sp, #152]
+ 849 0064 DB6A     		ldr	r3, [r3, #44]
+ 850 0066 0133     		adds	r3, r3, #1
+ 851              	.LVL147:
+ 236:lib/helix/real/stproc.c **** 		cbEndL =   cbi[0].cbEndL + 1;	/* process to end of left */
+ 852              		.loc 1 236 0
+ 853 0068 269A     		ldr	r2, [sp, #152]
+ 854 006a 5269     		ldr	r2, [r2, #20]
+ 855 006c 02F1010B 		add	fp, r2, #1
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccVJ41FR.s 			page 27
+
+
+ 856              	.LVL148:
+ 237:lib/helix/real/stproc.c **** 		i = fh->sfBand->l[cbStartL];
+ 857              		.loc 1 237 0
+ 858 0070 D9F83420 		ldr	r2, [r9, #52]
+ 859 0074 32F91320 		ldrsh	r2, [r2, r3, lsl #1]
+ 860              	.LVL149:
+ 238:lib/helix/real/stproc.c **** 		sampsLeft = nSamps - i;
+ 861              		.loc 1 238 0
+ 862 0078 A1EB020E 		sub	lr, r1, r2
+ 863              	.LVL150:
+ 223:lib/helix/real/stproc.c **** 
+ 864              		.loc 1 223 0
+ 865 007c 2646     		mov	r6, r4
+ 866 007e A446     		mov	ip, r4
+ 239:lib/helix/real/stproc.c **** 
+ 240:lib/helix/real/stproc.c **** 		for(cb = cbStartL; cb < cbEndL; cb++) {
+ 867              		.loc 1 240 0
+ 868 0080 10E0     		b	.L38
+ 869              	.LVL151:
+ 870              	.L65:
+ 241:lib/helix/real/stproc.c **** 			sfIdx = sfis->l[cb];
+ 242:lib/helix/real/stproc.c **** 			if (sfIdx == il[cb]) {
+ 243:lib/helix/real/stproc.c **** 				fl = ISFIIP[midSideFlag][0];
+ 871              		.loc 1 243 0
+ 872 0082 7449     		ldr	r1, .L69+4
+ 873              	.LVL152:
+ 874 0084 289C     		ldr	r4, [sp, #160]
+ 875 0086 51F83470 		ldr	r7, [r1, r4, lsl #3]
+ 876              	.LVL153:
+ 244:lib/helix/real/stproc.c **** 				fr = ISFIIP[midSideFlag][1];
+ 877              		.loc 1 244 0
+ 878 008a 01EBC401 		add	r1, r1, r4, lsl #3
+ 879 008e 4D68     		ldr	r5, [r1, #4]
+ 880              	.LVL154:
+ 881 0090 20E0     		b	.L40
+ 882              	.LVL155:
+ 883              	.L57:
+ 245:lib/helix/real/stproc.c **** 			} else {
+ 246:lib/helix/real/stproc.c **** 				isf = (sfis->l[cb] + 1) >> 1;
+ 247:lib/helix/real/stproc.c **** 				fl = isfTab[(sfIdx & 0x01 ? isf : 0)];
+ 884              		.loc 1 247 0
+ 885 0092 0025     		movs	r5, #0
+ 886 0094 17E0     		b	.L41
+ 887              	.LVL156:
+ 888              	.L58:
+ 248:lib/helix/real/stproc.c **** 				fr = isfTab[(sfIdx & 0x01 ? 0 : isf)];
+ 889              		.loc 1 248 0
+ 890 0096 0021     		movs	r1, #0
+ 891 0098 1AE0     		b	.L42
+ 892              	.LVL157:
+ 893              	.L66:
+ 240:lib/helix/real/stproc.c **** 			sfIdx = sfis->l[cb];
+ 894              		.loc 1 240 0
+ 895 009a 4346     		mov	r3, r8
+ 249:lib/helix/real/stproc.c **** 			}
+ 250:lib/helix/real/stproc.c **** 			n = MIN(fh->sfBand->l[cb + 1] - fh->sfBand->l[cb], sampsLeft);
+ 251:lib/helix/real/stproc.c **** 
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccVJ41FR.s 			page 28
+
+
+ 252:lib/helix/real/stproc.c **** 			for(j = 0; j < n; j++, i++) {
+ 253:lib/helix/real/stproc.c **** 				xr = MULSHIFT32(fr, x[0][i]) << 2;	x[1][i] = xr;	mOutR |= FASTABS(xr);
+ 254:lib/helix/real/stproc.c **** 				xl = MULSHIFT32(fl, x[0][i]) << 2;	x[0][i] = xl;	mOutL |= FASTABS(xl);
+ 255:lib/helix/real/stproc.c **** 			}
+ 256:lib/helix/real/stproc.c **** 
+ 257:lib/helix/real/stproc.c **** 			/* early exit once we've used all the non-zero samples */
+ 258:lib/helix/real/stproc.c **** 			sampsLeft -= n;
+ 259:lib/helix/real/stproc.c **** 			if (sampsLeft == 0)		
+ 896              		.loc 1 259 0
+ 897 009c BEEB040E 		subs	lr, lr, r4
+ 898              	.LVL158:
+ 899 00a0 00F0D380 		beq	.L61
+ 900              	.LVL159:
+ 901              	.L38:
+ 240:lib/helix/real/stproc.c **** 			sfIdx = sfis->l[cb];
+ 902              		.loc 1 240 0 discriminator 1
+ 903 00a4 5B45     		cmp	r3, fp
+ 904 00a6 48DA     		bge	.L64
+ 241:lib/helix/real/stproc.c **** 			if (sfIdx == il[cb]) {
+ 905              		.loc 1 241 0
+ 906 00a8 0299     		ldr	r1, [sp, #8]
+ 907 00aa C95C     		ldrb	r1, [r1, r3]	@ zero_extendqisi2
+ 908              	.LVL160:
+ 242:lib/helix/real/stproc.c **** 				fl = ISFIIP[midSideFlag][0];
+ 909              		.loc 1 242 0
+ 910 00ac 1CAC     		add	r4, sp, #112
+ 911 00ae 04EB8304 		add	r4, r4, r3, lsl #2
+ 912 00b2 54F85C4C 		ldr	r4, [r4, #-92]
+ 913 00b6 8C42     		cmp	r4, r1
+ 914 00b8 E3D0     		beq	.L65
+ 246:lib/helix/real/stproc.c **** 				fl = isfTab[(sfIdx & 0x01 ? isf : 0)];
+ 915              		.loc 1 246 0
+ 916 00ba 4C1C     		adds	r4, r1, #1
+ 917 00bc 6410     		asrs	r4, r4, #1
+ 918              	.LVL161:
+ 247:lib/helix/real/stproc.c **** 				fr = isfTab[(sfIdx & 0x01 ? 0 : isf)];
+ 919              		.loc 1 247 0
+ 920 00be 11F00101 		ands	r1, r1, #1
+ 921              	.LVL162:
+ 922 00c2 E6D0     		beq	.L57
+ 247:lib/helix/real/stproc.c **** 				fr = isfTab[(sfIdx & 0x01 ? 0 : isf)];
+ 923              		.loc 1 247 0 is_stmt 0 discriminator 1
+ 924 00c4 A500     		lsls	r5, r4, #2
+ 925              	.L41:
+ 247:lib/helix/real/stproc.c **** 				fr = isfTab[(sfIdx & 0x01 ? 0 : isf)];
+ 926              		.loc 1 247 0 discriminator 4
+ 927 00c6 019F     		ldr	r7, [sp, #4]
+ 928 00c8 7F59     		ldr	r7, [r7, r5]
+ 929              	.LVL163:
+ 248:lib/helix/real/stproc.c **** 			}
+ 930              		.loc 1 248 0 is_stmt 1 discriminator 4
+ 931 00ca 0029     		cmp	r1, #0
+ 932 00cc E3D1     		bne	.L58
+ 248:lib/helix/real/stproc.c **** 			}
+ 933              		.loc 1 248 0 is_stmt 0 discriminator 1
+ 934 00ce A100     		lsls	r1, r4, #2
+ 935              	.L42:
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccVJ41FR.s 			page 29
+
+
+ 248:lib/helix/real/stproc.c **** 			}
+ 936              		.loc 1 248 0 discriminator 4
+ 937 00d0 019C     		ldr	r4, [sp, #4]
+ 938              	.LVL164:
+ 939 00d2 6558     		ldr	r5, [r4, r1]
+ 940              	.LVL165:
+ 941              	.L40:
+ 250:lib/helix/real/stproc.c **** 
+ 942              		.loc 1 250 0 is_stmt 1
+ 943 00d4 D9F83410 		ldr	r1, [r9, #52]
+ 944 00d8 03F10108 		add	r8, r3, #1
+ 945 00dc 31F91840 		ldrsh	r4, [r1, r8, lsl #1]
+ 946 00e0 31F91330 		ldrsh	r3, [r1, r3, lsl #1]
+ 947              	.LVL166:
+ 948 00e4 E41A     		subs	r4, r4, r3
+ 949 00e6 7445     		cmp	r4, lr
+ 950 00e8 A8BF     		it	ge
+ 951 00ea 7446     		movge	r4, lr
+ 952              	.LVL167:
+ 252:lib/helix/real/stproc.c **** 				xr = MULSHIFT32(fr, x[0][i]) << 2;	x[1][i] = xr;	mOutR |= FASTABS(xr);
+ 953              		.loc 1 252 0
+ 954 00ec 0399     		ldr	r1, [sp, #12]
+ 955              	.LVL168:
+ 956              	.L43:
+ 252:lib/helix/real/stproc.c **** 				xr = MULSHIFT32(fr, x[0][i]) << 2;	x[1][i] = xr;	mOutR |= FASTABS(xr);
+ 957              		.loc 1 252 0 is_stmt 0 discriminator 1
+ 958 00ee A142     		cmp	r1, r4
+ 959 00f0 D3DA     		bge	.L66
+ 253:lib/helix/real/stproc.c **** 				xl = MULSHIFT32(fl, x[0][i]) << 2;	x[0][i] = xl;	mOutL |= FASTABS(xl);
+ 960              		.loc 1 253 0 is_stmt 1 discriminator 3
+ 961 00f2 50F822A0 		ldr	r10, [r0, r2, lsl #2]
+ 962              	.LVL169:
+ 963              	.LBB90:
+ 964              	.LBB91:
+ 326:lib/helix/real/assembly.h **** 	return y;
+ 965              		.loc 2 326 0 discriminator 3
+ 966 00f6 5346     		mov	r3, r10
+ 967              		.syntax unified
+ 968              	@ 326 "lib/helix/real/assembly.h" 1
+ 969 00f8 85FB03A3 		smull r10,r3,r5,r3
+ 970              	@ 0 "" 2
+ 971              	.LVL170:
+ 972              		.thumb
+ 973              		.syntax unified
+ 974              	.LBE91:
+ 975              	.LBE90:
+ 253:lib/helix/real/stproc.c **** 				xl = MULSHIFT32(fl, x[0][i]) << 2;	x[0][i] = xl;	mOutL |= FASTABS(xl);
+ 976              		.loc 1 253 0 discriminator 3
+ 977 00fc 9B00     		lsls	r3, r3, #2
+ 978              	.LVL171:
+ 979 00fe 00EB820A 		add	r10, r0, r2, lsl #2
+ 980 0102 CAF80039 		str	r3, [r10, #2304]
+ 981              	.LVL172:
+ 982              	.LBB92:
+ 983              	.LBB93:
+ 334:lib/helix/real/assembly.h **** 	x ^= sign;
+ 984              		.loc 2 334 0 discriminator 3
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccVJ41FR.s 			page 30
+
+
+ 985 0106 4FEAE37A 		asr	r10, r3, #31
+ 986              	.LVL173:
+ 335:lib/helix/real/assembly.h **** 	x -= sign;
+ 987              		.loc 2 335 0 discriminator 3
+ 988 010a 83EA0A03 		eor	r3, r3, r10
+ 989              	.LVL174:
+ 990              		.loc 2 336 0 discriminator 3
+ 991 010e A3EB0A03 		sub	r3, r3, r10
+ 992              	.LVL175:
+ 993              	.LBE93:
+ 994              	.LBE92:
+ 253:lib/helix/real/stproc.c **** 				xl = MULSHIFT32(fl, x[0][i]) << 2;	x[0][i] = xl;	mOutL |= FASTABS(xl);
+ 995              		.loc 1 253 0 discriminator 3
+ 996 0112 4CEA030C 		orr	ip, ip, r3
+ 997              	.LVL176:
+ 254:lib/helix/real/stproc.c **** 			}
+ 998              		.loc 1 254 0 discriminator 3
+ 999 0116 50F822A0 		ldr	r10, [r0, r2, lsl #2]
+ 1000              	.LVL177:
+ 1001              	.LBB94:
+ 1002              	.LBB95:
+ 326:lib/helix/real/assembly.h **** 	return y;
+ 1003              		.loc 2 326 0 discriminator 3
+ 1004 011a 5346     		mov	r3, r10
+ 1005              		.syntax unified
+ 1006              	@ 326 "lib/helix/real/assembly.h" 1
+ 1007 011c 87FB03A3 		smull r10,r3,r7,r3
+ 1008              	@ 0 "" 2
+ 1009              	.LVL178:
+ 1010              		.thumb
+ 1011              		.syntax unified
+ 1012              	.LBE95:
+ 1013              	.LBE94:
+ 254:lib/helix/real/stproc.c **** 			}
+ 1014              		.loc 1 254 0 discriminator 3
+ 1015 0120 9B00     		lsls	r3, r3, #2
+ 1016              	.LVL179:
+ 1017 0122 40F82230 		str	r3, [r0, r2, lsl #2]
+ 1018              	.LVL180:
+ 1019              	.LBB96:
+ 1020              	.LBB97:
+ 334:lib/helix/real/assembly.h **** 	x ^= sign;
+ 1021              		.loc 2 334 0 discriminator 3
+ 1022 0126 4FEAE37A 		asr	r10, r3, #31
+ 1023              	.LVL181:
+ 335:lib/helix/real/assembly.h **** 	x -= sign;
+ 1024              		.loc 2 335 0 discriminator 3
+ 1025 012a 8AEA0303 		eor	r3, r10, r3
+ 1026              	.LVL182:
+ 1027              		.loc 2 336 0 discriminator 3
+ 1028 012e A3EB0A03 		sub	r3, r3, r10
+ 1029              	.LVL183:
+ 1030              	.LBE97:
+ 1031              	.LBE96:
+ 254:lib/helix/real/stproc.c **** 			}
+ 1032              		.loc 1 254 0 discriminator 3
+ 1033 0132 1E43     		orrs	r6, r6, r3
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccVJ41FR.s 			page 31
+
+
+ 1034              	.LVL184:
+ 252:lib/helix/real/stproc.c **** 				xr = MULSHIFT32(fr, x[0][i]) << 2;	x[1][i] = xr;	mOutR |= FASTABS(xr);
+ 1035              		.loc 1 252 0 discriminator 3
+ 1036 0134 0131     		adds	r1, r1, #1
+ 1037              	.LVL185:
+ 1038 0136 0132     		adds	r2, r2, #1
+ 1039              	.LVL186:
+ 1040 0138 D9E7     		b	.L43
+ 1041              	.LVL187:
+ 1042              	.L64:
+ 1043 013a 6546     		mov	r5, ip
+ 1044              	.LVL188:
+ 1045              	.L45:
+ 260:lib/helix/real/stproc.c **** 				break;
+ 261:lib/helix/real/stproc.c **** 		}
+ 262:lib/helix/real/stproc.c **** 	} else {
+ 263:lib/helix/real/stproc.c **** 		/* short or mixed blocks */
+ 264:lib/helix/real/stproc.c **** 		il[12] = 1;
+ 265:lib/helix/real/stproc.c **** 
+ 266:lib/helix/real/stproc.c **** 		for(w = 0; w < 3; w++) {
+ 267:lib/helix/real/stproc.c **** 			cbStartS = cbi[1].cbEndS[w] + 1;		/* start at end of right */
+ 268:lib/helix/real/stproc.c **** 			cbEndS =   cbi[0].cbEndS[w] + 1;		/* process to end of left */
+ 269:lib/helix/real/stproc.c **** 			i = 3 * fh->sfBand->s[cbStartS] + w;
+ 270:lib/helix/real/stproc.c **** 
+ 271:lib/helix/real/stproc.c **** 			/* skip through sample array by 3, so early-exit logic would be more tricky */
+ 272:lib/helix/real/stproc.c **** 			for(cb = cbStartS; cb < cbEndS; cb++) {
+ 273:lib/helix/real/stproc.c **** 				sfIdx = sfis->s[cb][w];
+ 274:lib/helix/real/stproc.c **** 				if (sfIdx == il[cb]) {
+ 275:lib/helix/real/stproc.c **** 					fl = ISFIIP[midSideFlag][0];
+ 276:lib/helix/real/stproc.c **** 					fr = ISFIIP[midSideFlag][1];
+ 277:lib/helix/real/stproc.c **** 				} else {
+ 278:lib/helix/real/stproc.c **** 					isf = (sfis->s[cb][w] + 1) >> 1;
+ 279:lib/helix/real/stproc.c **** 					fl = isfTab[(sfIdx & 0x01 ? isf : 0)];
+ 280:lib/helix/real/stproc.c **** 					fr = isfTab[(sfIdx & 0x01 ? 0 : isf)];
+ 281:lib/helix/real/stproc.c **** 				}
+ 282:lib/helix/real/stproc.c **** 				n = fh->sfBand->s[cb + 1] - fh->sfBand->s[cb];
+ 283:lib/helix/real/stproc.c **** 
+ 284:lib/helix/real/stproc.c **** 				for(j = 0; j < n; j++, i+=3) {
+ 285:lib/helix/real/stproc.c **** 					xr = MULSHIFT32(fr, x[0][i]) << 2;	x[1][i] = xr;	mOutR |= FASTABS(xr);
+ 286:lib/helix/real/stproc.c **** 					xl = MULSHIFT32(fl, x[0][i]) << 2;	x[0][i] = xl;	mOutL |= FASTABS(xl);
+ 287:lib/helix/real/stproc.c **** 				}
+ 288:lib/helix/real/stproc.c **** 			}
+ 289:lib/helix/real/stproc.c **** 		}
+ 290:lib/helix/real/stproc.c **** 	}
+ 291:lib/helix/real/stproc.c **** 	mOut[0] = mOutL;
+ 1046              		.loc 1 291 0
+ 1047 013c 2A9B     		ldr	r3, [sp, #168]
+ 1048 013e 1E60     		str	r6, [r3]
+ 292:lib/helix/real/stproc.c **** 	mOut[1] = mOutR;
+ 1049              		.loc 1 292 0
+ 1050 0140 5D60     		str	r5, [r3, #4]
+ 293:lib/helix/real/stproc.c **** 
+ 294:lib/helix/real/stproc.c **** 	return;
+ 295:lib/helix/real/stproc.c **** }
+ 1051              		.loc 1 295 0
+ 1052 0142 1DB0     		add	sp, sp, #116
+ 1053              	.LCFI6:
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccVJ41FR.s 			page 32
+
+
+ 1054              		.cfi_remember_state
+ 1055              		.cfi_def_cfa_offset 36
+ 1056              		@ sp needed
+ 1057 0144 BDE8F08F 		pop	{r4, r5, r6, r7, r8, r9, r10, fp, pc}
+ 1058              	.LVL189:
+ 1059              	.L37:
+ 1060              	.LCFI7:
+ 1061              		.cfi_restore_state
+ 264:lib/helix/real/stproc.c **** 
+ 1062              		.loc 1 264 0
+ 1063 0148 0123     		movs	r3, #1
+ 1064 014a 1193     		str	r3, [sp, #68]
+ 1065              	.LVL190:
+ 223:lib/helix/real/stproc.c **** 
+ 1066              		.loc 1 223 0
+ 1067 014c 0025     		movs	r5, #0
+ 1068 014e 2E46     		mov	r6, r5
+ 266:lib/helix/real/stproc.c **** 			cbStartS = cbi[1].cbEndS[w] + 1;		/* start at end of right */
+ 1069              		.loc 1 266 0
+ 1070 0150 A846     		mov	r8, r5
+ 1071 0152 DDF804E0 		ldr	lr, [sp, #4]
+ 1072 0156 62E0     		b	.L47
+ 1073              	.LVL191:
+ 1074              	.L68:
+ 275:lib/helix/real/stproc.c **** 					fr = ISFIIP[midSideFlag][1];
+ 1075              		.loc 1 275 0
+ 1076 0158 3E4B     		ldr	r3, .L69+4
+ 1077              	.LVL192:
+ 1078 015a 289C     		ldr	r4, [sp, #160]
+ 1079 015c 53F83440 		ldr	r4, [r3, r4, lsl #3]
+ 1080              	.LVL193:
+ 276:lib/helix/real/stproc.c **** 				} else {
+ 1081              		.loc 1 276 0
+ 1082 0160 289F     		ldr	r7, [sp, #160]
+ 1083 0162 03EBC703 		add	r3, r3, r7, lsl #3
+ 1084 0166 5F68     		ldr	r7, [r3, #4]
+ 1085              	.LVL194:
+ 1086 0168 44E0     		b	.L50
+ 1087              	.LVL195:
+ 1088              	.L59:
+ 279:lib/helix/real/stproc.c **** 					fr = isfTab[(sfIdx & 0x01 ? 0 : isf)];
+ 1089              		.loc 1 279 0
+ 1090 016a 0024     		movs	r4, #0
+ 1091 016c 3BE0     		b	.L51
+ 1092              	.LVL196:
+ 1093              	.L60:
+ 280:lib/helix/real/stproc.c **** 				}
+ 1094              		.loc 1 280 0
+ 1095 016e 0023     		movs	r3, #0
+ 1096 0170 3EE0     		b	.L52
+ 1097              	.LVL197:
+ 1098              	.L54:
+ 285:lib/helix/real/stproc.c **** 					xl = MULSHIFT32(fl, x[0][i]) << 2;	x[0][i] = xl;	mOutL |= FASTABS(xl);
+ 1099              		.loc 1 285 0 discriminator 3
+ 1100 0172 50F822B0 		ldr	fp, [r0, r2, lsl #2]
+ 1101              	.LVL198:
+ 1102              	.LBB98:
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccVJ41FR.s 			page 33
+
+
+ 1103              	.LBB99:
+ 326:lib/helix/real/assembly.h **** 	return y;
+ 1104              		.loc 2 326 0 discriminator 3
+ 1105 0176 5B46     		mov	r3, fp
+ 1106              		.syntax unified
+ 1107              	@ 326 "lib/helix/real/assembly.h" 1
+ 1108 0178 87FB03B3 		smull fp,r3,r7,r3
+ 1109              	@ 0 "" 2
+ 1110              	.LVL199:
+ 1111              		.thumb
+ 1112              		.syntax unified
+ 1113              	.LBE99:
+ 1114              	.LBE98:
+ 285:lib/helix/real/stproc.c **** 					xl = MULSHIFT32(fl, x[0][i]) << 2;	x[0][i] = xl;	mOutL |= FASTABS(xl);
+ 1115              		.loc 1 285 0 discriminator 3
+ 1116 017c 9B00     		lsls	r3, r3, #2
+ 1117              	.LVL200:
+ 1118 017e 00EB820B 		add	fp, r0, r2, lsl #2
+ 1119 0182 CBF80039 		str	r3, [fp, #2304]
+ 1120              	.LVL201:
+ 1121              	.LBB100:
+ 1122              	.LBB101:
+ 334:lib/helix/real/assembly.h **** 	x ^= sign;
+ 1123              		.loc 2 334 0 discriminator 3
+ 1124 0186 4FEAE37B 		asr	fp, r3, #31
+ 1125              	.LVL202:
+ 335:lib/helix/real/assembly.h **** 	x -= sign;
+ 1126              		.loc 2 335 0 discriminator 3
+ 1127 018a 83EA0B03 		eor	r3, r3, fp
+ 1128              	.LVL203:
+ 1129              		.loc 2 336 0 discriminator 3
+ 1130 018e A3EB0B03 		sub	r3, r3, fp
+ 1131              	.LVL204:
+ 1132              	.LBE101:
+ 1133              	.LBE100:
+ 285:lib/helix/real/stproc.c **** 					xl = MULSHIFT32(fl, x[0][i]) << 2;	x[0][i] = xl;	mOutL |= FASTABS(xl);
+ 1134              		.loc 1 285 0 discriminator 3
+ 1135 0192 1D43     		orrs	r5, r5, r3
+ 1136              	.LVL205:
+ 286:lib/helix/real/stproc.c **** 				}
+ 1137              		.loc 1 286 0 discriminator 3
+ 1138 0194 50F822B0 		ldr	fp, [r0, r2, lsl #2]
+ 1139              	.LVL206:
+ 1140              	.LBB102:
+ 1141              	.LBB103:
+ 326:lib/helix/real/assembly.h **** 	return y;
+ 1142              		.loc 2 326 0 discriminator 3
+ 1143 0198 5B46     		mov	r3, fp
+ 1144              		.syntax unified
+ 1145              	@ 326 "lib/helix/real/assembly.h" 1
+ 1146 019a 84FB03B3 		smull fp,r3,r4,r3
+ 1147              	@ 0 "" 2
+ 1148              	.LVL207:
+ 1149              		.thumb
+ 1150              		.syntax unified
+ 1151              	.LBE103:
+ 1152              	.LBE102:
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccVJ41FR.s 			page 34
+
+
+ 286:lib/helix/real/stproc.c **** 				}
+ 1153              		.loc 1 286 0 discriminator 3
+ 1154 019e 9B00     		lsls	r3, r3, #2
+ 1155              	.LVL208:
+ 1156 01a0 40F82230 		str	r3, [r0, r2, lsl #2]
+ 1157              	.LVL209:
+ 1158              	.LBB104:
+ 1159              	.LBB105:
+ 334:lib/helix/real/assembly.h **** 	x ^= sign;
+ 1160              		.loc 2 334 0 discriminator 3
+ 1161 01a4 4FEAE37B 		asr	fp, r3, #31
+ 1162              	.LVL210:
+ 335:lib/helix/real/assembly.h **** 	x -= sign;
+ 1163              		.loc 2 335 0 discriminator 3
+ 1164 01a8 83EA0B03 		eor	r3, r3, fp
+ 1165              	.LVL211:
+ 1166              		.loc 2 336 0 discriminator 3
+ 1167 01ac A3EB0B03 		sub	r3, r3, fp
+ 1168              	.LVL212:
+ 1169              	.LBE105:
+ 1170              	.LBE104:
+ 286:lib/helix/real/stproc.c **** 				}
+ 1171              		.loc 1 286 0 discriminator 3
+ 1172 01b0 1E43     		orrs	r6, r6, r3
+ 1173              	.LVL213:
+ 284:lib/helix/real/stproc.c **** 					xr = MULSHIFT32(fr, x[0][i]) << 2;	x[1][i] = xr;	mOutR |= FASTABS(xr);
+ 1174              		.loc 1 284 0 discriminator 3
+ 1175 01b2 0131     		adds	r1, r1, #1
+ 1176              	.LVL214:
+ 1177 01b4 0332     		adds	r2, r2, #3
+ 1178              	.LVL215:
+ 1179              	.L53:
+ 284:lib/helix/real/stproc.c **** 					xr = MULSHIFT32(fr, x[0][i]) << 2;	x[1][i] = xr;	mOutR |= FASTABS(xr);
+ 1180              		.loc 1 284 0 is_stmt 0 discriminator 1
+ 1181 01b6 6145     		cmp	r1, ip
+ 1182 01b8 DBDB     		blt	.L54
+ 272:lib/helix/real/stproc.c **** 				sfIdx = sfis->s[cb][w];
+ 1183              		.loc 1 272 0 is_stmt 1
+ 1184 01ba 0199     		ldr	r1, [sp, #4]
+ 1185              	.LVL216:
+ 1186              	.L48:
+ 272:lib/helix/real/stproc.c **** 				sfIdx = sfis->s[cb][w];
+ 1187              		.loc 1 272 0 is_stmt 0 discriminator 1
+ 1188 01bc 5145     		cmp	r1, r10
+ 1189 01be 2CDA     		bge	.L67
+ 273:lib/helix/real/stproc.c **** 				if (sfIdx == il[cb]) {
+ 1190              		.loc 1 273 0 is_stmt 1
+ 1191 01c0 01EB4103 		add	r3, r1, r1, lsl #1
+ 1192 01c4 029C     		ldr	r4, [sp, #8]
+ 1193 01c6 2344     		add	r3, r3, r4
+ 1194 01c8 4344     		add	r3, r3, r8
+ 1195 01ca DB7D     		ldrb	r3, [r3, #23]	@ zero_extendqisi2
+ 1196              	.LVL217:
+ 274:lib/helix/real/stproc.c **** 					fl = ISFIIP[midSideFlag][0];
+ 1197              		.loc 1 274 0
+ 1198 01cc 1CAC     		add	r4, sp, #112
+ 1199 01ce 04EB8104 		add	r4, r4, r1, lsl #2
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccVJ41FR.s 			page 35
+
+
+ 1200 01d2 54F85C4C 		ldr	r4, [r4, #-92]
+ 1201 01d6 9C42     		cmp	r4, r3
+ 1202 01d8 BED0     		beq	.L68
+ 278:lib/helix/real/stproc.c **** 					fl = isfTab[(sfIdx & 0x01 ? isf : 0)];
+ 1203              		.loc 1 278 0
+ 1204 01da 5F1C     		adds	r7, r3, #1
+ 1205 01dc 7F10     		asrs	r7, r7, #1
+ 1206              	.LVL218:
+ 279:lib/helix/real/stproc.c **** 					fr = isfTab[(sfIdx & 0x01 ? 0 : isf)];
+ 1207              		.loc 1 279 0
+ 1208 01de 13F00103 		ands	r3, r3, #1
+ 1209              	.LVL219:
+ 1210 01e2 C2D0     		beq	.L59
+ 279:lib/helix/real/stproc.c **** 					fr = isfTab[(sfIdx & 0x01 ? 0 : isf)];
+ 1211              		.loc 1 279 0 is_stmt 0 discriminator 1
+ 1212 01e4 BC00     		lsls	r4, r7, #2
+ 1213              	.L51:
+ 279:lib/helix/real/stproc.c **** 					fr = isfTab[(sfIdx & 0x01 ? 0 : isf)];
+ 1214              		.loc 1 279 0 discriminator 4
+ 1215 01e6 5EF80440 		ldr	r4, [lr, r4]
+ 1216              	.LVL220:
+ 280:lib/helix/real/stproc.c **** 				}
+ 1217              		.loc 1 280 0 is_stmt 1 discriminator 4
+ 1218 01ea 002B     		cmp	r3, #0
+ 1219 01ec BFD1     		bne	.L60
+ 280:lib/helix/real/stproc.c **** 				}
+ 1220              		.loc 1 280 0 is_stmt 0 discriminator 1
+ 1221 01ee BB00     		lsls	r3, r7, #2
+ 1222              	.L52:
+ 280:lib/helix/real/stproc.c **** 				}
+ 1223              		.loc 1 280 0 discriminator 4
+ 1224 01f0 5EF80370 		ldr	r7, [lr, r3]
+ 1225              	.LVL221:
+ 1226              	.L50:
+ 282:lib/helix/real/stproc.c **** 
+ 1227              		.loc 1 282 0 is_stmt 1
+ 1228 01f4 D9F834B0 		ldr	fp, [r9, #52]
+ 1229 01f8 4B1C     		adds	r3, r1, #1
+ 1230 01fa 0193     		str	r3, [sp, #4]
+ 1231 01fc 01F1150C 		add	ip, r1, #21
+ 1232 0200 0BEB4C0C 		add	ip, fp, ip, lsl #1
+ 1233 0204 BCF906C0 		ldrsh	ip, [ip, #6]
+ 1234 0208 1431     		adds	r1, r1, #20
+ 1235              	.LVL222:
+ 1236 020a 0BEB4101 		add	r1, fp, r1, lsl #1
+ 1237              	.LVL223:
+ 1238 020e B1F90630 		ldrsh	r3, [r1, #6]
+ 1239              	.LVL224:
+ 1240 0212 ACEB030C 		sub	ip, ip, r3
+ 1241              	.LVL225:
+ 284:lib/helix/real/stproc.c **** 					xr = MULSHIFT32(fr, x[0][i]) << 2;	x[1][i] = xr;	mOutR |= FASTABS(xr);
+ 1242              		.loc 1 284 0
+ 1243 0216 0021     		movs	r1, #0
+ 1244 0218 CDE7     		b	.L53
+ 1245              	.LVL226:
+ 1246              	.L67:
+ 266:lib/helix/real/stproc.c **** 			cbStartS = cbi[1].cbEndS[w] + 1;		/* start at end of right */
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccVJ41FR.s 			page 36
+
+
+ 1247              		.loc 1 266 0 discriminator 2
+ 1248 021a 08F10108 		add	r8, r8, #1
+ 1249              	.LVL227:
+ 1250              	.L47:
+ 266:lib/helix/real/stproc.c **** 			cbStartS = cbi[1].cbEndS[w] + 1;		/* start at end of right */
+ 1251              		.loc 1 266 0 is_stmt 0 discriminator 1
+ 1252 021e B8F1020F 		cmp	r8, #2
+ 1253 0222 8BDC     		bgt	.L45
+ 267:lib/helix/real/stproc.c **** 			cbEndS =   cbi[0].cbEndS[w] + 1;		/* process to end of left */
+ 1254              		.loc 1 267 0 is_stmt 1
+ 1255 0224 269B     		ldr	r3, [sp, #152]
+ 1256 0226 03EB8803 		add	r3, r3, r8, lsl #2
+ 1257 022a DA69     		ldr	r2, [r3, #28]
+ 1258 022c 511C     		adds	r1, r2, #1
+ 1259              	.LVL228:
+ 268:lib/helix/real/stproc.c **** 			i = 3 * fh->sfBand->s[cbStartS] + w;
+ 1260              		.loc 1 268 0
+ 1261 022e 5B68     		ldr	r3, [r3, #4]
+ 1262 0230 03F1010A 		add	r10, r3, #1
+ 1263              	.LVL229:
+ 269:lib/helix/real/stproc.c **** 
+ 1264              		.loc 1 269 0
+ 1265 0234 D9F83430 		ldr	r3, [r9, #52]
+ 1266 0238 1532     		adds	r2, r2, #21
+ 1267 023a 03EB4202 		add	r2, r3, r2, lsl #1
+ 1268 023e B2F90620 		ldrsh	r2, [r2, #6]
+ 1269 0242 02EB4202 		add	r2, r2, r2, lsl #1
+ 1270 0246 4244     		add	r2, r2, r8
+ 1271              	.LVL230:
+ 272:lib/helix/real/stproc.c **** 				sfIdx = sfis->s[cb][w];
+ 1272              		.loc 1 272 0
+ 1273 0248 B8E7     		b	.L48
+ 1274              	.LVL231:
+ 1275              	.L61:
+ 1276 024a 6546     		mov	r5, ip
+ 1277              	.LVL232:
+ 1278 024c 76E7     		b	.L45
+ 1279              	.L70:
+ 1280 024e 00BF     		.align	2
+ 1281              	.L69:
+ 1282 0250 00000000 		.word	xmp3fixpt_ISFMpeg2
+ 1283 0254 00000000 		.word	xmp3fixpt_ISFIIP
+ 1284              		.cfi_endproc
+ 1285              	.LFE7:
+ 1287              		.text
+ 1288              	.Letext0:
+ 1289              		.file 3 "lib/helix/real/../pub/mp3common.h"
+ 1290              		.file 4 "lib/helix/real/../pub/mp3dec.h"
+ 1291              		.file 5 "lib/helix/real/coder.h"
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccVJ41FR.s 			page 37
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 stproc.c
+C:\Users\Patryk\AppData\Local\Temp\ccVJ41FR.s:18     .text.xmp3fixpt_MidSideProc:00000000 $t
+C:\Users\Patryk\AppData\Local\Temp\ccVJ41FR.s:25     .text.xmp3fixpt_MidSideProc:00000000 xmp3fixpt_MidSideProc
+C:\Users\Patryk\AppData\Local\Temp\ccVJ41FR.s:121    .text.xmp3fixpt_IntensityProcMPEG1:00000000 $t
+C:\Users\Patryk\AppData\Local\Temp\ccVJ41FR.s:128    .text.xmp3fixpt_IntensityProcMPEG1:00000000 xmp3fixpt_IntensityProcMPEG1
+C:\Users\Patryk\AppData\Local\Temp\ccVJ41FR.s:747    .text.xmp3fixpt_IntensityProcMPEG1:000002bc $d
+C:\Users\Patryk\AppData\Local\Temp\ccVJ41FR.s:753    .text.xmp3fixpt_IntensityProcMPEG2:00000000 $t
+C:\Users\Patryk\AppData\Local\Temp\ccVJ41FR.s:760    .text.xmp3fixpt_IntensityProcMPEG2:00000000 xmp3fixpt_IntensityProcMPEG2
+C:\Users\Patryk\AppData\Local\Temp\ccVJ41FR.s:1282   .text.xmp3fixpt_IntensityProcMPEG2:00000250 $d
+
+UNDEFINED SYMBOLS
+xmp3fixpt_ISFMpeg1
+xmp3fixpt_ISFIIP
+xmp3fixpt_ISFMpeg2

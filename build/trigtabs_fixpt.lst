@@ -1,0 +1,654 @@
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccSvBJkf.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"trigtabs_fixpt.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.global	xmp3fixpt_polyCoef
+  18              		.global	xmp3fixpt_coef32
+  19              		.global	xmp3fixpt_csa
+  20              		.global	xmp3fixpt_uniqueIDTab
+  21              		.global	xmp3fixpt_ISFIIP
+  22              		.global	xmp3fixpt_ISFMpeg2
+  23              		.global	xmp3fixpt_ISFMpeg1
+  24              		.global	xmp3fixpt_imdctWin
+  25              		.section	.rodata.xmp3fixpt_ISFIIP,"a",%progbits
+  26              		.align	2
+  29              	xmp3fixpt_ISFIIP:
+  30 0000 00000040 		.word	1073741824
+  31 0004 00000000 		.word	0
+  32 0008 00000040 		.word	1073741824
+  33 000c 00000040 		.word	1073741824
+  34              		.section	.rodata.xmp3fixpt_ISFMpeg1,"a",%progbits
+  35              		.align	2
+  38              	xmp3fixpt_ISFMpeg1:
+  39 0000 00000000 		.word	0
+  40 0004 BA58860D 		.word	226908346
+  41 0008 D0F56C17 		.word	393016784
+  42 000c 00000020 		.word	536870912
+  43 0010 2F0A9328 		.word	680725039
+  44 0014 45A77932 		.word	846833477
+  45 0018 00000040 		.word	1073741824
+  46 001c 00000000 		.word	0
+  47 0020 5C7F2013 		.word	320896860
+  48 0024 83FB2021 		.word	555809667
+  49 0028 CC3C412D 		.word	759250124
+  50 002c 167E6139 		.word	962690582
+  51 0030 3DFA6147 		.word	1197603389
+  52 0034 9979825A 		.word	1518500249
+  53              		.section	.rodata.xmp3fixpt_ISFMpeg2,"a",%progbits
+  54              		.align	2
+  57              	xmp3fixpt_ISFMpeg2:
+  58 0000 00000040 		.word	1073741824
+  59 0004 323FD135 		.word	902905650
+  60 0008 CC3C412D 		.word	759250124
+  61 000c 14FC0D26 		.word	638450708
+  62 0010 FFFFFF1F 		.word	536870911
+  63 0014 999FE81A 		.word	451452825
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccSvBJkf.s 			page 2
+
+
+  64 0018 669EA016 		.word	379625062
+  65 001c 0AFE0613 		.word	319225354
+  66 0020 FFFFFF0F 		.word	268435455
+  67 0024 CC4F740D 		.word	225726412
+  68 0028 334F500B 		.word	189812531
+  69 002c 057F8309 		.word	159612677
+  70 0030 FFFFFF07 		.word	134217727
+  71 0034 E627BA06 		.word	112863206
+  72 0038 9927A805 		.word	94906265
+  73 003c 82BFC104 		.word	79806338
+  74 0040 9979825A 		.word	1518500249
+  75 0044 27F81B4C 		.word	1276901415
+  76 0048 FFFFFF3F 		.word	1073741823
+  77 004c 323FD135 		.word	902905650
+  78 0050 CC3C412D 		.word	759250124
+  79 0054 13FC0D26 		.word	638450707
+  80 0058 FFFFFF1F 		.word	536870911
+  81 005c 999FE81A 		.word	451452825
+  82 0060 669EA016 		.word	379625062
+  83 0064 09FE0613 		.word	319225353
+  84 0068 FFFFFF0F 		.word	268435455
+  85 006c CC4F740D 		.word	225726412
+  86 0070 334F500B 		.word	189812531
+  87 0074 047F8309 		.word	159612676
+  88 0078 FFFFFF07 		.word	134217727
+  89 007c E627BA06 		.word	112863206
+  90 0080 00000040 		.word	1073741824
+  91 0084 CC3C412D 		.word	759250124
+  92 0088 00000020 		.word	536870912
+  93 008c 669EA016 		.word	379625062
+  94 0090 00000010 		.word	268435456
+  95 0094 334F500B 		.word	189812531
+  96 0098 00000008 		.word	134217728
+  97 009c 9927A805 		.word	94906265
+  98 00a0 00000004 		.word	67108864
+  99 00a4 CC13D402 		.word	47453132
+ 100 00a8 00000002 		.word	33554432
+ 101 00ac E6096A01 		.word	23726566
+ 102 00b0 00000001 		.word	16777216
+ 103 00b4 F304B500 		.word	11863283
+ 104 00b8 00008000 		.word	8388608
+ 105 00bc 79825A00 		.word	5931641
+ 106 00c0 9979825A 		.word	1518500249
+ 107 00c4 FFFFFF3F 		.word	1073741823
+ 108 00c8 CC3C412D 		.word	759250124
+ 109 00cc FFFFFF1F 		.word	536870911
+ 110 00d0 669EA016 		.word	379625062
+ 111 00d4 FFFFFF0F 		.word	268435455
+ 112 00d8 334F500B 		.word	189812531
+ 113 00dc FFFFFF07 		.word	134217727
+ 114 00e0 9927A805 		.word	94906265
+ 115 00e4 FFFFFF03 		.word	67108863
+ 116 00e8 CC13D402 		.word	47453132
+ 117 00ec FFFFFF01 		.word	33554431
+ 118 00f0 E6096A01 		.word	23726566
+ 119 00f4 FFFFFF00 		.word	16777215
+ 120 00f8 F304B500 		.word	11863283
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccSvBJkf.s 			page 3
+
+
+ 121 00fc FFFF7F00 		.word	8388607
+ 122              		.section	.rodata.xmp3fixpt_coef32,"a",%progbits
+ 123              		.align	2
+ 126              	xmp3fixpt_coef32:
+ 127 0000 8D87D87F 		.word	2144896909
+ 128 0004 FC559D7E 		.word	2124240380
+ 129 0008 EEFB297C 		.word	2083126254
+ 130 000c 13848478 		.word	2021950483
+ 131 0010 D0EBB573 		.word	1941302224
+ 132 0014 140DCA6D 		.word	1841958164
+ 133 0018 1F81CF66 		.word	1724875039
+ 134 001c 897CD75E 		.word	1591180425
+ 135 0020 D2A4F555 		.word	1442161874
+ 136 0024 F3DF3F4C 		.word	1279254515
+ 137 0028 641ECE41 		.word	1104027236
+ 138 002c 1320BA36 		.word	918167571
+ 139 0030 EB341F2B 		.word	723465451
+ 140 0034 7BF9191F 		.word	521795963
+ 141 0038 6E10C812 		.word	315101294
+ 142 003c 7CD94706 		.word	105372028
+ 143 0040 8F36627F 		.word	2137142927
+ 144 0044 5B057D7A 		.word	2055013723
+ 145 0048 C6CBE270 		.word	1893911494
+ 146 004c AC01F262 		.word	1660027308
+ 147 0050 94CC3351 		.word	1362349204
+ 148 0054 70BA563C 		.word	1012316784
+ 149 0058 5D0C2825 		.word	623381597
+ 150 005c 5ED38B0C 		.word	210490206
+ 151 0060 3F5F8A7D 		.word	2106220351
+ 152 0064 A4986D6A 		.word	1785567396
+ 153 0068 E6EC1C47 		.word	1193077990
+ 154 006c 3CB8F818 		.word	418953276
+ 155 0070 3CAF4176 		.word	1984016188
+ 156 0074 4DC5FB30 		.word	821806413
+ 157 0078 CC3C412D 		.word	759250124
+ 158              		.section	.rodata.xmp3fixpt_csa,"a",%progbits
+ 159              		.align	2
+ 162              	xmp3fixpt_csa:
+ 163 0000 F053C26D 		.word	1841452016
+ 164 0004 AA0025BE 		.word	-1104871254
+ 165 0008 E4EBDC70 		.word	1893526500
+ 166 000c 49499EC3 		.word	-1013036727
+ 167 0010 736E8D79 		.word	2039311987
+ 168 0014 4A3FE3D7 		.word	-672972982
+ 169 0018 A740DD7D 		.word	2111652007
+ 170 001c 7611B7E8 		.word	-390655626
+ 171 0020 B7206D7F 		.word	2137858231
+ 172 0024 2FFEE4F3 		.word	-203096529
+ 173 0028 407EE47F 		.word	2145680960
+ 174 002c C7A3C1FA 		.word	-87972921
+ 175 0030 63B2FC7F 		.word	2147267171
+ 176 0034 C6BD2EFE 		.word	-30491194
+ 177 0038 94C6FF7F 		.word	2147468948
+ 178 003c 5DC286FF 		.word	-7945635
+ 179              		.section	.rodata.xmp3fixpt_imdctWin,"a",%progbits
+ 180              		.align	2
+ 183              	xmp3fixpt_imdctWin:
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccSvBJkf.s 			page 4
+
+
+ 184 0000 8BCEAA02 		.word	44748427
+ 185 0004 281C3107 		.word	120658984
+ 186 0008 EC8F860A 		.word	176590828
+ 187 000c 523B910C 		.word	210844498
+ 188 0010 CD3C410D 		.word	222379213
+ 189 0014 523B910C 		.word	210844498
+ 190 0018 EC8F860A 		.word	176590828
+ 191 001c 281C3107 		.word	120658984
+ 192 0020 8BCEAA02 		.word	44748427
+ 193 0024 DDD816FD 		.word	-48834339
+ 194 0028 669EA0F6 		.word	-157245850
+ 195 002c 75627AEF 		.word	-277192075
+ 196 0030 61C1DBE7 		.word	-405028511
+ 197 0034 000000E0 		.word	-536870912
+ 198 0038 9F3E24D8 		.word	-668713313
+ 199 003c 8B9D85D0 		.word	-796549749
+ 200 0040 9A615FC9 		.word	-916495974
+ 201 0044 2327E9C2 		.word	-1024907485
+ 202 0048 753155BD 		.word	-1118490251
+ 203 004c D8E3CEB8 		.word	-1194400808
+ 204 0050 147079B5 		.word	-1250332652
+ 205 0054 AEC46EB3 		.word	-1284586322
+ 206 0058 33C3BEB2 		.word	-1296121037
+ 207 005c AEC46EB3 		.word	-1284586322
+ 208 0060 147079B5 		.word	-1250332652
+ 209 0064 D8E3CEB8 		.word	-1194400808
+ 210 0068 753155BD 		.word	-1118490251
+ 211 006c 2327E9C2 		.word	-1024907485
+ 212 0070 9A615FC9 		.word	-916495974
+ 213 0074 8B9D85D0 		.word	-796549749
+ 214 0078 9F3E24D8 		.word	-668713313
+ 215 007c 000000E0 		.word	-536870912
+ 216 0080 61C1DBE7 		.word	-405028511
+ 217 0084 75627AEF 		.word	-277192075
+ 218 0088 669EA0F6 		.word	-157245850
+ 219 008c DDD816FD 		.word	-48834339
+ 220 0090 8BCEAA02 		.word	44748427
+ 221 0094 281C3107 		.word	120658984
+ 222 0098 EC8F860A 		.word	176590828
+ 223 009c 523B910C 		.word	210844498
+ 224 00a0 CD3C410D 		.word	222379213
+ 225 00a4 523B910C 		.word	210844498
+ 226 00a8 EC8F860A 		.word	176590828
+ 227 00ac 281C3107 		.word	120658984
+ 228 00b0 8BCEAA02 		.word	44748427
+ 229 00b4 DDD816FD 		.word	-48834339
+ 230 00b8 669EA0F6 		.word	-157245850
+ 231 00bc 75627AEF 		.word	-277192075
+ 232 00c0 61C1DBE7 		.word	-405028511
+ 233 00c4 000000E0 		.word	-536870912
+ 234 00c8 9F3E24D8 		.word	-668713313
+ 235 00cc 8B9D85D0 		.word	-796549749
+ 236 00d0 9A615FC9 		.word	-916495974
+ 237 00d4 2327E9C2 		.word	-1024907485
+ 238 00d8 14EF44BD 		.word	-1119555820
+ 239 00dc 52A031B8 		.word	-1204707246
+ 240 00e0 3738AAB3 		.word	-1280690121
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccSvBJkf.s 			page 5
+
+
+ 241 00e4 A489B7AF 		.word	-1346926172
+ 242 00e8 BB4561AC 		.word	-1402911301
+ 243 00ec DCECADA9 		.word	-1448219428
+ 244 00f0 1F4964A8 		.word	-1469822689
+ 245 00f4 F06818AD 		.word	-1390909200
+ 246 00f8 491F43B8 		.word	-1203560631
+ 247 00fc 3622F4C8 		.word	-923524554
+ 248 0100 B1E6A8DD 		.word	-576133455
+ 249 0104 DC5577F4 		.word	-193505828
+ 250 0108 00000000 		.word	0
+ 251 010c 00000000 		.word	0
+ 252 0110 00000000 		.word	0
+ 253 0114 00000000 		.word	0
+ 254 0118 00000000 		.word	0
+ 255 011c 00000000 		.word	0
+ 256 0120 281C3107 		.word	120658984
+ 257 0124 CD3C410D 		.word	222379213
+ 258 0128 281C3107 		.word	120658984
+ 259 012c 669EA0F6 		.word	-157245850
+ 260 0130 000000E0 		.word	-536870912
+ 261 0134 9A615FC9 		.word	-916495974
+ 262 0138 D8E3CEB8 		.word	-1194400808
+ 263 013c 33C3BEB2 		.word	-1296121037
+ 264 0140 D8E3CEB8 		.word	-1194400808
+ 265 0144 9A615FC9 		.word	-916495974
+ 266 0148 000000E0 		.word	-536870912
+ 267 014c 669EA0F6 		.word	-157245850
+ 268 0150 00000000 		.word	0
+ 269 0154 00000000 		.word	0
+ 270 0158 00000000 		.word	0
+ 271 015c 00000000 		.word	0
+ 272 0160 00000000 		.word	0
+ 273 0164 00000000 		.word	0
+ 274 0168 00000000 		.word	0
+ 275 016c 00000000 		.word	0
+ 276 0170 00000000 		.word	0
+ 277 0174 00000000 		.word	0
+ 278 0178 00000000 		.word	0
+ 279 017c 00000000 		.word	0
+ 280 0180 00000000 		.word	0
+ 281 0184 00000000 		.word	0
+ 282 0188 00000000 		.word	0
+ 283 018c 00000000 		.word	0
+ 284 0190 00000000 		.word	0
+ 285 0194 00000000 		.word	0
+ 286 0198 00000000 		.word	0
+ 287 019c 00000000 		.word	0
+ 288 01a0 00000000 		.word	0
+ 289 01a4 00000000 		.word	0
+ 290 01a8 00000000 		.word	0
+ 291 01ac 00000000 		.word	0
+ 292 01b0 00000000 		.word	0
+ 293 01b4 00000000 		.word	0
+ 294 01b8 00000000 		.word	0
+ 295 01bc 00000000 		.word	0
+ 296 01c0 00000000 		.word	0
+ 297 01c4 00000000 		.word	0
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccSvBJkf.s 			page 6
+
+
+ 298 01c8 09978E02 		.word	42899209
+ 299 01cc C05E8504 		.word	75849408
+ 300 01d0 A1436702 		.word	40321953
+ 301 01d4 102CDEFC 		.word	-52548592
+ 302 01d8 82DC15F5 		.word	-183116670
+ 303 01dc 3BE593EC 		.word	-325851845
+ 304 01e0 F880C8E4 		.word	-456621832
+ 305 01e4 080B5DDD 		.word	-581104888
+ 306 01e8 B71035D6 		.word	-701165385
+ 307 01ec 4A835ECF 		.word	-815889590
+ 308 01f0 62B5E6C8 		.word	-924404382
+ 309 01f4 0541DAC2 		.word	-1025883899
+ 310 01f8 753155BD 		.word	-1118490251
+ 311 01fc D8E3CEB8 		.word	-1194400808
+ 312 0200 147079B5 		.word	-1250332652
+ 313 0204 AEC46EB3 		.word	-1284586322
+ 314 0208 33C3BEB2 		.word	-1296121037
+ 315 020c AEC46EB3 		.word	-1284586322
+ 316 0210 147079B5 		.word	-1250332652
+ 317 0214 D8E3CEB8 		.word	-1194400808
+ 318 0218 753155BD 		.word	-1118490251
+ 319 021c 2327E9C2 		.word	-1024907485
+ 320 0220 9A615FC9 		.word	-916495974
+ 321 0224 8B9D85D0 		.word	-796549749
+ 322 0228 9F3E24D8 		.word	-668713313
+ 323 022c 000000E0 		.word	-536870912
+ 324 0230 61C1DBE7 		.word	-405028511
+ 325 0234 75627AEF 		.word	-277192075
+ 326 0238 669EA0F6 		.word	-157245850
+ 327 023c DDD816FD 		.word	-48834339
+ 328              		.section	.rodata.xmp3fixpt_polyCoef,"a",%progbits
+ 329              		.align	2
+ 332              	xmp3fixpt_polyCoef:
+ 333 0000 00000000 		.word	0
+ 334 0004 74000000 		.word	116
+ 335 0008 54030000 		.word	852
+ 336 000c 2C070000 		.word	1836
+ 337 0010 D41F0000 		.word	8148
+ 338 0014 84500000 		.word	20612
+ 339 0018 B8660000 		.word	26296
+ 340 001c C4490200 		.word	149956
+ 341 0020 78940400 		.word	300152
+ 342 0024 3CB6FDFF 		.word	-149956
+ 343 0028 B8660000 		.word	26296
+ 344 002c 7CAFFFFF 		.word	-20612
+ 345 0030 D41F0000 		.word	8148
+ 346 0034 D4F8FFFF 		.word	-1836
+ 347 0038 54030000 		.word	852
+ 348 003c 8CFFFFFF 		.word	-116
+ 349 0040 FCFFFFFF 		.word	-4
+ 350 0044 68000000 		.word	104
+ 351 0048 68030000 		.word	872
+ 352 004c 44060000 		.word	1604
+ 353 0050 401F0000 		.word	8000
+ 354 0054 D04A0000 		.word	19152
+ 355 0058 1C5D0000 		.word	23836
+ 356 005c E02C0200 		.word	142560
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccSvBJkf.s 			page 7
+
+
+ 357 0060 C0930400 		.word	299968
+ 358 0064 6099FDFF 		.word	-157344
+ 359 0068 786F0000 		.word	28536
+ 360 006c CCA9FFFF 		.word	-22068
+ 361 0070 3C200000 		.word	8252
+ 362 0074 E4F7FFFF 		.word	-2076
+ 363 0078 40030000 		.word	832
+ 364 007c 84FFFFFF 		.word	-124
+ 365 0080 FCFFFFFF 		.word	-4
+ 366 0084 60000000 		.word	96
+ 367 0088 78030000 		.word	888
+ 368 008c 6C050000 		.word	1388
+ 369 0090 801E0000 		.word	7808
+ 370 0094 24450000 		.word	17700
+ 371 0098 A0520000 		.word	21152
+ 372 009c FC0F0200 		.word	135164
+ 373 00a0 A0910400 		.word	299424
+ 374 00a4 A07CFDFF 		.word	-164704
+ 375 00a8 60770000 		.word	30560
+ 376 00ac 24A4FFFF 		.word	-23516
+ 377 00b0 80200000 		.word	8320
+ 378 00b4 ECF6FFFF 		.word	-2324
+ 379 00b8 28030000 		.word	808
+ 380 00bc 74FFFFFF 		.word	-140
+ 381 00c0 FCFFFFFF 		.word	-4
+ 382 00c4 54000000 		.word	84
+ 383 00c8 84030000 		.word	900
+ 384 00cc 98040000 		.word	1176
+ 385 00d0 941D0000 		.word	7572
+ 386 00d4 7C3F0000 		.word	16252
+ 387 00d8 44470000 		.word	18244
+ 388 00dc 2CF30100 		.word	127788
+ 389 00e0 188E0400 		.word	298520
+ 390 00e4 0860FDFF 		.word	-172024
+ 391 00e8 707E0000 		.word	32368
+ 392 00ec 8C9EFFFF 		.word	-24948
+ 393 00f0 9C200000 		.word	8348
+ 394 00f4 ECF5FFFF 		.word	-2580
+ 395 00f8 10030000 		.word	784
+ 396 00fc 68FFFFFF 		.word	-152
+ 397 0100 FCFFFFFF 		.word	-4
+ 398 0104 4C000000 		.word	76
+ 399 0108 8C030000 		.word	908
+ 400 010c D0030000 		.word	976
+ 401 0110 781C0000 		.word	7288
+ 402 0114 E4390000 		.word	14820
+ 403 0118 003B0000 		.word	15104
+ 404 011c 80D60100 		.word	120448
+ 405 0120 24890400 		.word	297252
+ 406 0124 AC43FDFF 		.word	-179284
+ 407 0128 B0840000 		.word	33968
+ 408 012c 0C99FFFF 		.word	-26356
+ 409 0130 94200000 		.word	8340
+ 410 0134 E4F4FFFF 		.word	-2844
+ 411 0138 F8020000 		.word	760
+ 412 013c 5CFFFFFF 		.word	-164
+ 413 0140 FCFFFFFF 		.word	-4
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccSvBJkf.s 			page 8
+
+
+ 414 0144 44000000 		.word	68
+ 415 0148 90030000 		.word	912
+ 416 014c 14030000 		.word	788
+ 417 0150 2C1B0000 		.word	6956
+ 418 0154 5C340000 		.word	13404
+ 419 0158 DC2D0000 		.word	11740
+ 420 015c 04BA0100 		.word	113156
+ 421 0160 D0820400 		.word	295632
+ 422 0164 9C27FDFF 		.word	-186468
+ 423 0168 208A0000 		.word	35360
+ 424 016c A493FFFF 		.word	-27740
+ 425 0170 6C200000 		.word	8300
+ 426 0174 D4F3FFFF 		.word	-3116
+ 427 0178 DC020000 		.word	732
+ 428 017c 4CFFFFFF 		.word	-180
+ 429 0180 FCFFFFFF 		.word	-4
+ 430 0184 40000000 		.word	64
+ 431 0188 90030000 		.word	912
+ 432 018c 64020000 		.word	612
+ 433 0190 B0190000 		.word	6576
+ 434 0194 F02E0000 		.word	12016
+ 435 0198 D41F0000 		.word	8148
+ 436 019c C89D0100 		.word	105928
+ 437 01a0 1C7B0400 		.word	293660
+ 438 01a4 E80BFDFF 		.word	-193560
+ 439 01a8 CC8E0000 		.word	36556
+ 440 01ac 648EFFFF 		.word	-29084
+ 441 01b0 24200000 		.word	8228
+ 442 01b4 C0F2FFFF 		.word	-3392
+ 443 01b8 C0020000 		.word	704
+ 444 01bc 3CFFFFFF 		.word	-196
+ 445 01c0 F8FFFFFF 		.word	-8
+ 446 01c4 38000000 		.word	56
+ 447 01c8 8C030000 		.word	908
+ 448 01cc BC010000 		.word	444
+ 449 01d0 FC170000 		.word	6140
+ 450 01d4 9C290000 		.word	10652
+ 451 01d8 E8100000 		.word	4328
+ 452 01dc D8810100 		.word	98776
+ 453 01e0 0C720400 		.word	291340
+ 454 01e4 9CF0FCFF 		.word	-200548
+ 455 01e8 B4920000 		.word	37556
+ 456 01ec 4C89FFFF 		.word	-30388
+ 457 01f0 C01F0000 		.word	8128
+ 458 01f4 A4F1FFFF 		.word	-3676
+ 459 01f8 A4020000 		.word	676
+ 460 01fc 2CFFFFFF 		.word	-212
+ 461 0200 F8FFFFFF 		.word	-8
+ 462 0204 34000000 		.word	52
+ 463 0208 80030000 		.word	896
+ 464 020c 20010000 		.word	288
+ 465 0210 18160000 		.word	5656
+ 466 0214 68240000 		.word	9320
+ 467 0218 18010000 		.word	280
+ 468 021c 44660100 		.word	91716
+ 469 0220 A4670400 		.word	288676
+ 470 0224 CCD5FCFF 		.word	-207412
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccSvBJkf.s 			page 9
+
+
+ 471 0228 E0950000 		.word	38368
+ 472 022c 6884FFFF 		.word	-31640
+ 473 0230 441F0000 		.word	8004
+ 474 0234 84F0FFFF 		.word	-3964
+ 475 0238 84020000 		.word	644
+ 476 023c 18FFFFFF 		.word	-232
+ 477 0240 F8FFFFFF 		.word	-8
+ 478 0244 2C000000 		.word	44
+ 479 0248 74030000 		.word	884
+ 480 024c 90000000 		.word	144
+ 481 0250 00140000 		.word	5120
+ 482 0254 581F0000 		.word	8024
+ 483 0258 68F0FFFF 		.word	-3992
+ 484 025c 144B0100 		.word	84756
+ 485 0260 F05B0400 		.word	285680
+ 486 0264 88BBFCFF 		.word	-214136
+ 487 0268 58980000 		.word	39000
+ 488 026c BC7FFFFF 		.word	-32836
+ 489 0270 A81E0000 		.word	7848
+ 490 0274 60EFFFFF 		.word	-4256
+ 491 0278 68020000 		.word	616
+ 492 027c 04FFFFFF 		.word	-252
+ 493 0280 F8FFFFFF 		.word	-8
+ 494 0284 28000000 		.word	40
+ 495 0288 5C030000 		.word	860
+ 496 028c 08000000 		.word	8
+ 497 0290 AC110000 		.word	4524
+ 498 0294 701A0000 		.word	6768
+ 499 0298 D8DEFFFF 		.word	-8488
+ 500 029c 58300100 		.word	77912
+ 501 02a0 F84E0400 		.word	282360
+ 502 02a4 D8A1FCFF 		.word	-220712
+ 503 02a8 1C9A0000 		.word	39452
+ 504 02ac 547BFFFF 		.word	-33964
+ 505 02b0 FC1D0000 		.word	7676
+ 506 02b4 3CEEFFFF 		.word	-4548
+ 507 02b8 4C020000 		.word	588
+ 508 02bc F0FEFFFF 		.word	-272
+ 509 02c0 F4FFFFFF 		.word	-12
+ 510 02c4 24000000 		.word	36
+ 511 02c8 40030000 		.word	832
+ 512 02cc 8CFFFFFF 		.word	-116
+ 513 02d0 280F0000 		.word	3880
+ 514 02d4 B0150000 		.word	5552
+ 515 02d8 70CCFFFF 		.word	-13200
+ 516 02dc 1C160100 		.word	71196
+ 517 02e0 BC400400 		.word	278716
+ 518 02e4 D888FCFF 		.word	-227112
+ 519 02e8 3C9B0000 		.word	39740
+ 520 02ec 3477FFFF 		.word	-35020
+ 521 02f0 381D0000 		.word	7480
+ 522 02f4 18EDFFFF 		.word	-4840
+ 523 02f8 2C020000 		.word	556
+ 524 02fc DCFEFFFF 		.word	-292
+ 525 0300 F4FFFFFF 		.word	-12
+ 526 0304 20000000 		.word	32
+ 527 0308 20030000 		.word	800
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccSvBJkf.s 			page 10
+
+
+ 528 030c 1CFFFFFF 		.word	-228
+ 529 0310 680C0000 		.word	3176
+ 530 0314 1C110000 		.word	4380
+ 531 0318 2CB9FFFF 		.word	-18132
+ 532 031c 6CFC0000 		.word	64620
+ 533 0320 50310400 		.word	274768
+ 534 0324 8C70FCFF 		.word	-233332
+ 535 0328 B89B0000 		.word	39864
+ 536 032c 6873FFFF 		.word	-35992
+ 537 0330 641C0000 		.word	7268
+ 538 0334 F4EBFFFF 		.word	-5132
+ 539 0338 10020000 		.word	528
+ 540 033c C4FEFFFF 		.word	-316
+ 541 0340 F0FFFFFF 		.word	-16
+ 542 0344 1C000000 		.word	28
+ 543 0348 F4020000 		.word	756
+ 544 034c B4FEFFFF 		.word	-332
+ 545 0350 74090000 		.word	2420
+ 546 0354 B80C0000 		.word	3256
+ 547 0358 18A5FFFF 		.word	-23272
+ 548 035c 50E30000 		.word	58192
+ 549 0360 B4200400 		.word	270516
+ 550 0364 0859FCFF 		.word	-239352
+ 551 0368 9C9B0000 		.word	39836
+ 552 036c F46FFFFF 		.word	-36876
+ 553 0370 7C1B0000 		.word	7036
+ 554 0374 D0EAFFFF 		.word	-5424
+ 555 0378 F4010000 		.word	500
+ 556 037c ACFEFFFF 		.word	-340
+ 557 0380 F0FFFFFF 		.word	-16
+ 558 0384 1C000000 		.word	28
+ 559 0388 C4020000 		.word	708
+ 560 038c 58FEFFFF 		.word	-424
+ 561 0390 48060000 		.word	1608
+ 562 0394 84080000 		.word	2180
+ 563 0398 3890FFFF 		.word	-28616
+ 564 039c D0CA0000 		.word	51920
+ 565 03a0 F80E0400 		.word	265976
+ 566 03a4 5C42FCFF 		.word	-245156
+ 567 03a8 F09A0000 		.word	39664
+ 568 03ac E06CFFFF 		.word	-37664
+ 569 03b0 881A0000 		.word	6792
+ 570 03b4 B0E9FFFF 		.word	-5712
+ 571 03b8 D4010000 		.word	468
+ 572 03bc 94FEFFFF 		.word	-364
+ 573 03c0 ECFFFFFF 		.word	-20
+ 574 03c4 18000000 		.word	24
+ 575 03c8 8C020000 		.word	652
+ 576 03cc 04FEFFFF 		.word	-508
+ 577 03d0 E4020000 		.word	740
+ 578 03d4 80040000 		.word	1152
+ 579 03d8 907AFFFF 		.word	-34160
+ 580 03dc FCB20000 		.word	45820
+ 581 03e0 28FC0300 		.word	261160
+ 582 03e4 902CFCFF 		.word	-250736
+ 583 03e8 B8990000 		.word	39352
+ 584 03ec 3C6AFFFF 		.word	-38340
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccSvBJkf.s 			page 11
+
+
+ 585 03f0 88190000 		.word	6536
+ 586 03f4 98E8FFFF 		.word	-5992
+ 587 03f8 BC010000 		.word	444
+ 588 03fc 7CFEFFFF 		.word	-388
+ 589 0400 A0010000 		.word	416
+ 590 0404 7C180000 		.word	6268
+ 591 0408 FC970000 		.word	38908
+ 592 040c 4CE80300 		.word	256076
+ 593 0410 2464FFFF 		.word	-39900
+ 594 0414 4CFFFFFF 		.word	-180
+ 595 0418 48020000 		.word	584
+ 596 041c ECFFFFFF 		.word	-20
+ 597              		.section	.rodata.xmp3fixpt_uniqueIDTab,"a",%progbits
+ 598              		.align	2
+ 601              	xmp3fixpt_uniqueIDTab:
+ 602 0000 5F       		.byte	95
+ 603 0001 4B       		.byte	75
+ 604 0002 43       		.byte	67
+ 605 0003 5F       		.byte	95
+ 606 0004 5F       		.byte	95
+ 607 0005 4A       		.byte	74
+ 608 0006 52       		.byte	82
+ 609 0007 5F       		.byte	95
+ 610              		.text
+ 611              	.Letext0:
+ 612              		.file 1 "lib/helix/real/../pub/mp3common.h"
+ 613              		.file 2 "lib/helix/real/coder.h"
+ 614              		.file 3 "lib/helix/real/trigtabs_fixpt.c"
+ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccSvBJkf.s 			page 12
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 trigtabs_fixpt.c
+C:\Users\Patryk\AppData\Local\Temp\ccSvBJkf.s:332    .rodata.xmp3fixpt_polyCoef:00000000 xmp3fixpt_polyCoef
+C:\Users\Patryk\AppData\Local\Temp\ccSvBJkf.s:126    .rodata.xmp3fixpt_coef32:00000000 xmp3fixpt_coef32
+C:\Users\Patryk\AppData\Local\Temp\ccSvBJkf.s:162    .rodata.xmp3fixpt_csa:00000000 xmp3fixpt_csa
+C:\Users\Patryk\AppData\Local\Temp\ccSvBJkf.s:601    .rodata.xmp3fixpt_uniqueIDTab:00000000 xmp3fixpt_uniqueIDTab
+C:\Users\Patryk\AppData\Local\Temp\ccSvBJkf.s:29     .rodata.xmp3fixpt_ISFIIP:00000000 xmp3fixpt_ISFIIP
+C:\Users\Patryk\AppData\Local\Temp\ccSvBJkf.s:57     .rodata.xmp3fixpt_ISFMpeg2:00000000 xmp3fixpt_ISFMpeg2
+C:\Users\Patryk\AppData\Local\Temp\ccSvBJkf.s:38     .rodata.xmp3fixpt_ISFMpeg1:00000000 xmp3fixpt_ISFMpeg1
+C:\Users\Patryk\AppData\Local\Temp\ccSvBJkf.s:183    .rodata.xmp3fixpt_imdctWin:00000000 xmp3fixpt_imdctWin
+C:\Users\Patryk\AppData\Local\Temp\ccSvBJkf.s:26     .rodata.xmp3fixpt_ISFIIP:00000000 $d
+C:\Users\Patryk\AppData\Local\Temp\ccSvBJkf.s:35     .rodata.xmp3fixpt_ISFMpeg1:00000000 $d
+C:\Users\Patryk\AppData\Local\Temp\ccSvBJkf.s:54     .rodata.xmp3fixpt_ISFMpeg2:00000000 $d
+C:\Users\Patryk\AppData\Local\Temp\ccSvBJkf.s:123    .rodata.xmp3fixpt_coef32:00000000 $d
+C:\Users\Patryk\AppData\Local\Temp\ccSvBJkf.s:159    .rodata.xmp3fixpt_csa:00000000 $d
+C:\Users\Patryk\AppData\Local\Temp\ccSvBJkf.s:180    .rodata.xmp3fixpt_imdctWin:00000000 $d
+C:\Users\Patryk\AppData\Local\Temp\ccSvBJkf.s:329    .rodata.xmp3fixpt_polyCoef:00000000 $d
+C:\Users\Patryk\AppData\Local\Temp\ccSvBJkf.s:598    .rodata.xmp3fixpt_uniqueIDTab:00000000 $d
+
+NO UNDEFINED SYMBOLS
