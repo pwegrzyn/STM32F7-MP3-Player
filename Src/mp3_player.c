@@ -4,6 +4,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 #include "mp3_player.h"
 #include "gui.h"
@@ -39,7 +40,10 @@ uint8_t input_buffer[READ_BUFFER_SIZE];
 static uint8_t *read_pointer;
 static BSP_BUFFER_STATE out_buf_offs = BUFFER_OFFSET_NONE;
 FIL input_file;
-static int bytes_left=0;
+const char** paths;
+int mp3FilesCounter = 0;
+int currentFilePosition = -1;
+static int bytes_left = 0;
 static int in_buf_offs;
 static int decode_result;
 
@@ -59,40 +63,120 @@ void mp3_player_fsm(const char* path)
     BSP_init();
     state = NEXT;
 
+    touchscreen_loop_init();
+
     DIR directory;
-    f_opendir(&directory, path);
+    FILINFO info;
+
+    if (f_opendir(&directory, path) != FR_OK) {
+        if (DEBUG_ON) xprintf("Error opening the directory\n");
+        return;
+    }
+
+    while(1) {
+        if (f_readdir(&directory, &info) != FR_OK) {
+            xprintf("Error reading from directory\n");
+            return;
+        }
+        if (info.fname[0] == 0)
+            break;
+        if (strstr(info.fname, ".mp3"))
+            mp3FilesCounter++;
+    }
+
+    f_closedir(&directory);
+
+    int i = 0;
+    paths = malloc(sizeof(char*) * mp3FilesCounter);
+
+    if (paths == NULL) {
+        if (DEBUG_ON) xprintf("Error allocating memory\n");
+        return;
+    }
+
+    if (f_opendir(&directory, path) != FR_OK) {
+        if (DEBUG_ON) xprintf("Error opening the directory\n");
+        return;
+    }
+
+    while(1) {
+        if (f_readdir(&directory, &info) != FR_OK) {
+            xprintf("Error reading from directory\n");
+            return;
+        }
+        if (info.fname[0] == 0)
+            break;
+        if (strstr(info.fname, ".mp3")) {
+            paths[i] = info.fname;
+            i++;
+        }
+    }
 
 	while(1)
 	{
 		switch(state)
 		{
 			case PLAY:
+			    if(DEBUG_ON) xprintf("play \n");
 				mp3_player_play();
                 f_close(&input_file);
 				break;
 			case NEXT:
-			    ;
-			    if(DEBUG_ON) xprintf("fsm: state -> next\n");
-			    FILINFO info;
-				if (f_readdir(&directory, &info) != FR_OK) {
-                    xprintf("Error reading from directory\n");
-                    return;
-				}
-                if (info.fname[0] == 0) {
-                    xprintf("fsm: no more files to read\n");
-                    f_closedir(&directory);
-                    f_opendir(&directory, path);
-                    continue;
+			    bytes_left = 0;
+                read_pointer = NULL;
+                out_buf_offs = BUFFER_OFFSET_NONE;
+			    if (currentFilePosition == mp3FilesCounter - 1)
+                    currentFilePosition = 0;
+                else
+                    currentFilePosition++;
+                if (f_open(&input_file, paths[currentFilePosition], FA_READ) != FR_OK) {
+                        if(DEBUG_ON) xprintf("Error opening file\n");
+                        return;
                 }
-                if (strstr(info.fname, ".mp3")) {
-                    if (f_open(&input_file, info.fname, FA_READ) != FR_OK) {
-                        xprintf("Error opening file\n");
+                state = PLAY;
+				break;
+            case PREV:
+                bytes_left = 0;
+                read_pointer = NULL;
+                out_buf_offs = BUFFER_OFFSET_NONE;
+                if (currentFilePosition == 0)
+                    currentFilePosition = mp3FilesCounter - 1;
+                else
+                    currentFilePosition--;
+                if (f_open(&input_file, paths[currentFilePosition], FA_READ) != FR_OK) {
+                        if(DEBUG_ON) xprintf("Error opening file\n");
+                        return;
+                }
+                state = PLAY;
+                break;
+            case PAUSE:
+                while(state != PAUSE) {
+                    Mp3_Player_State newState = check_touchscreen();
+                    if (newState != EMPTY)
+                        state = newState;
+                }
+                if (state == PLAY)
+                    if (f_open(&input_file, paths[currentFilePosition], FA_READ) != FR_OK) {
+                        if(DEBUG_ON) xprintf("Error opening file\n");
                         return;
                     }
-                    if(DEBUG_ON) xprintf("fsm: state next -> play\n");
-                    state = PLAY;
+                break;
+            case STOP:
+                bytes_left = 0;
+                read_pointer = NULL;
+                out_buf_offs = BUFFER_OFFSET_NONE;
+                currentFilePosition = 0;
+                while(state != STOP) {
+                    Mp3_Player_State newState = check_touchscreen();
+                    if (newState != EMPTY)
+                        state = newState;
                 }
-				break;
+                if (state == PLAY)
+                    if (f_open(&input_file, paths[currentFilePosition], FA_READ) != FR_OK) {
+                        if(DEBUG_ON) xprintf("Error opening file\n");
+                        return;
+                    }
+                break;
 			case FINISH:
 			    if(DEBUG_ON) xprintf("fsm: state -> finish\n");
 				return;
@@ -127,11 +211,18 @@ void mp3_player_play(void)
 	if(mp3_player_process_frame() == 0) {
 		state = PLAY;
 		BSP_AUDIO_OUT_Play((uint16_t*)&output_buffer[0], AUDIO_OUT_BUFFER_SIZE * 2);
-		touchscreen_loop_init();
 		while(1) {
-			Mp3_Player_State mewState = check_touchscreen();
+			Mp3_Player_State newState = check_touchscreen();
 			if (newState != EMPTY)
 				state = newState;
+            if (state == PAUSE) {
+                BSP_AUDIO_OUT_Stop(CODEC_PDWN_SW);
+                out_buf_offs = BUFFER_OFFSET_NONE;
+                return;
+            }
+            else if (state != PLAY) {
+                break;
+            }
 		}
 		BSP_AUDIO_OUT_Stop(CODEC_PDWN_SW);
 		out_buf_offs = BUFFER_OFFSET_NONE;
@@ -153,14 +244,14 @@ int mp3_player_process_frame(void)
     if(DEBUG_ON) xprintf("process: starting\n");
 	MP3FrameInfo mp3FrameInfo;
 
-	if (read_pointer == NULL) 
+	if (read_pointer == NULL)
 	{
 		if(fill_input_buffer() != 0)
 			return EOF;
 	}
 
 	in_buf_offs = MP3FindSyncWord(read_pointer, bytes_left);
-	while(in_buf_offs < 0) 
+	while(in_buf_offs < 0)
 	{
 		if(fill_input_buffer() != 0) return EOF;
 		if(bytes_left > 0)
@@ -255,7 +346,7 @@ int fill_input_buffer() {
 	unsigned int bytes_read;
 	unsigned int bytes_to_read;
 
-	if(bytes_left > 0) 
+	if(bytes_left > 0)
 	{
 		memcpy(input_buffer, read_pointer, bytes_left);
 	}
