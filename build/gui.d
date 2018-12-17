@@ -50,11 +50,11 @@ build/gui.o: Src/gui.c Inc/mp3_player.h \
  Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_hcd.h \
  Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_usb.h \
  Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.h \
- c:\users\student\downloads\aaaaa13\utilities\fonts\fonts.h \
+ c:\users\patryk\desktop\aaaaa13\utilities\fonts\fonts.h \
  Utilities/Fonts/fonts.h \
  Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.h \
  Drivers/BSP/STM32746G-Discovery/../Components/ft5336/ft5336.h \
- Drivers/BSP/STM32746G-Discovery/../Components/ft5336/../Common/ts.h \
+ c:\users\patryk\desktop\aaaaa13\drivers\bsp\components\common\ts.h \
  Inc/term_io.h Inc/dbgu.h Inc/ansi.h Inc/dbgu.h Inc/ansi.h
 
 Inc/mp3_player.h:
@@ -167,7 +167,7 @@ Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_usb.h:
 
 Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.h:
 
-c:\users\student\downloads\aaaaa13\utilities\fonts\fonts.h:
+c:\users\patryk\desktop\aaaaa13\utilities\fonts\fonts.h:
 
 Utilities/Fonts/fonts.h:
 
@@ -175,7 +175,7 @@ Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.h:
 
 Drivers/BSP/STM32746G-Discovery/../Components/ft5336/ft5336.h:
 
-Drivers/BSP/STM32746G-Discovery/../Components/ft5336/../Common/ts.h:
+c:\users\patryk\desktop\aaaaa13\drivers\bsp\components\common\ts.h:
 
 Inc/term_io.h:
 

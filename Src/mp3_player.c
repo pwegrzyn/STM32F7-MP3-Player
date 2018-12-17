@@ -129,7 +129,7 @@ void mp3_player_play(void)
 		BSP_AUDIO_OUT_Play((uint16_t*)&output_buffer[0], AUDIO_OUT_BUFFER_SIZE * 2);
 		touchscreen_loop_init();
 		while(1) {
-			Mp3_Player_State mewState = check_touchscreen();
+			Mp3_Player_State newState = check_touchscreen();
 			if (newState != EMPTY)
 				state = newState;
 		}

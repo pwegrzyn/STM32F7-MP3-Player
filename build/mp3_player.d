@@ -82,7 +82,7 @@ build/mp3_player.o: Src/mp3_player.c Inc/mp3_player.h Inc/gui.h \
  Middlewares/Third_Party/FatFs/src/ff.h Inc/sd_diskio.h Inc/usbh_diskio.h \
  Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_audio.h \
  Drivers/BSP/STM32746G-Discovery/../Components/wm8994/wm8994.h \
- Drivers/BSP/STM32746G-Discovery/../Components/wm8994/../Common/audio.h \
+ c:\users\patryk\desktop\aaaaa13\drivers\bsp\components\common\audio.h \
  Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.h Inc/term_io.h \
  Inc/dbgu.h Inc/ansi.h Inc/dbgu.h Inc/ansi.h
 
@@ -274,7 +274,7 @@ Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_audio.h:
 
 Drivers/BSP/STM32746G-Discovery/../Components/wm8994/wm8994.h:
 
-Drivers/BSP/STM32746G-Discovery/../Components/wm8994/../Common/audio.h:
+c:\users\patryk\desktop\aaaaa13\drivers\bsp\components\common\audio.h:
 
 Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.h:
 

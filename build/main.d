@@ -84,14 +84,14 @@ build/main.o: Src/main.c Inc/main.h \
  Drivers/BSP/STM32746G-Discovery/../Components/rk043fn48h/rk043fn48h.h \
  Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.h \
  Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.h \
- c:\users\student\downloads\aaaaa13\utilities\fonts\fonts.h \
+ c:\users\patryk\desktop\aaaaa13\utilities\fonts\fonts.h \
  Utilities/Fonts/fonts.h \
  Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.h \
  Drivers/BSP/STM32746G-Discovery/../Components/ft5336/ft5336.h \
- Drivers/BSP/STM32746G-Discovery/../Components/ft5336/../Common/ts.h \
+ c:\users\patryk\desktop\aaaaa13\drivers\bsp\components\common\ts.h \
  Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_audio.h \
  Drivers/BSP/STM32746G-Discovery/../Components/wm8994/wm8994.h \
- Drivers/BSP/STM32746G-Discovery/../Components/wm8994/../Common/audio.h \
+ c:\users\patryk\desktop\aaaaa13\drivers\bsp\components\common\audio.h \
  Inc/term_io.h Inc/dbgu.h Inc/ansi.h Inc/dbgu.h Inc/ansi.h \
  Drivers/BSP/Components/wm8994/wm8994.h
 
@@ -287,7 +287,7 @@ Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.h:
 
 Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.h:
 
-c:\users\student\downloads\aaaaa13\utilities\fonts\fonts.h:
+c:\users\patryk\desktop\aaaaa13\utilities\fonts\fonts.h:
 
 Utilities/Fonts/fonts.h:
 
@@ -295,13 +295,13 @@ Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.h:
 
 Drivers/BSP/STM32746G-Discovery/../Components/ft5336/ft5336.h:
 
-Drivers/BSP/STM32746G-Discovery/../Components/ft5336/../Common/ts.h:
+c:\users\patryk\desktop\aaaaa13\drivers\bsp\components\common\ts.h:
 
 Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_audio.h:
 
 Drivers/BSP/STM32746G-Discovery/../Components/wm8994/wm8994.h:
 
-Drivers/BSP/STM32746G-Discovery/../Components/wm8994/../Common/audio.h:
+c:\users\patryk\desktop\aaaaa13\drivers\bsp\components\common\audio.h:
 
 Inc/term_io.h:
 
