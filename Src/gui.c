@@ -96,20 +96,20 @@ void LCD_Start_v2(void)
 	BSP_LCD_Init();
 	BSP_LCD_LayerDefaultInit(LAYER_FG, (unsigned int)0xC0000000);
 	BSP_LCD_LayerDefaultInit(LAYER_BG, (unsigned int)0xC0000000+(LCD_X_SIZE*LCD_Y_SIZE*4));
-	
+
 	BSP_LCD_SelectLayer(LAYER_FG);
 	BSP_LCD_Clear(LCD_COLOR_WHITE);
 	BSP_LCD_SelectLayer(LAYER_BG);
 	BSP_LCD_Clear(LCD_COLOR_WHITE);
 	BSP_LCD_SetBackColor(LCD_COLOR_WHITE);
 	BSP_LCD_SetTextColor(LCD_COLOR_BLACK);
-	
+
 	BSP_LCD_ResetColorKeying(LAYER_FG);
 	BSP_LCD_ResetColorKeying(LAYER_BG);
-	
+
 	BSP_LCD_SetTransparency(LAYER_FG, (uint8_t) 100);
 	BSP_LCD_SetTransparency(LAYER_BG, (uint8_t) 0xFF);
-	
+
 	BSP_LCD_Reload(LCD_RELOAD_VERTICAL_BLANKING);
 	BSP_LCD_DisplayOn();
 }
@@ -119,7 +119,7 @@ void draw_background(void)
 {
 	/* Select the LCD Background Layer  */
 	BSP_LCD_SelectLayer(LAYER_BG);
-	
+
 	BSP_LCD_SetTextColor(LCD_COLOR_BLACK);
 	BSP_LCD_FillRect(buttonsLeftUpper[0][0], buttonsLeftUpper[0][1],  CONTROL_BUTTON_SIZE, CONTROL_BUTTON_SIZE);
 	BSP_LCD_FillRect(buttonsLeftUpper[1][0], buttonsLeftUpper[1][1],  CONTROL_BUTTON_SIZE, CONTROL_BUTTON_SIZE);
@@ -140,7 +140,7 @@ int initialize_touchscreen(void)
 }
 
 // Call this once to init the TS-input-reading-loop
-void touchscreen_loop_init(void) 
+void touchscreen_loop_init(void)
 {
     newX = 120;
 	newY = 120;
@@ -151,54 +151,58 @@ void touchscreen_loop_init(void)
 }
 
 // Single iteration of getting TS input
-Mp3_Player_State check_touchscreen(void) 
+Mp3_Player_State check_touchscreen(void)
 {
 	uint32_t currentTicks = HAL_GetTick();
 	if (currentTicks < lastTicks + TICKS_DELTA)
 		return EMPTY;
-		
-	
+
+
     BSP_TS_GetState(&TS_State);
 	BSP_LCD_Clear(LCD_COLOR_WHITE);
-	if ((TS_State.touchX[0] & 0x0FFF) >= 40) 
+	if ((TS_State.touchX[0] & 0x0FFF) >= 40)
     {
 		newX = TS_State.touchX[0] & 0x0FFF;
 	}
-	if ((TS_State.touchY[0] & 0x0FFF) >= 40) 
+	if ((TS_State.touchY[0] & 0x0FFF) >= 40)
     {
 		newY = TS_State.touchY[0] & 0x0FFF;
 	}
-	
+
 	if (lastState.touchX[0] == newX && lastState.touchY[0] == newY)
 		return EMPTY;
-	
+
 	lastState.touchX[0] = newX;
 	lastState.touchY[0] = newY;
-	
-	
+
+
 	for(int i = 0; i < CONTROL_BUTTONS_NUMBER; i++) {
-	
+
 		uint16_t buttonCornerX = buttonsLeftUpper[i][0];
 		uint16_t buttonCornerY = buttonsLeftUpper[i][1];
-		
+
 		if (newX <= buttonCornerX + CONTROL_BUTTON_SIZE &&
 			newY <= buttonCornerY + CONTROL_BUTTON_SIZE &&
 			newX > buttonCornerX &&
 			newY > buttonCornerY
 		) {
-		
+
 		if (i == 1)
-			if (playButtonState == PLAY)
-				return PAUSE;
-			else
-				return PLAY;
-		
-		
+			if (playButtonState == PLAY) {
+                playButtonState = PAUSE;
+                return PAUSE;
+			}
+
+			else {
+                playButtonState = PLAY;
+                return PLAY;
+			}
+
 		else
-			return buttonState[i];	
+			return buttonState[i];
 		}
 	}
-	
+
 	return EMPTY;
 
 	// vTaskDelay(10);
