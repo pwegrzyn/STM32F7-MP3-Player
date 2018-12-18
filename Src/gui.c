@@ -48,9 +48,11 @@ void LCD_Start_v2(void);
 void draw_background(void);
 int initialize_touchscreen(void);
 void touchscreen_loop_init(void);
-Mp3_Player_State check_touchscreen(void);
+Mp3_Player_State check_touchscreen(double);
 uint16_t getXPix (double factor);
 uint16_t getYPix (double factor);
+void refresh_screen(const char *info_text);
+void draw_buttons(void);
 
 /* ------------------------------------------------------------------- */
 
@@ -120,11 +122,10 @@ void draw_background(void)
 	/* Select the LCD Background Layer  */
 	BSP_LCD_SelectLayer(LAYER_BG);
 
-	BSP_LCD_SetTextColor(LCD_COLOR_BLACK);
-	BSP_LCD_FillRect(buttonsLeftUpper[0][0], buttonsLeftUpper[0][1],  CONTROL_BUTTON_SIZE, CONTROL_BUTTON_SIZE);
-	BSP_LCD_FillRect(buttonsLeftUpper[1][0], buttonsLeftUpper[1][1],  CONTROL_BUTTON_SIZE, CONTROL_BUTTON_SIZE);
-	BSP_LCD_FillRect(buttonsLeftUpper[2][0], buttonsLeftUpper[2][1],  CONTROL_BUTTON_SIZE, CONTROL_BUTTON_SIZE);
-	BSP_LCD_FillRect(buttonsLeftUpper[3][0], buttonsLeftUpper[3][1],  CONTROL_BUTTON_SIZE, CONTROL_BUTTON_SIZE);
+	draw_buttons();
+
+	BSP_LCD_DrawHLine(0, YPix(0.4), LCD_X_SIZE);
+	BSP_LCD_DrawHLine(0, YPix(0.5), LCD_X_SIZE);
 
 	//select Foreground Layer
 	BSP_LCD_SelectLayer(LAYER_FG);
@@ -151,14 +152,20 @@ void touchscreen_loop_init(void)
 }
 
 // Single iteration of getting TS input
-Mp3_Player_State check_touchscreen(void)
+Mp3_Player_State check_touchscreen(double percent)
 {
+	BSP_LCD_FillRect(0, YPix(0.2),  percent * LCD_X_SIZE, 30);
+	
 	uint32_t currentTicks = HAL_GetTick();
+	
 	if (currentTicks < lastTicks + TICKS_DELTA)
 		return EMPTY;
-
-
+	
+	lastTicks = currentTicks;
+	
     BSP_TS_GetState(&TS_State);
+	if (TS_State.touchDetected == 0)
+		return EMPTY;
 	BSP_LCD_Clear(LCD_COLOR_WHITE);
 	if ((TS_State.touchX[0] & 0x0FFF) >= 40)
     {
@@ -168,9 +175,10 @@ Mp3_Player_State check_touchscreen(void)
     {
 		newY = TS_State.touchY[0] & 0x0FFF;
 	}
+	xprintf("%d\n", TS_State.touchDetected);
 
-	if (lastState.touchX[0] == newX && lastState.touchY[0] == newY)
-		return EMPTY;
+	//if (lastState.touchX[0] == newX && lastState.touchY[0] == newY)
+	//	return EMPTY;
 
 	lastState.touchX[0] = newX;
 	lastState.touchY[0] = newY;
@@ -187,17 +195,22 @@ Mp3_Player_State check_touchscreen(void)
 			newY > buttonCornerY
 		) {
 
-		if (i == 1)
+		if (i == 1 || i == 2) {
 			if (playButtonState == PLAY) {
                 playButtonState = PAUSE;
-                return PAUSE;
 			}
 
 			else {
                 playButtonState = PLAY;
-                return PLAY;
 			}
-
+		}
+		if (i == 1)
+			return playButtonState;
+		else if (i == 2) {
+			playButtonState = PAUSE;
+			return STOP;
+		}
+		
 		else
 			return buttonState[i];
 		}
@@ -208,6 +221,34 @@ Mp3_Player_State check_touchscreen(void)
 	// vTaskDelay(10);
 }
 
+// Refresh the state of the screen
+void refresh_screen(const char *info_text) {
+
+	BSP_LCD_SelectLayer(LAYER_FG);
+	BSP_LCD_Clear(LCD_COLOR_WHITE);
+	BSP_LCD_SelectLayer(LAYER_BG);
+	BSP_LCD_Clear(LCD_COLOR_WHITE);
+	BSP_LCD_SetBackColor(LCD_COLOR_WHITE);
+	BSP_LCD_SetTextColor(LCD_COLOR_BLACK);
+
+	draw_background();
+
+	BSP_LCD_DisplayStringAt(XPix(0.10), YPix(0.45), (unsigned char *)info_text, CENTER_MODE);
+
+}
+
+// Draw the 4 main state control buttons: PREV/PLAY_PAUSE/STOP/NEXT
+void draw_buttons() {
+
+	BSP_LCD_SetTextColor(LCD_COLOR_BLACK);
+	BSP_LCD_FillRect(buttonsLeftUpper[0][0], buttonsLeftUpper[0][1],  CONTROL_BUTTON_SIZE, CONTROL_BUTTON_SIZE);
+	BSP_LCD_FillRect(buttonsLeftUpper[1][0], buttonsLeftUpper[1][1],  CONTROL_BUTTON_SIZE, CONTROL_BUTTON_SIZE);
+	BSP_LCD_FillRect(buttonsLeftUpper[2][0], buttonsLeftUpper[2][1],  CONTROL_BUTTON_SIZE, CONTROL_BUTTON_SIZE);
+	BSP_LCD_FillRect(buttonsLeftUpper[3][0], buttonsLeftUpper[3][1],  CONTROL_BUTTON_SIZE, CONTROL_BUTTON_SIZE);
+
+}
+
+// Auxillary functions
 uint16_t getXPix (double factor)  {
 	return factor * LCD_X_SIZE;
 }

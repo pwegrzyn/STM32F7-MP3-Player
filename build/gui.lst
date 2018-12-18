@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccG2bHrl.s 			page 1
-=======
-ARM GAS  C:\Users\milek\AppData\Local\Temp\ccp8XL8d.s 			page 1
->>>>>>> 069a0906a4207e68cdc704b48d0c79549cba149d
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccgVMJhz.s 			page 1
 
 
    1              		.cpu cortex-m7
@@ -29,7 +25,7 @@ ARM GAS  C:\Users\milek\AppData\Local\Temp\ccp8XL8d.s 			page 1
   22              		.thumb_func
   23              		.fpu fpv5-sp-d16
   25              	lcd_start:
-  26              	.LFB138:
+  26              	.LFB136:
   27              		.file 1 "Src/gui.c"
    1:Src/gui.c     **** /*
    2:Src/gui.c     ****  *	Graphical User Interface
@@ -62,11 +58,7 @@ ARM GAS  C:\Users\milek\AppData\Local\Temp\ccp8XL8d.s 			page 1
   29:Src/gui.c     **** // Not sure about these two guys (may be used in LCD_START_V2() in LayerDefaultInit()?)
   30:Src/gui.c     **** // static uint32_t lcd_image_fg[LCD_Y_SIZE][LCD_X_SIZE] __attribute__((section(".sdram"))) __attrib
   31:Src/gui.c     **** // static uint32_t lcd_image_bg[LCD_Y_SIZE][LCD_X_SIZE] __attribute__((section(".sdram"))) __attrib
-<<<<<<< HEAD
-ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccG2bHrl.s 			page 2
-=======
-ARM GAS  C:\Users\milek\AppData\Local\Temp\ccp8XL8d.s 			page 2
->>>>>>> 069a0906a4207e68cdc704b48d0c79549cba149d
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccgVMJhz.s 			page 2
 
 
   32:Src/gui.c     **** 
@@ -88,16 +80,18 @@ ARM GAS  C:\Users\milek\AppData\Local\Temp\ccp8XL8d.s 			page 1
   48:Src/gui.c     **** void draw_background(void);
   49:Src/gui.c     **** int initialize_touchscreen(void);
   50:Src/gui.c     **** void touchscreen_loop_init(void);
-  51:Src/gui.c     **** Mp3_Player_State check_touchscreen(void);
+  51:Src/gui.c     **** Mp3_Player_State check_touchscreen(double);
   52:Src/gui.c     **** uint16_t getXPix (double factor);
   53:Src/gui.c     **** uint16_t getYPix (double factor);
-  54:Src/gui.c     **** 
-  55:Src/gui.c     **** /* ------------------------------------------------------------------- */
+  54:Src/gui.c     **** void refresh_screen(const char *info_text);
+  55:Src/gui.c     **** void draw_buttons(void);
   56:Src/gui.c     **** 
-  57:Src/gui.c     **** // Initialize the LCD display
-  58:Src/gui.c     **** void lcd_start(void)
-  59:Src/gui.c     **** {
-  28              		.loc 1 59 0
+  57:Src/gui.c     **** /* ------------------------------------------------------------------- */
+  58:Src/gui.c     **** 
+  59:Src/gui.c     **** // Initialize the LCD display
+  60:Src/gui.c     **** void lcd_start(void)
+  61:Src/gui.c     **** {
+  28              		.loc 1 61 0
   29              		.cfi_startproc
   30              		@ args = 0, pretend = 0, frame = 0
   31              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -106,1374 +100,1146 @@ ARM GAS  C:\Users\milek\AppData\Local\Temp\ccp8XL8d.s 			page 1
   34              		.cfi_def_cfa_offset 8
   35              		.cfi_offset 3, -8
   36              		.cfi_offset 14, -4
-  60:Src/gui.c     ****   /* LCD Initialization */
-  61:Src/gui.c     ****   BSP_LCD_Init();
-  37              		.loc 1 61 0
+  62:Src/gui.c     ****   /* LCD Initialization */
+  63:Src/gui.c     ****   BSP_LCD_Init();
+  37              		.loc 1 63 0
   38 0002 FFF7FEFF 		bl	BSP_LCD_Init
   39              	.LVL0:
-  62:Src/gui.c     **** 
-  63:Src/gui.c     ****   /* LCD Initialization */
-  64:Src/gui.c     ****   BSP_LCD_LayerDefaultInit(LAYER_BG, (unsigned int)0xC0000000);
-  40              		.loc 1 64 0
+  64:Src/gui.c     **** 
+  65:Src/gui.c     ****   /* LCD Initialization */
+  66:Src/gui.c     ****   BSP_LCD_LayerDefaultInit(LAYER_BG, (unsigned int)0xC0000000);
+  40              		.loc 1 66 0
   41 0006 4FF04041 		mov	r1, #-1073741824
   42 000a 0020     		movs	r0, #0
   43 000c FFF7FEFF 		bl	BSP_LCD_LayerDefaultInit
   44              	.LVL1:
-  65:Src/gui.c     ****   //BSP_LCD_LayerDefaultInit(1, (unsigned int)lcd_image_bg+(LCD_X_SIZE*LCD_Y_SIZE*4));
-  66:Src/gui.c     ****   BSP_LCD_LayerDefaultInit(LAYER_FG, (unsigned int)0xC0000000+(LCD_X_SIZE*LCD_Y_SIZE*4));
-  45              		.loc 1 66 0
+  67:Src/gui.c     ****   //BSP_LCD_LayerDefaultInit(1, (unsigned int)lcd_image_bg+(LCD_X_SIZE*LCD_Y_SIZE*4));
+  68:Src/gui.c     ****   BSP_LCD_LayerDefaultInit(LAYER_FG, (unsigned int)0xC0000000+(LCD_X_SIZE*LCD_Y_SIZE*4));
+  45              		.loc 1 68 0
   46 0010 1449     		ldr	r1, .L3
   47 0012 0120     		movs	r0, #1
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccgVMJhz.s 			page 3
+
+
   48 0014 FFF7FEFF 		bl	BSP_LCD_LayerDefaultInit
   49              	.LVL2:
-<<<<<<< HEAD
-ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccG2bHrl.s 			page 3
-=======
-ARM GAS  C:\Users\milek\AppData\Local\Temp\ccp8XL8d.s 			page 3
->>>>>>> 069a0906a4207e68cdc704b48d0c79549cba149d
-
-
-  67:Src/gui.c     **** 
-  68:Src/gui.c     ****   /* Enable the LCD */
-  69:Src/gui.c     ****   BSP_LCD_DisplayOn();
-  50              		.loc 1 69 0
+  69:Src/gui.c     **** 
+  70:Src/gui.c     ****   /* Enable the LCD */
+  71:Src/gui.c     ****   BSP_LCD_DisplayOn();
+  50              		.loc 1 71 0
   51 0018 FFF7FEFF 		bl	BSP_LCD_DisplayOn
   52              	.LVL3:
-  70:Src/gui.c     **** 
-  71:Src/gui.c     ****   /* Select the LCD Background Layer  */
-  72:Src/gui.c     ****   BSP_LCD_SelectLayer(LAYER_BG);
-  53              		.loc 1 72 0
+  72:Src/gui.c     **** 
+  73:Src/gui.c     ****   /* Select the LCD Background Layer  */
+  74:Src/gui.c     ****   BSP_LCD_SelectLayer(LAYER_BG);
+  53              		.loc 1 74 0
   54 001c 0020     		movs	r0, #0
   55 001e FFF7FEFF 		bl	BSP_LCD_SelectLayer
   56              	.LVL4:
-  73:Src/gui.c     **** 
-  74:Src/gui.c     ****   /* Clear the Background Layer */
-  75:Src/gui.c     ****   BSP_LCD_Clear(LCD_COLOR_WHITE);
-  57              		.loc 1 75 0
+  75:Src/gui.c     **** 
+  76:Src/gui.c     ****   /* Clear the Background Layer */
+  77:Src/gui.c     ****   BSP_LCD_Clear(LCD_COLOR_WHITE);
+  57              		.loc 1 77 0
   58 0022 4FF0FF30 		mov	r0, #-1
   59 0026 FFF7FEFF 		bl	BSP_LCD_Clear
   60              	.LVL5:
-  76:Src/gui.c     ****   BSP_LCD_SetBackColor(LCD_COLOR_WHITE);
-  61              		.loc 1 76 0
+  78:Src/gui.c     ****   BSP_LCD_SetBackColor(LCD_COLOR_WHITE);
+  61              		.loc 1 78 0
   62 002a 4FF0FF30 		mov	r0, #-1
   63 002e FFF7FEFF 		bl	BSP_LCD_SetBackColor
   64              	.LVL6:
-  77:Src/gui.c     **** 
-  78:Src/gui.c     ****   BSP_LCD_SetColorKeying(LAYER_FG,LCD_COLOR_WHITE);
-  65              		.loc 1 78 0
+  79:Src/gui.c     **** 
+  80:Src/gui.c     ****   BSP_LCD_SetColorKeying(LAYER_FG,LCD_COLOR_WHITE);
+  65              		.loc 1 80 0
   66 0032 4FF0FF31 		mov	r1, #-1
   67 0036 0120     		movs	r0, #1
   68 0038 FFF7FEFF 		bl	BSP_LCD_SetColorKeying
   69              	.LVL7:
-  79:Src/gui.c     **** 
-  80:Src/gui.c     ****   /* Select the LCD Foreground Layer  */
-  81:Src/gui.c     ****   BSP_LCD_SelectLayer(LAYER_FG);
-  70              		.loc 1 81 0
+  81:Src/gui.c     **** 
+  82:Src/gui.c     ****   /* Select the LCD Foreground Layer  */
+  83:Src/gui.c     ****   BSP_LCD_SelectLayer(LAYER_FG);
+  70              		.loc 1 83 0
   71 003c 0120     		movs	r0, #1
   72 003e FFF7FEFF 		bl	BSP_LCD_SelectLayer
   73              	.LVL8:
-  82:Src/gui.c     **** 
-  83:Src/gui.c     ****   /* Clear the Foreground Layer */
-  84:Src/gui.c     ****   BSP_LCD_Clear(LCD_COLOR_WHITE);
-  74              		.loc 1 84 0
+  84:Src/gui.c     **** 
+  85:Src/gui.c     ****   /* Clear the Foreground Layer */
+  86:Src/gui.c     ****   BSP_LCD_Clear(LCD_COLOR_WHITE);
+  74              		.loc 1 86 0
   75 0042 4FF0FF30 		mov	r0, #-1
   76 0046 FFF7FEFF 		bl	BSP_LCD_Clear
   77              	.LVL9:
-  85:Src/gui.c     ****   BSP_LCD_SetBackColor(LCD_COLOR_WHITE);
-  78              		.loc 1 85 0
+  87:Src/gui.c     ****   BSP_LCD_SetBackColor(LCD_COLOR_WHITE);
+  78              		.loc 1 87 0
   79 004a 4FF0FF30 		mov	r0, #-1
   80 004e FFF7FEFF 		bl	BSP_LCD_SetBackColor
   81              	.LVL10:
-  86:Src/gui.c     **** 
-  87:Src/gui.c     ****   /* Configure the transparency for foreground and background :
-  88:Src/gui.c     ****      Increase the transparency */
-  89:Src/gui.c     ****   BSP_LCD_SetTransparency(LAYER_BG, 255);
-  82              		.loc 1 89 0
+  88:Src/gui.c     **** 
+  89:Src/gui.c     ****   /* Configure the transparency for foreground and background :
+  90:Src/gui.c     ****      Increase the transparency */
+  91:Src/gui.c     ****   BSP_LCD_SetTransparency(LAYER_BG, 255);
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccgVMJhz.s 			page 4
+
+
+  82              		.loc 1 91 0
   83 0052 FF21     		movs	r1, #255
-<<<<<<< HEAD
-ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccG2bHrl.s 			page 4
-=======
-ARM GAS  C:\Users\milek\AppData\Local\Temp\ccp8XL8d.s 			page 4
->>>>>>> 069a0906a4207e68cdc704b48d0c79549cba149d
-
-
   84 0054 0020     		movs	r0, #0
   85 0056 FFF7FEFF 		bl	BSP_LCD_SetTransparency
   86              	.LVL11:
-  90:Src/gui.c     ****   BSP_LCD_SetTransparency(LAYER_FG, 255);
-  87              		.loc 1 90 0
+  92:Src/gui.c     ****   BSP_LCD_SetTransparency(LAYER_FG, 255);
+  87              		.loc 1 92 0
   88 005a FF21     		movs	r1, #255
   89 005c 0120     		movs	r0, #1
   90 005e FFF7FEFF 		bl	BSP_LCD_SetTransparency
   91              	.LVL12:
-  91:Src/gui.c     **** }
-  92              		.loc 1 91 0
-  93 0062 08BD     		pop	{r3, pc}
-  94              	.L4:
-  95              		.align	2
-  96              	.L3:
-  97 0064 00F807C0 		.word	-1073219584
-  98              		.cfi_endproc
-  99              	.LFE138:
- 101              		.section	.text.LCD_Start_v2,"ax",%progbits
- 102              		.align	1
- 103              		.global	LCD_Start_v2
- 104              		.syntax unified
- 105              		.thumb
- 106              		.thumb_func
- 107              		.fpu fpv5-sp-d16
- 109              	LCD_Start_v2:
- 110              	.LFB139:
-  92:Src/gui.c     **** 
-  93:Src/gui.c     **** // We can go with this instead probably
-  94:Src/gui.c     **** void LCD_Start_v2(void)
-  95:Src/gui.c     **** {
- 111              		.loc 1 95 0
- 112              		.cfi_startproc
- 113              		@ args = 0, pretend = 0, frame = 0
- 114              		@ frame_needed = 0, uses_anonymous_args = 0
- 115 0000 08B5     		push	{r3, lr}
- 116              	.LCFI1:
- 117              		.cfi_def_cfa_offset 8
- 118              		.cfi_offset 3, -8
- 119              		.cfi_offset 14, -4
-  96:Src/gui.c     **** 	BSP_LCD_Init();
- 120              		.loc 1 96 0
- 121 0002 FFF7FEFF 		bl	BSP_LCD_Init
- 122              	.LVL13:
-  97:Src/gui.c     **** 	BSP_LCD_LayerDefaultInit(LAYER_FG, (unsigned int)0xC0000000);
- 123              		.loc 1 97 0
- 124 0006 4FF04041 		mov	r1, #-1073741824
- 125 000a 0120     		movs	r0, #1
- 126 000c FFF7FEFF 		bl	BSP_LCD_LayerDefaultInit
- 127              	.LVL14:
-  98:Src/gui.c     **** 	BSP_LCD_LayerDefaultInit(LAYER_BG, (unsigned int)0xC0000000+(LCD_X_SIZE*LCD_Y_SIZE*4));
- 128              		.loc 1 98 0
- 129 0010 1649     		ldr	r1, .L7
- 130 0012 0020     		movs	r0, #0
- 131 0014 FFF7FEFF 		bl	BSP_LCD_LayerDefaultInit
- 132              	.LVL15:
-<<<<<<< HEAD
-  99:Src/gui.c     **** 	
-ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccG2bHrl.s 			page 5
-=======
-  99:Src/gui.c     **** 
-ARM GAS  C:\Users\milek\AppData\Local\Temp\ccp8XL8d.s 			page 5
->>>>>>> 069a0906a4207e68cdc704b48d0c79549cba149d
+  92 0062 08BD     		pop	{r3, pc}
+  93              	.L4:
+  94              		.align	2
+  95              	.L3:
+  96 0064 00F807C0 		.word	-1073219584
+  97              		.cfi_endproc
+  98              	.LFE136:
+ 100              		.section	.text.LCD_Start_v2,"ax",%progbits
+ 101              		.align	1
+ 102              		.global	LCD_Start_v2
+ 103              		.syntax unified
+ 104              		.thumb
+ 105              		.thumb_func
+ 106              		.fpu fpv5-sp-d16
+ 108              	LCD_Start_v2:
+ 109              	.LFB137:
+  93:Src/gui.c     **** }
+  94:Src/gui.c     **** 
+  95:Src/gui.c     **** // We can go with this instead probably
+  96:Src/gui.c     **** void LCD_Start_v2(void)
+  97:Src/gui.c     **** {
+ 110              		.loc 1 97 0
+ 111              		.cfi_startproc
+ 112              		@ args = 0, pretend = 0, frame = 0
+ 113              		@ frame_needed = 0, uses_anonymous_args = 0
+ 114 0000 08B5     		push	{r3, lr}
+ 115              	.LCFI1:
+ 116              		.cfi_def_cfa_offset 8
+ 117              		.cfi_offset 3, -8
+ 118              		.cfi_offset 14, -4
+  98:Src/gui.c     **** 	BSP_LCD_Init();
+ 119              		.loc 1 98 0
+ 120 0002 FFF7FEFF 		bl	BSP_LCD_Init
+ 121              	.LVL13:
+  99:Src/gui.c     **** 	BSP_LCD_LayerDefaultInit(LAYER_FG, (unsigned int)0xC0000000);
+ 122              		.loc 1 99 0
+ 123 0006 4FF04041 		mov	r1, #-1073741824
+ 124 000a 0120     		movs	r0, #1
+ 125 000c FFF7FEFF 		bl	BSP_LCD_LayerDefaultInit
+ 126              	.LVL14:
+ 100:Src/gui.c     **** 	BSP_LCD_LayerDefaultInit(LAYER_BG, (unsigned int)0xC0000000+(LCD_X_SIZE*LCD_Y_SIZE*4));
+ 127              		.loc 1 100 0
+ 128 0010 1649     		ldr	r1, .L7
+ 129 0012 0020     		movs	r0, #0
+ 130 0014 FFF7FEFF 		bl	BSP_LCD_LayerDefaultInit
+ 131              	.LVL15:
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccgVMJhz.s 			page 5
 
 
- 100:Src/gui.c     **** 	BSP_LCD_SelectLayer(LAYER_FG);
- 133              		.loc 1 100 0
- 134 0018 0120     		movs	r0, #1
- 135 001a FFF7FEFF 		bl	BSP_LCD_SelectLayer
- 136              	.LVL16:
- 101:Src/gui.c     **** 	BSP_LCD_Clear(LCD_COLOR_WHITE);
- 137              		.loc 1 101 0
- 138 001e 4FF0FF30 		mov	r0, #-1
- 139 0022 FFF7FEFF 		bl	BSP_LCD_Clear
- 140              	.LVL17:
- 102:Src/gui.c     **** 	BSP_LCD_SelectLayer(LAYER_BG);
- 141              		.loc 1 102 0
- 142 0026 0020     		movs	r0, #0
- 143 0028 FFF7FEFF 		bl	BSP_LCD_SelectLayer
- 144              	.LVL18:
+ 101:Src/gui.c     **** 
+ 102:Src/gui.c     **** 	BSP_LCD_SelectLayer(LAYER_FG);
+ 132              		.loc 1 102 0
+ 133 0018 0120     		movs	r0, #1
+ 134 001a FFF7FEFF 		bl	BSP_LCD_SelectLayer
+ 135              	.LVL16:
  103:Src/gui.c     **** 	BSP_LCD_Clear(LCD_COLOR_WHITE);
- 145              		.loc 1 103 0
- 146 002c 4FF0FF30 		mov	r0, #-1
- 147 0030 FFF7FEFF 		bl	BSP_LCD_Clear
- 148              	.LVL19:
- 104:Src/gui.c     **** 	BSP_LCD_SetBackColor(LCD_COLOR_WHITE);
- 149              		.loc 1 104 0
- 150 0034 4FF0FF30 		mov	r0, #-1
- 151 0038 FFF7FEFF 		bl	BSP_LCD_SetBackColor
- 152              	.LVL20:
- 105:Src/gui.c     **** 	BSP_LCD_SetTextColor(LCD_COLOR_BLACK);
- 153              		.loc 1 105 0
- 154 003c 4FF07F40 		mov	r0, #-16777216
- 155 0040 FFF7FEFF 		bl	BSP_LCD_SetTextColor
- 156              	.LVL21:
-<<<<<<< HEAD
- 106:Src/gui.c     **** 	
-=======
- 106:Src/gui.c     **** 
->>>>>>> 069a0906a4207e68cdc704b48d0c79549cba149d
- 107:Src/gui.c     **** 	BSP_LCD_ResetColorKeying(LAYER_FG);
- 157              		.loc 1 107 0
- 158 0044 0120     		movs	r0, #1
- 159 0046 FFF7FEFF 		bl	BSP_LCD_ResetColorKeying
- 160              	.LVL22:
- 108:Src/gui.c     **** 	BSP_LCD_ResetColorKeying(LAYER_BG);
- 161              		.loc 1 108 0
- 162 004a 0020     		movs	r0, #0
- 163 004c FFF7FEFF 		bl	BSP_LCD_ResetColorKeying
- 164              	.LVL23:
-<<<<<<< HEAD
- 109:Src/gui.c     **** 	
-=======
- 109:Src/gui.c     **** 
->>>>>>> 069a0906a4207e68cdc704b48d0c79549cba149d
- 110:Src/gui.c     **** 	BSP_LCD_SetTransparency(LAYER_FG, (uint8_t) 100);
- 165              		.loc 1 110 0
- 166 0050 6421     		movs	r1, #100
- 167 0052 0120     		movs	r0, #1
- 168 0054 FFF7FEFF 		bl	BSP_LCD_SetTransparency
- 169              	.LVL24:
- 111:Src/gui.c     **** 	BSP_LCD_SetTransparency(LAYER_BG, (uint8_t) 0xFF);
- 170              		.loc 1 111 0
- 171 0058 FF21     		movs	r1, #255
- 172 005a 0020     		movs	r0, #0
- 173 005c FFF7FEFF 		bl	BSP_LCD_SetTransparency
- 174              	.LVL25:
-<<<<<<< HEAD
- 112:Src/gui.c     **** 	
- 113:Src/gui.c     **** 	BSP_LCD_Reload(LCD_RELOAD_VERTICAL_BLANKING);
- 175              		.loc 1 113 0
-ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccG2bHrl.s 			page 6
-=======
- 112:Src/gui.c     **** 
- 113:Src/gui.c     **** 	BSP_LCD_Reload(LCD_RELOAD_VERTICAL_BLANKING);
- 175              		.loc 1 113 0
-ARM GAS  C:\Users\milek\AppData\Local\Temp\ccp8XL8d.s 			page 6
->>>>>>> 069a0906a4207e68cdc704b48d0c79549cba149d
+ 136              		.loc 1 103 0
+ 137 001e 4FF0FF30 		mov	r0, #-1
+ 138 0022 FFF7FEFF 		bl	BSP_LCD_Clear
+ 139              	.LVL17:
+ 104:Src/gui.c     **** 	BSP_LCD_SelectLayer(LAYER_BG);
+ 140              		.loc 1 104 0
+ 141 0026 0020     		movs	r0, #0
+ 142 0028 FFF7FEFF 		bl	BSP_LCD_SelectLayer
+ 143              	.LVL18:
+ 105:Src/gui.c     **** 	BSP_LCD_Clear(LCD_COLOR_WHITE);
+ 144              		.loc 1 105 0
+ 145 002c 4FF0FF30 		mov	r0, #-1
+ 146 0030 FFF7FEFF 		bl	BSP_LCD_Clear
+ 147              	.LVL19:
+ 106:Src/gui.c     **** 	BSP_LCD_SetBackColor(LCD_COLOR_WHITE);
+ 148              		.loc 1 106 0
+ 149 0034 4FF0FF30 		mov	r0, #-1
+ 150 0038 FFF7FEFF 		bl	BSP_LCD_SetBackColor
+ 151              	.LVL20:
+ 107:Src/gui.c     **** 	BSP_LCD_SetTextColor(LCD_COLOR_BLACK);
+ 152              		.loc 1 107 0
+ 153 003c 4FF07F40 		mov	r0, #-16777216
+ 154 0040 FFF7FEFF 		bl	BSP_LCD_SetTextColor
+ 155              	.LVL21:
+ 108:Src/gui.c     **** 
+ 109:Src/gui.c     **** 	BSP_LCD_ResetColorKeying(LAYER_FG);
+ 156              		.loc 1 109 0
+ 157 0044 0120     		movs	r0, #1
+ 158 0046 FFF7FEFF 		bl	BSP_LCD_ResetColorKeying
+ 159              	.LVL22:
+ 110:Src/gui.c     **** 	BSP_LCD_ResetColorKeying(LAYER_BG);
+ 160              		.loc 1 110 0
+ 161 004a 0020     		movs	r0, #0
+ 162 004c FFF7FEFF 		bl	BSP_LCD_ResetColorKeying
+ 163              	.LVL23:
+ 111:Src/gui.c     **** 
+ 112:Src/gui.c     **** 	BSP_LCD_SetTransparency(LAYER_FG, (uint8_t) 100);
+ 164              		.loc 1 112 0
+ 165 0050 6421     		movs	r1, #100
+ 166 0052 0120     		movs	r0, #1
+ 167 0054 FFF7FEFF 		bl	BSP_LCD_SetTransparency
+ 168              	.LVL24:
+ 113:Src/gui.c     **** 	BSP_LCD_SetTransparency(LAYER_BG, (uint8_t) 0xFF);
+ 169              		.loc 1 113 0
+ 170 0058 FF21     		movs	r1, #255
+ 171 005a 0020     		movs	r0, #0
+ 172 005c FFF7FEFF 		bl	BSP_LCD_SetTransparency
+ 173              	.LVL25:
+ 114:Src/gui.c     **** 
+ 115:Src/gui.c     **** 	BSP_LCD_Reload(LCD_RELOAD_VERTICAL_BLANKING);
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccgVMJhz.s 			page 6
 
 
- 176 0060 0220     		movs	r0, #2
- 177 0062 FFF7FEFF 		bl	BSP_LCD_Reload
- 178              	.LVL26:
- 114:Src/gui.c     **** 	BSP_LCD_DisplayOn();
- 179              		.loc 1 114 0
- 180 0066 FFF7FEFF 		bl	BSP_LCD_DisplayOn
- 181              	.LVL27:
- 115:Src/gui.c     **** }
- 182              		.loc 1 115 0
- 183 006a 08BD     		pop	{r3, pc}
- 184              	.L8:
- 185              		.align	2
- 186              	.L7:
- 187 006c 00F807C0 		.word	-1073219584
- 188              		.cfi_endproc
- 189              	.LFE139:
- 191              		.section	.text.draw_background,"ax",%progbits
- 192              		.align	1
- 193              		.global	draw_background
- 194              		.syntax unified
- 195              		.thumb
- 196              		.thumb_func
- 197              		.fpu fpv5-sp-d16
- 199              	draw_background:
- 200              	.LFB140:
- 116:Src/gui.c     **** 
- 117:Src/gui.c     **** // Draw the screen background
- 118:Src/gui.c     **** void draw_background(void)
- 119:Src/gui.c     **** {
- 201              		.loc 1 119 0
- 202              		.cfi_startproc
- 203              		@ args = 0, pretend = 0, frame = 0
- 204              		@ frame_needed = 0, uses_anonymous_args = 0
- 205 0000 10B5     		push	{r4, lr}
- 206              	.LCFI2:
- 207              		.cfi_def_cfa_offset 8
- 208              		.cfi_offset 4, -8
- 209              		.cfi_offset 14, -4
- 120:Src/gui.c     **** 	/* Select the LCD Background Layer  */
- 121:Src/gui.c     **** 	BSP_LCD_SelectLayer(LAYER_BG);
- 210              		.loc 1 121 0
- 211 0002 0020     		movs	r0, #0
- 212 0004 FFF7FEFF 		bl	BSP_LCD_SelectLayer
- 213              	.LVL28:
-<<<<<<< HEAD
- 122:Src/gui.c     **** 	
-=======
- 122:Src/gui.c     **** 
->>>>>>> 069a0906a4207e68cdc704b48d0c79549cba149d
- 123:Src/gui.c     **** 	BSP_LCD_SetTextColor(LCD_COLOR_BLACK);
- 214              		.loc 1 123 0
- 215 0008 4FF07F40 		mov	r0, #-16777216
- 216 000c FFF7FEFF 		bl	BSP_LCD_SetTextColor
- 217              	.LVL29:
- 124:Src/gui.c     **** 	BSP_LCD_FillRect(buttonsLeftUpper[0][0], buttonsLeftUpper[0][1],  CONTROL_BUTTON_SIZE, CONTROL_BUT
- 218              		.loc 1 124 0
- 219 0010 0E4C     		ldr	r4, .L11
- 220 0012 4823     		movs	r3, #72
- 221 0014 1A46     		mov	r2, r3
- 222 0016 6188     		ldrh	r1, [r4, #2]
- 223 0018 2088     		ldrh	r0, [r4]
-<<<<<<< HEAD
-ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccG2bHrl.s 			page 7
-=======
-ARM GAS  C:\Users\milek\AppData\Local\Temp\ccp8XL8d.s 			page 7
->>>>>>> 069a0906a4207e68cdc704b48d0c79549cba149d
+ 174              		.loc 1 115 0
+ 175 0060 0220     		movs	r0, #2
+ 176 0062 FFF7FEFF 		bl	BSP_LCD_Reload
+ 177              	.LVL26:
+ 116:Src/gui.c     **** 	BSP_LCD_DisplayOn();
+ 178              		.loc 1 116 0
+ 179 0066 FFF7FEFF 		bl	BSP_LCD_DisplayOn
+ 180              	.LVL27:
+ 181 006a 08BD     		pop	{r3, pc}
+ 182              	.L8:
+ 183              		.align	2
+ 184              	.L7:
+ 185 006c 00F807C0 		.word	-1073219584
+ 186              		.cfi_endproc
+ 187              	.LFE137:
+ 189              		.section	.text.initialize_touchscreen,"ax",%progbits
+ 190              		.align	1
+ 191              		.global	initialize_touchscreen
+ 192              		.syntax unified
+ 193              		.thumb
+ 194              		.thumb_func
+ 195              		.fpu fpv5-sp-d16
+ 197              	initialize_touchscreen:
+ 198              	.LFB139:
+ 117:Src/gui.c     **** }
+ 118:Src/gui.c     **** 
+ 119:Src/gui.c     **** // Draw the screen background
+ 120:Src/gui.c     **** void draw_background(void)
+ 121:Src/gui.c     **** {
+ 122:Src/gui.c     **** 	/* Select the LCD Background Layer  */
+ 123:Src/gui.c     **** 	BSP_LCD_SelectLayer(LAYER_BG);
+ 124:Src/gui.c     **** 
+ 125:Src/gui.c     **** 	draw_buttons();
+ 126:Src/gui.c     **** 
+ 127:Src/gui.c     **** 	BSP_LCD_DrawHLine(0, YPix(0.4), LCD_X_SIZE);
+ 128:Src/gui.c     **** 	BSP_LCD_DrawHLine(0, YPix(0.5), LCD_X_SIZE);
+ 129:Src/gui.c     **** 
+ 130:Src/gui.c     **** 	//select Foreground Layer
+ 131:Src/gui.c     **** 	BSP_LCD_SelectLayer(LAYER_FG);
+ 132:Src/gui.c     **** }
+ 133:Src/gui.c     **** 
+ 134:Src/gui.c     **** // Initialize the touchscreen
+ 135:Src/gui.c     **** int initialize_touchscreen(void)
+ 136:Src/gui.c     **** {
+ 199              		.loc 1 136 0
+ 200              		.cfi_startproc
+ 201              		@ args = 0, pretend = 0, frame = 0
+ 202              		@ frame_needed = 0, uses_anonymous_args = 0
+ 203 0000 10B5     		push	{r4, lr}
+ 204              	.LCFI2:
+ 205              		.cfi_def_cfa_offset 8
+ 206              		.cfi_offset 4, -8
+ 207              		.cfi_offset 14, -4
+ 208              	.LVL28:
+ 137:Src/gui.c     **** 	uint8_t status = 0;
+ 138:Src/gui.c     **** 	status = BSP_TS_Init(BSP_LCD_GetXSize(), BSP_LCD_GetYSize());
+ 209              		.loc 1 138 0
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccgVMJhz.s 			page 7
 
 
- 224 001a FFF7FEFF 		bl	BSP_LCD_FillRect
- 225              	.LVL30:
- 125:Src/gui.c     **** 	BSP_LCD_FillRect(buttonsLeftUpper[1][0], buttonsLeftUpper[1][1],  CONTROL_BUTTON_SIZE, CONTROL_BUT
- 226              		.loc 1 125 0
- 227 001e 4823     		movs	r3, #72
- 228 0020 1A46     		mov	r2, r3
- 229 0022 E188     		ldrh	r1, [r4, #6]
- 230 0024 A088     		ldrh	r0, [r4, #4]
- 231 0026 FFF7FEFF 		bl	BSP_LCD_FillRect
- 232              	.LVL31:
- 126:Src/gui.c     **** 	BSP_LCD_FillRect(buttonsLeftUpper[2][0], buttonsLeftUpper[2][1],  CONTROL_BUTTON_SIZE, CONTROL_BUT
- 233              		.loc 1 126 0
- 234 002a 4823     		movs	r3, #72
- 235 002c 1A46     		mov	r2, r3
- 236 002e 6189     		ldrh	r1, [r4, #10]
- 237 0030 2089     		ldrh	r0, [r4, #8]
- 238 0032 FFF7FEFF 		bl	BSP_LCD_FillRect
- 239              	.LVL32:
- 127:Src/gui.c     **** 	BSP_LCD_FillRect(buttonsLeftUpper[3][0], buttonsLeftUpper[3][1],  CONTROL_BUTTON_SIZE, CONTROL_BUT
- 240              		.loc 1 127 0
- 241 0036 4823     		movs	r3, #72
- 242 0038 1A46     		mov	r2, r3
- 243 003a E189     		ldrh	r1, [r4, #14]
- 244 003c A089     		ldrh	r0, [r4, #12]
- 245 003e FFF7FEFF 		bl	BSP_LCD_FillRect
- 246              	.LVL33:
- 128:Src/gui.c     **** 
- 129:Src/gui.c     **** 	//select Foreground Layer
- 130:Src/gui.c     **** 	BSP_LCD_SelectLayer(LAYER_FG);
- 247              		.loc 1 130 0
- 248 0042 0120     		movs	r0, #1
- 249 0044 FFF7FEFF 		bl	BSP_LCD_SelectLayer
- 250              	.LVL34:
- 131:Src/gui.c     **** }
- 251              		.loc 1 131 0
- 252 0048 10BD     		pop	{r4, pc}
- 253              	.L12:
- 254 004a 00BF     		.align	2
- 255              	.L11:
- 256 004c 00000000 		.word	.LANCHOR0
- 257              		.cfi_endproc
- 258              	.LFE140:
- 260              		.section	.text.initialize_touchscreen,"ax",%progbits
- 261              		.align	1
- 262              		.global	initialize_touchscreen
- 263              		.syntax unified
- 264              		.thumb
- 265              		.thumb_func
- 266              		.fpu fpv5-sp-d16
- 268              	initialize_touchscreen:
- 269              	.LFB141:
- 132:Src/gui.c     **** 
- 133:Src/gui.c     **** // Initialize the touchscreen
- 134:Src/gui.c     **** int initialize_touchscreen(void)
- 135:Src/gui.c     **** {
- 270              		.loc 1 135 0
- 271              		.cfi_startproc
-<<<<<<< HEAD
-ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccG2bHrl.s 			page 8
-=======
-ARM GAS  C:\Users\milek\AppData\Local\Temp\ccp8XL8d.s 			page 8
->>>>>>> 069a0906a4207e68cdc704b48d0c79549cba149d
+ 210 0002 FFF7FEFF 		bl	BSP_LCD_GetXSize
+ 211              	.LVL29:
+ 212 0006 84B2     		uxth	r4, r0
+ 213 0008 FFF7FEFF 		bl	BSP_LCD_GetYSize
+ 214              	.LVL30:
+ 215 000c 81B2     		uxth	r1, r0
+ 216 000e 2046     		mov	r0, r4
+ 217 0010 FFF7FEFF 		bl	BSP_TS_Init
+ 218              	.LVL31:
+ 139:Src/gui.c     **** 	if(status != TS_OK) return -1;
+ 219              		.loc 1 139 0
+ 220 0014 08B9     		cbnz	r0, .L13
+ 140:Src/gui.c     **** 	return 0;
+ 221              		.loc 1 140 0
+ 222 0016 0020     		movs	r0, #0
+ 223              	.LVL32:
+ 141:Src/gui.c     **** }
+ 224              		.loc 1 141 0
+ 225 0018 10BD     		pop	{r4, pc}
+ 226              	.LVL33:
+ 227              	.L13:
+ 139:Src/gui.c     **** 	if(status != TS_OK) return -1;
+ 228              		.loc 1 139 0
+ 229 001a 4FF0FF30 		mov	r0, #-1
+ 230              	.LVL34:
+ 231 001e 10BD     		pop	{r4, pc}
+ 232              		.cfi_endproc
+ 233              	.LFE139:
+ 235              		.section	.text.touchscreen_loop_init,"ax",%progbits
+ 236              		.align	1
+ 237              		.global	touchscreen_loop_init
+ 238              		.syntax unified
+ 239              		.thumb
+ 240              		.thumb_func
+ 241              		.fpu fpv5-sp-d16
+ 243              	touchscreen_loop_init:
+ 244              	.LFB140:
+ 142:Src/gui.c     **** 
+ 143:Src/gui.c     **** // Call this once to init the TS-input-reading-loop
+ 144:Src/gui.c     **** void touchscreen_loop_init(void)
+ 145:Src/gui.c     **** {
+ 245              		.loc 1 145 0
+ 246              		.cfi_startproc
+ 247              		@ args = 0, pretend = 0, frame = 0
+ 248              		@ frame_needed = 0, uses_anonymous_args = 0
+ 249 0000 08B5     		push	{r3, lr}
+ 250              	.LCFI3:
+ 251              		.cfi_def_cfa_offset 8
+ 252              		.cfi_offset 3, -8
+ 253              		.cfi_offset 14, -4
+ 146:Src/gui.c     ****     newX = 120;
+ 254              		.loc 1 146 0
+ 255 0002 7823     		movs	r3, #120
+ 256 0004 0A4A     		ldr	r2, .L16
+ 257 0006 1380     		strh	r3, [r2]	@ movhi
+ 147:Src/gui.c     **** 	newY = 120;
+ 258              		.loc 1 147 0
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccgVMJhz.s 			page 8
 
 
- 272              		@ args = 0, pretend = 0, frame = 0
- 273              		@ frame_needed = 0, uses_anonymous_args = 0
- 274 0000 10B5     		push	{r4, lr}
- 275              	.LCFI3:
- 276              		.cfi_def_cfa_offset 8
- 277              		.cfi_offset 4, -8
- 278              		.cfi_offset 14, -4
- 279              	.LVL35:
- 136:Src/gui.c     **** 	uint8_t status = 0;
- 137:Src/gui.c     **** 	status = BSP_TS_Init(BSP_LCD_GetXSize(), BSP_LCD_GetYSize());
- 280              		.loc 1 137 0
- 281 0002 FFF7FEFF 		bl	BSP_LCD_GetXSize
- 282              	.LVL36:
- 283 0006 84B2     		uxth	r4, r0
- 284 0008 FFF7FEFF 		bl	BSP_LCD_GetYSize
- 285              	.LVL37:
- 286 000c 81B2     		uxth	r1, r0
- 287 000e 2046     		mov	r0, r4
- 288 0010 FFF7FEFF 		bl	BSP_TS_Init
- 289              	.LVL38:
- 138:Src/gui.c     **** 	if(status != TS_OK) return -1;
- 290              		.loc 1 138 0
- 291 0014 08B9     		cbnz	r0, .L17
- 139:Src/gui.c     **** 	return 0;
- 292              		.loc 1 139 0
- 293 0016 0020     		movs	r0, #0
- 294              	.LVL39:
- 295              	.L13:
- 140:Src/gui.c     **** }
- 296              		.loc 1 140 0
- 297 0018 10BD     		pop	{r4, pc}
- 298              	.LVL40:
- 299              	.L17:
- 138:Src/gui.c     **** 	if(status != TS_OK) return -1;
- 300              		.loc 1 138 0
- 301 001a 4FF0FF30 		mov	r0, #-1
- 302              	.LVL41:
- 303 001e FBE7     		b	.L13
- 304              		.cfi_endproc
- 305              	.LFE141:
- 307              		.section	.text.touchscreen_loop_init,"ax",%progbits
- 308              		.align	1
- 309              		.global	touchscreen_loop_init
- 310              		.syntax unified
- 311              		.thumb
- 312              		.thumb_func
- 313              		.fpu fpv5-sp-d16
- 315              	touchscreen_loop_init:
- 316              	.LFB142:
- 141:Src/gui.c     **** 
- 142:Src/gui.c     **** // Call this once to init the TS-input-reading-loop
- 143:Src/gui.c     **** void touchscreen_loop_init(void)
- 144:Src/gui.c     **** {
- 317              		.loc 1 144 0
- 318              		.cfi_startproc
- 319              		@ args = 0, pretend = 0, frame = 0
- 320              		@ frame_needed = 0, uses_anonymous_args = 0
-<<<<<<< HEAD
-ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccG2bHrl.s 			page 9
-=======
-ARM GAS  C:\Users\milek\AppData\Local\Temp\ccp8XL8d.s 			page 9
->>>>>>> 069a0906a4207e68cdc704b48d0c79549cba149d
+ 259 0008 0A4A     		ldr	r2, .L16+4
+ 260 000a 1380     		strh	r3, [r2]	@ movhi
+ 148:Src/gui.c     ****     BSP_LCD_SelectLayer(LAYER_FG);
+ 261              		.loc 1 148 0
+ 262 000c 0120     		movs	r0, #1
+ 263 000e FFF7FEFF 		bl	BSP_LCD_SelectLayer
+ 264              	.LVL35:
+ 149:Src/gui.c     **** 	BSP_LCD_SetTextColor(LCD_COLOR_GREEN);
+ 265              		.loc 1 149 0
+ 266 0012 4FF0FF20 		mov	r0, #-16711936
+ 267 0016 FFF7FEFF 		bl	BSP_LCD_SetTextColor
+ 268              	.LVL36:
+ 150:Src/gui.c     **** 	BSP_LCD_SetTransparency(LAYER_FG, (uint8_t) 0xFF);
+ 269              		.loc 1 150 0
+ 270 001a FF21     		movs	r1, #255
+ 271 001c 0120     		movs	r0, #1
+ 272 001e FFF7FEFF 		bl	BSP_LCD_SetTransparency
+ 273              	.LVL37:
+ 151:Src/gui.c     **** 	BSP_LCD_SetColorKeying(LAYER_FG, LCD_COLOR_WHITE);
+ 274              		.loc 1 151 0
+ 275 0022 4FF0FF31 		mov	r1, #-1
+ 276 0026 0120     		movs	r0, #1
+ 277 0028 FFF7FEFF 		bl	BSP_LCD_SetColorKeying
+ 278              	.LVL38:
+ 279 002c 08BD     		pop	{r3, pc}
+ 280              	.L17:
+ 281 002e 00BF     		.align	2
+ 282              	.L16:
+ 283 0030 00000000 		.word	newX
+ 284 0034 00000000 		.word	newY
+ 285              		.cfi_endproc
+ 286              	.LFE140:
+ 288              		.global	__aeabi_dmul
+ 289              		.global	__aeabi_d2uiz
+ 290              		.global	__aeabi_i2d
+ 291              		.global	__aeabi_dadd
+ 292              		.global	__aeabi_dcmple
+ 293              		.section	.text.check_touchscreen,"ax",%progbits
+ 294              		.align	1
+ 295              		.global	check_touchscreen
+ 296              		.syntax unified
+ 297              		.thumb
+ 298              		.thumb_func
+ 299              		.fpu fpv5-sp-d16
+ 301              	check_touchscreen:
+ 302              	.LFB141:
+ 152:Src/gui.c     **** }
+ 153:Src/gui.c     **** 
+ 154:Src/gui.c     **** // Single iteration of getting TS input
+ 155:Src/gui.c     **** Mp3_Player_State check_touchscreen(double percent)
+ 156:Src/gui.c     **** {
+ 303              		.loc 1 156 0
+ 304              		.cfi_startproc
+ 305              		@ args = 0, pretend = 0, frame = 0
+ 306              		@ frame_needed = 0, uses_anonymous_args = 0
+ 307              	.LVL39:
+ 308 0000 2DE9F047 		push	{r4, r5, r6, r7, r8, r9, r10, lr}
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccgVMJhz.s 			page 9
 
 
- 321 0000 08B5     		push	{r3, lr}
- 322              	.LCFI4:
- 323              		.cfi_def_cfa_offset 8
- 324              		.cfi_offset 3, -8
- 325              		.cfi_offset 14, -4
- 145:Src/gui.c     ****     newX = 120;
- 326              		.loc 1 145 0
- 327 0002 7823     		movs	r3, #120
- 328 0004 0A4A     		ldr	r2, .L20
- 329 0006 1380     		strh	r3, [r2]	@ movhi
- 146:Src/gui.c     **** 	newY = 120;
- 330              		.loc 1 146 0
- 331 0008 0A4A     		ldr	r2, .L20+4
- 332 000a 1380     		strh	r3, [r2]	@ movhi
- 147:Src/gui.c     ****     BSP_LCD_SelectLayer(LAYER_FG);
- 333              		.loc 1 147 0
- 334 000c 0120     		movs	r0, #1
- 335 000e FFF7FEFF 		bl	BSP_LCD_SelectLayer
- 336              	.LVL42:
- 148:Src/gui.c     **** 	BSP_LCD_SetTextColor(LCD_COLOR_GREEN);
- 337              		.loc 1 148 0
- 338 0012 4FF0FF20 		mov	r0, #-16711936
- 339 0016 FFF7FEFF 		bl	BSP_LCD_SetTextColor
- 340              	.LVL43:
- 149:Src/gui.c     **** 	BSP_LCD_SetTransparency(LAYER_FG, (uint8_t) 0xFF);
- 341              		.loc 1 149 0
- 342 001a FF21     		movs	r1, #255
- 343 001c 0120     		movs	r0, #1
- 344 001e FFF7FEFF 		bl	BSP_LCD_SetTransparency
- 345              	.LVL44:
- 150:Src/gui.c     **** 	BSP_LCD_SetColorKeying(LAYER_FG, LCD_COLOR_WHITE);
- 346              		.loc 1 150 0
- 347 0022 4FF0FF31 		mov	r1, #-1
- 348 0026 0120     		movs	r0, #1
- 349 0028 FFF7FEFF 		bl	BSP_LCD_SetColorKeying
- 350              	.LVL45:
- 151:Src/gui.c     **** }
- 351              		.loc 1 151 0
- 352 002c 08BD     		pop	{r3, pc}
- 353              	.L21:
- 354 002e 00BF     		.align	2
- 355              	.L20:
- 356 0030 00000000 		.word	newX
- 357 0034 00000000 		.word	newY
- 358              		.cfi_endproc
- 359              	.LFE142:
- 361              		.global	__aeabi_i2d
- 362              		.global	__aeabi_dadd
- 363              		.global	__aeabi_dcmple
- 364              		.section	.text.check_touchscreen,"ax",%progbits
- 365              		.align	1
- 366              		.global	check_touchscreen
- 367              		.syntax unified
- 368              		.thumb
- 369              		.thumb_func
- 370              		.fpu fpv5-sp-d16
- 372              	check_touchscreen:
-<<<<<<< HEAD
-ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccG2bHrl.s 			page 10
-=======
-ARM GAS  C:\Users\milek\AppData\Local\Temp\ccp8XL8d.s 			page 10
->>>>>>> 069a0906a4207e68cdc704b48d0c79549cba149d
-
-
- 373              	.LFB143:
- 152:Src/gui.c     **** 
- 153:Src/gui.c     **** // Single iteration of getting TS input
- 154:Src/gui.c     **** Mp3_Player_State check_touchscreen(void)
- 155:Src/gui.c     **** {
- 374              		.loc 1 155 0
- 375              		.cfi_startproc
- 376              		@ args = 0, pretend = 0, frame = 0
- 377              		@ frame_needed = 0, uses_anonymous_args = 0
- 378 0000 2DE9F047 		push	{r4, r5, r6, r7, r8, r9, r10, lr}
- 379              	.LCFI5:
- 380              		.cfi_def_cfa_offset 32
- 381              		.cfi_offset 4, -32
- 382              		.cfi_offset 5, -28
- 383              		.cfi_offset 6, -24
- 384              		.cfi_offset 7, -20
- 385              		.cfi_offset 8, -16
- 386              		.cfi_offset 9, -12
- 387              		.cfi_offset 10, -8
- 388              		.cfi_offset 14, -4
- 156:Src/gui.c     **** 	uint32_t currentTicks = HAL_GetTick();
- 389              		.loc 1 156 0
- 390 0004 FFF7FEFF 		bl	HAL_GetTick
- 391              	.LVL46:
- 157:Src/gui.c     **** 	if (currentTicks < lastTicks + TICKS_DELTA)
- 392              		.loc 1 157 0
-<<<<<<< HEAD
- 393 0008 3C4B     		ldr	r3, .L42
- 394 000a 1B68     		ldr	r3, [r3]
- 395 000c 6433     		adds	r3, r3, #100
- 396 000e 8342     		cmp	r3, r0
- 397 0010 6FD8     		bhi	.L33
- 158:Src/gui.c     **** 		return EMPTY;
- 159:Src/gui.c     **** 		
+ 309              	.LCFI4:
+ 310              		.cfi_def_cfa_offset 32
+ 311              		.cfi_offset 4, -32
+ 312              		.cfi_offset 5, -28
+ 313              		.cfi_offset 6, -24
+ 314              		.cfi_offset 7, -20
+ 315              		.cfi_offset 8, -16
+ 316              		.cfi_offset 9, -12
+ 317              		.cfi_offset 10, -8
+ 318              		.cfi_offset 14, -4
+ 157:Src/gui.c     **** 	BSP_LCD_FillRect(0, YPix(0.2),  percent * LCD_X_SIZE, 30);
+ 319              		.loc 1 157 0
+ 320 0004 0022     		movs	r2, #0
+ 321 0006 4D4B     		ldr	r3, .L42
+ 322 0008 51EC100B 		vmov	r0, r1, d0
+ 323 000c FFF7FEFF 		bl	__aeabi_dmul
+ 324              	.LVL40:
+ 325 0010 FFF7FEFF 		bl	__aeabi_d2uiz
+ 326              	.LVL41:
+ 327 0014 1E23     		movs	r3, #30
+ 328 0016 82B2     		uxth	r2, r0
+ 329 0018 3621     		movs	r1, #54
+ 330 001a 0020     		movs	r0, #0
+ 331 001c FFF7FEFF 		bl	BSP_LCD_FillRect
+ 332              	.LVL42:
+ 158:Src/gui.c     **** 	
+ 159:Src/gui.c     **** 	uint32_t currentTicks = HAL_GetTick();
+ 333              		.loc 1 159 0
+ 334 0020 FFF7FEFF 		bl	HAL_GetTick
+ 335              	.LVL43:
  160:Src/gui.c     **** 	
- 161:Src/gui.c     ****     BSP_TS_GetState(&TS_State);
- 398              		.loc 1 161 0
- 399 0012 3B4C     		ldr	r4, .L42+4
-=======
- 393 0008 3E4B     		ldr	r3, .L42
- 394 000a 1B68     		ldr	r3, [r3]
- 395 000c 6433     		adds	r3, r3, #100
- 396 000e 8342     		cmp	r3, r0
- 397 0010 74D8     		bhi	.L34
- 158:Src/gui.c     **** 		return EMPTY;
- 159:Src/gui.c     **** 
- 160:Src/gui.c     **** 
- 161:Src/gui.c     ****     BSP_TS_GetState(&TS_State);
- 398              		.loc 1 161 0
- 399 0012 3D4C     		ldr	r4, .L42+4
->>>>>>> 069a0906a4207e68cdc704b48d0c79549cba149d
- 400 0014 2046     		mov	r0, r4
- 401              	.LVL47:
- 402 0016 FFF7FEFF 		bl	BSP_TS_GetState
- 403              	.LVL48:
- 162:Src/gui.c     **** 	BSP_LCD_Clear(LCD_COLOR_WHITE);
- 404              		.loc 1 162 0
- 405 001a 4FF0FF30 		mov	r0, #-1
- 406 001e FFF7FEFF 		bl	BSP_LCD_Clear
- 407              	.LVL49:
-<<<<<<< HEAD
- 163:Src/gui.c     **** 	if ((TS_State.touchX[0] & 0x0FFF) >= 40) 
-=======
- 163:Src/gui.c     **** 	if ((TS_State.touchX[0] & 0x0FFF) >= 40)
->>>>>>> 069a0906a4207e68cdc704b48d0c79549cba149d
- 408              		.loc 1 163 0
- 409 0022 6388     		ldrh	r3, [r4, #2]
- 410 0024 C3F30B03 		ubfx	r3, r3, #0, #12
- 411 0028 272B     		cmp	r3, #39
- 412 002a 01D9     		bls	.L24
- 164:Src/gui.c     ****     {
- 165:Src/gui.c     **** 		newX = TS_State.touchX[0] & 0x0FFF;
- 413              		.loc 1 165 0
-<<<<<<< HEAD
- 414 002c 354A     		ldr	r2, .L42+8
- 415 002e 1380     		strh	r3, [r2]	@ movhi
-ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccG2bHrl.s 			page 11
-=======
- 414 002c 374A     		ldr	r2, .L42+8
- 415 002e 1380     		strh	r3, [r2]	@ movhi
-ARM GAS  C:\Users\milek\AppData\Local\Temp\ccp8XL8d.s 			page 11
->>>>>>> 069a0906a4207e68cdc704b48d0c79549cba149d
+ 161:Src/gui.c     **** 	if (currentTicks < lastTicks + TICKS_DELTA)
+ 336              		.loc 1 161 0
+ 337 0024 464B     		ldr	r3, .L42+4
+ 338 0026 1B68     		ldr	r3, [r3]
+ 339 0028 6433     		adds	r3, r3, #100
+ 340 002a 9842     		cmp	r0, r3
+ 341 002c 02D2     		bcs	.L36
+ 162:Src/gui.c     **** 		return EMPTY;
+ 342              		.loc 1 162 0
+ 343 002e 0620     		movs	r0, #6
+ 344              	.LVL44:
+ 345 0030 BDE8F087 		pop	{r4, r5, r6, r7, r8, r9, r10, pc}
+ 346              	.LVL45:
+ 347              	.L36:
+ 163:Src/gui.c     **** 	
+ 164:Src/gui.c     **** 	lastTicks = currentTicks;
+ 348              		.loc 1 164 0
+ 349 0034 424B     		ldr	r3, .L42+4
+ 350 0036 1860     		str	r0, [r3]
+ 165:Src/gui.c     **** 	
+ 166:Src/gui.c     ****     BSP_TS_GetState(&TS_State);
+ 351              		.loc 1 166 0
+ 352 0038 424C     		ldr	r4, .L42+8
+ 353 003a 2046     		mov	r0, r4
+ 354              	.LVL46:
+ 355 003c FFF7FEFF 		bl	BSP_TS_GetState
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccgVMJhz.s 			page 10
 
 
- 416              	.L24:
- 166:Src/gui.c     **** 	}
-<<<<<<< HEAD
- 167:Src/gui.c     **** 	if ((TS_State.touchY[0] & 0x0FFF) >= 40) 
- 417              		.loc 1 167 0
- 418 0030 334B     		ldr	r3, .L42+4
-=======
- 167:Src/gui.c     **** 	if ((TS_State.touchY[0] & 0x0FFF) >= 40)
- 417              		.loc 1 167 0
- 418 0030 354B     		ldr	r3, .L42+4
->>>>>>> 069a0906a4207e68cdc704b48d0c79549cba149d
- 419 0032 9B89     		ldrh	r3, [r3, #12]
- 420 0034 C3F30B03 		ubfx	r3, r3, #0, #12
- 421 0038 272B     		cmp	r3, #39
- 422 003a 01D9     		bls	.L25
- 168:Src/gui.c     ****     {
- 169:Src/gui.c     **** 		newY = TS_State.touchY[0] & 0x0FFF;
- 423              		.loc 1 169 0
-<<<<<<< HEAD
- 424 003c 324A     		ldr	r2, .L42+12
-=======
- 424 003c 344A     		ldr	r2, .L42+12
->>>>>>> 069a0906a4207e68cdc704b48d0c79549cba149d
- 425 003e 1380     		strh	r3, [r2]	@ movhi
- 426              	.L25:
- 170:Src/gui.c     **** 	}
- 171:Src/gui.c     **** 
- 172:Src/gui.c     **** 	if (lastState.touchX[0] == newX && lastState.touchY[0] == newY)
- 427              		.loc 1 172 0
-<<<<<<< HEAD
- 428 0040 324B     		ldr	r3, .L42+16
- 429 0042 5B88     		ldrh	r3, [r3, #2]
- 430 0044 2F4A     		ldr	r2, .L42+8
-=======
- 428 0040 344B     		ldr	r3, .L42+16
- 429 0042 5B88     		ldrh	r3, [r3, #2]
- 430 0044 314A     		ldr	r2, .L42+8
->>>>>>> 069a0906a4207e68cdc704b48d0c79549cba149d
- 431 0046 1688     		ldrh	r6, [r2]
- 432 0048 B342     		cmp	r3, r6
- 433 004a 08D0     		beq	.L39
- 434              	.L26:
- 173:Src/gui.c     **** 		return EMPTY;
- 174:Src/gui.c     **** 
- 175:Src/gui.c     **** 	lastState.touchX[0] = newX;
- 435              		.loc 1 175 0
-<<<<<<< HEAD
- 436 004c 2F4B     		ldr	r3, .L42+16
- 437 004e 5E80     		strh	r6, [r3, #2]	@ movhi
- 176:Src/gui.c     **** 	lastState.touchY[0] = newY;
- 438              		.loc 1 176 0
- 439 0050 2D4A     		ldr	r2, .L42+12
-=======
- 436 004c 314B     		ldr	r3, .L42+16
- 437 004e 5E80     		strh	r6, [r3, #2]	@ movhi
- 176:Src/gui.c     **** 	lastState.touchY[0] = newY;
- 438              		.loc 1 176 0
- 439 0050 2F4A     		ldr	r2, .L42+12
->>>>>>> 069a0906a4207e68cdc704b48d0c79549cba149d
- 440 0052 B2F800A0 		ldrh	r10, [r2]
- 441 0056 A3F80CA0 		strh	r10, [r3, #12]	@ movhi
- 442              	.LVL50:
- 443              	.LBB2:
-<<<<<<< HEAD
- 177:Src/gui.c     **** 	
- 178:Src/gui.c     **** 	
- 179:Src/gui.c     **** 	for(int i = 0; i < CONTROL_BUTTONS_NUMBER; i++) {
- 444              		.loc 1 179 0
- 445 005a 0024     		movs	r4, #0
- 446 005c 0EE0     		b	.L27
-=======
- 177:Src/gui.c     **** 
- 178:Src/gui.c     **** 
- 179:Src/gui.c     **** 	for(int i = 0; i < CONTROL_BUTTONS_NUMBER; i++) {
- 444              		.loc 1 179 0
- 445 005a 0024     		movs	r4, #0
- 446 005c 13E0     		b	.L27
->>>>>>> 069a0906a4207e68cdc704b48d0c79549cba149d
- 447              	.LVL51:
- 448              	.L39:
- 449              	.LBE2:
- 172:Src/gui.c     **** 		return EMPTY;
- 450              		.loc 1 172 0 discriminator 1
-<<<<<<< HEAD
- 451 005e 2B4B     		ldr	r3, .L42+16
- 452 0060 9A89     		ldrh	r2, [r3, #12]
- 453 0062 294B     		ldr	r3, .L42+12
- 454 0064 1B88     		ldrh	r3, [r3]
- 455 0066 9A42     		cmp	r2, r3
- 456 0068 F0D1     		bne	.L26
- 173:Src/gui.c     **** 	
-ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccG2bHrl.s 			page 12
-=======
- 451 005e 2D4B     		ldr	r3, .L42+16
- 452 0060 9A89     		ldrh	r2, [r3, #12]
- 453 0062 2B4B     		ldr	r3, .L42+12
- 454 0064 1B88     		ldrh	r3, [r3]
- 455 0066 9A42     		cmp	r2, r3
- 456 0068 F0D1     		bne	.L26
- 173:Src/gui.c     **** 
-ARM GAS  C:\Users\milek\AppData\Local\Temp\ccp8XL8d.s 			page 12
->>>>>>> 069a0906a4207e68cdc704b48d0c79549cba149d
-
-
- 457              		.loc 1 173 0
- 458 006a 0620     		movs	r0, #6
-<<<<<<< HEAD
- 459 006c 42E0     		b	.L23
- 460              	.LVL52:
- 461              	.L41:
- 462              	.LBB6:
- 463              	.LBB3:
- 180:Src/gui.c     **** 	
-=======
- 459 006c 47E0     		b	.L23
- 460              	.LVL52:
- 461              	.L41:
- 462              	.LBB5:
- 463              	.LBB3:
- 180:Src/gui.c     **** 
->>>>>>> 069a0906a4207e68cdc704b48d0c79549cba149d
- 181:Src/gui.c     **** 		uint16_t buttonCornerX = buttonsLeftUpper[i][0];
- 182:Src/gui.c     **** 		uint16_t buttonCornerY = buttonsLeftUpper[i][1];
- 183:Src/gui.c     **** 
- 184:Src/gui.c     **** 		if (newX <= buttonCornerX + CONTROL_BUTTON_SIZE &&
- 185:Src/gui.c     **** 			newY <= buttonCornerY + CONTROL_BUTTON_SIZE &&
- 186:Src/gui.c     **** 			newX > buttonCornerX &&
- 187:Src/gui.c     **** 			newY > buttonCornerY
- 188:Src/gui.c     **** 		) {
- 189:Src/gui.c     **** 
- 190:Src/gui.c     **** 		if (i == 1)
-<<<<<<< HEAD
- 191:Src/gui.c     **** 			if (playButtonState == PLAY)
- 464              		.loc 1 191 0
- 465 006e 284B     		ldr	r3, .L42+20
- 466 0070 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 467 0072 002B     		cmp	r3, #0
- 468 0074 40D1     		bne	.L35
- 192:Src/gui.c     **** 				return PAUSE;
- 469              		.loc 1 192 0
- 470 0076 0120     		movs	r0, #1
- 471 0078 3CE0     		b	.L23
- 472              	.L28:
- 473              	.LBE3:
- 179:Src/gui.c     **** 	
- 474              		.loc 1 179 0 discriminator 2
- 475 007a 0134     		adds	r4, r4, #1
- 476              	.LVL53:
- 477              	.L27:
- 179:Src/gui.c     **** 	
- 478              		.loc 1 179 0 is_stmt 0 discriminator 1
- 479 007c 032C     		cmp	r4, #3
- 480 007e 36DC     		bgt	.L40
- 481              	.LBB4:
- 181:Src/gui.c     **** 		uint16_t buttonCornerY = buttonsLeftUpper[i][1];
- 482              		.loc 1 181 0 is_stmt 1
- 483 0080 244B     		ldr	r3, .L42+24
- 484 0082 33F82450 		ldrh	r5, [r3, r4, lsl #2]
- 485              	.LVL54:
- 182:Src/gui.c     **** 		
- 486              		.loc 1 182 0
- 487 0086 03EB8403 		add	r3, r3, r4, lsl #2
- 488 008a 5F88     		ldrh	r7, [r3, #2]
- 489              	.LVL55:
- 184:Src/gui.c     **** 			newY <= buttonCornerY + CONTROL_BUTTON_SIZE &&
- 490              		.loc 1 184 0
- 491 008c 3046     		mov	r0, r6
- 492 008e FFF7FEFF 		bl	__aeabi_i2d
- 493              	.LVL56:
- 494 0092 8046     		mov	r8, r0
- 495 0094 8946     		mov	r9, r1
-ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccG2bHrl.s 			page 13
-
-
- 496 0096 2846     		mov	r0, r5
- 497 0098 FFF7FEFF 		bl	__aeabi_i2d
- 498              	.LVL57:
- 499 009c 0022     		movs	r2, #0
- 500 009e 1E4B     		ldr	r3, .L42+28
- 501 00a0 FFF7FEFF 		bl	__aeabi_dadd
- 502              	.LVL58:
- 503 00a4 0246     		mov	r2, r0
- 504 00a6 0B46     		mov	r3, r1
- 505 00a8 4046     		mov	r0, r8
- 506 00aa 4946     		mov	r1, r9
- 507 00ac FFF7FEFF 		bl	__aeabi_dcmple
- 508              	.LVL59:
- 509 00b0 0028     		cmp	r0, #0
- 510 00b2 E2D0     		beq	.L28
- 185:Src/gui.c     **** 			newX > buttonCornerX &&
- 511              		.loc 1 185 0 discriminator 1
- 512 00b4 5046     		mov	r0, r10
- 513 00b6 FFF7FEFF 		bl	__aeabi_i2d
- 514              	.LVL60:
- 515 00ba 8046     		mov	r8, r0
- 516 00bc 8946     		mov	r9, r1
- 517 00be 3846     		mov	r0, r7
- 518 00c0 FFF7FEFF 		bl	__aeabi_i2d
- 519              	.LVL61:
- 520 00c4 0022     		movs	r2, #0
- 521 00c6 144B     		ldr	r3, .L42+28
- 522 00c8 FFF7FEFF 		bl	__aeabi_dadd
- 523              	.LVL62:
- 184:Src/gui.c     **** 			newY <= buttonCornerY + CONTROL_BUTTON_SIZE &&
- 524              		.loc 1 184 0 discriminator 1
- 525 00cc 0246     		mov	r2, r0
- 526 00ce 0B46     		mov	r3, r1
- 527 00d0 4046     		mov	r0, r8
- 528 00d2 4946     		mov	r1, r9
- 529 00d4 FFF7FEFF 		bl	__aeabi_dcmple
- 530              	.LVL63:
- 531 00d8 0028     		cmp	r0, #0
- 532 00da CED0     		beq	.L28
- 185:Src/gui.c     **** 			newX > buttonCornerX &&
- 533              		.loc 1 185 0
- 534 00dc AE42     		cmp	r6, r5
- 535 00de CCD9     		bls	.L28
- 186:Src/gui.c     **** 			newY > buttonCornerY
- 536              		.loc 1 186 0
- 537 00e0 BA45     		cmp	r10, r7
- 538 00e2 CAD9     		bls	.L28
- 190:Src/gui.c     **** 			if (playButtonState == PLAY)
- 539              		.loc 1 190 0
- 540 00e4 012C     		cmp	r4, #1
- 541 00e6 C2D0     		beq	.L41
- 193:Src/gui.c     **** 			else
- 194:Src/gui.c     **** 				return PLAY;
- 195:Src/gui.c     **** 		
- 196:Src/gui.c     **** 		
- 197:Src/gui.c     **** 		else
- 198:Src/gui.c     **** 			return buttonState[i];	
-ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccG2bHrl.s 			page 14
-
-
- 542              		.loc 1 198 0
- 543 00e8 0C4B     		ldr	r3, .L42+32
- 544 00ea 185D     		ldrb	r0, [r3, r4]	@ zero_extendqisi2
- 545 00ec 02E0     		b	.L23
- 546              	.LVL64:
- 547              	.L40:
- 548              	.LBE4:
- 549              	.LBE6:
- 199:Src/gui.c     **** 		}
- 200:Src/gui.c     **** 	}
- 201:Src/gui.c     **** 	
- 202:Src/gui.c     **** 	return EMPTY;
- 550              		.loc 1 202 0
- 551 00ee 0620     		movs	r0, #6
- 552              	.LBB7:
- 553 00f0 00E0     		b	.L23
- 554              	.LVL65:
- 555              	.L33:
- 556              	.LBE7:
- 158:Src/gui.c     **** 		
- 557              		.loc 1 158 0
- 558 00f2 0620     		movs	r0, #6
- 559              	.LVL66:
- 560              	.L23:
- 203:Src/gui.c     **** 
- 204:Src/gui.c     **** 	// vTaskDelay(10);
- 205:Src/gui.c     **** }
- 561              		.loc 1 205 0
- 562 00f4 BDE8F087 		pop	{r4, r5, r6, r7, r8, r9, r10, pc}
- 563              	.LVL67:
- 564              	.L35:
- 565              	.LBB8:
- 566              	.LBB5:
- 194:Src/gui.c     **** 		
- 567              		.loc 1 194 0
- 568 00f8 0020     		movs	r0, #0
- 569 00fa FBE7     		b	.L23
- 570              	.L43:
- 571              		.align	2
- 572              	.L42:
- 573 00fc 00000000 		.word	.LANCHOR1
- 574 0100 00000000 		.word	.LANCHOR2
- 575 0104 00000000 		.word	newX
- 576 0108 00000000 		.word	newY
- 577 010c 00000000 		.word	.LANCHOR3
- 578 0110 00000000 		.word	.LANCHOR4
- 579 0114 00000000 		.word	.LANCHOR0
- 580 0118 00005240 		.word	1079115776
- 581 011c 00000000 		.word	.LANCHOR5
- 582              	.LBE5:
- 583              	.LBE8:
- 584              		.cfi_endproc
- 585              	.LFE143:
- 587              		.global	__aeabi_dmul
- 588              		.global	__aeabi_d2uiz
- 589              		.section	.text.getXPix,"ax",%progbits
- 590              		.align	1
-ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccG2bHrl.s 			page 15
-
-
-=======
- 191:Src/gui.c     **** 			if (playButtonState == PLAY) {
- 464              		.loc 1 191 0
- 465 006e 2A4B     		ldr	r3, .L42+20
- 466 0070 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 467 0072 1BB9     		cbnz	r3, .L32
- 192:Src/gui.c     ****                 playButtonState = PAUSE;
- 468              		.loc 1 192 0
- 469 0074 0120     		movs	r0, #1
- 470 0076 284B     		ldr	r3, .L42+20
- 471 0078 1870     		strb	r0, [r3]
- 193:Src/gui.c     ****                 return PAUSE;
- 472              		.loc 1 193 0
- 473 007a 40E0     		b	.L23
- 474              	.L32:
- 194:Src/gui.c     **** 			}
- 195:Src/gui.c     **** 
- 196:Src/gui.c     **** 			else {
- 197:Src/gui.c     ****                 playButtonState = PLAY;
- 475              		.loc 1 197 0
- 476 007c 0020     		movs	r0, #0
- 477 007e 264B     		ldr	r3, .L42+20
- 478 0080 1870     		strb	r0, [r3]
- 198:Src/gui.c     ****                 return PLAY;
- 479              		.loc 1 198 0
- 480 0082 3CE0     		b	.L23
- 481              	.L28:
- 482              	.LBE3:
+ 356              	.LVL47:
+ 167:Src/gui.c     **** 	if (TS_State.touchDetected == 0)
+ 357              		.loc 1 167 0
+ 358 0040 2378     		ldrb	r3, [r4]	@ zero_extendqisi2
+ 359 0042 13B9     		cbnz	r3, .L37
+ 168:Src/gui.c     **** 		return EMPTY;
+ 360              		.loc 1 168 0
+ 361 0044 0620     		movs	r0, #6
+ 169:Src/gui.c     **** 	BSP_LCD_Clear(LCD_COLOR_WHITE);
+ 170:Src/gui.c     **** 	if ((TS_State.touchX[0] & 0x0FFF) >= 40)
+ 171:Src/gui.c     ****     {
+ 172:Src/gui.c     **** 		newX = TS_State.touchX[0] & 0x0FFF;
+ 173:Src/gui.c     **** 	}
+ 174:Src/gui.c     **** 	if ((TS_State.touchY[0] & 0x0FFF) >= 40)
+ 175:Src/gui.c     ****     {
+ 176:Src/gui.c     **** 		newY = TS_State.touchY[0] & 0x0FFF;
+ 177:Src/gui.c     **** 	}
+ 178:Src/gui.c     **** 	xprintf("%d\n", TS_State.touchDetected);
  179:Src/gui.c     **** 
- 483              		.loc 1 179 0 discriminator 2
- 484 0084 0134     		adds	r4, r4, #1
- 485              	.LVL53:
- 486              	.L27:
- 179:Src/gui.c     **** 
- 487              		.loc 1 179 0 is_stmt 0 discriminator 1
- 488 0086 032C     		cmp	r4, #3
- 489 0088 36DC     		bgt	.L40
- 490              	.LBB4:
- 181:Src/gui.c     **** 		uint16_t buttonCornerY = buttonsLeftUpper[i][1];
- 491              		.loc 1 181 0 is_stmt 1
-ARM GAS  C:\Users\milek\AppData\Local\Temp\ccp8XL8d.s 			page 13
-
-
- 492 008a 244B     		ldr	r3, .L42+24
- 493 008c 33F82450 		ldrh	r5, [r3, r4, lsl #2]
- 494              	.LVL54:
+ 180:Src/gui.c     **** 	//if (lastState.touchX[0] == newX && lastState.touchY[0] == newY)
+ 181:Src/gui.c     **** 	//	return EMPTY;
  182:Src/gui.c     **** 
- 495              		.loc 1 182 0
- 496 0090 03EB8403 		add	r3, r3, r4, lsl #2
- 497 0094 5F88     		ldrh	r7, [r3, #2]
- 498              	.LVL55:
- 184:Src/gui.c     **** 			newY <= buttonCornerY + CONTROL_BUTTON_SIZE &&
- 499              		.loc 1 184 0
- 500 0096 3046     		mov	r0, r6
- 501 0098 FFF7FEFF 		bl	__aeabi_i2d
- 502              	.LVL56:
- 503 009c 8046     		mov	r8, r0
- 504 009e 8946     		mov	r9, r1
- 505 00a0 2846     		mov	r0, r5
- 506 00a2 FFF7FEFF 		bl	__aeabi_i2d
- 507              	.LVL57:
- 508 00a6 0022     		movs	r2, #0
- 509 00a8 1D4B     		ldr	r3, .L42+28
- 510 00aa FFF7FEFF 		bl	__aeabi_dadd
- 511              	.LVL58:
- 512 00ae 0246     		mov	r2, r0
- 513 00b0 0B46     		mov	r3, r1
- 514 00b2 4046     		mov	r0, r8
- 515 00b4 4946     		mov	r1, r9
- 516 00b6 FFF7FEFF 		bl	__aeabi_dcmple
- 517              	.LVL59:
- 518 00ba 0028     		cmp	r0, #0
- 519 00bc E2D0     		beq	.L28
- 185:Src/gui.c     **** 			newX > buttonCornerX &&
- 520              		.loc 1 185 0 discriminator 1
- 521 00be 5046     		mov	r0, r10
- 522 00c0 FFF7FEFF 		bl	__aeabi_i2d
- 523              	.LVL60:
- 524 00c4 8046     		mov	r8, r0
- 525 00c6 8946     		mov	r9, r1
- 526 00c8 3846     		mov	r0, r7
- 527 00ca FFF7FEFF 		bl	__aeabi_i2d
- 528              	.LVL61:
- 529 00ce 0022     		movs	r2, #0
- 530 00d0 134B     		ldr	r3, .L42+28
- 531 00d2 FFF7FEFF 		bl	__aeabi_dadd
- 532              	.LVL62:
- 184:Src/gui.c     **** 			newY <= buttonCornerY + CONTROL_BUTTON_SIZE &&
- 533              		.loc 1 184 0 discriminator 1
- 534 00d6 0246     		mov	r2, r0
- 535 00d8 0B46     		mov	r3, r1
- 536 00da 4046     		mov	r0, r8
- 537 00dc 4946     		mov	r1, r9
- 538 00de FFF7FEFF 		bl	__aeabi_dcmple
- 539              	.LVL63:
- 540 00e2 0028     		cmp	r0, #0
- 541 00e4 CED0     		beq	.L28
- 185:Src/gui.c     **** 			newX > buttonCornerX &&
- 542              		.loc 1 185 0
- 543 00e6 AE42     		cmp	r6, r5
-ARM GAS  C:\Users\milek\AppData\Local\Temp\ccp8XL8d.s 			page 14
+ 183:Src/gui.c     **** 	lastState.touchX[0] = newX;
+ 184:Src/gui.c     **** 	lastState.touchY[0] = newY;
+ 185:Src/gui.c     **** 
+ 186:Src/gui.c     **** 
+ 187:Src/gui.c     **** 	for(int i = 0; i < CONTROL_BUTTONS_NUMBER; i++) {
+ 188:Src/gui.c     **** 
+ 189:Src/gui.c     **** 		uint16_t buttonCornerX = buttonsLeftUpper[i][0];
+ 190:Src/gui.c     **** 		uint16_t buttonCornerY = buttonsLeftUpper[i][1];
+ 191:Src/gui.c     **** 
+ 192:Src/gui.c     **** 		if (newX <= buttonCornerX + CONTROL_BUTTON_SIZE &&
+ 193:Src/gui.c     **** 			newY <= buttonCornerY + CONTROL_BUTTON_SIZE &&
+ 194:Src/gui.c     **** 			newX > buttonCornerX &&
+ 195:Src/gui.c     **** 			newY > buttonCornerY
+ 196:Src/gui.c     **** 		) {
+ 197:Src/gui.c     **** 
+ 198:Src/gui.c     **** 		if (i == 1 || i == 2) {
+ 199:Src/gui.c     **** 			if (playButtonState == PLAY) {
+ 200:Src/gui.c     ****                 playButtonState = PAUSE;
+ 201:Src/gui.c     **** 			}
+ 202:Src/gui.c     **** 
+ 203:Src/gui.c     **** 			else {
+ 204:Src/gui.c     ****                 playButtonState = PLAY;
+ 205:Src/gui.c     **** 			}
+ 206:Src/gui.c     **** 		}
+ 207:Src/gui.c     **** 		if (i == 1)
+ 208:Src/gui.c     **** 			return playButtonState;
+ 209:Src/gui.c     **** 		else if (i == 2) {
+ 210:Src/gui.c     **** 			playButtonState = PAUSE;
+ 211:Src/gui.c     **** 			return STOP;
+ 212:Src/gui.c     **** 		}
+ 213:Src/gui.c     **** 		
+ 214:Src/gui.c     **** 		else
+ 215:Src/gui.c     **** 			return buttonState[i];
+ 216:Src/gui.c     **** 		}
+ 217:Src/gui.c     **** 	}
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccgVMJhz.s 			page 11
 
 
- 544 00e8 CCD9     		bls	.L28
- 186:Src/gui.c     **** 			newY > buttonCornerY
- 545              		.loc 1 186 0
- 546 00ea BA45     		cmp	r10, r7
- 547 00ec CAD9     		bls	.L28
- 190:Src/gui.c     **** 			if (playButtonState == PLAY) {
- 548              		.loc 1 190 0
- 549 00ee 012C     		cmp	r4, #1
- 550 00f0 BDD0     		beq	.L41
- 199:Src/gui.c     **** 			}
- 200:Src/gui.c     **** 
- 201:Src/gui.c     **** 		else
- 202:Src/gui.c     **** 			return buttonState[i];
- 551              		.loc 1 202 0
- 552 00f2 0C4B     		ldr	r3, .L42+32
- 553 00f4 185D     		ldrb	r0, [r3, r4]	@ zero_extendqisi2
- 554 00f6 02E0     		b	.L23
- 555              	.LVL64:
- 556              	.L40:
- 557              	.LBE4:
- 558              	.LBE5:
- 203:Src/gui.c     **** 		}
- 204:Src/gui.c     **** 	}
- 205:Src/gui.c     **** 
- 206:Src/gui.c     **** 	return EMPTY;
- 559              		.loc 1 206 0
- 560 00f8 0620     		movs	r0, #6
- 561              	.LBB6:
- 562 00fa 00E0     		b	.L23
- 563              	.LVL65:
- 564              	.L34:
- 565              	.LBE6:
- 158:Src/gui.c     **** 
- 566              		.loc 1 158 0
- 567 00fc 0620     		movs	r0, #6
- 568              	.LVL66:
- 569              	.L23:
- 207:Src/gui.c     **** 
- 208:Src/gui.c     **** 	// vTaskDelay(10);
- 209:Src/gui.c     **** }
- 570              		.loc 1 209 0
- 571 00fe BDE8F087 		pop	{r4, r5, r6, r7, r8, r9, r10, pc}
- 572              	.L43:
- 573 0102 00BF     		.align	2
- 574              	.L42:
- 575 0104 00000000 		.word	.LANCHOR1
- 576 0108 00000000 		.word	.LANCHOR2
- 577 010c 00000000 		.word	newX
- 578 0110 00000000 		.word	newY
- 579 0114 00000000 		.word	.LANCHOR3
- 580 0118 00000000 		.word	.LANCHOR4
- 581 011c 00000000 		.word	.LANCHOR0
- 582 0120 00005240 		.word	1079115776
- 583 0124 00000000 		.word	.LANCHOR5
- 584              		.cfi_endproc
- 585              	.LFE143:
- 587              		.global	__aeabi_dmul
-ARM GAS  C:\Users\milek\AppData\Local\Temp\ccp8XL8d.s 			page 15
+ 218:Src/gui.c     **** 
+ 219:Src/gui.c     **** 	return EMPTY;
+ 220:Src/gui.c     **** 
+ 221:Src/gui.c     **** 	// vTaskDelay(10);
+ 222:Src/gui.c     **** }
+ 362              		.loc 1 222 0
+ 363 0046 BDE8F087 		pop	{r4, r5, r6, r7, r8, r9, r10, pc}
+ 364              	.L37:
+ 169:Src/gui.c     **** 	BSP_LCD_Clear(LCD_COLOR_WHITE);
+ 365              		.loc 1 169 0
+ 366 004a 4FF0FF30 		mov	r0, #-1
+ 367 004e FFF7FEFF 		bl	BSP_LCD_Clear
+ 368              	.LVL48:
+ 170:Src/gui.c     ****     {
+ 369              		.loc 1 170 0
+ 370 0052 6388     		ldrh	r3, [r4, #2]
+ 371 0054 C3F30B03 		ubfx	r3, r3, #0, #12
+ 372 0058 272B     		cmp	r3, #39
+ 373 005a 01DD     		ble	.L20
+ 172:Src/gui.c     **** 	}
+ 374              		.loc 1 172 0
+ 375 005c 3A4A     		ldr	r2, .L42+12
+ 376 005e 1380     		strh	r3, [r2]	@ movhi
+ 377              	.L20:
+ 174:Src/gui.c     ****     {
+ 378              		.loc 1 174 0
+ 379 0060 384B     		ldr	r3, .L42+8
+ 380 0062 9B89     		ldrh	r3, [r3, #12]
+ 381 0064 C3F30B03 		ubfx	r3, r3, #0, #12
+ 382 0068 272B     		cmp	r3, #39
+ 383 006a 01DD     		ble	.L21
+ 176:Src/gui.c     **** 	}
+ 384              		.loc 1 176 0
+ 385 006c 374A     		ldr	r2, .L42+16
+ 386 006e 1380     		strh	r3, [r2]	@ movhi
+ 387              	.L21:
+ 178:Src/gui.c     **** 
+ 388              		.loc 1 178 0
+ 389 0070 344B     		ldr	r3, .L42+8
+ 390 0072 1978     		ldrb	r1, [r3]	@ zero_extendqisi2
+ 391 0074 3648     		ldr	r0, .L42+20
+ 392 0076 FFF7FEFF 		bl	xprintf
+ 393              	.LVL49:
+ 183:Src/gui.c     **** 	lastState.touchY[0] = newY;
+ 394              		.loc 1 183 0
+ 395 007a 334B     		ldr	r3, .L42+12
+ 396 007c B3F80090 		ldrh	r9, [r3]
+ 184:Src/gui.c     **** 
+ 397              		.loc 1 184 0
+ 398 0080 324B     		ldr	r3, .L42+16
+ 399 0082 B3F800A0 		ldrh	r10, [r3]
+ 400              	.LVL50:
+ 401              	.LBB2:
+ 187:Src/gui.c     **** 
+ 402              		.loc 1 187 0
+ 403 0086 0024     		movs	r4, #0
+ 404 0088 15E0     		b	.L22
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccgVMJhz.s 			page 12
 
 
- 588              		.global	__aeabi_d2uiz
- 589              		.section	.text.getXPix,"ax",%progbits
- 590              		.align	1
->>>>>>> 069a0906a4207e68cdc704b48d0c79549cba149d
- 591              		.global	getXPix
- 592              		.syntax unified
- 593              		.thumb
- 594              		.thumb_func
- 595              		.fpu fpv5-sp-d16
- 597              	getXPix:
- 598              	.LFB144:
-<<<<<<< HEAD
- 206:Src/gui.c     **** 
- 207:Src/gui.c     **** uint16_t getXPix (double factor)  {
- 599              		.loc 1 207 0
- 600              		.cfi_startproc
- 601              		@ args = 0, pretend = 0, frame = 0
- 602              		@ frame_needed = 0, uses_anonymous_args = 0
- 603              	.LVL68:
- 604 0000 08B5     		push	{r3, lr}
- 605              	.LCFI6:
- 606              		.cfi_def_cfa_offset 8
- 607              		.cfi_offset 3, -8
- 608              		.cfi_offset 14, -4
- 208:Src/gui.c     **** 	return factor * LCD_X_SIZE;
- 609              		.loc 1 208 0
- 610 0002 0022     		movs	r2, #0
- 611 0004 044B     		ldr	r3, .L46
- 612 0006 51EC100B 		vmov	r0, r1, d0
- 613 000a FFF7FEFF 		bl	__aeabi_dmul
- 614              	.LVL69:
- 615 000e FFF7FEFF 		bl	__aeabi_d2uiz
- 616              	.LVL70:
- 209:Src/gui.c     **** }
- 617              		.loc 1 209 0
- 618 0012 80B2     		uxth	r0, r0
- 619 0014 08BD     		pop	{r3, pc}
- 620              	.L47:
- 621 0016 00BF     		.align	2
- 622              	.L46:
- 623 0018 00007E40 		.word	1081999360
- 624              		.cfi_endproc
- 625              	.LFE144:
- 627              		.section	.text.getYPix,"ax",%progbits
- 628              		.align	1
- 629              		.global	getYPix
- 630              		.syntax unified
- 631              		.thumb
- 632              		.thumb_func
- 633              		.fpu fpv5-sp-d16
- 635              	getYPix:
- 636              	.LFB145:
- 210:Src/gui.c     **** 
- 211:Src/gui.c     **** uint16_t getYPix (double factor)  {
- 637              		.loc 1 211 0
- 638              		.cfi_startproc
- 639              		@ args = 0, pretend = 0, frame = 0
- 640              		@ frame_needed = 0, uses_anonymous_args = 0
- 641              	.LVL71:
- 642 0000 08B5     		push	{r3, lr}
- 643              	.LCFI7:
- 644              		.cfi_def_cfa_offset 8
-ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccG2bHrl.s 			page 16
+ 405              	.LVL51:
+ 406              	.L39:
+ 407              	.LBB3:
+ 199:Src/gui.c     ****                 playButtonState = PAUSE;
+ 408              		.loc 1 199 0
+ 409 008a 324B     		ldr	r3, .L42+24
+ 410 008c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 411 008e 1BB9     		cbnz	r3, .L27
+ 200:Src/gui.c     **** 			}
+ 412              		.loc 1 200 0
+ 413 0090 0122     		movs	r2, #1
+ 414 0092 304B     		ldr	r3, .L42+24
+ 415 0094 1A70     		strb	r2, [r3]
+ 416 0096 46E0     		b	.L26
+ 417              	.L27:
+ 204:Src/gui.c     **** 			}
+ 418              		.loc 1 204 0
+ 419 0098 0022     		movs	r2, #0
+ 420 009a 2E4B     		ldr	r3, .L42+24
+ 421 009c 1A70     		strb	r2, [r3]
+ 422 009e 42E0     		b	.L26
+ 423              	.L40:
+ 208:Src/gui.c     **** 		else if (i == 2) {
+ 424              		.loc 1 208 0
+ 425 00a0 2C4B     		ldr	r3, .L42+24
+ 426 00a2 1878     		ldrb	r0, [r3]	@ zero_extendqisi2
+ 427 00a4 BDE8F087 		pop	{r4, r5, r6, r7, r8, r9, r10, pc}
+ 428              	.LVL52:
+ 429              	.L41:
+ 210:Src/gui.c     **** 			return STOP;
+ 430              		.loc 1 210 0
+ 431 00a8 0122     		movs	r2, #1
+ 432 00aa 2A4B     		ldr	r3, .L42+24
+ 433 00ac 1A70     		strb	r2, [r3]
+ 211:Src/gui.c     **** 		}
+ 434              		.loc 1 211 0
+ 435 00ae 0220     		movs	r0, #2
+ 436 00b0 BDE8F087 		pop	{r4, r5, r6, r7, r8, r9, r10, pc}
+ 437              	.LVL53:
+ 438              	.L23:
+ 439              	.LBE3:
+ 187:Src/gui.c     **** 
+ 440              		.loc 1 187 0 discriminator 2
+ 441 00b4 0134     		adds	r4, r4, #1
+ 442              	.LVL54:
+ 443              	.L22:
+ 187:Src/gui.c     **** 
+ 444              		.loc 1 187 0 is_stmt 0 discriminator 1
+ 445 00b6 032C     		cmp	r4, #3
+ 446 00b8 3DDC     		bgt	.L38
+ 447              	.LBB4:
+ 189:Src/gui.c     **** 		uint16_t buttonCornerY = buttonsLeftUpper[i][1];
+ 448              		.loc 1 189 0 is_stmt 1
+ 449 00ba 274B     		ldr	r3, .L42+28
+ 450 00bc 33F82450 		ldrh	r5, [r3, r4, lsl #2]
+ 451              	.LVL55:
+ 190:Src/gui.c     **** 
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccgVMJhz.s 			page 13
 
 
- 645              		.cfi_offset 3, -8
- 646              		.cfi_offset 14, -4
- 212:Src/gui.c     **** 	return factor * LCD_Y_SIZE;
- 647              		.loc 1 212 0
-=======
- 210:Src/gui.c     **** 
- 211:Src/gui.c     **** uint16_t getXPix (double factor)  {
- 599              		.loc 1 211 0
- 600              		.cfi_startproc
- 601              		@ args = 0, pretend = 0, frame = 0
- 602              		@ frame_needed = 0, uses_anonymous_args = 0
- 603              	.LVL67:
- 604 0000 08B5     		push	{r3, lr}
- 605              	.LCFI6:
- 606              		.cfi_def_cfa_offset 8
- 607              		.cfi_offset 3, -8
- 608              		.cfi_offset 14, -4
- 212:Src/gui.c     **** 	return factor * LCD_X_SIZE;
- 609              		.loc 1 212 0
- 610 0002 0022     		movs	r2, #0
- 611 0004 044B     		ldr	r3, .L46
- 612 0006 51EC100B 		vmov	r0, r1, d0
- 613 000a FFF7FEFF 		bl	__aeabi_dmul
- 614              	.LVL68:
- 615 000e FFF7FEFF 		bl	__aeabi_d2uiz
- 616              	.LVL69:
- 213:Src/gui.c     **** }
- 617              		.loc 1 213 0
- 618 0012 80B2     		uxth	r0, r0
- 619 0014 08BD     		pop	{r3, pc}
- 620              	.L47:
- 621 0016 00BF     		.align	2
- 622              	.L46:
- 623 0018 00007E40 		.word	1081999360
- 624              		.cfi_endproc
- 625              	.LFE144:
- 627              		.section	.text.getYPix,"ax",%progbits
- 628              		.align	1
- 629              		.global	getYPix
- 630              		.syntax unified
- 631              		.thumb
- 632              		.thumb_func
- 633              		.fpu fpv5-sp-d16
- 635              	getYPix:
- 636              	.LFB145:
- 214:Src/gui.c     **** 
- 215:Src/gui.c     **** uint16_t getYPix (double factor)  {
- 637              		.loc 1 215 0
- 638              		.cfi_startproc
- 639              		@ args = 0, pretend = 0, frame = 0
- 640              		@ frame_needed = 0, uses_anonymous_args = 0
- 641              	.LVL70:
-ARM GAS  C:\Users\milek\AppData\Local\Temp\ccp8XL8d.s 			page 16
+ 452              		.loc 1 190 0
+ 453 00c0 03EB8403 		add	r3, r3, r4, lsl #2
+ 454 00c4 B3F80280 		ldrh	r8, [r3, #2]
+ 455              	.LVL56:
+ 192:Src/gui.c     **** 			newY <= buttonCornerY + CONTROL_BUTTON_SIZE &&
+ 456              		.loc 1 192 0
+ 457 00c8 4846     		mov	r0, r9
+ 458 00ca FFF7FEFF 		bl	__aeabi_i2d
+ 459              	.LVL57:
+ 460 00ce 0646     		mov	r6, r0
+ 461 00d0 0F46     		mov	r7, r1
+ 462 00d2 2846     		mov	r0, r5
+ 463 00d4 FFF7FEFF 		bl	__aeabi_i2d
+ 464              	.LVL58:
+ 465 00d8 0022     		movs	r2, #0
+ 466 00da 204B     		ldr	r3, .L42+32
+ 467 00dc FFF7FEFF 		bl	__aeabi_dadd
+ 468              	.LVL59:
+ 469 00e0 0246     		mov	r2, r0
+ 470 00e2 0B46     		mov	r3, r1
+ 471 00e4 3046     		mov	r0, r6
+ 472 00e6 3946     		mov	r1, r7
+ 473 00e8 FFF7FEFF 		bl	__aeabi_dcmple
+ 474              	.LVL60:
+ 475 00ec 0028     		cmp	r0, #0
+ 476 00ee E1D0     		beq	.L23
+ 193:Src/gui.c     **** 			newX > buttonCornerX &&
+ 477              		.loc 1 193 0 discriminator 1
+ 478 00f0 5046     		mov	r0, r10
+ 479 00f2 FFF7FEFF 		bl	__aeabi_i2d
+ 480              	.LVL61:
+ 481 00f6 0646     		mov	r6, r0
+ 482 00f8 0F46     		mov	r7, r1
+ 483 00fa 4046     		mov	r0, r8
+ 484 00fc FFF7FEFF 		bl	__aeabi_i2d
+ 485              	.LVL62:
+ 486 0100 0022     		movs	r2, #0
+ 487 0102 164B     		ldr	r3, .L42+32
+ 488 0104 FFF7FEFF 		bl	__aeabi_dadd
+ 489              	.LVL63:
+ 192:Src/gui.c     **** 			newY <= buttonCornerY + CONTROL_BUTTON_SIZE &&
+ 490              		.loc 1 192 0 discriminator 1
+ 491 0108 0246     		mov	r2, r0
+ 492 010a 0B46     		mov	r3, r1
+ 493 010c 3046     		mov	r0, r6
+ 494 010e 3946     		mov	r1, r7
+ 495 0110 FFF7FEFF 		bl	__aeabi_dcmple
+ 496              	.LVL64:
+ 497 0114 0028     		cmp	r0, #0
+ 498 0116 CDD0     		beq	.L23
+ 193:Src/gui.c     **** 			newX > buttonCornerX &&
+ 499              		.loc 1 193 0
+ 500 0118 A945     		cmp	r9, r5
+ 501 011a CBD9     		bls	.L23
+ 194:Src/gui.c     **** 			newY > buttonCornerY
+ 502              		.loc 1 194 0
+ 503 011c C245     		cmp	r10, r8
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccgVMJhz.s 			page 14
 
 
- 642 0000 08B5     		push	{r3, lr}
- 643              	.LCFI7:
- 644              		.cfi_def_cfa_offset 8
- 645              		.cfi_offset 3, -8
- 646              		.cfi_offset 14, -4
- 216:Src/gui.c     **** 	return factor * LCD_Y_SIZE;
- 647              		.loc 1 216 0
->>>>>>> 069a0906a4207e68cdc704b48d0c79549cba149d
- 648 0002 0022     		movs	r2, #0
- 649 0004 044B     		ldr	r3, .L50
- 650 0006 51EC100B 		vmov	r0, r1, d0
- 651 000a FFF7FEFF 		bl	__aeabi_dmul
-<<<<<<< HEAD
- 652              	.LVL72:
- 653 000e FFF7FEFF 		bl	__aeabi_d2uiz
- 654              	.LVL73:
- 213:Src/gui.c     **** }...
- 655              		.loc 1 213 0
-=======
- 652              	.LVL71:
- 653 000e FFF7FEFF 		bl	__aeabi_d2uiz
- 654              	.LVL72:
- 217:Src/gui.c     **** }
- 655              		.loc 1 217 0
->>>>>>> 069a0906a4207e68cdc704b48d0c79549cba149d
- 656 0012 80B2     		uxth	r0, r0
- 657 0014 08BD     		pop	{r3, pc}
- 658              	.L51:
- 659 0016 00BF     		.align	2
- 660              	.L50:
- 661 0018 00007140 		.word	1081147392
- 662              		.cfi_endproc
- 663              	.LFE145:
- 665              		.global	lastTicks
- 666              		.global	playButtonState
- 667              		.global	buttonState
- 668              		.global	buttonsLeftUpper
- 669              		.comm	newY,2,2
- 670              		.comm	newX,2,2
- 671              		.section	.bss.TS_State,"aw",%nobits
- 672              		.align	2
- 673              		.set	.LANCHOR2,. + 0
- 676              	TS_State:
- 677 0000 00000000 		.space	44
- 677      00000000 
- 677      00000000 
- 677      00000000 
- 677      00000000 
- 678              		.section	.bss.lastState,"aw",%nobits
- 679              		.align	2
- 680              		.set	.LANCHOR3,. + 0
- 683              	lastState:
- 684 0000 00000000 		.space	44
- 684      00000000 
- 684      00000000 
- 684      00000000 
- 684      00000000 
- 685              		.section	.bss.lastTicks,"aw",%nobits
- 686              		.align	2
- 687              		.set	.LANCHOR1,. + 0
- 690              	lastTicks:
- 691 0000 00000000 		.space	4
- 692              		.section	.bss.playButtonState,"aw",%nobits
- 693              		.set	.LANCHOR4,. + 0
- 696              	playButtonState:
- 697 0000 00       		.space	1
-<<<<<<< HEAD
- 698              		.section	.data.buttonState,"aw",%progbits
- 699              		.align	2
- 700              		.set	.LANCHOR5,. + 0
-ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccG2bHrl.s 			page 17
+ 504 011e C9D9     		bls	.L23
+ 198:Src/gui.c     **** 			if (playButtonState == PLAY) {
+ 505              		.loc 1 198 0
+ 506 0120 631E     		subs	r3, r4, #1
+ 507 0122 012B     		cmp	r3, #1
+ 508 0124 B1D9     		bls	.L39
+ 509              	.L26:
+ 207:Src/gui.c     **** 			return playButtonState;
+ 510              		.loc 1 207 0
+ 511 0126 012C     		cmp	r4, #1
+ 512 0128 BAD0     		beq	.L40
+ 209:Src/gui.c     **** 			playButtonState = PAUSE;
+ 513              		.loc 1 209 0
+ 514 012a 022C     		cmp	r4, #2
+ 515 012c BCD0     		beq	.L41
+ 215:Src/gui.c     **** 		}
+ 516              		.loc 1 215 0
+ 517 012e 0C4B     		ldr	r3, .L42+36
+ 518 0130 185D     		ldrb	r0, [r3, r4]	@ zero_extendqisi2
+ 519 0132 BDE8F087 		pop	{r4, r5, r6, r7, r8, r9, r10, pc}
+ 520              	.LVL65:
+ 521              	.L38:
+ 522              	.LBE4:
+ 523              	.LBE2:
+ 219:Src/gui.c     **** 
+ 524              		.loc 1 219 0
+ 525 0136 0620     		movs	r0, #6
+ 526              	.LBB5:
+ 527 0138 BDE8F087 		pop	{r4, r5, r6, r7, r8, r9, r10, pc}
+ 528              	.LVL66:
+ 529              	.L43:
+ 530              		.align	2
+ 531              	.L42:
+ 532 013c 00007E40 		.word	1081999360
+ 533 0140 00000000 		.word	.LANCHOR0
+ 534 0144 00000000 		.word	.LANCHOR1
+ 535 0148 00000000 		.word	newX
+ 536 014c 00000000 		.word	newY
+ 537 0150 00000000 		.word	.LC0
+ 538 0154 00000000 		.word	.LANCHOR3
+ 539 0158 00000000 		.word	.LANCHOR2
+ 540 015c 00005240 		.word	1079115776
+ 541 0160 00000000 		.word	.LANCHOR4
+ 542              	.LBE5:
+ 543              		.cfi_endproc
+ 544              	.LFE141:
+ 546              		.section	.text.draw_buttons,"ax",%progbits
+ 547              		.align	1
+ 548              		.global	draw_buttons
+ 549              		.syntax unified
+ 550              		.thumb
+ 551              		.thumb_func
+ 552              		.fpu fpv5-sp-d16
+ 554              	draw_buttons:
+ 555              	.LFB143:
+ 223:Src/gui.c     **** 
+ 224:Src/gui.c     **** // Refresh the state of the screen
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccgVMJhz.s 			page 15
 
 
-=======
-ARM GAS  C:\Users\milek\AppData\Local\Temp\ccp8XL8d.s 			page 17
+ 225:Src/gui.c     **** void refresh_screen(const char *info_text) {
+ 226:Src/gui.c     **** 
+ 227:Src/gui.c     **** 	BSP_LCD_SelectLayer(LAYER_FG);
+ 228:Src/gui.c     **** 	BSP_LCD_Clear(LCD_COLOR_WHITE);
+ 229:Src/gui.c     **** 	BSP_LCD_SelectLayer(LAYER_BG);
+ 230:Src/gui.c     **** 	BSP_LCD_Clear(LCD_COLOR_WHITE);
+ 231:Src/gui.c     **** 	BSP_LCD_SetBackColor(LCD_COLOR_WHITE);
+ 232:Src/gui.c     **** 	BSP_LCD_SetTextColor(LCD_COLOR_BLACK);
+ 233:Src/gui.c     **** 
+ 234:Src/gui.c     **** 	draw_background();
+ 235:Src/gui.c     **** 
+ 236:Src/gui.c     **** 	BSP_LCD_DisplayStringAt(XPix(0.10), YPix(0.45), (unsigned char *)info_text, CENTER_MODE);
+ 237:Src/gui.c     **** 
+ 238:Src/gui.c     **** }
+ 239:Src/gui.c     **** 
+ 240:Src/gui.c     **** // Draw the 4 main state control buttons: PREV/PLAY_PAUSE/STOP/NEXT
+ 241:Src/gui.c     **** void draw_buttons() {
+ 556              		.loc 1 241 0
+ 557              		.cfi_startproc
+ 558              		@ args = 0, pretend = 0, frame = 0
+ 559              		@ frame_needed = 0, uses_anonymous_args = 0
+ 560 0000 10B5     		push	{r4, lr}
+ 561              	.LCFI5:
+ 562              		.cfi_def_cfa_offset 8
+ 563              		.cfi_offset 4, -8
+ 564              		.cfi_offset 14, -4
+ 242:Src/gui.c     **** 
+ 243:Src/gui.c     **** 	BSP_LCD_SetTextColor(LCD_COLOR_BLACK);
+ 565              		.loc 1 243 0
+ 566 0002 4FF07F40 		mov	r0, #-16777216
+ 567 0006 FFF7FEFF 		bl	BSP_LCD_SetTextColor
+ 568              	.LVL67:
+ 244:Src/gui.c     **** 	BSP_LCD_FillRect(buttonsLeftUpper[0][0], buttonsLeftUpper[0][1],  CONTROL_BUTTON_SIZE, CONTROL_BUT
+ 569              		.loc 1 244 0
+ 570 000a 0D4C     		ldr	r4, .L46
+ 571 000c 4823     		movs	r3, #72
+ 572 000e 1A46     		mov	r2, r3
+ 573 0010 6188     		ldrh	r1, [r4, #2]
+ 574 0012 2088     		ldrh	r0, [r4]
+ 575 0014 FFF7FEFF 		bl	BSP_LCD_FillRect
+ 576              	.LVL68:
+ 245:Src/gui.c     **** 	BSP_LCD_FillRect(buttonsLeftUpper[1][0], buttonsLeftUpper[1][1],  CONTROL_BUTTON_SIZE, CONTROL_BUT
+ 577              		.loc 1 245 0
+ 578 0018 4823     		movs	r3, #72
+ 579 001a 1A46     		mov	r2, r3
+ 580 001c E188     		ldrh	r1, [r4, #6]
+ 581 001e A088     		ldrh	r0, [r4, #4]
+ 582 0020 FFF7FEFF 		bl	BSP_LCD_FillRect
+ 583              	.LVL69:
+ 246:Src/gui.c     **** 	BSP_LCD_FillRect(buttonsLeftUpper[2][0], buttonsLeftUpper[2][1],  CONTROL_BUTTON_SIZE, CONTROL_BUT
+ 584              		.loc 1 246 0
+ 585 0024 4823     		movs	r3, #72
+ 586 0026 1A46     		mov	r2, r3
+ 587 0028 6189     		ldrh	r1, [r4, #10]
+ 588 002a 2089     		ldrh	r0, [r4, #8]
+ 589 002c FFF7FEFF 		bl	BSP_LCD_FillRect
+ 590              	.LVL70:
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccgVMJhz.s 			page 16
 
 
- 698              		.section	.data.buttonState,"aw",%progbits
- 699              		.align	2
- 700              		.set	.LANCHOR5,. + 0
->>>>>>> 069a0906a4207e68cdc704b48d0c79549cba149d
- 703              	buttonState:
- 704 0000 04       		.byte	4
- 705 0001 00       		.byte	0
- 706 0002 02       		.byte	2
- 707 0003 03       		.byte	3
- 708              		.section	.data.buttonsLeftUpper,"aw",%progbits
- 709              		.align	2
- 710              		.set	.LANCHOR0,. + 0
- 713              	buttonsLeftUpper:
- 714 0000 2600     		.short	38
- 715 0002 BE00     		.short	190
- 716 0004 9400     		.short	148
- 717 0006 BE00     		.short	190
- 718 0008 0301     		.short	259
- 719 000a BE00     		.short	190
- 720 000c 7101     		.short	369
- 721 000e BE00     		.short	190
- 722              		.text
- 723              	.Letext0:
-<<<<<<< HEAD
- 724              		.file 2 "c:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\machine\\_default
- 725              		.file 3 "c:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\lock.h"
- 726              		.file 4 "c:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\_types.h"
- 727              		.file 5 "c:\\program files (x86)\\gnu\\7_2018-q2-update\\lib\\gcc\\arm-none-eabi\\7.3.1\\include\\
- 728              		.file 6 "c:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\reent.h"
- 729              		.file 7 "c:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\_stdint.h"
- 730              		.file 8 "Inc/mp3_player.h"
- 731              		.file 9 "Drivers/CMSIS/Include/core_cm7.h"
- 732              		.file 10 "Drivers/CMSIS/Device/ST/STM32F7xx/Include/system_stm32f7xx.h"
- 733              		.file 11 "c:\\users\\patryk\\desktop\\aaaaa13\\utilities\\fonts\\fonts.h"
- 734              		.file 12 "c:\\users\\patryk\\desktop\\aaaaa13\\drivers\\bsp\\components\\common\\ts.h"
- 735              		.file 13 "Drivers/BSP/STM32746G-Discovery/../Components/ft5336/ft5336.h"
- 736              		.file 14 "Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.h"
- 737              		.file 15 "Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal.h"
- 738              		.file 16 "Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_lcd.h"
-ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccG2bHrl.s 			page 18
-=======
- 724              		.file 2 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\machine\\_default
- 725              		.file 3 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\lock.h"
- 726              		.file 4 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\_types.h"
- 727              		.file 5 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\lib\\gcc\\arm-none-eabi\\7.3.1\\include\\
- 728              		.file 6 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\reent.h"
- 729              		.file 7 "d:\\program files (x86)\\gnu\\7_2018-q2-update\\arm-none-eabi\\include\\sys\\_stdint.h"
- 730              		.file 8 "Inc/mp3_player.h"
- 731              		.file 9 "Drivers/CMSIS/Include/core_cm7.h"
- 732              		.file 10 "Drivers/CMSIS/Device/ST/STM32F7xx/Include/system_stm32f7xx.h"
- 733              		.file 11 "d:\\sw\\utilities\\fonts\\fonts.h"
- 734              		.file 12 "d:\\sw\\drivers\\bsp\\components\\common\\ts.h"
- 735              		.file 13 "d:\\sw\\drivers\\bsp\\components\\ft5336\\ft5336.h"
- 736              		.file 14 "Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.h"
- 737              		.file 15 "Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal.h"
- 738              		.file 16 "Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_lcd.h"
-ARM GAS  C:\Users\milek\AppData\Local\Temp\ccp8XL8d.s 			page 18
->>>>>>> 069a0906a4207e68cdc704b48d0c79549cba149d
+ 247:Src/gui.c     **** 	BSP_LCD_FillRect(buttonsLeftUpper[3][0], buttonsLeftUpper[3][1],  CONTROL_BUTTON_SIZE, CONTROL_BUT
+ 591              		.loc 1 247 0
+ 592 0030 4823     		movs	r3, #72
+ 593 0032 1A46     		mov	r2, r3
+ 594 0034 E189     		ldrh	r1, [r4, #14]
+ 595 0036 A089     		ldrh	r0, [r4, #12]
+ 596 0038 FFF7FEFF 		bl	BSP_LCD_FillRect
+ 597              	.LVL71:
+ 598 003c 10BD     		pop	{r4, pc}
+ 599              	.L47:
+ 600 003e 00BF     		.align	2
+ 601              	.L46:
+ 602 0040 00000000 		.word	.LANCHOR2
+ 603              		.cfi_endproc
+ 604              	.LFE143:
+ 606              		.section	.text.draw_background,"ax",%progbits
+ 607              		.align	1
+ 608              		.global	draw_background
+ 609              		.syntax unified
+ 610              		.thumb
+ 611              		.thumb_func
+ 612              		.fpu fpv5-sp-d16
+ 614              	draw_background:
+ 615              	.LFB138:
+ 121:Src/gui.c     **** 	/* Select the LCD Background Layer  */
+ 616              		.loc 1 121 0
+ 617              		.cfi_startproc
+ 618              		@ args = 0, pretend = 0, frame = 0
+ 619              		@ frame_needed = 0, uses_anonymous_args = 0
+ 620 0000 08B5     		push	{r3, lr}
+ 621              	.LCFI6:
+ 622              		.cfi_def_cfa_offset 8
+ 623              		.cfi_offset 3, -8
+ 624              		.cfi_offset 14, -4
+ 123:Src/gui.c     **** 
+ 625              		.loc 1 123 0
+ 626 0002 0020     		movs	r0, #0
+ 627 0004 FFF7FEFF 		bl	BSP_LCD_SelectLayer
+ 628              	.LVL72:
+ 125:Src/gui.c     **** 
+ 629              		.loc 1 125 0
+ 630 0008 FFF7FEFF 		bl	draw_buttons
+ 631              	.LVL73:
+ 127:Src/gui.c     **** 	BSP_LCD_DrawHLine(0, YPix(0.5), LCD_X_SIZE);
+ 632              		.loc 1 127 0
+ 633 000c 4FF4F072 		mov	r2, #480
+ 634 0010 6C21     		movs	r1, #108
+ 635 0012 0020     		movs	r0, #0
+ 636 0014 FFF7FEFF 		bl	BSP_LCD_DrawHLine
+ 637              	.LVL74:
+ 128:Src/gui.c     **** 
+ 638              		.loc 1 128 0
+ 639 0018 4FF4F072 		mov	r2, #480
+ 640 001c 8821     		movs	r1, #136
+ 641 001e 0020     		movs	r0, #0
+ 642 0020 FFF7FEFF 		bl	BSP_LCD_DrawHLine
+ 643              	.LVL75:
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccgVMJhz.s 			page 17
+
+
+ 131:Src/gui.c     **** }
+ 644              		.loc 1 131 0
+ 645 0024 0120     		movs	r0, #1
+ 646 0026 FFF7FEFF 		bl	BSP_LCD_SelectLayer
+ 647              	.LVL76:
+ 648 002a 08BD     		pop	{r3, pc}
+ 649              		.cfi_endproc
+ 650              	.LFE138:
+ 652              		.section	.text.refresh_screen,"ax",%progbits
+ 653              		.align	1
+ 654              		.global	refresh_screen
+ 655              		.syntax unified
+ 656              		.thumb
+ 657              		.thumb_func
+ 658              		.fpu fpv5-sp-d16
+ 660              	refresh_screen:
+ 661              	.LFB142:
+ 225:Src/gui.c     **** 
+ 662              		.loc 1 225 0
+ 663              		.cfi_startproc
+ 664              		@ args = 0, pretend = 0, frame = 0
+ 665              		@ frame_needed = 0, uses_anonymous_args = 0
+ 666              	.LVL77:
+ 667 0000 10B5     		push	{r4, lr}
+ 668              	.LCFI7:
+ 669              		.cfi_def_cfa_offset 8
+ 670              		.cfi_offset 4, -8
+ 671              		.cfi_offset 14, -4
+ 672 0002 0446     		mov	r4, r0
+ 227:Src/gui.c     **** 	BSP_LCD_Clear(LCD_COLOR_WHITE);
+ 673              		.loc 1 227 0
+ 674 0004 0120     		movs	r0, #1
+ 675              	.LVL78:
+ 676 0006 FFF7FEFF 		bl	BSP_LCD_SelectLayer
+ 677              	.LVL79:
+ 228:Src/gui.c     **** 	BSP_LCD_SelectLayer(LAYER_BG);
+ 678              		.loc 1 228 0
+ 679 000a 4FF0FF30 		mov	r0, #-1
+ 680 000e FFF7FEFF 		bl	BSP_LCD_Clear
+ 681              	.LVL80:
+ 229:Src/gui.c     **** 	BSP_LCD_Clear(LCD_COLOR_WHITE);
+ 682              		.loc 1 229 0
+ 683 0012 0020     		movs	r0, #0
+ 684 0014 FFF7FEFF 		bl	BSP_LCD_SelectLayer
+ 685              	.LVL81:
+ 230:Src/gui.c     **** 	BSP_LCD_SetBackColor(LCD_COLOR_WHITE);
+ 686              		.loc 1 230 0
+ 687 0018 4FF0FF30 		mov	r0, #-1
+ 688 001c FFF7FEFF 		bl	BSP_LCD_Clear
+ 689              	.LVL82:
+ 231:Src/gui.c     **** 	BSP_LCD_SetTextColor(LCD_COLOR_BLACK);
+ 690              		.loc 1 231 0
+ 691 0020 4FF0FF30 		mov	r0, #-1
+ 692 0024 FFF7FEFF 		bl	BSP_LCD_SetBackColor
+ 693              	.LVL83:
+ 232:Src/gui.c     **** 
+ 694              		.loc 1 232 0
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccgVMJhz.s 			page 18
+
+
+ 695 0028 4FF07F40 		mov	r0, #-16777216
+ 696 002c FFF7FEFF 		bl	BSP_LCD_SetTextColor
+ 697              	.LVL84:
+ 234:Src/gui.c     **** 
+ 698              		.loc 1 234 0
+ 699 0030 FFF7FEFF 		bl	draw_background
+ 700              	.LVL85:
+ 236:Src/gui.c     **** 
+ 701              		.loc 1 236 0
+ 702 0034 0123     		movs	r3, #1
+ 703 0036 2246     		mov	r2, r4
+ 704 0038 7A21     		movs	r1, #122
+ 705 003a 3020     		movs	r0, #48
+ 706 003c FFF7FEFF 		bl	BSP_LCD_DisplayStringAt
+ 707              	.LVL86:
+ 708 0040 10BD     		pop	{r4, pc}
+ 709              		.cfi_endproc
+ 710              	.LFE142:
+ 712              		.section	.text.getXPix,"ax",%progbits
+ 713              		.align	1
+ 714              		.global	getXPix
+ 715              		.syntax unified
+ 716              		.thumb
+ 717              		.thumb_func
+ 718              		.fpu fpv5-sp-d16
+ 720              	getXPix:
+ 721              	.LFB144:
+ 248:Src/gui.c     **** 
+ 249:Src/gui.c     **** }
+ 250:Src/gui.c     **** 
+ 251:Src/gui.c     **** // Auxillary functions
+ 252:Src/gui.c     **** uint16_t getXPix (double factor)  {
+ 722              		.loc 1 252 0
+ 723              		.cfi_startproc
+ 724              		@ args = 0, pretend = 0, frame = 0
+ 725              		@ frame_needed = 0, uses_anonymous_args = 0
+ 726              	.LVL87:
+ 727 0000 08B5     		push	{r3, lr}
+ 728              	.LCFI8:
+ 729              		.cfi_def_cfa_offset 8
+ 730              		.cfi_offset 3, -8
+ 731              		.cfi_offset 14, -4
+ 253:Src/gui.c     **** 	return factor * LCD_X_SIZE;
+ 732              		.loc 1 253 0
+ 733 0002 0022     		movs	r2, #0
+ 734 0004 044B     		ldr	r3, .L54
+ 735 0006 51EC100B 		vmov	r0, r1, d0
+ 736 000a FFF7FEFF 		bl	__aeabi_dmul
+ 737              	.LVL88:
+ 738 000e FFF7FEFF 		bl	__aeabi_d2uiz
+ 739              	.LVL89:
+ 254:Src/gui.c     **** }
+ 740              		.loc 1 254 0
+ 741 0012 80B2     		uxth	r0, r0
+ 742 0014 08BD     		pop	{r3, pc}
+ 743              	.L55:
+ 744 0016 00BF     		.align	2
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccgVMJhz.s 			page 19
+
+
+ 745              	.L54:
+ 746 0018 00007E40 		.word	1081999360
+ 747              		.cfi_endproc
+ 748              	.LFE144:
+ 750              		.section	.text.getYPix,"ax",%progbits
+ 751              		.align	1
+ 752              		.global	getYPix
+ 753              		.syntax unified
+ 754              		.thumb
+ 755              		.thumb_func
+ 756              		.fpu fpv5-sp-d16
+ 758              	getYPix:
+ 759              	.LFB145:
+ 255:Src/gui.c     **** 
+ 256:Src/gui.c     **** uint16_t getYPix (double factor)  {
+ 760              		.loc 1 256 0
+ 761              		.cfi_startproc
+ 762              		@ args = 0, pretend = 0, frame = 0
+ 763              		@ frame_needed = 0, uses_anonymous_args = 0
+ 764              	.LVL90:
+ 765 0000 08B5     		push	{r3, lr}
+ 766              	.LCFI9:
+ 767              		.cfi_def_cfa_offset 8
+ 768              		.cfi_offset 3, -8
+ 769              		.cfi_offset 14, -4
+ 257:Src/gui.c     **** 	return factor * LCD_Y_SIZE;
+ 770              		.loc 1 257 0
+ 771 0002 0022     		movs	r2, #0
+ 772 0004 044B     		ldr	r3, .L58
+ 773 0006 51EC100B 		vmov	r0, r1, d0
+ 774 000a FFF7FEFF 		bl	__aeabi_dmul
+ 775              	.LVL91:
+ 776 000e FFF7FEFF 		bl	__aeabi_d2uiz
+ 777              	.LVL92:
+ 258:Src/gui.c     **** }
+ 778              		.loc 1 258 0
+ 779 0012 80B2     		uxth	r0, r0
+ 780 0014 08BD     		pop	{r3, pc}
+ 781              	.L59:
+ 782 0016 00BF     		.align	2
+ 783              	.L58:
+ 784 0018 00007140 		.word	1081147392
+ 785              		.cfi_endproc
+ 786              	.LFE145:
+ 788              		.global	lastTicks
+ 789              		.global	playButtonState
+ 790              		.global	buttonState
+ 791              		.global	buttonsLeftUpper
+ 792              		.comm	newY,2,2
+ 793              		.comm	newX,2,2
+ 794              		.section	.bss.TS_State,"aw",%nobits
+ 795              		.align	2
+ 796              		.set	.LANCHOR1,. + 0
+ 799              	TS_State:
+ 800 0000 00000000 		.space	44
+ 800      00000000 
+ 800      00000000 
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccgVMJhz.s 			page 20
+
+
+ 800      00000000 
+ 800      00000000 
+ 801              		.section	.bss.lastTicks,"aw",%nobits
+ 802              		.align	2
+ 803              		.set	.LANCHOR0,. + 0
+ 806              	lastTicks:
+ 807 0000 00000000 		.space	4
+ 808              		.section	.bss.playButtonState,"aw",%nobits
+ 809              		.set	.LANCHOR3,. + 0
+ 812              	playButtonState:
+ 813 0000 00       		.space	1
+ 814              		.section	.data.buttonState,"aw",%progbits
+ 815              		.align	2
+ 816              		.set	.LANCHOR4,. + 0
+ 819              	buttonState:
+ 820 0000 04       		.byte	4
+ 821 0001 00       		.byte	0
+ 822 0002 02       		.byte	2
+ 823 0003 03       		.byte	3
+ 824              		.section	.data.buttonsLeftUpper,"aw",%progbits
+ 825              		.align	2
+ 826              		.set	.LANCHOR2,. + 0
+ 829              	buttonsLeftUpper:
+ 830 0000 2600     		.short	38
+ 831 0002 BE00     		.short	190
+ 832 0004 9400     		.short	148
+ 833 0006 BE00     		.short	190
+ 834 0008 0301     		.short	259
+ 835 000a BE00     		.short	190
+ 836 000c 7101     		.short	369
+ 837 000e BE00     		.short	190
+ 838              		.section	.rodata.check_touchscreen.str1.4,"aMS",%progbits,1
+ 839              		.align	2
+ 840              	.LC0:
+ 841 0000 25640A00 		.ascii	"%d\012\000"
+ 842              		.text
+ 843              	.Letext0:
+ 844              		.file 2 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 845              		.file 3 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\lock.h"
+ 846              		.file 4 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\_types.h"
+ 847              		.file 5 "c:\\gcc_toolchain\\6_2017-q1-update\\lib\\gcc\\arm-none-eabi\\6.3.1\\include\\stddef.h"
+ 848              		.file 6 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\reent.h"
+ 849              		.file 7 "c:\\gcc_toolchain\\6_2017-q1-update\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 850              		.file 8 "Inc/mp3_player.h"
+ 851              		.file 9 "Drivers/CMSIS/Include/core_cm7.h"
+ 852              		.file 10 "Drivers/CMSIS/Device/ST/STM32F7xx/Include/system_stm32f7xx.h"
+ 853              		.file 11 "Drivers/BSP/STM32746G-Discovery/../../../Utilities/Fonts/fonts.h"
+ 854              		.file 12 "Drivers/BSP/STM32746G-Discovery/../Components/ft5336/../Common/ts.h"
+ 855              		.file 13 "Drivers/BSP/STM32746G-Discovery/../Components/ft5336/ft5336.h"
+ 856              		.file 14 "Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.h"
+ 857              		.file 15 "Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_lcd.h"
+ 858              		.file 16 "Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal.h"
+ 859              		.file 17 "Inc/term_io.h"
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccgVMJhz.s 			page 21
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 gui.c
-<<<<<<< HEAD
-C:\Users\Patryk\AppData\Local\Temp\ccG2bHrl.s:18     .text.lcd_start:00000000 $t
-C:\Users\Patryk\AppData\Local\Temp\ccG2bHrl.s:25     .text.lcd_start:00000000 lcd_start
-C:\Users\Patryk\AppData\Local\Temp\ccG2bHrl.s:97     .text.lcd_start:00000064 $d
-C:\Users\Patryk\AppData\Local\Temp\ccG2bHrl.s:102    .text.LCD_Start_v2:00000000 $t
-C:\Users\Patryk\AppData\Local\Temp\ccG2bHrl.s:109    .text.LCD_Start_v2:00000000 LCD_Start_v2
-C:\Users\Patryk\AppData\Local\Temp\ccG2bHrl.s:187    .text.LCD_Start_v2:0000006c $d
-C:\Users\Patryk\AppData\Local\Temp\ccG2bHrl.s:192    .text.draw_background:00000000 $t
-C:\Users\Patryk\AppData\Local\Temp\ccG2bHrl.s:199    .text.draw_background:00000000 draw_background
-C:\Users\Patryk\AppData\Local\Temp\ccG2bHrl.s:256    .text.draw_background:0000004c $d
-C:\Users\Patryk\AppData\Local\Temp\ccG2bHrl.s:261    .text.initialize_touchscreen:00000000 $t
-C:\Users\Patryk\AppData\Local\Temp\ccG2bHrl.s:268    .text.initialize_touchscreen:00000000 initialize_touchscreen
-C:\Users\Patryk\AppData\Local\Temp\ccG2bHrl.s:308    .text.touchscreen_loop_init:00000000 $t
-C:\Users\Patryk\AppData\Local\Temp\ccG2bHrl.s:315    .text.touchscreen_loop_init:00000000 touchscreen_loop_init
-C:\Users\Patryk\AppData\Local\Temp\ccG2bHrl.s:356    .text.touchscreen_loop_init:00000030 $d
+C:\Users\Student\AppData\Local\Temp\ccgVMJhz.s:18     .text.lcd_start:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccgVMJhz.s:25     .text.lcd_start:00000000 lcd_start
+C:\Users\Student\AppData\Local\Temp\ccgVMJhz.s:96     .text.lcd_start:00000064 $d
+C:\Users\Student\AppData\Local\Temp\ccgVMJhz.s:101    .text.LCD_Start_v2:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccgVMJhz.s:108    .text.LCD_Start_v2:00000000 LCD_Start_v2
+C:\Users\Student\AppData\Local\Temp\ccgVMJhz.s:185    .text.LCD_Start_v2:0000006c $d
+C:\Users\Student\AppData\Local\Temp\ccgVMJhz.s:190    .text.initialize_touchscreen:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccgVMJhz.s:197    .text.initialize_touchscreen:00000000 initialize_touchscreen
+C:\Users\Student\AppData\Local\Temp\ccgVMJhz.s:236    .text.touchscreen_loop_init:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccgVMJhz.s:243    .text.touchscreen_loop_init:00000000 touchscreen_loop_init
+C:\Users\Student\AppData\Local\Temp\ccgVMJhz.s:283    .text.touchscreen_loop_init:00000030 $d
                             *COM*:00000002 newX
                             *COM*:00000002 newY
-C:\Users\Patryk\AppData\Local\Temp\ccG2bHrl.s:365    .text.check_touchscreen:00000000 $t
-C:\Users\Patryk\AppData\Local\Temp\ccG2bHrl.s:372    .text.check_touchscreen:00000000 check_touchscreen
-C:\Users\Patryk\AppData\Local\Temp\ccG2bHrl.s:573    .text.check_touchscreen:000000fc $d
-C:\Users\Patryk\AppData\Local\Temp\ccG2bHrl.s:590    .text.getXPix:00000000 $t
-C:\Users\Patryk\AppData\Local\Temp\ccG2bHrl.s:597    .text.getXPix:00000000 getXPix
-C:\Users\Patryk\AppData\Local\Temp\ccG2bHrl.s:623    .text.getXPix:00000018 $d
-C:\Users\Patryk\AppData\Local\Temp\ccG2bHrl.s:628    .text.getYPix:00000000 $t
-C:\Users\Patryk\AppData\Local\Temp\ccG2bHrl.s:635    .text.getYPix:00000000 getYPix
-C:\Users\Patryk\AppData\Local\Temp\ccG2bHrl.s:661    .text.getYPix:00000018 $d
-C:\Users\Patryk\AppData\Local\Temp\ccG2bHrl.s:690    .bss.lastTicks:00000000 lastTicks
-C:\Users\Patryk\AppData\Local\Temp\ccG2bHrl.s:696    .bss.playButtonState:00000000 playButtonState
-C:\Users\Patryk\AppData\Local\Temp\ccG2bHrl.s:703    .data.buttonState:00000000 buttonState
-C:\Users\Patryk\AppData\Local\Temp\ccG2bHrl.s:713    .data.buttonsLeftUpper:00000000 buttonsLeftUpper
-C:\Users\Patryk\AppData\Local\Temp\ccG2bHrl.s:672    .bss.TS_State:00000000 $d
-C:\Users\Patryk\AppData\Local\Temp\ccG2bHrl.s:676    .bss.TS_State:00000000 TS_State
-C:\Users\Patryk\AppData\Local\Temp\ccG2bHrl.s:679    .bss.lastState:00000000 $d
-C:\Users\Patryk\AppData\Local\Temp\ccG2bHrl.s:683    .bss.lastState:00000000 lastState
-C:\Users\Patryk\AppData\Local\Temp\ccG2bHrl.s:686    .bss.lastTicks:00000000 $d
-C:\Users\Patryk\AppData\Local\Temp\ccG2bHrl.s:697    .bss.playButtonState:00000000 $d
-C:\Users\Patryk\AppData\Local\Temp\ccG2bHrl.s:699    .data.buttonState:00000000 $d
-C:\Users\Patryk\AppData\Local\Temp\ccG2bHrl.s:709    .data.buttonsLeftUpper:00000000 $d
-=======
-C:\Users\milek\AppData\Local\Temp\ccp8XL8d.s:18     .text.lcd_start:00000000 $t
-C:\Users\milek\AppData\Local\Temp\ccp8XL8d.s:25     .text.lcd_start:00000000 lcd_start
-C:\Users\milek\AppData\Local\Temp\ccp8XL8d.s:97     .text.lcd_start:00000064 $d
-C:\Users\milek\AppData\Local\Temp\ccp8XL8d.s:102    .text.LCD_Start_v2:00000000 $t
-C:\Users\milek\AppData\Local\Temp\ccp8XL8d.s:109    .text.LCD_Start_v2:00000000 LCD_Start_v2
-C:\Users\milek\AppData\Local\Temp\ccp8XL8d.s:187    .text.LCD_Start_v2:0000006c $d
-C:\Users\milek\AppData\Local\Temp\ccp8XL8d.s:192    .text.draw_background:00000000 $t
-C:\Users\milek\AppData\Local\Temp\ccp8XL8d.s:199    .text.draw_background:00000000 draw_background
-C:\Users\milek\AppData\Local\Temp\ccp8XL8d.s:256    .text.draw_background:0000004c $d
-C:\Users\milek\AppData\Local\Temp\ccp8XL8d.s:261    .text.initialize_touchscreen:00000000 $t
-C:\Users\milek\AppData\Local\Temp\ccp8XL8d.s:268    .text.initialize_touchscreen:00000000 initialize_touchscreen
-C:\Users\milek\AppData\Local\Temp\ccp8XL8d.s:308    .text.touchscreen_loop_init:00000000 $t
-C:\Users\milek\AppData\Local\Temp\ccp8XL8d.s:315    .text.touchscreen_loop_init:00000000 touchscreen_loop_init
-C:\Users\milek\AppData\Local\Temp\ccp8XL8d.s:356    .text.touchscreen_loop_init:00000030 $d
-                            *COM*:00000002 newX
-                            *COM*:00000002 newY
-C:\Users\milek\AppData\Local\Temp\ccp8XL8d.s:365    .text.check_touchscreen:00000000 $t
-C:\Users\milek\AppData\Local\Temp\ccp8XL8d.s:372    .text.check_touchscreen:00000000 check_touchscreen
-C:\Users\milek\AppData\Local\Temp\ccp8XL8d.s:575    .text.check_touchscreen:00000104 $d
-C:\Users\milek\AppData\Local\Temp\ccp8XL8d.s:590    .text.getXPix:00000000 $t
-C:\Users\milek\AppData\Local\Temp\ccp8XL8d.s:597    .text.getXPix:00000000 getXPix
-C:\Users\milek\AppData\Local\Temp\ccp8XL8d.s:623    .text.getXPix:00000018 $d
-C:\Users\milek\AppData\Local\Temp\ccp8XL8d.s:628    .text.getYPix:00000000 $t
-C:\Users\milek\AppData\Local\Temp\ccp8XL8d.s:635    .text.getYPix:00000000 getYPix
-C:\Users\milek\AppData\Local\Temp\ccp8XL8d.s:661    .text.getYPix:00000018 $d
-C:\Users\milek\AppData\Local\Temp\ccp8XL8d.s:690    .bss.lastTicks:00000000 lastTicks
-C:\Users\milek\AppData\Local\Temp\ccp8XL8d.s:696    .bss.playButtonState:00000000 playButtonState
-C:\Users\milek\AppData\Local\Temp\ccp8XL8d.s:703    .data.buttonState:00000000 buttonState
-C:\Users\milek\AppData\Local\Temp\ccp8XL8d.s:713    .data.buttonsLeftUpper:00000000 buttonsLeftUpper
-C:\Users\milek\AppData\Local\Temp\ccp8XL8d.s:672    .bss.TS_State:00000000 $d
-C:\Users\milek\AppData\Local\Temp\ccp8XL8d.s:676    .bss.TS_State:00000000 TS_State
-C:\Users\milek\AppData\Local\Temp\ccp8XL8d.s:679    .bss.lastState:00000000 $d
-C:\Users\milek\AppData\Local\Temp\ccp8XL8d.s:683    .bss.lastState:00000000 lastState
-C:\Users\milek\AppData\Local\Temp\ccp8XL8d.s:686    .bss.lastTicks:00000000 $d
-C:\Users\milek\AppData\Local\Temp\ccp8XL8d.s:697    .bss.playButtonState:00000000 $d
-C:\Users\milek\AppData\Local\Temp\ccp8XL8d.s:699    .data.buttonState:00000000 $d
-C:\Users\milek\AppData\Local\Temp\ccp8XL8d.s:709    .data.buttonsLeftUpper:00000000 $d
->>>>>>> 069a0906a4207e68cdc704b48d0c79549cba149d
+C:\Users\Student\AppData\Local\Temp\ccgVMJhz.s:294    .text.check_touchscreen:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccgVMJhz.s:301    .text.check_touchscreen:00000000 check_touchscreen
+C:\Users\Student\AppData\Local\Temp\ccgVMJhz.s:532    .text.check_touchscreen:0000013c $d
+C:\Users\Student\AppData\Local\Temp\ccgVMJhz.s:547    .text.draw_buttons:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccgVMJhz.s:554    .text.draw_buttons:00000000 draw_buttons
+C:\Users\Student\AppData\Local\Temp\ccgVMJhz.s:602    .text.draw_buttons:00000040 $d
+C:\Users\Student\AppData\Local\Temp\ccgVMJhz.s:607    .text.draw_background:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccgVMJhz.s:614    .text.draw_background:00000000 draw_background
+C:\Users\Student\AppData\Local\Temp\ccgVMJhz.s:653    .text.refresh_screen:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccgVMJhz.s:660    .text.refresh_screen:00000000 refresh_screen
+C:\Users\Student\AppData\Local\Temp\ccgVMJhz.s:713    .text.getXPix:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccgVMJhz.s:720    .text.getXPix:00000000 getXPix
+C:\Users\Student\AppData\Local\Temp\ccgVMJhz.s:746    .text.getXPix:00000018 $d
+C:\Users\Student\AppData\Local\Temp\ccgVMJhz.s:751    .text.getYPix:00000000 $t
+C:\Users\Student\AppData\Local\Temp\ccgVMJhz.s:758    .text.getYPix:00000000 getYPix
+C:\Users\Student\AppData\Local\Temp\ccgVMJhz.s:784    .text.getYPix:00000018 $d
+C:\Users\Student\AppData\Local\Temp\ccgVMJhz.s:806    .bss.lastTicks:00000000 lastTicks
+C:\Users\Student\AppData\Local\Temp\ccgVMJhz.s:812    .bss.playButtonState:00000000 playButtonState
+C:\Users\Student\AppData\Local\Temp\ccgVMJhz.s:819    .data.buttonState:00000000 buttonState
+C:\Users\Student\AppData\Local\Temp\ccgVMJhz.s:829    .data.buttonsLeftUpper:00000000 buttonsLeftUpper
+C:\Users\Student\AppData\Local\Temp\ccgVMJhz.s:795    .bss.TS_State:00000000 $d
+C:\Users\Student\AppData\Local\Temp\ccgVMJhz.s:799    .bss.TS_State:00000000 TS_State
+C:\Users\Student\AppData\Local\Temp\ccgVMJhz.s:802    .bss.lastTicks:00000000 $d
+C:\Users\Student\AppData\Local\Temp\ccgVMJhz.s:813    .bss.playButtonState:00000000 $d
+C:\Users\Student\AppData\Local\Temp\ccgVMJhz.s:815    .data.buttonState:00000000 $d
+C:\Users\Student\AppData\Local\Temp\ccgVMJhz.s:825    .data.buttonsLeftUpper:00000000 $d
+C:\Users\Student\AppData\Local\Temp\ccgVMJhz.s:839    .rodata.check_touchscreen.str1.4:00000000 $d
+                     .debug_frame:00000010 $d
 
 UNDEFINED SYMBOLS
 BSP_LCD_Init
@@ -1487,21 +1253,20 @@ BSP_LCD_SetTransparency
 BSP_LCD_SetTextColor
 BSP_LCD_ResetColorKeying
 BSP_LCD_Reload
-BSP_LCD_FillRect
 BSP_LCD_GetXSize
+ARM GAS  C:\Users\Student\AppData\Local\Temp\ccgVMJhz.s 			page 22
+
+
 BSP_LCD_GetYSize
 BSP_TS_Init
-__aeabi_i2d
-<<<<<<< HEAD
-ARM GAS  C:\Users\Patryk\AppData\Local\Temp\ccG2bHrl.s 			page 19
-=======
-ARM GAS  C:\Users\milek\AppData\Local\Temp\ccp8XL8d.s 			page 19
->>>>>>> 069a0906a4207e68cdc704b48d0c79549cba149d
-
-
-__aeabi_dadd
-__aeabi_dcmple
-HAL_GetTick
-BSP_TS_GetState
 __aeabi_dmul
 __aeabi_d2uiz
+__aeabi_i2d
+__aeabi_dadd
+__aeabi_dcmple
+BSP_LCD_FillRect
+HAL_GetTick
+BSP_TS_GetState
+xprintf
+BSP_LCD_DrawHLine
+BSP_LCD_DisplayStringAt

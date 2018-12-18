@@ -1,6 +1,6 @@
 build/gui.o: Src/gui.c Inc/mp3_player.h \
  Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_lcd.h \
- d:\sw\drivers\bsp\components\rk043fn48h\rk043fn48h.h \
+ Drivers/BSP/STM32746G-Discovery/../Components/rk043fn48h/rk043fn48h.h \
  Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.h \
  Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal.h \
  Inc/stm32f7xx_hal_conf.h Inc/main.h \
@@ -50,26 +50,18 @@ build/gui.o: Src/gui.c Inc/mp3_player.h \
  Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_hcd.h \
  Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_usb.h \
  Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.h \
-<<<<<<< HEAD
- c:\users\patryk\desktop\aaaaa13\utilities\fonts\fonts.h \
+ Drivers/BSP/STM32746G-Discovery/../../../Utilities/Fonts/fonts.h \
  Utilities/Fonts/fonts.h \
  Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.h \
  Drivers/BSP/STM32746G-Discovery/../Components/ft5336/ft5336.h \
- c:\users\patryk\desktop\aaaaa13\drivers\bsp\components\common\ts.h \
+ Drivers/BSP/STM32746G-Discovery/../Components/ft5336/../Common/ts.h \
  Inc/term_io.h Inc/dbgu.h Inc/ansi.h Inc/dbgu.h Inc/ansi.h
-=======
- d:\sw\utilities\fonts\fonts.h Utilities/Fonts/fonts.h \
- Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.h \
- d:\sw\drivers\bsp\components\ft5336\ft5336.h \
- d:\sw\drivers\bsp\components\common\ts.h Inc/term_io.h Inc/dbgu.h \
- Inc/ansi.h Inc/dbgu.h Inc/ansi.h
->>>>>>> 069a0906a4207e68cdc704b48d0c79549cba149d
 
 Inc/mp3_player.h:
 
 Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_lcd.h:
 
-d:\sw\drivers\bsp\components\rk043fn48h\rk043fn48h.h:
+Drivers/BSP/STM32746G-Discovery/../Components/rk043fn48h/rk043fn48h.h:
 
 Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sdram.h:
 
@@ -175,23 +167,15 @@ Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_usb.h:
 
 Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.h:
 
-<<<<<<< HEAD
-c:\users\patryk\desktop\aaaaa13\utilities\fonts\fonts.h:
-=======
-d:\sw\utilities\fonts\fonts.h:
->>>>>>> 069a0906a4207e68cdc704b48d0c79549cba149d
+Drivers/BSP/STM32746G-Discovery/../../../Utilities/Fonts/fonts.h:
 
 Utilities/Fonts/fonts.h:
 
 Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.h:
 
-d:\sw\drivers\bsp\components\ft5336\ft5336.h:
+Drivers/BSP/STM32746G-Discovery/../Components/ft5336/ft5336.h:
 
-<<<<<<< HEAD
-c:\users\patryk\desktop\aaaaa13\drivers\bsp\components\common\ts.h:
-=======
-d:\sw\drivers\bsp\components\common\ts.h:
->>>>>>> 069a0906a4207e68cdc704b48d0c79549cba149d
+Drivers/BSP/STM32746G-Discovery/../Components/ft5336/../Common/ts.h:
 
 Inc/term_io.h:
 
