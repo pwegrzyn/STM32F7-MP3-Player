@@ -40,7 +40,7 @@ uint8_t input_buffer[READ_BUFFER_SIZE];
 static uint8_t *current_ptr;
 static BSP_BUFFER_STATE out_buf_offs = BUFFER_OFFSET_NONE;
 FIL input_file;
-const char** paths;
+char** paths;
 int mp3FilesCounter = 0;
 int currentFilePosition = -1;
 int currentFileBytes = 0;
@@ -72,7 +72,8 @@ void mp3_player_fsm(const char* path)
 
     touchscreen_loop_init();
 
-	sprintf(gui_info_text, "-----------------");
+	sprintf(gui_info_text, "Initializing...");
+	refresh_screen(gui_info_text);
 
     DIR directory;
     FILINFO info;
@@ -123,13 +124,22 @@ void mp3_player_fsm(const char* path)
         }
     }
 
+	f_closedir(&directory);
+
 	while(1)
 	{	
 		switch(state)
 		{
 			case PLAY:
 			    if(DEBUG_ON) xprintf("Now playing\n");
+				if (f_findfirst(&directory, &info, path, paths[currentFilePosition]) != FR_OK) {
+            		xprintf("Error looking for first file occurence\n");
+            		return;
+        		}
 				currentFileBytes = info.fsize;
+				f_closedir(&directory);
+				sprintf(gui_info_text, "%s", paths[currentFilePosition]);
+				refresh_screen(gui_info_text);
 				mp3_player_play();
                 f_close(&input_file);
 				currentFileBytesRead = 0;
@@ -164,8 +174,10 @@ void mp3_player_fsm(const char* path)
             case STOP:
                 reset_player_state();
                 currentFilePosition = 0;
+				sprintf(gui_info_text, "STOPPED");
+				refresh_screen(gui_info_text);
                 while(state == STOP) {
-                    Mp3_Player_State newState = check_touchscreen((double) currentFileBytesRead / currentFileBytes);
+                    Mp3_Player_State newState = check_touchscreen();
                     if (newState != EMPTY)
                         state = newState;
                 }
@@ -183,8 +195,6 @@ void mp3_player_fsm(const char* path)
                 return;
 		}
 
-		sprintf(gui_info_text, "Currently playing: %s", paths[currentFilePosition]);
-		refresh_screen(gui_info_text);
 	}
 
 }
@@ -213,16 +223,21 @@ void mp3_player_play(void)
 		state = PLAY;
 		BSP_AUDIO_OUT_Play((uint16_t*)&output_buffer[0], AUDIO_OUT_BUFFER_SIZE * 2);
 		while(1) {
-			Mp3_Player_State newState = check_touchscreen((double) currentFileBytesRead / currentFileBytes);
+			update_progress_bar(((double)currentFileBytesRead) / currentFileBytes);
+			Mp3_Player_State newState = check_touchscreen();
 			if (newState != EMPTY)
 				state = newState;
             if (!has_been_paused && state == PAUSE) {
-                if(BSP_AUDIO_OUT_Pause() != AUDIO_OK) {
+				sprintf(gui_info_text, "PAUSED");
+				refresh_screen(gui_info_text);
+				if(BSP_AUDIO_OUT_Pause() != AUDIO_OK) {
 					xprintf("Error while pausing stream\n");
 					return;
 				}
 				has_been_paused = 1;
             } else if(has_been_paused && state == PLAY) {
+				sprintf(gui_info_text, "%s", paths[currentFilePosition]);
+				refresh_screen(gui_info_text);
 				if(BSP_AUDIO_OUT_Resume() != AUDIO_OK) {
 					xprintf("Error while pausing stream\n");
 					return;
@@ -361,7 +376,7 @@ int fill_input_buffer()
 	f_read(&input_file, (BYTE *)input_buffer + buffer_leftover, how_much_to_read, &actually_read);
 
 	currentFileBytesRead += actually_read;
-	
+
 	if(DEBUG_ON) xprintf("fill: copied from file to input_buffer\n");
 
 	// if there's still data in  the file
