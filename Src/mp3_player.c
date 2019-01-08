@@ -2,10 +2,10 @@
  *	Main MP3 Player functionality
  */
 
+/* Includes ------------------------------------------------------------------*/
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-
 #include "mp3_player.h"
 #include "gui.h"
 #include "lib\helix\pub\mp3dec.h"
@@ -15,7 +15,7 @@
 #include "dbgu.h"
 #include "ansi.h"
 
-#define DEBUG_ON 1
+#define DEBUG_ON 0
 
 // Data read from the USB and fed to the MP3 Decoder
 #define READ_BUFFER_SIZE 2 * MAINBUF_SIZE// + 216
@@ -67,6 +67,9 @@ void reset_player_state();
 /* ------------------------------------------------------------------- */
 
 // Main Finite State Machine of the player
+// Handles all user input from the touchscreen, controlls the state of the player and updates the screen
+// INPUT: path - non-relative path to the folder with MP3 files (can also contain other files, in which case
+// 		it will just skip them during swtiching to the next/previous song)
 void mp3_player_fsm(const char* path)
 {
     BSP_init();
@@ -280,7 +283,6 @@ int mp3_player_process_frame(void)
 	while(in_buf_offs < 0)
 	{
 		if(fill_input_buffer() != 0) return EOF;
-		// TODO check if this if is necessary at all
 		if(buffer_leftover > 0)
 		{
 			buffer_leftover--;
