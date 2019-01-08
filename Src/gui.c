@@ -221,14 +221,16 @@ void update_progress_bar(double progress) {
 
 	BSP_LCD_SelectLayer(LAYER_FG);
 	
-	double epsilon = 1e-6;
+	double epsilon = 1e-2;
 	if(progress <= epsilon) {
-		BSP_LCD_SetBackColor(LCD_COLOR_WHITE);
+		//BSP_LCD_SetBackColor(LCD_COLOR_WHITE);
+		BSP_LCD_SetTextColor(LCD_COLOR_WHITE);
 		BSP_LCD_FillRect(0, YPix(0.45) - 1, LCD_X_SIZE, 21);
 		return;
 	}
 
-	BSP_LCD_SetBackColor(LCD_COLOR_BLACK);
+	//SP_LCD_SetBackColor(LCD_COLOR_BLACK);
+	BSP_LCD_SetTextColor(LCD_COLOR_BLACK);
 	BSP_LCD_FillRect(30, YPix(0.45),  (uint16_t)(progress * (LCD_X_SIZE - 60)), 19);
 
 }
@@ -238,27 +240,34 @@ void refresh_screen(const char *info_text) {
 
 	// Text
 	BSP_LCD_SelectLayer(LAYER_FG);
-	BSP_LCD_SetBackColor(LCD_COLOR_WHITE);
+	//BSP_LCD_SetBackColor(LCD_COLOR_WHITE);
+	BSP_LCD_SetTextColor(LCD_COLOR_WHITE);
 	BSP_LCD_FillRect(0, YPix(0.20) - 1, LCD_X_SIZE, 30);
 	BSP_LCD_SetTextColor(LCD_COLOR_BLACK);
-	BSP_LCD_SetBackColor(LCD_COLOR_BLACK);
-	BSP_LCD_DisplayStringAt(XPix(0.05), YPix(0.20), (unsigned char *)info_text, CENTER_MODE);
+	//BSP_LCD_SetBackColor(LCD_COLOR_BLACK);
+	char buf[100];
+	sprintf(buf, " %s", info_text);
+	BSP_LCD_DisplayStringAt(XPix(0.05), YPix(0.20), (unsigned char *)buf,LEFT_MODE);
 
 	// Play/Pause Button
 	update_play_pause_button();
+	
+	//BSP_LCD_SelectLayer(LAYER_FG);
 
 }
 
 // Draw the 4 main state control buttons: PREV/PLAY_PAUSE/STOP/NEXT
 void draw_buttons() {
 
-	BSP_LCD_SetBackColor(LCD_COLOR_BLACK);
+	//BSP_LCD_SetBackColor(LCD_COLOR_RED);
+	BSP_LCD_SetTextColor(LCD_COLOR_BLACK);
 	BSP_LCD_FillRect(buttonsLeftUpper[0][0], buttonsLeftUpper[0][1],  CONTROL_BUTTON_SIZE, CONTROL_BUTTON_SIZE);
 	BSP_LCD_FillRect(buttonsLeftUpper[1][0], buttonsLeftUpper[1][1],  CONTROL_BUTTON_SIZE, CONTROL_BUTTON_SIZE);
 	BSP_LCD_FillRect(buttonsLeftUpper[2][0], buttonsLeftUpper[2][1],  CONTROL_BUTTON_SIZE, CONTROL_BUTTON_SIZE);
 	BSP_LCD_FillRect(buttonsLeftUpper[3][0], buttonsLeftUpper[3][1],  CONTROL_BUTTON_SIZE, CONTROL_BUTTON_SIZE);
 
-	BSP_LCD_SetBackColor(LCD_COLOR_WHITE);
+//	BSP_LCD_SetBackColor(LCD_COLOR_WHITE);
+	BSP_LCD_SetTextColor(LCD_COLOR_WHITE);
 	uint16_t xButton, yButton;
 	
 	// Previous button label
@@ -274,6 +283,7 @@ void draw_buttons() {
 	// Play/Pause button label
 	update_play_pause_button();
 
+	BSP_LCD_SetTextColor(LCD_COLOR_WHITE);
 	// Stop button label
 	xButton = buttonsLeftUpper[2][0];
 	yButton = buttonsLeftUpper[2][1];
@@ -283,7 +293,7 @@ void draw_buttons() {
 	xButton = buttonsLeftUpper[3][0];
 	yButton = buttonsLeftUpper[3][1];
 	Point Points3[]= {{xButton + 7, yButton + 7}, {xButton + 7, yButton + 7 + 58}, {xButton + CONTROL_BUTTON_SIZE / 2 , yButton + CONTROL_BUTTON_SIZE / 2}};
-	BSP_LCD_FillPolygon(Points1, 3);
+	BSP_LCD_FillPolygon(Points3, 3);
 	Points3[0].X += 29;
 	Points3[1].X += 29;
 	Points3[2].X += 29;
@@ -293,15 +303,19 @@ void draw_buttons() {
 
 // Refresh only the PLAY/PAUSE button
 void update_play_pause_button() {
+	BSP_LCD_SelectLayer(LAYER_BG);
 	uint16_t xButton = buttonsLeftUpper[1][0];
 	uint16_t yButton = buttonsLeftUpper[1][1];
-	BSP_LCD_SetBackColor(LCD_COLOR_BLACK);
+	//BSP_LCD_SetBackColor(LCD_COLOR_BLACK);
+	BSP_LCD_SetTextColor(LCD_COLOR_BLACK);
 	BSP_LCD_FillRect(xButton, yButton,  CONTROL_BUTTON_SIZE, CONTROL_BUTTON_SIZE);
-	BSP_LCD_SetBackColor(LCD_COLOR_WHITE);
-	if(playButtonState == PLAY) {
+	//BSP_LCD_SetBackColor(LCD_COLOR_WHITE);
+	BSP_LCD_SetTextColor(LCD_COLOR_WHITE);
+	if(playButtonState == PAUSE) {
 		Point Points2[]= {{xButton + 7, yButton + 7}, {xButton + 7, yButton + 7 + 58}, {xButton + 7 + 58, yButton + CONTROL_BUTTON_SIZE / 2}};
 		BSP_LCD_FillPolygon(Points2, 3);
-	} else if(playButtonState == PAUSE) {
+	} else if(playButtonState == PLAY) {
+		BSP_LCD_FillRect(0, 0, 1, 1);
 		BSP_LCD_FillRect(xButton + 7, yButton + 7, 27, CONTROL_BUTTON_SIZE - 14);
 		BSP_LCD_FillRect(xButton + 7 + 31, yButton + 7, 27, CONTROL_BUTTON_SIZE - 14);
 	}

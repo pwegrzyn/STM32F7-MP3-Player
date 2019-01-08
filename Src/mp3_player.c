@@ -20,8 +20,10 @@
 // Data read from the USB and fed to the MP3 Decoder
 #define READ_BUFFER_SIZE 2 * MAINBUF_SIZE// + 216
 
-// Decoded data ready to be passed out to output
+// Max size of a single frame
 #define DECODED_MP3_FRAME_SIZE MAX_NGRAN * MAX_NCHAN * MAX_NSAMP
+
+// Decoded data ready to be passed out to output (always have space to hold 2 frames)
 #define AUDIO_OUT_BUFFER_SIZE 2 * DECODED_MP3_FRAME_SIZE
 
 // State of the offset of the BSP output buffer
@@ -51,8 +53,8 @@ static int decode_result;
 int has_been_paused = 0;
 char gui_info_text[100];
 
-
 /* ------------------------------------------------------------------- */
+
 void BSP_init(void);
 void mp3_player_init(void);
 void mp3_player_fsm(const char*);
@@ -135,7 +137,7 @@ void mp3_player_fsm(const char* path)
 				if (f_findfirst(&directory, &info, path, paths[currentFilePosition]) != FR_OK) {
             		xprintf("Error looking for first file occurence\n");
             		return;
-        		}
+        		} 
 				currentFileBytes = info.fsize;
 				f_closedir(&directory);
 				sprintf(gui_info_text, "%s", paths[currentFilePosition]);
@@ -172,6 +174,7 @@ void mp3_player_fsm(const char* path)
 				// shouldn't ever come to this place
                 break;
             case STOP:
+				update_progress_bar(0);
                 reset_player_state();
                 currentFilePosition = 0;
 				sprintf(gui_info_text, "STOPPED");
@@ -273,6 +276,7 @@ int mp3_player_process_frame(void)
 	if (current_ptr == NULL && fill_input_buffer() != 0) return EOF;
 
 	in_buf_offs = MP3FindSyncWord(current_ptr, buffer_leftover);
+
 	while(in_buf_offs < 0)
 	{
 		if(fill_input_buffer() != 0) return EOF;
@@ -285,6 +289,7 @@ int mp3_player_process_frame(void)
 		// END TODO
 		in_buf_offs = MP3FindSyncWord(current_ptr, buffer_leftover);
 	}
+	
 	current_ptr += in_buf_offs;
 	buffer_leftover -= in_buf_offs;
 

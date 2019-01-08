@@ -1456,6 +1456,7 @@ void StartDefaultTask(void const * argument)
   xprintf("Starting player...\n");
   mp3_player_fsm("1:/");
   xprintf("Player finished\n");
+  
 
   /* Infinite loop */
   while(1);
